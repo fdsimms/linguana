@@ -12,10 +12,11 @@ and React.js. Linguana allows users to:
 - [ ] Create an account
 - [ ] Log in and out
 - [ ] Choose between different languages to learn
-- [ ] Complete lessons consisting of multiple-choice questions
+- [ ] Complete lessons consisting of multiple-choice questions and translation drills
 - [ ] Maintain a profile page displaying their progress as well as selected personal info
 - [ ] Leave comments on exercises
 - [ ] Leave comments on other users' pages
+- [ ] See a leaderboard comparing their stats with their friends'
 
 ## Design Docs
 * [View Wireframes][view]
@@ -59,7 +60,7 @@ With Phase 5, users will be able to friend other users and see how they stack up
 
 ### Phase 6: Add Translation Drills/Contingency (2 days)
 
-Here, I'll do' any necessary cleanup, add more seed data, and add translation drills as another exercise type. 
+Here, I'll do any necessary cleanup, finishing anything that I may have underbudgeted time for, add more seed data, and add translation drills as another exercise type. 
 
 
 ### Bonus Features (TBD)
