@@ -12,16 +12,20 @@ and React.js. Linguana allows users to:
 <!-- This is a Markdown checklist. Use it to keep track of your progress! -->
 
 - [ ] Create an account
-- [ ] Log in / Log out
+- [ ] Log in and out
 - [ ] Choose between different languages to learn
-- [ ] Complete lessons consisting of multiple choice questions, translations, etc.
-- [ ] Have a profile page that displays their progress and personal info
+- [ ] Complete game-like lessons consisting of multiple-choice questions, translation drills, etc.
+- [ ] Maintain a profile page displaying a timeline of their progress as well as selected personal info
 - [ ] Follow other users
-- [ ] Leave comments on questions in each lesson
+- [ ] Share progress and achievements with other users
+- [ ] Leave comments on drills in any given lesson
 - [ ] Leave comments on other users' pages
 - [ ] Send feedback to course moderators regarding bad translations, etc.
-- [ ] 
-- [ ] Set reminders on notes
+
+Linguana allows moderators to:
+
+- [ ] Create and update courses for languages they are deemed fluent in
+- [ ] Receive feedback from users
 
 ## Design Docs
 * [View Wireframes][view]
@@ -34,8 +38,8 @@ and React.js. Linguana allows users to:
 
 ### Phase 1: User Authentication, Note Model and JSON API (1.5 days)
 
-In Phase 1, I will begin by implementing user signup and authentication (using
-BCrypt). There will be a basic landing page after signup that will contain the
+In Phase 1, I will begin by implementing user signup and authentication using
+BCrypt. There will be a basic landing page after signup that will contain the
 container for the application's root React component. Before building out the
 front end, I will begin by setting up a full JSON API for Notes.
 

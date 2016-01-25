@@ -1,51 +1,75 @@
 # Schema Information
 
-## notes
-column name | data type | details
-------------|-----------|-----------------------
-id          | integer   | not null, primary key
-title       | string    | not null
-body        | text      | not null
-author_id   | integer   | not null, foreign key (references users), indexed
-notebook_id | integer   | not null, foreign key (references notebooks), indexed
-archived    | boolean   | not null, default: false
-
-## notebooks
-column name | data type | details
-------------|-----------|-----------------------
-id          | integer   | not null, primary key
-author_id   | integer   | not null, foreign key (references users), indexed
-title       | string    | not null
-description | string    | 
-
-## reminders
-column name | data type | details
-------------|-----------|-----------------------
-id          | integer   | not null, primary key
-user_id     | integer   | not null, foreign key (references users), indexed
-note_id     | string    | not null, foreign key (references notes), indexed
-date        | datetime  | not null
-type        | string    | not null
-prev_id     | integer   | foreign key (references reminders), indexed
-
-## tags
-column name | data type | details
-------------|-----------|-----------------------
-id          | integer   | not null, primary key
-name        | string    | not null
-
-## taggings
-column name | data type | details
-------------|-----------|-----------------------
-id          | integer   | not null, primary key
-name        | string    | not null
-note_id     | integer   | not null, foreign key (references notes), indexed, unique [tag_id]
-tag_id      | integer   | not null, foreign key (references tags), indexed
-
 ## users
 column name     | data type | details
 ----------------|-----------|-----------------------
 id              | integer   | not null, primary key
 username        | string    | not null, indexed, unique
-password_digest | string    | not null
+password_digest | string    | not null, indexed
 session_token   | string    | not null, indexed, unique
+bio             | text      | not null
+email           | string    | not null, unique
+points          | integer   | not null, default: 0
+streak_length   | integer   | not null, default: 0
+
+
+## languages    
+column name  | data type | details
+-------------|-----------|-----------------------
+id           | integer   | not null, primary key
+name         | integer   | not null
+
+## courses
+column name        | data type | details
+-------------------|-----------|-----------------------
+id                 | integer   | not null, primary key
+speaker_language_id| integer   | not null, foreign key (references languages), indexed
+subject_language_id| integer   | not null, foreign key (references languages), indexed
+name               | string    | not null
+
+## skills
+column name   | data type | details
+--------------|-----------|-----------------------
+id            | integer   | not null, primary key
+course_id     | integer   | not null, foreign key (references courses), indexed
+name          | string    | not null, unique
+
+## lessons
+column name   | data type | details
+--------------|-----------|-----------------------
+id            | integer   | not null, primary key
+skill_id      | integer   | not null, foreign key (references skills), indexed
+title         | string    | not null
+tips_and_notes| text      | 
+
+## multiple choice questions
+column name   | data type | details
+--------------|-----------|-----------------------
+id            | integer   | not null, primary key
+lesson_id     | integer   | not null, foreign key (references lessons), indexed
+body          | string    | not null
+
+## answer choices
+column name      | data type | details
+-----------------|-----------|-----------------------
+id               | integer   | not null, primary key
+question_id      | integer   | not null, foreign key (references multiple choice questions), indexed
+is_correct       | boolean   | not null, default: false
+
+## selected answers
+column name      | data type | details
+-----------------|-----------|-----------------------
+id               | integer   | not null, primary key
+user_id          | integer   | not null, foreign key (references users), indexed
+answer_choice_id | integer   | not null, foreign key (references answer choices), indexed
+
+## comments
+column name     | data type | details
+----------------|-----------|-----------------------
+id              | integer   | not null, primary key
+author_id       | integer   | not null, foreign key (references users), indexed
+commentable_id  | integer   | not null, foreign key for polymorphic assoc., indexed
+commentable_type| string    | not null, type for polymorphic assoc.
+content         | text      | not null
+parent_id       | integer   | self-referential foreign key, indexed
+
