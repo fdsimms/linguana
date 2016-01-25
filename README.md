@@ -6,26 +6,16 @@
 
 ## Minimum Viable Product
 
-Linguana is a web application inspired by Duolingo that was built using Ruby on Rails
+Linguana is a web application inspired by Duolingo. It was built using Ruby on Rails
 and React.js. Linguana allows users to:
-
-<!-- This is a Markdown checklist. Use it to keep track of your progress! -->
 
 - [ ] Create an account
 - [ ] Log in and out
 - [ ] Choose between different languages to learn
-- [ ] Complete game-like lessons consisting of multiple-choice questions, translation drills, etc.
-- [ ] Maintain a profile page displaying a timeline of their progress as well as selected personal info
-- [ ] Follow other users
-- [ ] Share progress and achievements with other users
-- [ ] Leave comments on drills in any given lesson
+- [ ] Complete lessons consisting of multiple-choice questions
+- [ ] Maintain a profile page displaying their progress as well as selected personal info
+- [ ] Leave comments on exercises
 - [ ] Leave comments on other users' pages
-- [ ] Send feedback to course moderators regarding bad translations, etc.
-
-Linguana allows moderators to:
-
-- [ ] Create and update courses for languages they are deemed fluent in
-- [ ] Receive feedback from users
 
 ## Design Docs
 * [View Wireframes][view]
@@ -36,68 +26,45 @@ Linguana allows moderators to:
 
 ## Implementation Timeline
 
-### Phase 1: User Authentication, Note Model and JSON API (1.5 days)
+### Phase 1: User Authentication, Models and JSON API (2 days) 
 
-In Phase 1, I will begin by implementing user signup and authentication using
-BCrypt. There will be a basic landing page after signup that will contain the
-container for the application's root React component. Before building out the
-front end, I will begin by setting up a full JSON API for Notes.
+For Phase 1, I will begin by implementing user authentification and creating models, views and api controllers for languages, courses, skills, and lessons. By the end of this phase, users will be able to enroll in courses and view the skills and lessons in their courses. I will also minimally seed the database during this phase.
 
 [Details][phase-one]
 
-### Phase 2: Flux Architecture and Note CRUD (2.5 days)
+### Phase 2: Displaying and Answering Questions (2 days)
 
-Phase 2 is focused on setting up Flux, the React Router, and the React view
-structure for the main application. After the basic Flux architecture has been
-set up, a Note store will be implemented and a set of actions corresponding to
-the needed CRUD functionality created. Once this is done, I will create React
-views for the Notes `Index`, `IndexItem` and `Form`. At the end of Phase 2,
-Notes can be created, read, edited and destroyed in the browser. Notes should
-save to the database when the form loses focus or is left idle after editing.
-Lastly, while constructing the views I will start using basic bootstrap for
-styling.
+In Phase 2, I will create the models, views and api controllers for multiple choice questions and answer choices. By the end of this phase, users will be able to complete a lesson by answering questions, and users will gain points for completing questions. I will seed the database with a handful of questions and answers.
+
 
 [Details][phase-two]
 
-### Phase 3: Notebooks and Tags (2 days)
+### Phase 3: Google Translate Integration (1.5 days)
 
-Phase 3 adds organization to the Notes. Notes belong to a Notebook, which has
-its own `Index` view. Create JSON API for Notebooks. Notes can also now be
-tagged with multiple tags. Users can bring up notes in a separate `SearchIndex`
-view by searching for their tags. Once the tag search is implemented, I will
-extend this to a fuzzy search through every Note's content.
+In this phase, I will allow the user to hover over words in multiple choice questions to see a list of possible translations as provided by the Google Translate API.
 
 [Details][phase-three]
 
-### Phase 4: Allow Complex Styling in Notes (1 day)
+### Phase 4: User Profile (1 day)
 
-Using the react-quill library (based on Quill.js), allow for complex styling of
-notes.
+After Phase 4, users will be able to edit their profile and account settings. Users' profiles will display their bio, profile picture, name, and hometown, as well as the languages they are studying, how many points they have earned in each language and how long of a streak they are currently on.
 
 [Details][phase-four]
 
-### Phase 5: Reminders and Garbage Collection (1 day)
+### Phase 5: Social Aspects and Leaderboard (1.5 days)
 
-Phase 5 introduces two new features. First, users can set reminders on notes
-which will at the time they are set for prompt the user to review and edit the
-given note. In addition, I will implement a feature that asks users to review
-notes once they reach a certain age and ask whether they should be kept,
-archived, or deleted.
+With Phase 5, users will be able to friend other users and see how they stack up to their friends via a leaderboard on the homepage. Users will be able to comment on lessons and other users.
 
-[Details][phase-five]
+[Details][phase-five] 
 
-### Phase 6: Styling Cleanup and Seeding (1 day)
+### Phase 6: Add Translation Drills/Contingency (2 days)
 
-Bootstrap will have been used to keep things organized up until now, but in
-Phase 6 I will add styling flourishes and make modals out of some elements (like
-the NotebookForm).
+Here, I'll do' any necessary cleanup, add more seed data, and add translation drills as another exercise type. 
+
 
 ### Bonus Features (TBD)
-- [ ] Prettify transitions
-- [ ] Use javascript library for cleaner tag selection
-- [ ] Changelogs for Notes
-- [ ] Pagination / infinite scroll for Notes Index
-- [ ] Multiple sessions
+- [ ] Build UI to allow moderators to create new courses
+- [ ] Use spaced-repetition algorithm to let users continue to study things they have already learned 
 
 [phase-one]: ./docs/phases/phase1.md
 [phase-two]: ./docs/phases/phase2.md

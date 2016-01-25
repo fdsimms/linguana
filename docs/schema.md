@@ -8,6 +8,8 @@ username        | string    | not null, indexed, unique
 password_digest | string    | not null, indexed
 session_token   | string    | not null, indexed, unique
 bio             | text      | not null
+name            | string    | not null
+hometown        | string    | not null
 email           | string    | not null, unique
 points          | integer   | not null, default: 0
 streak_length   | integer   | not null, default: 0
