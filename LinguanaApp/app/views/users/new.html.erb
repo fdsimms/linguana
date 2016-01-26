@@ -1,0 +1,27 @@
+<h1>Sign Up</h1>
+
+<form action="<%= users_url %>" method="post">
+  <%= auth_token_input %>
+
+  <label for="user-username">Username:</label>
+  <input id="user-username" name="user[username]" value="<%= @user.username %>">
+
+  <label for="user-password">Password:</label>
+  <input type="password"
+         id="user-password"
+         name="user[password]"
+         value="<%= @user.password %>">
+
+  <label for="user-name">Name:</label>
+  <input id="user-name" name="user[name]" value="<%= @user.name %>">
+
+  <label for="user-email">Email:</label>
+  <input id="user-email" name="user[email]" value="<%= @user.email %>">
+
+  <input type="submit" value="Submit">
+</form>
+
+
+<h3>Already a member?</h3>
+<form action="<%= new_user_url %>" method="get">
+  <input type="submit" value="Click Here"> <h3>to sign in.</h3>

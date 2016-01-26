@@ -12,7 +12,7 @@
   Hi, <%= current_user.username %>!
 <% end %>
 
-<% flash[:errors].each do |error|  %>
+<% flash[:errors].try(:each) do |error|  %>
 <%= error  %>
 <% end  %>
 

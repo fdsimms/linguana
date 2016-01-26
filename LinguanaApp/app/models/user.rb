@@ -36,10 +36,6 @@ class User < ActiveRecord::Base
   private
 
   def ensure_session_token
-    self.session_token ||= User.generate_session_token
-
-    if User.exists?(session_token: self.session_token)
-      ensure_session_token
-    end
+    self.session_token = User.generate_session_token
   end
 end
