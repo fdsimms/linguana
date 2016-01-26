@@ -29,6 +29,7 @@ gem 'bcrypt'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'rails_12factor'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -38,6 +39,7 @@ end
 group :development do
   # Run 'annotate' in Terminal to add helpful comments to models.
   gem 'annotate'
+
 
   # These two give you a great error handling page.
   # But make sure to never use them in production!

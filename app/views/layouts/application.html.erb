@@ -5,14 +5,19 @@
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
+  <link
+    href='https://fonts.googleapis.com/css?family=Montserrat+Alternates:400,700'
+    rel='stylesheet'
+    type='text/css'>
 </head>
 <body>
 
 <header class="header">
   <nav class="header-nav group">
     <h1 class="header-nav-logo">
-      linguana
-    <h2 class="header-nav-login-button">Login</h2>
+      <a href="<%= root_url  %>">Linguana</a>
+    </h1>
+    <!-- <h2 class="header-nav-login-button">Login</h2> -->
   </nav>
 </header>
 
