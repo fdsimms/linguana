@@ -1,25 +1,31 @@
-<form class="new-user-form" action="<%= users_url %>" method="post">
-  <%= auth_token_input %>
+<div class="new-user-form splash-form">
+  <form action="<%= users_url %>" method="post">
+    <%= auth_token_input %>
 
-  <label for="user-username">Username:</label>
-  <input id="user-username" name="user[username]" value="<%= @user.username %>">
+    <div class="inputs">
+      <label for="user-username"></label>
+      <input id="user-username"
+             name="user[username]"
+             value="<%= @user.username || "Username"%>">
 
-  <label for="user-password">Password:</label>
-  <input type="password"
-         id="user-password"
-         name="user[password]"
-         value="<%= @user.password %>">
+      <label for="user-password"></label>
+      <input type="password"
+             id="user-password"
+             name="user[password]"
+             value="password">
 
-  <label for="user-name">Name:</label>
-  <input id="user-name" name="user[name]" value="<%= @user.name %>">
+      <label for="user-name"></label>
+      <input id="user-name" name="user[name]" value="<%= @user.name || "Name" %>">
 
-  <label for="user-email">Email:</label>
-  <input id="user-email" name="user[email]" value="<%= @user.email %>">
+      <label for="user-email"></label>
+      <input id="user-email" name="user[email]" value="<%= @user.email || "Email" %>">
+      <button>Sign up</button>
+    </div>
 
-  <input type="submit" value="Submit">
-</form>
+  </form>
 
 
-<h3>Not a member yet?</h3>
-<form action="<%= new_user_url %>" method="get">
-  <input type="submit" value="Click Here"> <h3>to sign in.</h3>
+  <form class="signup-button" action="<%= new_session_url %>" method="get">
+    <button>Already a member?</button>
+  </form>
+</div>

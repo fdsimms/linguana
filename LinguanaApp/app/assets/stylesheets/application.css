@@ -14,7 +14,8 @@
  *= require_self
  */
 
- html, body, h1, h2, ul, li, h3, div {
+ html, body, h1, h2, ul, li, h3, div, input, form,
+ label, button {
    background: transparent;
    border:  0;
    color: inherit;
@@ -38,6 +39,10 @@
    width: auto;
  }
 
+ button {
+   cursor: pointer;
+ }
+
  .group:after {
    clear: both;
    content: "";
@@ -48,25 +53,24 @@
    color: #fff;
    background-color: rgb(10, 68, 121);
    font-family: sans-serif;
+   display: block;
  }
 
 .header {
   display: block;
-  background: black;
 }
 
 .header-nav {
   min-width: 400px;
   padding: 0 40px 0 40px;
   display: block;
-  background: black;
   margin: auto;
 }
 
 .header-nav-logo {
   float: left;
   font-size: 42px;
-  margin-top: 6px;
+  margin-top: 10px;
   display: block;
 }
 
@@ -77,12 +81,77 @@
   color: rgb(10, 68, 121);
   padding: 10px 24px;
   border-radius: 20px;
-  margin: 10px;
+  margin: 15px;
 }
 
-.header-nav-list > li {
-
+.splash-form {
+  display: block;
+  width: 500px;
+  margin: auto;
 }
 
-.new-user-form {
+.inputs {
+  margin: 120px auto 0 auto;
+  width: 400px;
+  display: block;
+}
+
+.inputs > input {
+  background: #fff;
+  margin: auto;
+  padding: 15px;
+  width: 260px;
+  color: black;
+  display: block;
+  border: 1px solid #eee;
+}
+
+#user-username {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+#session-username {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+#session-password {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+#user-email {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.inputs > input:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.inputs > button {
+  display: block;
+  margin: 20px auto 10px auto;
+  padding: 12px 120px;
+  border-radius: 20px;
+  background-color: rgb(65, 188, 250)
+}
+
+.signup-button {
+  width: 100%;
+  margin-top: 25px;
+  display: block;
+}
+
+.signup-button > button {
+  display: block;
+  margin: auto;
+  font-size: 15px;
+}
+
+.static-greeting {
+  font-size: 24px;
+  margin-top: 200px;
+  text-align: center;
 }
