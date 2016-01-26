@@ -11,10 +11,11 @@ and React.js. Linguana allows users to:
 
 - [ ] Create an account
 - [ ] Log in and out
-- [ ] Choose between different languages to learn
+- [ ] Enroll in multiple language courses
 - [ ] Complete lessons consisting of multiple-choice questions and translation drills
+- [ ] Earn points for completing exercises
 - [ ] Maintain a profile page displaying their progress as well as selected personal info
-- [ ] Leave comments on exercises
+- [ ] Leave comments and questions on exercises
 - [ ] Leave comments on other users' pages
 - [ ] See a leaderboard comparing their stats with their friends'
 
@@ -35,37 +36,40 @@ For Phase 1, I will begin by implementing user authentification and creating mod
 
 ### Phase 2: Displaying and Answering Questions (2 days)
 
-In Phase 2, I will create the models, views and api controllers for multiple choice questions and answer choices. By the end of this phase, users will be able to complete a lesson by answering questions, and users will gain points for completing questions. I will seed the database with a handful of questions and answers.
+In Phase 2, I will create the models, views and api controllers for multiple choice questions and answer choices. By the end of this phase, users will be able to complete a lesson, earning points by answering questions. I will seed the database with a handful of questions and answers.
 
 
 [Details][phase-two]
 
 ### Phase 3: Google Translate Integration (1.5 days)
 
-In this phase, I will allow the user to hover over words in multiple choice questions to see a list of possible translations as provided by the Google Translate API.
+After this phase, users will be able to see translations of words in exercises by hovering over them. Translations will be provided by use of the Google Translate API.
 
 [Details][phase-three]
 
 ### Phase 4: User Profile (1 day)
 
-After Phase 4, users will be able to edit their profile and account settings. Users' profiles will display their bio, profile picture, name, and hometown, as well as the languages they are studying, how many points they have earned in each language and how long of a streak they are currently on.
+After Phase 4, users will be able to edit their profile and account settings. Users' profiles will display their bio, profile picture, name, and hometown, as well as the languages they are studying, how many points they have earned in each language, and how long of a streak they are currently on.
 
 [Details][phase-four]
 
-### Phase 5: Social Aspects and Leaderboard (1.5 days)
+### Phase 5: Social Aspects, Notifications, and Leaderboard (2 days)
 
-With Phase 5, users will be able to friend other users and see how they stack up to their friends via a leaderboard on the homepage. Users will be able to comment on lessons and other users.
+With Phase 5, users will be able to friend other users and see how they stack up to their friends via a leaderboard on the homepage. Users will be able to comment on lessons and other users. Notifications will let users know when a friend has commented on their page, when a streak has lasted a given number of days, etc.
 
 [Details][phase-five] 
 
 ### Phase 6: Add Translation Drills/Contingency (2 days)
 
-Here, I'll do any necessary cleanup, finishing anything that I may have underbudgeted time for, add more seed data, and add translation drills as another exercise type. 
+Here, I'll do any necessary cleanup, finish anything that I may have underbudgeted time for, add more seed data, and add translation drills as another exercise type. 
 
 
 ### Bonus Features (TBD)
+- [ ] Add the ability to make some users course moderators
 - [ ] Build UI to allow moderators to create new courses
-- [ ] Use spaced-repetition algorithm to let users continue to study things they have already learned 
+- [ ] Use spaced-repetition algorithm to help users memorize words and phrases 
+- [ ] Add line graph to leaderboard to show how many points player has earned over a given period
+- [ ] Add audio exercises, again using Google Translate to provide TTS audio
 
 [phase-one]: ./docs/phases/phase1.md
 [phase-two]: ./docs/phases/phase2.md
