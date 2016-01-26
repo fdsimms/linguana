@@ -1,6 +1,4 @@
-<h1>Sign Up</h1>
-
-<form action="<%= users_url %>" method="post">
+<form class="new-user-form" action="<%= users_url %>" method="post">
   <%= auth_token_input %>
 
   <label for="user-username">Username:</label>
@@ -22,6 +20,6 @@
 </form>
 
 
-<h3>Already a member?</h3>
+<h3>Not a member yet?</h3>
 <form action="<%= new_user_url %>" method="get">
   <input type="submit" value="Click Here"> <h3>to sign in.</h3>

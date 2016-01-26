@@ -13,9 +13,7 @@ hometown        | string    | not null
 email           | string    | not null, unique
 points          | integer   | not null, default: 0
 streak_length   | integer   | not null, default: 0
-image_url       | string   |
-
-
+image_url       | string    |
 
 ## languages    
 column name  | data type | details
