@@ -13,6 +13,8 @@ hometown        | string    | not null
 email           | string    | not null, unique
 points          | integer   | not null, default: 0
 streak_length   | integer   | not null, default: 0
+image_url       | integer   |
+
 
 
 ## languages    
@@ -20,6 +22,8 @@ column name  | data type | details
 -------------|-----------|-----------------------
 id           | integer   | not null, primary key
 name         | integer   | not null
+flag_img_url | string    |
+abbreviation | string    | not null
 
 ## courses
 column name        | data type | details
