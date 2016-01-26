@@ -7,13 +7,13 @@ id              | integer   | not null, primary key
 username        | string    | not null, indexed, unique
 password_digest | string    | not null, indexed
 session_token   | string    | not null, indexed, unique
-bio             | text      | not null
+bio             | text      |
 name            | string    | not null
 hometown        | string    | not null
 email           | string    | not null, unique
 points          | integer   | not null, default: 0
 streak_length   | integer   | not null, default: 0
-image_url       | integer   |
+image_url       | string   |
 
 
 
@@ -46,7 +46,7 @@ column name   | data type | details
 id            | integer   | not null, primary key
 skill_id      | integer   | not null, foreign key (references skills), indexed
 title         | string    | not null
-tips_and_notes| text      | 
+tips_and_notes| text      |
 
 ## multiple choice questions
 column name   | data type | details
@@ -78,4 +78,3 @@ commentable_id  | integer   | not null, foreign key for polymorphic assoc., inde
 commentable_type| string    | not null, type for polymorphic assoc.
 content         | text      | not null
 parent_id       | integer   | self-referential foreign key, indexed
-
