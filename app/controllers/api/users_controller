@@ -1,0 +1,53 @@
+class Api::UsersController < ApplicationController
+
+  def create
+    @language = User.new(user_params)
+
+    if @language.save
+      render: show
+    else
+      render json: @language.errors.full_messages, status: 422
+    end
+  end
+
+  def update
+    @language = User.find(params[:id])
+
+    if @language.update
+      render: show
+    else
+      render json: @language.errors.full_messages, status: 422
+    end
+  end
+
+  def destroy
+    @language = User.find(params[:id])
+    @language.destroy!
+    render :show
+  end
+
+  def show
+    @language = User.find(params[:id])
+  end
+
+  def index
+    @language = User.all
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(
+      :username,
+      :password,
+      :session_token,
+      :bio,
+      :name,
+      :hometown,
+      :email,
+      :streak_length,
+      :points
+    )
+  end
+
+end
