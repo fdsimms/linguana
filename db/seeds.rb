@@ -37,37 +37,37 @@ esperanto = Language.create!(name: "Esperanto", abbreviation: "ep")
 
 Course.destroy_all
 french_for_english = Course.create!(
-  name: "French for English Speakers",
+  name: "French",
   target_language_id: french.id,
   known_language_id: english.id
 )
 portuguese_for_english = Course.create!(
-  name: "Portuguese for English Speakers",
+  name: "Portuguese",
   target_language_id: portuguese.id,
   known_language_id: english.id
 )
 spanish_for_english = Course.create!(
-  name: "Spanish for English Speakers",
+  name: "Spanish",
   target_language_id: spanish.id,
   known_language_id: english.id
 )
 esperanto_for_english = Course.create!(
-  name: "Esperanto for English Speakers",
+  name: "Esperanto",
   target_language_id: esperanto.id,
   known_language_id: english.id
 )
 english_for_spanish = Course.create!(
-  name: "Inglés para hispanohablantes",
+  name: "Inglés",
   target_language_id: english.id,
   known_language_id: spanish.id
 )
 english_for_french = Course.create!(
-  name: "Anglais pour personnes francophones",
+  name: "Anglais",
   target_language_id: english.id,
   known_language_id: french.id
 )
 english_for_portuguese = Course.create!(
-  name: "Inglês para os que falam português",
+  name: "Inglês",
   target_language_id: english.id,
   known_language_id: portuguese.id
 )

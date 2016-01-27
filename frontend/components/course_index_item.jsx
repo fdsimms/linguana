@@ -10,9 +10,11 @@ var CourseIndexItem = React.createClass({
 
   render: function () {
     return(
-      <li onClick={this.showCourse} className="course-list-item">
-        <p>{this.props.course.name}</p>
-      </li>
+      <div className="course-list-item-wrapper">
+        <li onClick={this.showCourse} className="course-list-item">
+          {this.props.course.name}
+        </li>
+      </div>
     );
   }
 });

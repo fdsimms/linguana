@@ -1,0 +1,39 @@
+.course-index {
+  margin: auto;
+  width: 642px;
+  margin-bottom: 100px;
+}
+.course-index-container {
+  width: 100%;
+  margin-top: 100px;
+}
+
+.course-index-header {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.course-list {
+}
+
+.course-list-item {
+  display: block;
+  padding: 25px;
+  text-align: center;
+}
+
+.course-list-item-wrapper {
+  border: 2px solid #ccc;
+  margin: 10px;
+  float: left;
+  width: 190px;
+  height: 210px;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.course-list-item-wrapper:hover {
+  background-color: rgb(47, 99, 149);
+}

@@ -27,11 +27,13 @@ var CourseIndex = React.createClass({
     });
 
     return(
-      <div className="course-index">
-        <h2 className="course-index-header">I want to learn...</h2>
-        <ul className="course-list">
-          {courses}
-        </ul>
+      <div className="course-index-container">
+        <div className="course-index">
+          <h2 className="course-index-header">I want to learn...</h2>
+          <ul className="course-list group">
+            {courses}
+          </ul>
+        </div>
       </div>
     );
   }

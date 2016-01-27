@@ -30719,16 +30719,20 @@
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'course-index' },
+	      { className: 'course-index-container' },
 	      React.createElement(
-	        'h2',
-	        { className: 'course-index-header' },
-	        'I want to learn...'
-	      ),
-	      React.createElement(
-	        'ul',
-	        { className: 'course-list' },
-	        courses
+	        'div',
+	        { className: 'course-index' },
+	        React.createElement(
+	          'h2',
+	          { className: 'course-index-header' },
+	          'I want to learn...'
+	        ),
+	        React.createElement(
+	          'ul',
+	          { className: 'course-list group' },
+	          courses
+	        )
 	      )
 	    );
 	  }
@@ -30879,11 +30883,11 @@
 	
 	  render: function () {
 	    return React.createElement(
-	      'li',
-	      { onClick: this.showCourse, className: 'course-list-item' },
+	      'div',
+	      { className: 'course-list-item-wrapper' },
 	      React.createElement(
-	        'p',
-	        null,
+	        'li',
+	        { onClick: this.showCourse, className: 'course-list-item' },
 	        this.props.course.name
 	      )
 	    );
