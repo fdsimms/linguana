@@ -3,22 +3,27 @@
     <%= auth_token_input %>
 
     <div class="inputs">
-      <label for="user-username"></label>
+
       <input id="user-username"
              name="user[username]"
-             value="<%= @user.username || "Username"%>">
+             value="<%= @user.username %>"
+             placeholder="Username">
 
-      <label for="user-password"></label>
       <input type="password"
              id="user-password"
              name="user[password]"
-             value="password">
+             placeholder="Password">
 
-      <label for="user-name"></label>
-      <input id="user-name" name="user[name]" value="<%= @user.name || "Name" %>">
+      <input id="user-name"
+             name="user[name]"
+             value="<%= @user.name %>"
+             placeholder="Name">
 
-      <label for="user-email"></label>
-      <input id="user-email" name="user[email]" value="<%= @user.email || "Email" %>">
+      <input id="user-email"
+             name="user[email]"
+             value="<%= @user.email %>"
+             placeholder="Email">
+
       <button>Sign up</button>
     </div>
 

@@ -80,7 +80,11 @@
   margin: 20px auto 10px auto;
   padding: 12px 120px;
   border-radius: 20px;
-  background-color: rgb(65, 188, 250)
+  background-color: rgb(33, 176, 249);
+}
+
+.inputs > button:hover {
+  background-color: rgb(65, 188, 250);
 }
 
 .signup-button {
@@ -93,6 +97,11 @@
   display: block;
   margin: auto;
   font-size: 15px;
+  padding: 5px;
+}
+
+.signup-button > button:hover {
+  color: #ccc;
 }
 
 .static-greeting {
