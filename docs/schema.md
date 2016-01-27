@@ -67,6 +67,21 @@ id               | integer   | not null, primary key
 user_id          | integer   | not null, foreign key (references users), indexed
 answer_choice_id | integer   | not null, foreign key (references answer choices), indexed
 
+## enrolled courses
+column name      | data type | details
+-----------------|-----------|-----------------------
+id               | integer   | not null, primary key
+user_id          | integer   | not null, foreign key (references users), indexed
+course_id        | integer   | not null, foreign key (references answer choices), indexed
+
+## completions
+column name      | data type | details
+-----------------|-----------|-----------------------
+id               | integer   | not null, primary key
+completable_id   | integer   | not null, foreign key for polymorphic assoc., indexed
+completable_type | string    | not null, type for polymorphic assoc.
+content          | text      | not null
+
 ## comments
 column name     | data type | details
 ----------------|-----------|-----------------------
