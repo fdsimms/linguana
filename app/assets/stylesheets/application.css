@@ -55,4 +55,5 @@
    font-family: sans-serif;
    font-family: 'Montserrat Alternates';
    display: block;
+   -webkit-font-smoothing: antialiased;
  }

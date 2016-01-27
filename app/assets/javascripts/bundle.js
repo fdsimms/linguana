@@ -50,12 +50,14 @@
 	    Route = __webpack_require__(159).Route,
 	    IndexRoute = __webpack_require__(159).IndexRoute,
 	    App = __webpack_require__(206),
-	    LanguageIndex = __webpack_require__(230);
+	    CourseIndex = __webpack_require__(231),
+	    Splash = __webpack_require__(236);
 	
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: LanguageIndex })
+	  React.createElement(IndexRoute, { component: Splash }),
+	  React.createElement(Route, { path: '/courses', component: CourseIndex })
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
@@ -24013,47 +24015,8 @@
 	});
 
 /***/ },
-/* 207 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var LanguageActions = __webpack_require__(208);
-	
-	var LanguageApiUtil = {
-		fetchLanguages: function () {
-			$.ajax({
-				type: "GET",
-				url: "api/languages",
-				dataType: "json",
-				success: function (languages) {
-					LanguageActions.receiveAll(languages);
-				}
-			});
-		}
-	};
-	
-	window.LanguageApiUtil = LanguageApiUtil;
-	
-	module.exports = LanguageApiUtil;
-
-/***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(209),
-	    LanguageConstants = __webpack_require__(210);
-	
-	var LanguageActions = {
-	  receiveAll: function (languages) {
-	    AppDispatcher.dispatch({
-	      actionType: LanguageConstants.LANGUAGES_RECEIVED,
-	      languages: languages
-	    });
-	  }
-	};
-	
-	module.exports = LanguageActions;
-
-/***/ },
+/* 207 */,
+/* 208 */,
 /* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -24061,47 +24024,8 @@
 	module.exports = new Dispatcher();
 
 /***/ },
-/* 210 */
-/***/ function(module, exports) {
-
-	var LanguageConstants = {
-	  LANGUAGES_RECEIVED: "LANGUAGES_RECEIVED"
-	};
-	
-	module.exports = LanguageConstants;
-
-/***/ },
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(215).Store;
-	var LanguageConstants = __webpack_require__(210);
-	var AppDispatcher = __webpack_require__(209);
-	var _languages = [];
-	var LanguageStore = new Store(AppDispatcher);
-	
-	var resetLanguages = function (languages) {
-	  _languages = languages.slice();
-	};
-	
-	LanguageStore.all = function () {
-	  return _languages.slice();
-	};
-	
-	LanguageStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case LanguageConstants.LANGUAGES_RECEIVED:
-	      var result = resetLanguages(payload.languages);
-	      LanguageStore.__emitChange();
-	      break;
-	  }
-	};
-	
-	window.LanguageStore = LanguageStore;
-	
-	module.exports = LanguageStore;
-
-/***/ },
+/* 210 */,
+/* 211 */,
 /* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -30759,62 +30683,214 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 230 */
+/* 230 */,
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    LanguageStore = __webpack_require__(211),
-	    LanguagesApiUtil = __webpack_require__(207);
+	    CourseStore = __webpack_require__(232),
+	    CourseIndexItem = __webpack_require__(237),
+	    CoursesApiUtil = __webpack_require__(234);
 	
-	var LanguageIndex = React.createClass({
-	  displayName: 'LanguageIndex',
+	var CourseIndex = React.createClass({
+	  displayName: 'CourseIndex',
 	
 	  getInitialState: function () {
-	    return { languages: LanguageStore.all() };
+	    return { courses: CourseStore.all() };
 	  },
 	
 	  _onChange: function () {
-	    this.setState({ languages: LanguageStore.all() });
+	    this.setState({ courses: CourseStore.all() });
 	  },
 	
 	  componentDidMount: function () {
-	    this.languageListener = LanguageStore.addListener(this._onChange);
-	    LanguagesApiUtil.fetchLanguages();
+	    this.courseListener = CourseStore.addListener(this._onChange);
+	    CoursesApiUtil.fetchCourses();
 	  },
 	
 	  componentWillUnmount: function () {
-	    this.languageListener.remove();
+	    this.courseListener.remove();
 	  },
 	
 	  render: function () {
-	    var languages = this.state.languages.map(function (lng) {
-	      return React.createElement(
-	        'li',
-	        { key: lng.id },
-	        ' ',
-	        lng.name,
-	        ' '
-	      );
+	    var courses = this.state.courses.map(function (course) {
+	      return React.createElement(CourseIndexItem, { key: course.id, course: course });
 	    });
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'language-index' },
+	      { className: 'course-index' },
 	      React.createElement(
 	        'h2',
-	        { className: 'language-index-header' },
+	        { className: 'course-index-header' },
 	        'I want to learn...'
 	      ),
 	      React.createElement(
 	        'ul',
-	        { className: 'language-list' },
-	        languages
+	        { className: 'course-list' },
+	        courses
 	      )
 	    );
 	  }
 	});
 	
-	module.exports = LanguageIndex;
+	module.exports = CourseIndex;
+
+/***/ },
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(215).Store;
+	var CourseConstants = __webpack_require__(233);
+	var AppDispatcher = __webpack_require__(209);
+	var _courses = [];
+	var CourseStore = new Store(AppDispatcher);
+	
+	var resetCourses = function (courses) {
+	  _courses = courses.slice();
+	};
+	
+	CourseStore.all = function () {
+	  return _courses.slice();
+	};
+	
+	CourseStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case CourseConstants.COURSES_RECEIVED:
+	      var result = resetCourses(payload.courses);
+	      CourseStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.CourseStore = CourseStore;
+	
+	module.exports = CourseStore;
+
+/***/ },
+/* 233 */
+/***/ function(module, exports) {
+
+	var CourseConstants = {
+	  COURSES_RECEIVED: "COURSES_RECEIVED"
+	};
+	
+	module.exports = CourseConstants;
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var CourseActions = __webpack_require__(235);
+	
+	var CoursesApiUtil = {
+		fetchCourses: function () {
+			$.ajax({
+				type: "GET",
+				url: "api/courses/",
+				dataType: "json",
+				success: function (courses) {
+					CourseActions.receiveAll(courses);
+				}
+			});
+		}
+	};
+	
+	window.CoursesApiUtil = CoursesApiUtil;
+	
+	module.exports = CoursesApiUtil;
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(209),
+	    CourseConstants = __webpack_require__(233);
+	
+	var CourseActions = {
+	  receiveAll: function (courses) {
+	    AppDispatcher.dispatch({
+	      actionType: CourseConstants.COURSES_RECEIVED,
+	      courses: courses
+	    });
+	  }
+	};
+	
+	module.exports = CourseActions;
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    History = __webpack_require__(159).History;
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  mixins: [History],
+	
+	  _handleClick: function () {
+	    this.history.pushState(null, "/courses", {});
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'splash group' },
+	      React.createElement(
+	        'div',
+	        { className: 'splash-contents group' },
+	        React.createElement(
+	          'h2',
+	          { className: 'splash-header' },
+	          'Learn a language. Or maybe not. We\'ll see.'
+	        ),
+	        React.createElement(
+	          'form',
+	          { className: 'splash-button-form' },
+	          React.createElement(
+	            'button',
+	            { className: 'splash-button',
+	              onClick: this._handleClick },
+	            'Get started'
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	
+	var CourseIndexItem = React.createClass({
+	  displayName: 'CourseIndexItem',
+	
+	  mixins: [History],
+	
+	  showCourse: function () {
+	    this.history.pushState(null, '/course/' + this.props.course.id, {});
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'li',
+	      { onClick: this.showCourse, className: 'course-list-item' },
+	      React.createElement(
+	        'p',
+	        null,
+	        this.props.course.name
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = CourseIndexItem;
 
 /***/ }
 /******/ ]);

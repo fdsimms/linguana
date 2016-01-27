@@ -4,12 +4,14 @@ var React = require('react'),
     Route = require('react-router').Route,
     IndexRoute = require('react-router').IndexRoute,
     App = require('./components/app'),
-    LanguageIndex = require('./components/language_index');
+    CourseIndex = require('./components/course_index'),
+    Splash = require('./components/splash');
 
 
   var routes = (
     <Route path="/" component={App}>
-      <IndexRoute component={LanguageIndex} />
+      <IndexRoute component={Splash} />
+      <Route path="/courses" component={CourseIndex} />
     </Route>
   );
 

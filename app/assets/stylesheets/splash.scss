@@ -1,0 +1,43 @@
+.splash {
+  display: block;
+  width: 60%;
+  float: right;
+}
+
+.splash-contents:before {
+  content: "";
+  border-radius: 100%;
+  background-color: rgb(81, 196, 211);
+  padding: 125px 125px;
+  left: -315px;
+  top: -20px;
+  position: absolute;
+}
+
+.splash-header {
+  font-size: 30px;
+  text-align: center;
+}
+
+.splash-contents {
+  float: left;
+  margin-top: 250px;
+  position: relative;
+}
+
+.splash-button-form {
+  display: block;
+}
+
+.splash-button {
+  margin: auto;
+  display: block;
+  background: rgb(128, 179, 22);
+  border-radius: 25px;
+  padding: 15px 115px;
+  margin-top: 55px;
+}
+
+.splash-button:hover {
+  background-color: rgb(150, 195, 0);
+}
