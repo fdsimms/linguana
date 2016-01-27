@@ -1,8 +1,8 @@
 <div class="new-session-form splash-form">
+  <div class="inputs">
   <form action="<%= session_url %>" method="post">
     <%= auth_token_input %>
 
-    <div class="inputs">
       <label for="session-username"></label>
       <input id="session-username"
              name="session[username]"
@@ -14,13 +14,14 @@
              name="session[password]"
              placeholder="Password">
 
-      <button>Log in</button>
-    </div>
+      <button class="log-in-button">Log in</button>
   </form>
-  <%= render "layouts/guest_signin_button" %>
 
+  <%= render "layouts/guest_signin_button" %>
 
   <form class="signup-button" action="<%= new_user_url %>" method="get">
     <button>Not a member yet?</button>
   </form>
+
+  </div>
 </div>

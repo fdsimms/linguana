@@ -1,8 +1,8 @@
 <div class="new-user-form splash-form">
+  <div class="inputs">
   <form action="<%= users_url %>" method="post">
     <%= auth_token_input %>
 
-    <div class="inputs">
 
       <input id="user-username"
              name="user[username]"
@@ -25,13 +25,12 @@
              placeholder="Email">
 
       <button>Sign up</button>
+    </form>
+
+      <%= render "layouts/guest_signin_button" %>
+
+      <form class="signup-button" action="<%= new_session_url %>" method="get">
+        <button>Already a member?</button>
+      </form>
     </div>
-
-  </form>
-  <%= render "layouts/guest_signin_button" %>
-
-
-  <form class="signup-button" action="<%= new_session_url %>" method="get">
-    <button>Already a member?</button>
-  </form>
 </div>

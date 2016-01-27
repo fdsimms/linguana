@@ -41,11 +41,11 @@
 
 .inputs {
   margin: 175px auto 0 auto;
-  width: 400px;
+  width: 292px;
   display: block;
 }
 
-.inputs > input {
+.inputs  input {
   background: #fff;
   margin: auto;
   padding: 15px;
@@ -79,36 +79,40 @@
   border-bottom-right-radius: 10px;
 }
 
-.inputs > button,
+.inputs button,
 .guest-inputs> button {
   display: block;
   border-radius: 20px;
   background-color: rgb(33, 176, 249);
 }
 
-.inputs > button {
+.inputs button {
   margin: 20px auto 10px auto;
-  padding: 12px 120px;
+  padding: 12px 115px;
 }
 
 .guest-inputs > button {
-  padding: 12px 90px;
+  padding: 12px 84px;
   margin: 15px auto 10px auto;
 }
 
-.inputs > button:hover,
+.inputs button:hover,
 .guest-inputs > button:hover {
   background-color: rgb(65, 188, 250);
 }
 
+.inputs .log-in-button {
+  padding: 12px 120px;
+}
+
 .signup-button {
-  width: 100%;
   margin-top: 25px;
   display: block;
 }
 
 .signup-button > button {
   display: block;
+  background: transparent;
   margin: auto;
   font-size: 15px;
   padding: 5px;
