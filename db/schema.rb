@@ -11,10 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127041004) do
+ActiveRecord::Schema.define(version: 20160127170236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "courses", force: :cascade do |t|
+    t.integer  "fluent_language_id",   null: false
+    t.integer  "learning_language_id", null: false
+    t.string   "name",                 null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "courses", ["fluent_language_id", "learning_language_id"], name: "index_courses_on_fluent_language_id_and_learning_language_id", unique: true, using: :btree
+  add_index "courses", ["fluent_language_id"], name: "index_courses_on_fluent_language_id", using: :btree
+  add_index "courses", ["learning_language_id"], name: "index_courses_on_learning_language_id", using: :btree
 
   create_table "languages", force: :cascade do |t|
     t.string   "name",         null: false
