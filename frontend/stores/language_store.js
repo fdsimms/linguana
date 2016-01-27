@@ -1,15 +1,15 @@
 var Store = require('flux/utils').Store;
 var LanguageConstants = require('../constants/language_constants');
 var AppDispatcher = require('../dispatcher/dispatcher');
-var _languages = {};
+var _languages = [];
 var LanguageStore = new Store(AppDispatcher);
 
 var resetLanguages = function(languages) {
-  _languages = Object.assign({}, languages);
+  _languages = languages.slice();
 };
 
 LanguageStore.all = function () {
-  return Object.assign({}, _languages);
+  return _languages.slice();
 };
 
 LanguageStore.__onDispatch = function (payload) {

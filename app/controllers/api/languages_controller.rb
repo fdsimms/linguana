@@ -1,10 +1,10 @@
-class LanguagesController < ApplicationController
+class Api::LanguagesController < ApplicationController
 
   def create
     @language = Language.new(language_params)
 
     if @language.save
-      render: show
+      render :show
     else
       render json: @language.errors.full_messages, status: 422
     end
@@ -14,7 +14,7 @@ class LanguagesController < ApplicationController
     @language = Language.find(params[:id])
 
     if @language.update
-      render: show
+      render :show
     else
       render json: @language.errors.full_messages, status: 422
     end
@@ -31,7 +31,7 @@ class LanguagesController < ApplicationController
   end
 
   def index
-    @language = Language.all
+    @languages = Language.all
   end
 
   private

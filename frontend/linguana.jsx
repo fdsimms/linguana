@@ -3,13 +3,13 @@ var React = require('react'),
     Router = require('react-router').Router,
     Route = require('react-router').Route,
     IndexRoute = require('react-router').IndexRoute,
-    App = require('./components/app.jsx'),
-    LanguageStore = require('./stores/language_store'),
-    LanguagesApiUtil = require('./util/languages_api_util');
+    App = require('./components/app'),
+    LanguageIndex = require('./components/language_index');
 
 
   var routes = (
     <Route path="/" component={App}>
+      <IndexRoute component={LanguageIndex} />
     </Route>
   );
 
