@@ -26,6 +26,41 @@ english = Language.create!(name: "English", abbreviation: "en")
 french = Language.create!(name: "French", abbreviation: "fr")
 spanish = Language.create!(name: "Spanish", abbreviation: "es")
 portuguese = Language.create!(name: "Portuguese", abbreviation: "pt")
-german = Language.create!(name: "German", abbreviation: "de")
+esperanto = Language.create!(name: "Esperanto", abbreviation: "ep")
 
 Course.destroy_all
+french_for_english = Course.create!(
+  name: "French for English Speakers",
+  target_language_id: french.id,
+  known_language_id: english.id
+)
+portuguese_for_english = Course.create!(
+  name: "Portuguese for English Speakers",
+  target_language_id: portuguese.id,
+  known_language_id: english.id
+)
+spanish_for_english = Course.create!(
+  name: "Spanish for English Speakers",
+  target_language_id: spanish.id,
+  known_language_id: english.id
+)
+esperanto_for_english = Course.create!(
+  name: "Esperanto for English Speakers",
+  target_language_id: esperanto.id,
+  known_language_id: english.id
+)
+english_for_spanish = Course.create!(
+  name: "Inglés para hispanohablantes",
+  target_language_id: english.id,
+  known_language_id: spanish.id
+)
+english_for_french = Course.create!(
+  name: "Anglais pour personnes francophones",
+  target_language_id: english.id,
+  known_language_id: french.id
+)
+english_for_portuguese = Course.create!(
+  name: "Inglês para os que falam português",
+  target_language_id: english.id,
+  known_language_id: portuguese.id
+)
