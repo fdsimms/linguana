@@ -8,6 +8,7 @@
 
 # users
 User.destroy_all
+
 guest = User.create!(
   name: "G.K. Guesterton",
   email: "gk@mailinator.com",
@@ -20,6 +21,11 @@ guest = User.create!(
 
 # languages
 Language.destroy_all
-french = Language.create!(name: "French", abbreviation: "fr");
-spanish = Language.create!(name: "Spanish", abbreviation: "es");
-portuguese = Language.create!(name: "Portuguese", abbreviation: "pr");
+
+english = Language.create!(name: "English", abbreviation: "en")
+french = Language.create!(name: "French", abbreviation: "fr")
+spanish = Language.create!(name: "Spanish", abbreviation: "es")
+portuguese = Language.create!(name: "Portuguese", abbreviation: "pt")
+german = Language.create!(name: "German", abbreviation: "de")
+
+Course.destroy_all
