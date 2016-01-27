@@ -1,0 +1,18 @@
+<div class="guest-signin-form">
+  <form action="<%= session_url %>" method="post">
+    <%= auth_token_input %>
+
+    <div class="guest-inputs">
+
+      <input type="hidden"
+             name="session[username]"
+             value="guest">
+
+      <input type="hidden"
+             name="session[password]"
+             value="password">
+
+      <button>Log in as guest</button>
+    </div>
+
+  </form>

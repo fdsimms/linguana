@@ -19,6 +19,10 @@
   display: block;
 }
 
+.header-nav-logo:hover {
+  color: #ddd;
+}
+
 .header-nav-login-button {
   float: right;
   display: block;
@@ -36,7 +40,7 @@
 }
 
 .inputs {
-  margin: 120px auto 0 auto;
+  margin: 175px auto 0 auto;
   width: 400px;
   display: block;
 }
@@ -75,15 +79,25 @@
   border-bottom-right-radius: 10px;
 }
 
-.inputs > button {
+.inputs > button,
+.guest-inputs> button {
   display: block;
-  margin: 20px auto 10px auto;
-  padding: 12px 120px;
   border-radius: 20px;
   background-color: rgb(33, 176, 249);
 }
 
-.inputs > button:hover {
+.inputs > button {
+  margin: 20px auto 10px auto;
+  padding: 12px 120px;
+}
+
+.guest-inputs > button {
+  padding: 12px 90px;
+  margin: 15px auto 10px auto;
+}
+
+.inputs > button:hover,
+.guest-inputs > button:hover {
   background-color: rgb(65, 188, 250);
 }
 
