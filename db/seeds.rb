@@ -15,9 +15,16 @@ guest = User.create!(
   username: "guest",
   password: "password",
   hometown: "Guestvalia",
-  bio: "No one ever saw a better guest than he.",
+  bio: "No one ever saw a better guest than he."
 )
-
+firetrux = User.create!(
+  name: "Firetrux O'Nally",
+  email: "firetrux@mailinator.com",
+  username: "firetrux",
+  password: "password",
+  hometown: "Houston, TX",
+  bio: "The dog, the myth, the legend."
+)
 
 # languages
 Language.destroy_all
