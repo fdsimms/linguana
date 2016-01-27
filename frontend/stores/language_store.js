@@ -21,4 +21,6 @@ LanguageStore.__onDispatch = function (payload) {
   }
 };
 
+window.LanguageStore = LanguageStore;
+
 module.exports = LanguageStore;

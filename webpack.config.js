@@ -25,5 +25,6 @@ module.exports = {
         loader: "node-loader"
       }
     ]
-  }
+  },
+  devtool: 'source-map',
 };

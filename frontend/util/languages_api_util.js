@@ -12,3 +12,7 @@ var LanguageApiUtil = {
 		});
 	}
 };
+
+window.LanguageApiUtil = LanguageApiUtil;
+
+module.exports = LanguageApiUtil;
