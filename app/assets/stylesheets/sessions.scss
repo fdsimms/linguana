@@ -114,8 +114,14 @@
 }
 
 .guest-inputs > button {
-  padding: 8px 34px;
-  margin: 15px auto 10px auto;
+  padding: 8px 39px;
+  margin: 10px auto 10px auto;
+}
+
+
+#modal-login-button {
+  margin-top: 20px;
+  padding: 7px 75px;
 }
 
 .inputs button:hover,

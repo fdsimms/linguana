@@ -31103,7 +31103,7 @@
 	            placeholder: 'Password' }),
 	          React.createElement(
 	            'button',
-	            { className: 'splash-login-button' },
+	            { id: 'modal-login-button' },
 	            'Log in'
 	          )
 	        ),

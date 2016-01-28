@@ -49,7 +49,7 @@ var LoginModal = React.createClass({
                    name="session[password]"
                    placeholder="Password" />
 
-            <button className="splash-login-button">Log in</button>
+            <button id="modal-login-button">Log in</button>
         </form>
 
         <form action="/session" method="post">
