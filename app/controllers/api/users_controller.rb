@@ -1,37 +1,37 @@
 class Api::UsersController < ApplicationController
 
   def create
-    @language = User.new(user_params)
+    @user = User.new(user_params)
 
-    if @language.save
+    if @user.save
       render: show
     else
-      render json: @language.errors.full_messages, status: 422
+      render json: @user.errors.full_messages, status: 422
     end
   end
 
   def update
-    @language = User.find(params[:id])
+    @user = User.find(params[:id])
 
-    if @language.update
+    if @user.update
       render: show
     else
-      render json: @language.errors.full_messages, status: 422
+      render json: @user.errors.full_messages, status: 422
     end
   end
 
   def destroy
-    @language = User.find(params[:id])
-    @language.destroy!
+    @user = User.find(params[:id])
+    @user.destroy!
     render :show
   end
 
   def show
-    @language = User.find(params[:id])
+    @user = User.find(params[:id])
   end
 
   def index
-    @language = User.all
+    @user = User.all
   end
 
   private

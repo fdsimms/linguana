@@ -7,14 +7,16 @@ var React = require('react'),
     CourseIndex = require('./components/course_index'),
     Course = require('./components/course'),
     Splash = require('./components/splash'),
-    SkillIndex = require('./components/skill_index');
+    SkillIndex = require('./components/skill_index'),
+    Skill = require('./components/skill');
 
 
   var routes = (
     <Route path="/" component={App}>
       <IndexRoute component={Splash} />
       <Route path="/courses" component={CourseIndex} />
-      <Route path="/courses/:courseId" component={Course}> </Route>
+      <Route path="/courses/:courseId" component={Course} />
+      <Route path="/skills/:skillId" component={Skill} />
     </Route>
   );
 

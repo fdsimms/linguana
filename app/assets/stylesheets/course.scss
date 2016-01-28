@@ -1,10 +1,12 @@
-.course-page {
-  background-color: #ddd;
+.course-page,
+.skill-page {
+  background-color: #eee;
   display: block;
   padding: 30px 0 50px 0;
 }
 
-.course-page-content {
+.course-page-content,
+.skill-page-content {
   width: 700px;
   display: block;
   margin: auto;
@@ -14,7 +16,8 @@
   border-radius: 10px;
 }
 
-.course-page-header {
+.course-page-header,
+.skill-page-header {
   color: black;
   padding: 40px;
   font-size: 24px;

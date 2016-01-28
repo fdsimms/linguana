@@ -53,18 +53,16 @@
 	    CourseIndex = __webpack_require__(207),
 	    Course = __webpack_require__(246),
 	    Splash = __webpack_require__(234),
-	    SkillIndex = __webpack_require__(247);
+	    SkillIndex = __webpack_require__(247),
+	    Skill = __webpack_require__(253);
 	
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: Splash }),
 	  React.createElement(Route, { path: '/courses', component: CourseIndex }),
-	  React.createElement(
-	    Route,
-	    { path: '/courses/:courseId', component: Course },
-	    ' '
-	  )
+	  React.createElement(Route, { path: '/courses/:courseId', component: Course }),
+	  React.createElement(Route, { path: '/skills/:skillId', component: Skill })
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
@@ -31737,6 +31735,55 @@
 	};
 	
 	module.exports = SkillActions;
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    SkillStore = __webpack_require__(248),
+	    SkillIndex = __webpack_require__(247),
+	    SkillsApiUtil = __webpack_require__(251);
+	
+	var Skill = React.createClass({
+	  displayName: 'Skill',
+	
+	  getInitialState: function () {
+	    return { skills: null };
+	  },
+	
+	  componentDidMount: function () {
+	    var skillId = this.props.params.skillId;
+	    SkillsApiUtil.fetchSkill(skillId);
+	    var skillListener = SkillStore.addListener(this._skillsChanged);
+	  },
+	
+	  _skillsChanged: function () {
+	    this.setState({ skill: SkillStore.find(this.props.params.skillId) });
+	  },
+	
+	  render: function () {
+	    if (this.state.skill === undefined) {
+	      return React.createElement('div', null);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'skill-page' },
+	      React.createElement(
+	        'div',
+	        { className: 'skill-page-content' },
+	        React.createElement(
+	          'h2',
+	          { className: 'skill-page-header' },
+	          'Lessons'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Skill;
 
 /***/ }
 /******/ ]);
