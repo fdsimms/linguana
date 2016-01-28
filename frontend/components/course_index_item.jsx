@@ -1,9 +1,6 @@
 var React = require('react');
-var History = require('react-router').History;
 
 var CourseIndexItem = React.createClass({
-  mixins: [History],
-
   render: function () {
     return(
       <div className="course-list-item-wrapper">

@@ -30953,21 +30953,18 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
 	
 	var CourseIndexItem = React.createClass({
-	  displayName: 'CourseIndexItem',
-	
-	  mixins: [History],
+	  displayName: "CourseIndexItem",
 	
 	  render: function () {
 	    return React.createElement(
-	      'div',
-	      { className: 'course-list-item-wrapper' },
+	      "div",
+	      { className: "course-list-item-wrapper" },
 	      React.createElement(
-	        'a',
+	        "a",
 	        { href: "#/courses/" + this.props.course.id,
-	          className: 'course-list-item' },
+	          className: "course-list-item" },
 	        this.props.course.name
 	      )
 	    );
