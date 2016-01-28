@@ -4,7 +4,7 @@ var React = require('react'),
 
 var LoginModal = React.createClass({
   getInitialState: function () {
-    return { modalName: "loginModal", auth_token: "" };
+    return { modalName: "loginModal", token: "" };
   },
 
   componentDidMount: function () {

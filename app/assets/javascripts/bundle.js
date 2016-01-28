@@ -24002,6 +24002,7 @@
 
 	var React = __webpack_require__(1),
 	    LoginModal = __webpack_require__(235),
+	    LanguageIndexModal = __webpack_require__(239),
 	    ModalActions = __webpack_require__(238);
 	
 	module.exports = React.createClass({
@@ -24009,6 +24010,10 @@
 	
 	  _handleLoginClick: function () {
 	    ModalActions.toggleModalDisplay("loginModal");
+	  },
+	  _handleLanguagesHover: function () {
+	
+	    ModalActions.toggleModalDisplay("languageIndexModal");
 	  },
 	
 	  render: function () {
@@ -24030,6 +24035,13 @@
 	              'Linguana'
 	            )
 	          ),
+	          React.createElement(
+	            'h2',
+	            { onClick: this._handleLanguagesHover,
+	              className: 'header-nav-languages-list-button' },
+	            'Site language: English'
+	          ),
+	          React.createElement(LanguageIndexModal, null),
 	          React.createElement(
 	            'h2',
 	            { onClick: this._handleLoginClick,
@@ -31036,7 +31048,7 @@
 	  displayName: 'LoginModal',
 	
 	  getInitialState: function () {
-	    return { modalName: "loginModal", auth_token: "" };
+	    return { modalName: "loginModal", token: "" };
 	  },
 	
 	  componentDidMount: function () {
@@ -31227,6 +31239,205 @@
 	};
 	
 	module.exports = ModalActions;
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(238),
+	    ModalStore = __webpack_require__(236),
+	    LanguageIndex = __webpack_require__(240);
+	
+	var LanguageIndexModal = React.createClass({
+	  displayName: 'LanguageIndexModal',
+	
+	  getInitialState: function () {
+	    return { modalName: "languageIndexModal", token: "" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    var modalName = this.state.modalName;
+	    ModalActions.addModal(modalName);
+	    this.setState({
+	      modalName: modalName,
+	      token: $('meta[name=csrf-token]').attr('content')
+	    });
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	    ModalActions.removeModal(this.state.modalName);
+	  },
+	
+	  authToken: function () {
+	    return React.createElement('input', { name: 'authenticity_token', type: 'hidden', value: this.state.token });
+	  },
+	
+	  visibleRender: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'languages-modal' },
+	      React.createElement('div', { className: 'up-triangle' }),
+	      React.createElement(LanguageIndex, null)
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = LanguageIndexModal;
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    LanguageStore = __webpack_require__(241),
+	    LanguagesApiUtil = __webpack_require__(243);
+	
+	var LanguageIndex = React.createClass({
+	  displayName: 'LanguageIndex',
+	
+	  getInitialState: function () {
+	    return { languages: LanguageStore.all() };
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ languages: LanguageStore.all() });
+	  },
+	
+	  componentDidMount: function () {
+	    this.languageListener = LanguageStore.addListener(this._onChange);
+	    LanguagesApiUtil.fetchLanguages();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.languageListener.remove();
+	  },
+	
+	  render: function () {
+	    var languages = this.state.languages.map(function (lng) {
+	      return React.createElement(
+	        'li',
+	        { key: lng.id },
+	        ' ',
+	        lng.name,
+	        ' '
+	      );
+	    });
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'language-index' },
+	      React.createElement(
+	        'h2',
+	        { className: 'language-index-header' },
+	        'I want to learn...'
+	      ),
+	      React.createElement(
+	        'ul',
+	        { className: 'language-list' },
+	        languages
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LanguageIndex;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(209).Store;
+	var LanguageConstants = __webpack_require__(242);
+	var AppDispatcher = __webpack_require__(228);
+	var _languages = [];
+	var LanguageStore = new Store(AppDispatcher);
+	
+	var resetLanguages = function (languages) {
+	  _languages = languages.slice();
+	};
+	
+	LanguageStore.all = function () {
+	  return _languages.slice();
+	};
+	
+	LanguageStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case LanguageConstants.LANGUAGES_RECEIVED:
+	      var result = resetLanguages(payload.languages);
+	      LanguageStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.LanguageStore = LanguageStore;
+	
+	module.exports = LanguageStore;
+
+/***/ },
+/* 242 */
+/***/ function(module, exports) {
+
+	var LanguageConstants = {
+	  LANGUAGES_RECEIVED: "LANGUAGES_RECEIVED"
+	};
+	
+	module.exports = LanguageConstants;
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var LanguageActions = __webpack_require__(244);
+	
+	var LanguageApiUtil = {
+		fetchLanguages: function () {
+			$.ajax({
+				type: "GET",
+				url: "api/languages",
+				dataType: "json",
+				success: function (languages) {
+					LanguageActions.receiveAll(languages);
+				}
+			});
+		}
+	};
+	
+	window.LanguageApiUtil = LanguageApiUtil;
+	
+	module.exports = LanguageApiUtil;
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(228),
+	    LanguageConstants = __webpack_require__(242);
+	
+	var LanguageActions = {
+	  receiveAll: function (languages) {
+	    AppDispatcher.dispatch({
+	      actionType: LanguageConstants.LANGUAGES_RECEIVED,
+	      languages: languages
+	    });
+	  }
+	};
+	
+	module.exports = LanguageActions;
 
 /***/ }
 /******/ ]);
