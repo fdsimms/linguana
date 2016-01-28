@@ -1,6 +1,7 @@
 var React = require('react'),
     History = require('react-router').History,
     CourseStore = require('../stores/course_store'),
+    SkillIndex = require('./skill_index'),
     CoursesApiUtil = require('../util/courses_api_util');
 
 var Course = React.createClass({
@@ -29,6 +30,7 @@ var Course = React.createClass({
           <h2 className="course-page-header">
             {this.state.course.name} Skills
           </h2>
+          <SkillIndex courseId={this.state.course.id} />
         </div>
       </div>
     );

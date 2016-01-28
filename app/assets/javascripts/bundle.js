@@ -52,14 +52,19 @@
 	    App = __webpack_require__(206),
 	    CourseIndex = __webpack_require__(207),
 	    Course = __webpack_require__(246),
-	    Splash = __webpack_require__(234);
+	    Splash = __webpack_require__(234),
+	    SkillIndex = __webpack_require__(247);
 	
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: Splash }),
 	  React.createElement(Route, { path: '/courses', component: CourseIndex }),
-	  React.createElement(Route, { path: '/courses/:courseId', component: Course })
+	  React.createElement(
+	    Route,
+	    { path: '/courses/:courseId', component: Course },
+	    ' '
+	  )
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
@@ -31496,6 +31501,7 @@
 	var React = __webpack_require__(1),
 	    History = __webpack_require__(159).History,
 	    CourseStore = __webpack_require__(208),
+	    SkillIndex = __webpack_require__(247),
 	    CoursesApiUtil = __webpack_require__(232);
 	
 	var Course = React.createClass({
@@ -31533,13 +31539,204 @@
 	          { className: 'course-page-header' },
 	          this.state.course.name,
 	          ' Skills'
-	        )
+	        ),
+	        React.createElement(SkillIndex, { courseId: this.state.course.id })
 	      )
 	    );
 	  }
 	});
 	
 	module.exports = Course;
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    SkillStore = __webpack_require__(248),
+	    SkillIndexItem = __webpack_require__(250),
+	    SkillsApiUtil = __webpack_require__(251);
+	
+	var SkillIndex = React.createClass({
+	  displayName: 'SkillIndex',
+	
+	  getInitialState: function () {
+	    return { skills: SkillStore.all() };
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ skills: SkillStore.all() });
+	  },
+	
+	  componentDidMount: function () {
+	    this.skillListener = SkillStore.addListener(this._onChange);
+	
+	    SkillsApiUtil.fetchSkills(this.props.courseId);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.skillListener.remove();
+	  },
+	
+	  render: function () {
+	    var skills = this.state.skills;
+	    var skillKeys = Object.keys(this.state.skills);
+	    skills = skillKeys.map(function (key, idx) {
+	      var skill = skills[key];
+	      return React.createElement(SkillIndexItem, { key: idx, skill: skill });
+	    });
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'skill-index' },
+	      React.createElement(
+	        'ul',
+	        { className: 'skill-list group' },
+	        skills
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = SkillIndex;
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(209).Store;
+	var SkillConstants = __webpack_require__(249);
+	var AppDispatcher = __webpack_require__(228);
+	var _skills = {};
+	var SkillStore = new Store(AppDispatcher);
+	
+	var resetSkills = function (skills) {
+	  _skills = Object.assign({}, skills);
+	};
+	
+	var addSkill = function (skill) {
+	  _skills[skill.id] = skill;
+	};
+	
+	SkillStore.all = function () {
+	  return Object.assign({}, _skills);
+	};
+	
+	SkillStore.find = function (skillId) {
+	  return _skills[skillId];
+	};
+	
+	SkillStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SkillConstants.SKILLS_RECEIVED:
+	      resetSkills(payload.skills);
+	      SkillStore.__emitChange();
+	      break;
+	    case SkillConstants.SKILL_RECEIVED:
+	      addSkill(payload.skill);
+	      SkillStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.SkillStore = SkillStore;
+	
+	module.exports = SkillStore;
+
+/***/ },
+/* 249 */
+/***/ function(module, exports) {
+
+	var SkillConstants = {
+	  SKILLS_RECEIVED: "SKILLS_RECEIVED",
+	  SKILL_RECEIVED: "SKILL_RECEIVED"
+	};
+	
+	module.exports = SkillConstants;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var SkillIndexItem = React.createClass({
+	  displayName: "SkillIndexItem",
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "skill-list-item-wrapper" },
+	      React.createElement(
+	        "a",
+	        { href: "#/skills/" + this.props.skill.id,
+	          className: "skill-list-item" },
+	        this.props.skill.name
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = SkillIndexItem;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SkillActions = __webpack_require__(252);
+	
+	var SkillsApiUtil = {
+	  fetchSkills: function (courseId) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/courses/" + courseId + "/skills",
+	      dataType: "json",
+	      success: function (skills) {
+	        SkillActions.receiveAll(skills);
+	      }
+	    });
+	  },
+	
+	  fetchSkill: function (skillId) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/skills/" + skillId,
+	      dataType: "json",
+	      success: function (skill) {
+	        SkillActions.receiveSkill(skill);
+	      }
+	    });
+	  }
+	};
+	
+	window.SkillsApiUtil = SkillsApiUtil;
+	
+	module.exports = SkillsApiUtil;
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(228),
+	    SkillConstants = __webpack_require__(249);
+	
+	var SkillActions = {
+	  receiveAll: function (skills) {
+	    AppDispatcher.dispatch({
+	      actionType: SkillConstants.SKILLS_RECEIVED,
+	      skills: skills
+	    });
+	  },
+	
+	  receiveSkill: function (skill) {
+	    AppDispatcher.dispatch({
+	      actionType: SkillConstants.SKILL_RECEIVED,
+	      skill: skill
+	    });
+	  }
+	};
+	
+	module.exports = SkillActions;
 
 /***/ }
 /******/ ]);

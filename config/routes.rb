@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: {format: :json} do
     resources :users, except: [:new, :edit]
     resources :languages, except: [:new, :edit]
-    resources :courses, except: [:new, :edit]
+    resources :courses, except: [:new, :edit] do
+      resources :skills, except: [:new, :edit, :create, :show]
+    end
+    resources :skills, only: [:create, :show, :destroy, :update]
   end
 end

@@ -3,7 +3,7 @@ var React = require('react'),
     SkillIndexItem = require('./skill_index_item'),
     SkillsApiUtil = require('../util/skills_api_util');
 
-var CourseIndex = React.createClass({
+var SkillIndex = React.createClass({
   getInitialState: function () {
     return { skills: SkillStore.all() };
   },
@@ -14,7 +14,8 @@ var CourseIndex = React.createClass({
 
   componentDidMount: function () {
     this.skillListener = SkillStore.addListener(this._onChange);
-    SkillsApiUtil.fetchCourses();
+
+    SkillsApiUtil.fetchSkills(this.props.courseId);
   },
 
   componentWillUnmount: function () {
@@ -30,13 +31,10 @@ var CourseIndex = React.createClass({
     });
 
     return(
-      <div className="skill-index-container">
-        <div className="skill-index">
-          <h2 className="skill-index-header">I want to learn...</h2>
-          <ul className="skill-list group">
-            {skills}
-          </ul>
-        </div>
+      <div className="skill-index">
+        <ul className="skill-list group">
+          {skills}
+        </ul>
       </div>
     );
   }

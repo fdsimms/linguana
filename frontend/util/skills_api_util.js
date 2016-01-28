@@ -1,24 +1,24 @@
-var CourseActions = require('../actions/skill_actions');
+var SkillActions = require('../actions/skill_actions');
 
 var SkillsApiUtil = {
-	fetchCourses: function () {
+	fetchSkills: function (courseId) {
 		$.ajax({
 			type: "GET",
-			url: "api/skills/",
+			url: "api/courses/" + courseId + "/skills",
 			dataType: "json",
 			success: function (skills) {
-				CourseActions.receiveAll(skills);
+				SkillActions.receiveAll(skills);
 			},
 		});
 	},
 
-  fetchCourse: function (skillId) {
+  fetchSkill: function (skillId) {
     $.ajax({
       type: "GET",
       url: "api/skills/" + skillId,
       dataType: "json",
       success: function (skill) {
-        CourseActions.receiveCourse(skill);
+        SkillActions.receiveSkill(skill);
       },
     });
   }

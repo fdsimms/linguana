@@ -32,7 +32,8 @@ class Api::SkillsController < ApplicationController
     end
 
     def index
-      @skills = Skill.all
+      @course = Course.find(params[:course_id])
+      @skills = Skill.all.where(course_id: @course.id)
     end
 
     private
