@@ -31309,6 +31309,7 @@
 
 	var React = __webpack_require__(1),
 	    LanguageStore = __webpack_require__(241),
+	    LanguageIndexItem = __webpack_require__(245),
 	    LanguagesApiUtil = __webpack_require__(243);
 	
 	var LanguageIndex = React.createClass({
@@ -31333,13 +31334,7 @@
 	
 	  render: function () {
 	    var languages = this.state.languages.map(function (lng) {
-	      return React.createElement(
-	        'li',
-	        { key: lng.id },
-	        ' ',
-	        lng.name,
-	        ' '
-	      );
+	      return React.createElement(LanguageIndexItem, { language: lng, key: lng.id });
 	    });
 	
 	    return React.createElement(
@@ -31438,6 +31433,27 @@
 	};
 	
 	module.exports = LanguageActions;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	
+	var LanguageIndexItem = React.createClass({
+	  displayName: 'LanguageIndexItem',
+	
+	  render: function () {
+	    return React.createElement(
+	      'li',
+	      null,
+	      this.props.language.name
+	    );
+	  }
+	});
+	
+	module.exports = LanguageIndexItem;
 
 /***/ }
 /******/ ]);

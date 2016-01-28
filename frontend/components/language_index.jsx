@@ -1,5 +1,6 @@
 var React = require('react'),
     LanguageStore = require('../stores/language_store'),
+    LanguageIndexItem = require('./language_index_item'),
     LanguagesApiUtil = require('../util/languages_api_util');
 
 var LanguageIndex = React.createClass({
@@ -22,7 +23,7 @@ var LanguageIndex = React.createClass({
 
   render: function () {
     var languages = this.state.languages.map(function (lng) {
-      return <li key={lng.id}> {lng.name} </li>;
+      return <LanguageIndexItem language={lng} key={lng.id} />;
     });
 
     return(
