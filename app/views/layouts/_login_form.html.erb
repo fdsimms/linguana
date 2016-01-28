@@ -1,0 +1,25 @@
+<div class="splash-login-form splash-form">
+  <div class="up-triangle">
+  </div>
+  <div class="splash-login-inputs">
+  <form action="<%= session_url %>" method="post">
+    <%= auth_token_input %>
+
+      <input name="session[username]"
+             placeholder="Username">
+
+      <input type="password"
+             name="session[password]"
+             placeholder="Password">
+
+      <button class="splash-login-button">Log in</button>
+  </form>
+
+  <%= render "layouts/guest_signin_button" %>
+
+  <form class="signup-button" action="<%= new_user_url %>" method="get">
+    <button>Not a member yet?</button>
+  </form>
+
+  </div>
+</div>

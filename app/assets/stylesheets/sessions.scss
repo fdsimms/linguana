@@ -32,6 +32,11 @@
   padding: 10px 20px;
   border-radius: 20px;
   margin: 17px 120px;
+  cursor: pointer;
+}
+
+.header-nav-login-button:hover {
+  background-color: #eee;
 }
 
 .splash-form {
@@ -81,7 +86,8 @@
 }
 
 .inputs button,
-.guest-inputs> button {
+.splash-login-inputs button,
+.guest-inputs > button {
   display: block;
   border-radius: 20px;
   background-color: rgb(33, 176, 249);
@@ -93,12 +99,13 @@
 }
 
 .guest-inputs > button {
-  padding: 12px 84px;
+  padding: 8px 34px;
   margin: 15px auto 10px auto;
 }
 
 .inputs button:hover,
-.guest-inputs > button:hover {
+.guest-inputs > button:hover,
+.splash-login-inputs button:hover {
   background-color: rgb(65, 188, 250);
 }
 
@@ -112,7 +119,7 @@
 }
 
 .signup-button > button {
-  display: block;
+  color: black;
   background: transparent;
   margin: auto;
   font-size: 15px;
@@ -120,7 +127,8 @@
 }
 
 .signup-button > button:hover {
-  color: #ccc;
+  color: #bbb;
+  background: transparent;
 }
 
 .static-greeting {
