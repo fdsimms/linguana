@@ -13,9 +13,8 @@ var SkillIndex = React.createClass({
   },
 
   componentDidMount: function () {
-    this.skillListener = SkillStore.addListener(this._onChange);
-
     SkillsApiUtil.fetchSkills(this.props.courseId);
+    this.skillListener = SkillStore.addListener(this._onChange);
   },
 
   componentWillUnmount: function () {

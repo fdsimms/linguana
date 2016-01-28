@@ -81,12 +81,12 @@ french_basic_1 = Skill.create!(
   tips_and_notes: "Here we'll teach you some of the basics of French! Allons-y!"
 )
 french_basic_2 = Skill.create!(
-  name: "Basic 1",
+  name: "Basic 2",
   course_id: french_for_english.id,
   tips_and_notes: "Here we'll teach you some more of the basics of French! Allons-y!"
 )
 french_basic_3 = Skill.create!(
-  name: "Basic 1",
+  name: "Basic 3",
   course_id: french_for_english.id,
   tips_and_notes: "So many basics of French!"
 )
@@ -96,12 +96,12 @@ spanish_basic_1 = Skill.create!(
   tips_and_notes: "Here we'll teach you some of the basics of Spanish! Vamos!"
 )
 spanish_basic_2 = Skill.create!(
-  name: "Basic 1",
+  name: "Basic 2",
   course_id: spanish_for_english.id,
   tips_and_notes: "Here we'll teach you some more of the basics of Spanish! Vamos!"
 )
 spanish_basic_3 = Skill.create!(
-  name: "Basic 1",
+  name: "Basic 3",
   course_id: spanish_for_english.id,
   tips_and_notes: "So many basics of Spanish!"
 )
@@ -111,13 +111,13 @@ portuguese_basic_1 = Skill.create!(
   tips_and_notes: "Here we'll teach you some of the basics of Portuguese!"
 )
 portuguese_basic_2 = Skill.create!(
-  name: "Basic 1",
+  name: "Basic 2",
   course_id: portuguese_for_english.id,
   tips_and_notes: "Here we'll teach you some more of the basics of Portuguese!"
 )
 
 portuguese_basic_3 = Skill.create!(
-  name: "Basic 1",
+  name: "Basic 3",
   course_id: portuguese_for_english.id,
   tips_and_notes: "So many basics of Portuguese!"
 )
