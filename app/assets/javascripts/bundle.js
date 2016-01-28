@@ -51,13 +51,15 @@
 	    IndexRoute = __webpack_require__(159).IndexRoute,
 	    App = __webpack_require__(206),
 	    CourseIndex = __webpack_require__(207),
+	    Course = __webpack_require__(246),
 	    Splash = __webpack_require__(234);
 	
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: Splash }),
-	  React.createElement(Route, { path: '/courses', component: CourseIndex })
+	  React.createElement(Route, { path: '/courses', component: CourseIndex }),
+	  React.createElement(Route, { path: '/courses/:courseId', component: Course })
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
@@ -24099,8 +24101,11 @@
 	  },
 	
 	  render: function () {
-	    var courses = this.state.courses.map(function (course) {
-	      return React.createElement(CourseIndexItem, { key: course.id, course: course });
+	    var courses = this.state.courses;
+	    var courseKeys = Object.keys(this.state.courses);
+	    courses = courseKeys.map(function (key, idx) {
+	      var course = courses[key];
+	      return React.createElement(CourseIndexItem, { key: idx, course: course });
 	    });
 	
 	    return React.createElement(
@@ -24133,21 +24138,33 @@
 	var Store = __webpack_require__(209).Store;
 	var CourseConstants = __webpack_require__(227);
 	var AppDispatcher = __webpack_require__(228);
-	var _courses = [];
+	var _courses = {};
 	var CourseStore = new Store(AppDispatcher);
 	
 	var resetCourses = function (courses) {
-	  _courses = courses.slice();
+	  _courses = Object.assign({}, courses);
+	};
+	
+	var addCourse = function (course) {
+	  _courses[course.id] = course;
 	};
 	
 	CourseStore.all = function () {
-	  return _courses.slice();
+	  return Object.assign({}, _courses);
+	};
+	
+	CourseStore.find = function (courseId) {
+	  return _courses[courseId];
 	};
 	
 	CourseStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case CourseConstants.COURSES_RECEIVED:
-	      var result = resetCourses(payload.courses);
+	      resetCourses(payload.courses);
+	      CourseStore.__emitChange();
+	      break;
+	    case CourseConstants.COURSE_RECEIVED:
+	      addCourse(payload.course);
 	      CourseStore.__emitChange();
 	      break;
 	  }
@@ -30665,7 +30682,8 @@
 /***/ function(module, exports) {
 
 	var CourseConstants = {
-	  COURSES_RECEIVED: "COURSES_RECEIVED"
+	  COURSES_RECEIVED: "COURSES_RECEIVED",
+	  COURSE_RECEIVED: "COURSE_RECEIVED"
 	};
 	
 	module.exports = CourseConstants;
@@ -30942,17 +30960,14 @@
 	
 	  mixins: [History],
 	
-	  showCourse: function () {
-	    this.history.pushState(null, '/course/' + this.props.course.id, {});
-	  },
-	
 	  render: function () {
 	    return React.createElement(
 	      'div',
 	      { className: 'course-list-item-wrapper' },
 	      React.createElement(
-	        'li',
-	        { onClick: this.showCourse, className: 'course-list-item' },
+	        'a',
+	        { href: "#/courses/" + this.props.course.id,
+	          className: 'course-list-item' },
 	        this.props.course.name
 	      )
 	    );
@@ -30968,16 +30983,27 @@
 	var CourseActions = __webpack_require__(233);
 	
 	var CoursesApiUtil = {
-		fetchCourses: function () {
-			$.ajax({
-				type: "GET",
-				url: "api/courses/",
-				dataType: "json",
-				success: function (courses) {
-					CourseActions.receiveAll(courses);
-				}
-			});
-		}
+	  fetchCourses: function () {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/courses/",
+	      dataType: "json",
+	      success: function (courses) {
+	        CourseActions.receiveAll(courses);
+	      }
+	    });
+	  },
+	
+	  fetchCourse: function (courseId) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/courses/" + courseId,
+	      dataType: "json",
+	      success: function (course) {
+	        CourseActions.receiveCourse(course);
+	      }
+	    });
+	  }
 	};
 	
 	window.CoursesApiUtil = CoursesApiUtil;
@@ -30996,6 +31022,13 @@
 	    AppDispatcher.dispatch({
 	      actionType: CourseConstants.COURSES_RECEIVED,
 	      courses: courses
+	    });
+	  },
+	
+	  receiveCourse: function (course) {
+	    AppDispatcher.dispatch({
+	      actionType: CourseConstants.COURSE_RECEIVED,
+	      course: course
 	    });
 	  }
 	};
@@ -31444,16 +31477,72 @@
 	var LanguageIndexItem = React.createClass({
 	  displayName: 'LanguageIndexItem',
 	
+	  setLanguageCookie: function () {
+	    window.localStorage.setItem("curLng", this.props.language.id);
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'li',
-	      null,
+	      { onClick: this.setLanguageCookie },
 	      this.props.language.name
 	    );
 	  }
 	});
 	
 	module.exports = LanguageIndexItem;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    History = __webpack_require__(159).History,
+	    CourseStore = __webpack_require__(208),
+	    CoursesApiUtil = __webpack_require__(232);
+	
+	var Course = React.createClass({
+	  displayName: 'Course',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { courses: null };
+	  },
+	
+	  componentDidMount: function () {
+	    var courseId = this.props.params.courseId;
+	    CoursesApiUtil.fetchCourse(courseId);
+	    var courseListener = CourseStore.addListener(this._coursesChanged);
+	  },
+	
+	  _coursesChanged: function () {
+	    this.setState({ course: CourseStore.find(this.props.params.courseId) });
+	  },
+	
+	  render: function () {
+	    if (this.state.course === undefined) {
+	      return React.createElement('div', null);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'course-page' },
+	      React.createElement(
+	        'div',
+	        { className: 'course-page-content' },
+	        React.createElement(
+	          'h2',
+	          { className: 'course-page-header' },
+	          this.state.course.name,
+	          ' Skills'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Course;
 
 /***/ }
 /******/ ]);

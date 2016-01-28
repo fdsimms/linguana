@@ -53,6 +53,7 @@
    position: relative;
    display: block;
    min-width: 600px;
+   width: 1500px;
  }
 
  .splash-login-form {

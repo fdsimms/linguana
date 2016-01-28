@@ -7,6 +7,13 @@ var CourseActions = {
       actionType: CourseConstants.COURSES_RECEIVED,
       courses: courses
     });
+  },
+
+  receiveCourse: function (course) {
+    AppDispatcher.dispatch({
+      actionType: CourseConstants.COURSE_RECEIVED,
+      course: course
+    });
   }
 };
 

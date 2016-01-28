@@ -6,6 +6,9 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find_by_session_token(session[:session_token])
   end
 
+  def current_language 
+  end
+
   def log_in!(user)
     @current_user = user
     session[:session_token] = user.reset_token!

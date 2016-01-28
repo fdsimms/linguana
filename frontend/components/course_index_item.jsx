@@ -4,16 +4,13 @@ var History = require('react-router').History;
 var CourseIndexItem = React.createClass({
   mixins: [History],
 
-  showCourse: function () {
-    this.history.pushState(null, '/course/' + this.props.course.id, {});
-  },
-
   render: function () {
     return(
       <div className="course-list-item-wrapper">
-        <li onClick={this.showCourse} className="course-list-item">
+        <a href={"#/courses/" + this.props.course.id }
+           className="course-list-item">
           {this.props.course.name}
-        </li>
+        </a>
       </div>
     );
   }

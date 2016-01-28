@@ -22,8 +22,11 @@ var CourseIndex = React.createClass({
   },
 
   render: function () {
-    var courses = this.state.courses.map(function (course) {
-      return <CourseIndexItem key={course.id} course={course} />;
+    var courses = this.state.courses;
+    var courseKeys = Object.keys(this.state.courses);
+    courses = courseKeys.map(function (key, idx) {
+      var course = courses[key];
+      return <CourseIndexItem key={idx} course={course} />;
     });
 
     return(
