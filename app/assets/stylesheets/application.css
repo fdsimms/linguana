@@ -59,7 +59,7 @@
    position: absolute;
    display: block;
    right: 0px;
-   display: none;
+
    top: 70px;
  }
 
@@ -92,6 +92,7 @@
    display: block;
    margin: 10px auto;
    width: 190px;
+   color: black;
    padding: 5px;
    border-radius: 10px;
  }

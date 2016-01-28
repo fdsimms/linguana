@@ -24000,16 +24000,50 @@
 /* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
+	var React = __webpack_require__(1),
+	    LoginModal = __webpack_require__(235),
+	    ModalActions = __webpack_require__(238);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
+	  _handleLoginClick: function () {
+	    ModalActions.toggleModalDisplay("loginModal");
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
-	      this.props.children
+	      { className: 'login-modal' },
+	      React.createElement(
+	        'header',
+	        { className: 'header' },
+	        React.createElement(
+	          'nav',
+	          { className: 'header-nav group' },
+	          React.createElement(
+	            'h1',
+	            { className: 'header-nav-logo' },
+	            React.createElement(
+	              'a',
+	              { href: '/' },
+	              'Linguana'
+	            )
+	          ),
+	          React.createElement(
+	            'h2',
+	            { onClick: this._handleLoginClick,
+	              className: 'header-nav-login-button' },
+	            'Login'
+	          ),
+	          React.createElement(LoginModal, null)
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        this.props.children
+	      )
 	    );
 	  }
 	});
@@ -30989,6 +31023,210 @@
 	    );
 	  }
 	});
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(238),
+	    ModalStore = __webpack_require__(236);
+	
+	var LoginModal = React.createClass({
+	  displayName: 'LoginModal',
+	
+	  getInitialState: function () {
+	    return { modalName: "loginModal", auth_token: "" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    var modalName = this.state.modalName;
+	    ModalActions.addModal(modalName);
+	    this.setState({
+	      modalName: modalName,
+	      token: $('meta[name=csrf-token]').attr('content')
+	    });
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	    ModalActions.removeModal(this.state.modalName);
+	  },
+	
+	  authToken: function () {
+	    return React.createElement('input', { name: 'authenticity_token', type: 'hidden', value: this.state.token });
+	  },
+	
+	  visibleRender: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'splash-login-form splash-form' },
+	      React.createElement('div', { className: 'up-triangle' }),
+	      React.createElement(
+	        'div',
+	        { className: 'splash-login-inputs' },
+	        React.createElement(
+	          'form',
+	          { action: '/session', method: 'post' },
+	          this.authToken(),
+	          React.createElement('input', { name: 'session[username]',
+	            placeholder: 'Username' }),
+	          React.createElement('input', { type: 'password',
+	            name: 'session[password]',
+	            placeholder: 'Password' }),
+	          React.createElement(
+	            'button',
+	            { className: 'splash-login-button' },
+	            'Log in'
+	          )
+	        ),
+	        React.createElement(
+	          'form',
+	          { action: '/session', method: 'post' },
+	          this.authToken(),
+	          React.createElement(
+	            'div',
+	            { className: 'guest-inputs' },
+	            React.createElement('input', { type: 'hidden',
+	              name: 'session[username]',
+	              value: 'guest' }),
+	            React.createElement('input', { type: 'hidden',
+	              name: 'session[password]',
+	              value: 'password' }),
+	            React.createElement(
+	              'button',
+	              null,
+	              'Log in as guest'
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'form',
+	          { className: 'signup-button', action: '/users/new', method: 'get' },
+	          React.createElement(
+	            'button',
+	            null,
+	            'Not a member yet?'
+	          )
+	        )
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = LoginModal;
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(209).Store;
+	var ModalConstants = __webpack_require__(237);
+	var AppDispatcher = __webpack_require__(228);
+	var _modals = {};
+	var ModalStore = new Store(AppDispatcher);
+	
+	var toggleModalDisplay = function (modalName) {
+	  _modals[modalName] = _modals[modalName] === "displayed" ? "hidden" : "displayed";
+	};
+	
+	var addModal = function (modalName) {
+	  _modals[modalName] = "hidden";
+	};
+	
+	var removeModal = function (modalName) {
+	  delete _modals[modalName];
+	};
+	
+	ModalStore.all = function () {
+	  return Object.assign({}, _modals);
+	};
+	
+	ModalStore.isModalDisplayed = function (modalName) {
+	  if (!_modals[modalName] || _modals[modalName] === "hidden") {
+	    return false;
+	  } else {
+	    return true;
+	  }
+	};
+	
+	ModalStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ModalConstants.TOGGLE_MODAL_DISPLAY:
+	      toggleModalDisplay(payload.modalName);
+	      ModalStore.__emitChange();
+	      break;
+	    case ModalConstants.ADD_MODAL:
+	      addModal(payload.modalName);
+	      ModalStore.__emitChange();
+	      break;
+	    case ModalConstants.REMOVE_MODAL:
+	      addModal(payload.modalName);
+	      ModalStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.ModalStore = ModalStore;
+	
+	module.exports = ModalStore;
+
+/***/ },
+/* 237 */
+/***/ function(module, exports) {
+
+	var ModalConstants = {
+	  TOGGLE_MODAL_DISPLAY: "TOGGLE_MODAL_DISPLAY",
+	  ADD_MODAL: "ADD_MODAL",
+	  REMOVE_MODAL: "REMOVE_MODAL"
+	};
+	
+	module.exports = ModalConstants;
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(228),
+	    ModalConstants = __webpack_require__(237);
+	
+	var ModalActions = {
+	  addModal: function (modalName) {
+	    AppDispatcher.dispatch({
+	      actionType: ModalConstants.ADD_MODAL,
+	      modalName: modalName
+	    });
+	  },
+	
+	  toggleModalDisplay: function (modalName) {
+	    AppDispatcher.dispatch({
+	      actionType: ModalConstants.TOGGLE_MODAL_DISPLAY,
+	      modalName: modalName
+	    });
+	  },
+	
+	  removeModal: function (modalName) {
+	    AppDispatcher.dispatch({
+	      actionType: ModalConstants.REMOVE_MODAL,
+	      modalName: modalName
+	    });
+	  }
+	};
+	
+	module.exports = ModalActions;
 
 /***/ }
 /******/ ]);

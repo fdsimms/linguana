@@ -1,21 +1,45 @@
 var Store = require('flux/utils').Store;
 var ModalConstants = require('../constants/modal_constants');
 var AppDispatcher = require('../dispatcher/dispatcher');
-var _modals = [];
+var _modals = {};
 var ModalStore = new Store(AppDispatcher);
 
-var resetModals = function(modals) {
-  _modals = modals.slice();
+var toggleModalDisplay = function(modalName) {
+  _modals[modalName] = _modals[modalName] === "displayed" ? "hidden" : "displayed";
+};
+
+var addModal = function(modalName) {
+  _modals[modalName] = "hidden";
+};
+
+var removeModal = function(modalName) {
+  delete _modals[modalName];
 };
 
 ModalStore.all = function () {
-  return _modals.slice();
+  return Object.assign({}, _modals);
+};
+
+ModalStore.isModalDisplayed = function (modalName) {
+  if ( !_modals[modalName] || _modals[modalName] === "hidden") {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 ModalStore.__onDispatch = function (payload) {
   switch(payload.actionType) {
-    case ModalConstants.MODALS_RECEIVED:
-      var result = resetModals(payload.modals);
+    case ModalConstants.TOGGLE_MODAL_DISPLAY:
+      toggleModalDisplay(payload.modalName);
+      ModalStore.__emitChange();
+      break;
+    case ModalConstants.ADD_MODAL:
+      addModal(payload.modalName);
+      ModalStore.__emitChange();
+      break;
+    case ModalConstants.REMOVE_MODAL:
+      addModal(payload.modalName);
       ModalStore.__emitChange();
       break;
   }
