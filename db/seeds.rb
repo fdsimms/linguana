@@ -35,6 +35,7 @@ spanish = Language.create!(name: "Spanish", abbreviation: "es")
 portuguese = Language.create!(name: "Portuguese", abbreviation: "pt")
 esperanto = Language.create!(name: "Esperanto", abbreviation: "ep")
 
+# courses
 Course.destroy_all
 french_for_english = Course.create!(
   name: "French",
@@ -70,4 +71,53 @@ english_for_portuguese = Course.create!(
   name: "Inglês",
   target_language_id: english.id,
   known_language_id: portuguese.id
+)
+
+# skills
+Skill.destroy_all
+french_basic_1 = Skill.create!(
+  name: "Basic 1",
+  course_id: french_for_english.id,
+  tips_and_notes: "Here we'll teach you some of the basics of French! Allons-y!"
+)
+french_basic_2 = Skill.create!(
+  name: "Basic 1",
+  course_id: french_for_english.id,
+  tips_and_notes: "Here we'll teach you some more of the basics of French! Allons-y!"
+)
+french_basic_3 = Skill.create!(
+  name: "Basic 1",
+  course_id: french_for_english.id,
+  tips_and_notes: "So many basics of French!"
+)
+spanish_basic_1 = Skill.create!(
+  name: "Basic 1",
+  course_id: spanish_for_english.id,
+  tips_and_notes: "Here we'll teach you some of the basics of Spanish! Vamos!"
+)
+spanish_basic_2 = Skill.create!(
+  name: "Basic 1",
+  course_id: spanish_for_english.id,
+  tips_and_notes: "Here we'll teach you some more of the basics of Spanish! Vamos!"
+)
+spanish_basic_3 = Skill.create!(
+  name: "Basic 1",
+  course_id: spanish_for_english.id,
+  tips_and_notes: "So many basics of Spanish!"
+)
+portuguese_basic_1 = Skill.create!(
+  name: "Basic 1",
+  course_id: portuguese_for_english.id,
+  tips_and_notes: "Here we'll teach you some of the basics of Portuguese!"
+)
+portuguese_basic_2 = Skill.create!(
+  name: "Basic 1",
+  course_id: portuguese_for_english.id,
+  tips_and_notes: "Here we'll teach you some more of the basics of Portuguese!"
+)
+
+portuguese_basic_3 = Skill.create!(
+  name: "Basic 1",
+  course_id: portuguese_for_english.id,
+  tips_and_notes: "So many basics of Portuguese!"
 )

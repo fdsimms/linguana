@@ -5,14 +5,16 @@ class Language < ActiveRecord::Base
     :courses_as_target_language,
     class_name: "Course",
     primary_key: :id,
-    foreign_key: :target_language_id
+    foreign_key: :target_language_id,
+    dependent: :destroy
   )
-  
+
   has_many(
     :courses_as_known_language,
     class_name: "Course",
     primary_key: :id,
-    foreign_key: :known_language_id
+    foreign_key: :known_language_id,
+    dependent: :destroy
   )
 
 end
