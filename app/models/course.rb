@@ -16,5 +16,5 @@ class Course < ActiveRecord::Base
   )
 
   has_many :skills, dependent: :destroy
-
+  has_many :lessons, through: :skills
 end
