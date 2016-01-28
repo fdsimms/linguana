@@ -31667,9 +31667,10 @@
 	      "div",
 	      { className: "skill-list-item-wrapper" },
 	      React.createElement(
-	        "a",
-	        { href: "#/skills/" + this.props.skill.id,
-	          className: "skill-list-item" },
+	        "p",
+	        { className: "skill-list-item" },
+	        React.createElement("a", { className: "skill-list-circle",
+	          href: "#/skills/" + this.props.skill.id }),
 	        this.props.skill.name
 	      )
 	    );

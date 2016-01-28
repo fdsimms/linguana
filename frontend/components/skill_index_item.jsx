@@ -4,10 +4,12 @@ var SkillIndexItem = React.createClass({
   render: function () {
     return(
       <div className="skill-list-item-wrapper">
-        <a href={"#/skills/" + this.props.skill.id }
-           className="skill-list-item">
+        <p className="skill-list-item">
+          <a className="skill-list-circle"
+             href={"#/skills/" + this.props.skill.id }>
+          </a>
           {this.props.skill.name}
-        </a>
+        </p>
       </div>
     );
   }
