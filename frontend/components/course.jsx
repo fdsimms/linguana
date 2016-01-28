@@ -8,7 +8,7 @@ var Course = React.createClass({
   mixins: [History],
 
   getInitialState: function () {
-    return({ courses: null });
+    return({ course: null });
   },
 
   componentDidMount: function () {
@@ -22,8 +22,8 @@ var Course = React.createClass({
   },
 
   render: function () {
-    if(this.state.course === undefined) { return <div></div>; }
-
+    if(this.state.course === null) { return <div></div>; }
+    
     return(
       <div className="course-page">
         <div className="course-page-content">

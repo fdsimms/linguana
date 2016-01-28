@@ -31508,7 +31508,7 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return { courses: null };
+	    return { course: null };
 	  },
 	
 	  componentDidMount: function () {
@@ -31522,7 +31522,7 @@
 	  },
 	
 	  render: function () {
-	    if (this.state.course === undefined) {
+	    if (this.state.course === null) {
 	      return React.createElement('div', null);
 	    }
 	
@@ -31749,7 +31749,7 @@
 	  displayName: 'Skill',
 	
 	  getInitialState: function () {
-	    return { skills: null };
+	    return { skill: null };
 	  },
 	
 	  componentDidMount: function () {
@@ -31763,7 +31763,7 @@
 	  },
 	
 	  render: function () {
-	    if (this.state.skill === undefined) {
+	    if (this.state.skill === null) {
 	      return React.createElement('div', null);
 	    }
 	
@@ -31777,6 +31777,20 @@
 	          'h2',
 	          { className: 'skill-page-header' },
 	          'Lessons'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'tips-and-notes' },
+	          React.createElement(
+	            'h2',
+	            { className: 'tips-and-notes-header' },
+	            'Tips and Notes'
+	          ),
+	          React.createElement(
+	            'p',
+	            { className: 'tips-and-notes-text' },
+	            this.state.skill.tips_and_notes
+	          )
 	        )
 	      )
 	    );
