@@ -24010,10 +24010,15 @@
 	
 	  _handleLoginClick: function () {
 	    ModalActions.toggleModalDisplay("loginModal");
+	    this._hideOtherModal("languageIndexModal");
 	  },
 	  _handleLanguagesHover: function () {
-	
 	    ModalActions.toggleModalDisplay("languageIndexModal");
+	    this._hideOtherModal("loginModal");
+	  },
+	
+	  _hideOtherModal: function (modalName) {
+	    ModalActions.addModal(modalName);
 	  },
 	
 	  render: function () {
@@ -31288,7 +31293,6 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'languages-modal' },
-	      React.createElement('div', { className: 'up-triangle' }),
 	      React.createElement(LanguageIndex, null)
 	    );
 	  },
@@ -31345,6 +31349,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'language-index' },
+	      React.createElement('div', { className: 'up-triangle' }),
 	      React.createElement(
 	        'ul',
 	        { className: 'language-list' },

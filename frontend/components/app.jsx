@@ -6,10 +6,15 @@ var React = require('react'),
 module.exports = React.createClass({
   _handleLoginClick: function () {
     ModalActions.toggleModalDisplay("loginModal");
+    this._hideOtherModal("languageIndexModal");
   },
   _handleLanguagesHover: function () {
-
     ModalActions.toggleModalDisplay("languageIndexModal");
+    this._hideOtherModal("loginModal");
+  },
+
+  _hideOtherModal: function (modalName) {
+    ModalActions.addModal(modalName);
   },
 
   render: function () {

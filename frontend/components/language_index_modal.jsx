@@ -17,7 +17,7 @@ var LanguageIndexModal = React.createClass({
       token: $('meta[name=csrf-token]').attr('content')
     });
   },
-  
+
   _modalsChanged: function () {
     var modalName = this.state.modalName;
     this.setState({ modalName: modalName});
@@ -37,8 +37,6 @@ var LanguageIndexModal = React.createClass({
   visibleRender: function () {
     return(
       <div className="languages-modal">
-        <div className="up-triangle">
-        </div>
         <LanguageIndex />
       </div>
     );

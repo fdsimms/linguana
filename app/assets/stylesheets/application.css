@@ -70,7 +70,7 @@
    border-right: 10px solid transparent;
    border-bottom: 10px solid #fff;
    position: absolute;
-   right: 192px;
+   right: 72px;
    top: -10px;
  }
 
@@ -85,6 +85,8 @@
    width: 200px;
    border-radius: 10px;
    padding: 20px;
+   position: absolute;
+   right: 49px;
  }
 
  .splash-login-inputs input {
