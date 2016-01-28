@@ -27,7 +27,6 @@ var LanguageIndex = React.createClass({
 
     return(
       <div className="language-index">
-        <h2 className="language-index-header">I want to learn...</h2>
         <ul className="language-list">
           {languages}
         </ul>

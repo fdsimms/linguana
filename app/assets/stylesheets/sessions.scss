@@ -24,15 +24,30 @@
   color: #ddd;
 }
 
-.header-nav-login-button {
+.header-buttons {
   float: right;
   display: block;
-  background-color: #fff;
-  color: rgb(10, 68, 121);
-  padding: 10px 20px;
-  border-radius: 20px;
-  margin: 17px 120px;
+  margin: 17px 10px;
+  min-width: 300px;
+}
+
+.header-buttons button {
+  padding: 10px;
+  display: block;
   cursor: pointer;
+}
+
+.header-nav-login-button {
+  color: rgb(10, 68, 121);
+  text-align: center;
+  border-radius: 20px;
+  float: right;
+  background-color: #fff;
+}
+
+.header-nav-languages-button {
+  float: left;
+  color: #fff;
 }
 
 .header-nav-login-button:hover {

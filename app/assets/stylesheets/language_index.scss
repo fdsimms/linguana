@@ -3,14 +3,25 @@
   margin: 85px auto;
 }
 
-.language-index-header {
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 15px;
+.languages-modal {
+  position: absolute;
 }
 
 .language-list {
 }
+.language-index {
+    right: -190px;
+    top: -44px;
+    width: 325px;
+    position: absolute;
+}
+
+.languages-modal .up-triangle {
+  position: absolute;
+  top: 33px;
+  right: -123px;
+}
+
 
 .language-list li {
   width: 100%;
@@ -20,6 +31,7 @@
   border: 1px solid #eee;
   padding: 12px;
   position: relative;
+  cursor: pointer;
 }
 
 .language-list li:after {

@@ -24036,19 +24036,23 @@
 	            )
 	          ),
 	          React.createElement(
-	            'h2',
-	            { onClick: this._handleLanguagesHover,
-	              className: 'header-nav-languages-list-button' },
-	            'Site language: English'
-	          ),
-	          React.createElement(LanguageIndexModal, null),
-	          React.createElement(
-	            'h2',
-	            { onClick: this._handleLoginClick,
-	              className: 'header-nav-login-button' },
-	            'Login'
-	          ),
-	          React.createElement(LoginModal, null)
+	            'div',
+	            { className: 'header-buttons group' },
+	            React.createElement(
+	              'button',
+	              { onClick: this._handleLanguagesHover,
+	                className: 'header-nav-languages-button' },
+	              'Site language: English'
+	            ),
+	            React.createElement(LanguageIndexModal, null),
+	            React.createElement(
+	              'button',
+	              { onClick: this._handleLoginClick,
+	                className: 'header-nav-login-button' },
+	              'Login'
+	            ),
+	            React.createElement(LoginModal, null)
+	          )
 	        )
 	      ),
 	      React.createElement(
@@ -31341,11 +31345,6 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'language-index' },
-	      React.createElement(
-	        'h2',
-	        { className: 'language-index-header' },
-	        'I want to learn...'
-	      ),
 	      React.createElement(
 	        'ul',
 	        { className: 'language-list' },

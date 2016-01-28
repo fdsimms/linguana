@@ -20,16 +20,18 @@ module.exports = React.createClass({
             <h1 className="header-nav-logo">
               <a href="/">Linguana</a>
             </h1>
-            <h2 onClick={this._handleLanguagesHover}
-                className="header-nav-languages-list-button">
-              Site language: English
-            </h2>
-            <LanguageIndexModal />
-            <h2 onClick={this._handleLoginClick}
-                className="header-nav-login-button">
-              Login
-            </h2>
-            <LoginModal />
+              <div className="header-buttons group">
+              <button onClick={this._handleLanguagesHover}
+                  className="header-nav-languages-button">
+                Site language: English
+              </button>
+              <LanguageIndexModal />
+              <button onClick={this._handleLoginClick}
+                  className="header-nav-login-button">
+                Login
+              </button>
+              <LoginModal />
+            </div>
           </nav>
         </header>
         <div>{this.props.children}</div>
