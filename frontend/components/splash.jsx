@@ -16,12 +16,10 @@ module.exports = React.createClass({
           <h2 className="splash-header">
             Learn a language. Or maybe not. We'll see.
           </h2>
-          <form className="splash-button-form">
-            <button className="splash-button"
-                    onClick={this._handleClick}>
+            <a className="splash-button"
+               href="#/courses">
               Get started
-            </button>
-          </form>
+            </a>
         </div>
       </div>
     );

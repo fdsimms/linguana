@@ -31031,14 +31031,10 @@
 	          'Learn a language. Or maybe not. We\'ll see.'
 	        ),
 	        React.createElement(
-	          'form',
-	          { className: 'splash-button-form' },
-	          React.createElement(
-	            'button',
-	            { className: 'splash-button',
-	              onClick: this._handleClick },
-	            'Get started'
-	          )
+	          'a',
+	          { className: 'splash-button',
+	            href: '#/courses' },
+	          'Get started'
 	        )
 	      )
 	    );
