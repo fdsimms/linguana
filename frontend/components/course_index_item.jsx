@@ -2,6 +2,7 @@ var React = require('react');
 
 var CourseIndexItem = React.createClass({
   render: function () {
+
     return(
       <div className="course-list-item-wrapper">
         <a href={"#/courses/" + this.props.course.id }

@@ -7,7 +7,11 @@ var LessonsApiUtil = {
 			url: "api/skills/" + lessonId + "/lessons",
 			dataType: "json",
 			success: function (lessons) {
-				LessonActions.receiveAll(lessons);
+        var lessonsPayload = {};
+        lessons.forEach(function (lesson) {
+          lessonsPayload[lesson.id] = lesson;
+        });
+  			LessonActions.receiveAll(lessonsPayload);
 			},
 		});
 	},

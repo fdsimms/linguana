@@ -10,7 +10,6 @@ var resetCourses = function (courses) {
 
 var addCourse = function (course) {
   _courses[course.id] = course;
-
 };
 
 CourseStore.all = function () {

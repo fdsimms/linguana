@@ -50,12 +50,12 @@
 	    Route = __webpack_require__(159).Route,
 	    IndexRoute = __webpack_require__(159).IndexRoute,
 	    App = __webpack_require__(206),
-	    CourseIndex = __webpack_require__(207),
-	    Course = __webpack_require__(246),
-	    Splash = __webpack_require__(234),
-	    SkillIndex = __webpack_require__(247),
+	    CourseIndex = __webpack_require__(239),
+	    Course = __webpack_require__(245),
+	    Splash = __webpack_require__(252),
+	    SkillIndex = __webpack_require__(246),
 	    Skill = __webpack_require__(253),
-	    Lesson = __webpack_require__(255);
+	    Lesson = __webpack_require__(260);
 	
 	var routes = React.createElement(
 	  Route,
@@ -9332,6 +9332,7 @@
 	 */
 	var EventInterface = {
 	  type: null,
+	  target: null,
 	  // currentTarget is set when dispatching; no use in copying it here
 	  currentTarget: emptyFunction.thatReturnsNull,
 	  eventPhase: null,
@@ -9365,8 +9366,6 @@
 	  this.dispatchConfig = dispatchConfig;
 	  this.dispatchMarker = dispatchMarker;
 	  this.nativeEvent = nativeEvent;
-	  this.target = nativeEventTarget;
-	  this.currentTarget = nativeEventTarget;
 	
 	  var Interface = this.constructor.Interface;
 	  for (var propName in Interface) {
@@ -9377,7 +9376,11 @@
 	    if (normalize) {
 	      this[propName] = normalize(nativeEvent);
 	    } else {
-	      this[propName] = nativeEvent[propName];
+	      if (propName === 'target') {
+	        this.target = nativeEventTarget;
+	      } else {
+	        this[propName] = nativeEvent[propName];
+	      }
 	    }
 	  }
 	
@@ -13226,7 +13229,10 @@
 	      }
 	    });
 	
-	    nativeProps.children = content;
+	    if (content) {
+	      nativeProps.children = content;
+	    }
+	
 	    return nativeProps;
 	  }
 	
@@ -18699,7 +18705,7 @@
 	
 	'use strict';
 	
-	module.exports = '0.14.6';
+	module.exports = '0.14.7';
 
 /***/ },
 /* 147 */
@@ -24008,9 +24014,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    LoginModal = __webpack_require__(235),
-	    LanguageIndexModal = __webpack_require__(239),
-	    ModalActions = __webpack_require__(238);
+	    LoginModal = __webpack_require__(207),
+	    LanguageIndexModal = __webpack_require__(232),
+	    ModalActions = __webpack_require__(208);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -24081,106 +24087,147 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    CourseStore = __webpack_require__(208),
-	    CourseIndexItem = __webpack_require__(231),
-	    CoursesApiUtil = __webpack_require__(232);
+	    ModalActions = __webpack_require__(208),
+	    ModalStore = __webpack_require__(214);
 	
-	var CourseIndex = React.createClass({
-	  displayName: 'CourseIndex',
+	var LoginModal = React.createClass({
+	  displayName: 'LoginModal',
 	
 	  getInitialState: function () {
-	    return { courses: CourseStore.all() };
-	  },
-	
-	  _onChange: function () {
-	    this.setState({ courses: CourseStore.all() });
+	    return { modalName: "loginModal", token: "" };
 	  },
 	
 	  componentDidMount: function () {
-	    this.courseListener = CourseStore.addListener(this._onChange);
-	    CoursesApiUtil.fetchCourses();
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    var modalName = this.state.modalName;
+	    ModalActions.addModal(modalName);
+	    this.setState({
+	      modalName: modalName,
+	      token: $('meta[name=csrf-token]').attr('content')
+	    });
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.setState({ modalName: modalName });
 	  },
 	
 	  componentWillUnmount: function () {
-	    this.courseListener.remove();
+	    this.modalListener.remove();
+	    ModalActions.removeModal(this.state.modalName);
 	  },
 	
-	  render: function () {
-	    var courses = this.state.courses;
-	    var courseKeys = Object.keys(this.state.courses);
-	    courses = courseKeys.map(function (key, idx) {
-	      var course = courses[key];
-	      return React.createElement(CourseIndexItem, { key: idx, course: course });
-	    });
+	  authToken: function () {
+	    return React.createElement('input', { name: 'authenticity_token', type: 'hidden', value: this.state.token });
+	  },
 	
+	  visibleRender: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'course-index-container' },
+	      { className: 'splash-login-form splash-form' },
+	      React.createElement('div', { className: 'up-triangle' }),
 	      React.createElement(
 	        'div',
-	        { className: 'course-index' },
+	        { className: 'splash-login-inputs' },
 	        React.createElement(
-	          'h2',
-	          { className: 'course-index-header' },
-	          'I want to learn...'
+	          'form',
+	          { action: '/session', method: 'post' },
+	          this.authToken(),
+	          React.createElement('input', { name: 'session[username]',
+	            placeholder: 'Username' }),
+	          React.createElement('input', { type: 'password',
+	            name: 'session[password]',
+	            placeholder: 'Password' }),
+	          React.createElement(
+	            'button',
+	            { id: 'modal-login-button' },
+	            'Log in'
+	          )
 	        ),
 	        React.createElement(
-	          'ul',
-	          { className: 'course-list group' },
-	          courses
+	          'form',
+	          { action: '/session', method: 'post' },
+	          this.authToken(),
+	          React.createElement(
+	            'div',
+	            { className: 'guest-inputs' },
+	            React.createElement('input', { type: 'hidden',
+	              name: 'session[username]',
+	              value: 'guest' }),
+	            React.createElement('input', { type: 'hidden',
+	              name: 'session[password]',
+	              value: 'password' }),
+	            React.createElement(
+	              'button',
+	              null,
+	              'Log in as guest'
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'form',
+	          { className: 'signup-button', action: '/users/new', method: 'get' },
+	          React.createElement(
+	            'button',
+	            null,
+	            'Not a member yet?'
+	          )
 	        )
 	      )
 	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
 	  }
 	});
 	
-	module.exports = CourseIndex;
+	module.exports = LoginModal;
 
 /***/ },
 /* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(209).Store;
-	var CourseConstants = __webpack_require__(227);
-	var AppDispatcher = __webpack_require__(228);
-	var _courses = {};
-	var CourseStore = new Store(AppDispatcher);
+	var AppDispatcher = __webpack_require__(209),
+	    ModalConstants = __webpack_require__(213);
 	
-	var resetCourses = function (courses) {
-	  _courses = Object.assign({}, courses);
-	};
+	var ModalActions = {
+	  addModal: function (modalName) {
+	    AppDispatcher.dispatch({
+	      actionType: ModalConstants.ADD_MODAL,
+	      modalName: modalName
+	    });
+	  },
 	
-	var addCourse = function (course) {
-	  _courses[course.id] = course;
-	};
+	  toggleModalDisplay: function (modalName) {
+	    AppDispatcher.dispatch({
+	      actionType: ModalConstants.TOGGLE_MODAL_DISPLAY,
+	      modalName: modalName
+	    });
+	  },
 	
-	CourseStore.all = function () {
-	  return Object.assign({}, _courses);
-	};
-	
-	CourseStore.find = function (courseId) {
-	  return _courses[courseId];
-	};
-	
-	CourseStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case CourseConstants.COURSES_RECEIVED:
-	      resetCourses(payload.courses);
-	      CourseStore.__emitChange();
-	      break;
-	    case CourseConstants.COURSE_RECEIVED:
-	      addCourse(payload.course);
-	      CourseStore.__emitChange();
-	      break;
+	  removeModal: function (modalName) {
+	    AppDispatcher.dispatch({
+	      actionType: ModalConstants.REMOVE_MODAL,
+	      modalName: modalName
+	    });
 	  }
 	};
 	
-	window.CourseStore = CourseStore;
-	
-	module.exports = CourseStore;
+	module.exports = ModalActions;
 
 /***/ },
 /* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(210).Dispatcher;
+	module.exports = new Dispatcher();
+
+/***/ },
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24192,15 +24239,390 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 	
-	module.exports.Container = __webpack_require__(210);
-	module.exports.MapStore = __webpack_require__(214);
-	module.exports.Mixin = __webpack_require__(226);
-	module.exports.ReduceStore = __webpack_require__(215);
-	module.exports.Store = __webpack_require__(216);
+	module.exports.Dispatcher = __webpack_require__(211);
 
 
 /***/ },
-/* 210 */
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule Dispatcher
+	 * 
+	 * @preventMunge
+	 */
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var invariant = __webpack_require__(212);
+	
+	var _prefix = 'ID_';
+	
+	/**
+	 * Dispatcher is used to broadcast payloads to registered callbacks. This is
+	 * different from generic pub-sub systems in two ways:
+	 *
+	 *   1) Callbacks are not subscribed to particular events. Every payload is
+	 *      dispatched to every registered callback.
+	 *   2) Callbacks can be deferred in whole or part until other callbacks have
+	 *      been executed.
+	 *
+	 * For example, consider this hypothetical flight destination form, which
+	 * selects a default city when a country is selected:
+	 *
+	 *   var flightDispatcher = new Dispatcher();
+	 *
+	 *   // Keeps track of which country is selected
+	 *   var CountryStore = {country: null};
+	 *
+	 *   // Keeps track of which city is selected
+	 *   var CityStore = {city: null};
+	 *
+	 *   // Keeps track of the base flight price of the selected city
+	 *   var FlightPriceStore = {price: null}
+	 *
+	 * When a user changes the selected city, we dispatch the payload:
+	 *
+	 *   flightDispatcher.dispatch({
+	 *     actionType: 'city-update',
+	 *     selectedCity: 'paris'
+	 *   });
+	 *
+	 * This payload is digested by `CityStore`:
+	 *
+	 *   flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'city-update') {
+	 *       CityStore.city = payload.selectedCity;
+	 *     }
+	 *   });
+	 *
+	 * When the user selects a country, we dispatch the payload:
+	 *
+	 *   flightDispatcher.dispatch({
+	 *     actionType: 'country-update',
+	 *     selectedCountry: 'australia'
+	 *   });
+	 *
+	 * This payload is digested by both stores:
+	 *
+	 *   CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'country-update') {
+	 *       CountryStore.country = payload.selectedCountry;
+	 *     }
+	 *   });
+	 *
+	 * When the callback to update `CountryStore` is registered, we save a reference
+	 * to the returned token. Using this token with `waitFor()`, we can guarantee
+	 * that `CountryStore` is updated before the callback that updates `CityStore`
+	 * needs to query its data.
+	 *
+	 *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'country-update') {
+	 *       // `CountryStore.country` may not be updated.
+	 *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
+	 *       // `CountryStore.country` is now guaranteed to be updated.
+	 *
+	 *       // Select the default city for the new country
+	 *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
+	 *     }
+	 *   });
+	 *
+	 * The usage of `waitFor()` can be chained, for example:
+	 *
+	 *   FlightPriceStore.dispatchToken =
+	 *     flightDispatcher.register(function(payload) {
+	 *       switch (payload.actionType) {
+	 *         case 'country-update':
+	 *         case 'city-update':
+	 *           flightDispatcher.waitFor([CityStore.dispatchToken]);
+	 *           FlightPriceStore.price =
+	 *             getFlightPriceStore(CountryStore.country, CityStore.city);
+	 *           break;
+	 *     }
+	 *   });
+	 *
+	 * The `country-update` payload will be guaranteed to invoke the stores'
+	 * registered callbacks in order: `CountryStore`, `CityStore`, then
+	 * `FlightPriceStore`.
+	 */
+	
+	var Dispatcher = (function () {
+	  function Dispatcher() {
+	    _classCallCheck(this, Dispatcher);
+	
+	    this._callbacks = {};
+	    this._isDispatching = false;
+	    this._isHandled = {};
+	    this._isPending = {};
+	    this._lastID = 1;
+	  }
+	
+	  /**
+	   * Registers a callback to be invoked with every dispatched payload. Returns
+	   * a token that can be used with `waitFor()`.
+	   */
+	
+	  Dispatcher.prototype.register = function register(callback) {
+	    var id = _prefix + this._lastID++;
+	    this._callbacks[id] = callback;
+	    return id;
+	  };
+	
+	  /**
+	   * Removes a callback based on its token.
+	   */
+	
+	  Dispatcher.prototype.unregister = function unregister(id) {
+	    !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.unregister(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
+	    delete this._callbacks[id];
+	  };
+	
+	  /**
+	   * Waits for the callbacks specified to be invoked before continuing execution
+	   * of the current callback. This method should only be used by a callback in
+	   * response to a dispatched payload.
+	   */
+	
+	  Dispatcher.prototype.waitFor = function waitFor(ids) {
+	    !this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Must be invoked while dispatching.') : invariant(false) : undefined;
+	    for (var ii = 0; ii < ids.length; ii++) {
+	      var id = ids[ii];
+	      if (this._isPending[id]) {
+	        !this._isHandled[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Circular dependency detected while ' + 'waiting for `%s`.', id) : invariant(false) : undefined;
+	        continue;
+	      }
+	      !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
+	      this._invokeCallback(id);
+	    }
+	  };
+	
+	  /**
+	   * Dispatches a payload to all registered callbacks.
+	   */
+	
+	  Dispatcher.prototype.dispatch = function dispatch(payload) {
+	    !!this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.') : invariant(false) : undefined;
+	    this._startDispatching(payload);
+	    try {
+	      for (var id in this._callbacks) {
+	        if (this._isPending[id]) {
+	          continue;
+	        }
+	        this._invokeCallback(id);
+	      }
+	    } finally {
+	      this._stopDispatching();
+	    }
+	  };
+	
+	  /**
+	   * Is this Dispatcher currently dispatching.
+	   */
+	
+	  Dispatcher.prototype.isDispatching = function isDispatching() {
+	    return this._isDispatching;
+	  };
+	
+	  /**
+	   * Call the callback stored with the given id. Also do some internal
+	   * bookkeeping.
+	   *
+	   * @internal
+	   */
+	
+	  Dispatcher.prototype._invokeCallback = function _invokeCallback(id) {
+	    this._isPending[id] = true;
+	    this._callbacks[id](this._pendingPayload);
+	    this._isHandled[id] = true;
+	  };
+	
+	  /**
+	   * Set up bookkeeping needed when dispatching.
+	   *
+	   * @internal
+	   */
+	
+	  Dispatcher.prototype._startDispatching = function _startDispatching(payload) {
+	    for (var id in this._callbacks) {
+	      this._isPending[id] = false;
+	      this._isHandled[id] = false;
+	    }
+	    this._pendingPayload = payload;
+	    this._isDispatching = true;
+	  };
+	
+	  /**
+	   * Clear bookkeeping used for dispatching.
+	   *
+	   * @internal
+	   */
+	
+	  Dispatcher.prototype._stopDispatching = function _stopDispatching() {
+	    delete this._pendingPayload;
+	    this._isDispatching = false;
+	  };
+	
+	  return Dispatcher;
+	})();
+	
+	module.exports = Dispatcher;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule invariant
+	 */
+	
+	"use strict";
+	
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+	
+	var invariant = function (condition, format, a, b, c, d, e, f) {
+	  if (process.env.NODE_ENV !== 'production') {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+	
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
+	        return args[argIndex++];
+	      }));
+	    }
+	
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+	
+	module.exports = invariant;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 213 */
+/***/ function(module, exports) {
+
+	var ModalConstants = {
+	  TOGGLE_MODAL_DISPLAY: "TOGGLE_MODAL_DISPLAY",
+	  ADD_MODAL: "ADD_MODAL",
+	  REMOVE_MODAL: "REMOVE_MODAL"
+	};
+	
+	module.exports = ModalConstants;
+
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(215).Store;
+	var ModalConstants = __webpack_require__(213);
+	var AppDispatcher = __webpack_require__(209);
+	var _modals = {};
+	var ModalStore = new Store(AppDispatcher);
+	
+	var toggleModalDisplay = function (modalName) {
+	  _modals[modalName] = _modals[modalName] === "displayed" ? "hidden" : "displayed";
+	};
+	
+	var addModal = function (modalName) {
+	  _modals[modalName] = "hidden";
+	};
+	
+	var removeModal = function (modalName) {
+	  delete _modals[modalName];
+	};
+	
+	ModalStore.all = function () {
+	  return Object.assign({}, _modals);
+	};
+	
+	ModalStore.isModalDisplayed = function (modalName) {
+	  if (!_modals[modalName] || _modals[modalName] === "hidden") {
+	    return false;
+	  } else {
+	    return true;
+	  }
+	};
+	
+	ModalStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ModalConstants.TOGGLE_MODAL_DISPLAY:
+	      toggleModalDisplay(payload.modalName);
+	      ModalStore.__emitChange();
+	      break;
+	    case ModalConstants.ADD_MODAL:
+	      addModal(payload.modalName);
+	      ModalStore.__emitChange();
+	      break;
+	    case ModalConstants.REMOVE_MODAL:
+	      addModal(payload.modalName);
+	      ModalStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.ModalStore = ModalStore;
+	
+	module.exports = ModalStore;
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 */
+	
+	module.exports.Container = __webpack_require__(216);
+	module.exports.MapStore = __webpack_require__(219);
+	module.exports.Mixin = __webpack_require__(231);
+	module.exports.ReduceStore = __webpack_require__(220);
+	module.exports.Store = __webpack_require__(221);
+
+
+/***/ },
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24222,10 +24644,10 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var FluxStoreGroup = __webpack_require__(211);
+	var FluxStoreGroup = __webpack_require__(217);
 	
 	var invariant = __webpack_require__(212);
-	var shallowEqual = __webpack_require__(213);
+	var shallowEqual = __webpack_require__(218);
 	
 	var DEFAULT_OPTIONS = {
 	  pure: true,
@@ -24383,7 +24805,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 211 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24464,62 +24886,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 212 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
-	 */
-	
-	"use strict";
-	
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-	
-	var invariant = function (condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  }
-	
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      }));
-	    }
-	
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	};
-	
-	module.exports = invariant;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ },
-/* 213 */
+/* 218 */
 /***/ function(module, exports) {
 
 	/**
@@ -24574,7 +24941,7 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 214 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24595,8 +24962,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var FluxReduceStore = __webpack_require__(215);
-	var Immutable = __webpack_require__(225);
+	var FluxReduceStore = __webpack_require__(220);
+	var Immutable = __webpack_require__(230);
 	
 	var invariant = __webpack_require__(212);
 	
@@ -24724,7 +25091,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 215 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24745,9 +25112,9 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var FluxStore = __webpack_require__(216);
+	var FluxStore = __webpack_require__(221);
 	
-	var abstractMethod = __webpack_require__(224);
+	var abstractMethod = __webpack_require__(229);
 	var invariant = __webpack_require__(212);
 	
 	var FluxReduceStore = (function (_FluxStore) {
@@ -24831,7 +25198,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 216 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24850,7 +25217,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _require = __webpack_require__(217);
+	var _require = __webpack_require__(222);
 	
 	var EventEmitter = _require.EventEmitter;
 	
@@ -25014,7 +25381,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 217 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25027,14 +25394,14 @@
 	 */
 	
 	var fbemitter = {
-	  EventEmitter: __webpack_require__(218)
+	  EventEmitter: __webpack_require__(223)
 	};
 	
 	module.exports = fbemitter;
 
 
 /***/ },
-/* 218 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25053,11 +25420,11 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var EmitterSubscription = __webpack_require__(219);
-	var EventSubscriptionVendor = __webpack_require__(221);
+	var EmitterSubscription = __webpack_require__(224);
+	var EventSubscriptionVendor = __webpack_require__(226);
 	
-	var emptyFunction = __webpack_require__(223);
-	var invariant = __webpack_require__(222);
+	var emptyFunction = __webpack_require__(228);
+	var invariant = __webpack_require__(227);
 	
 	/**
 	 * @class BaseEventEmitter
@@ -25231,7 +25598,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 219 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25252,7 +25619,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var EventSubscription = __webpack_require__(220);
+	var EventSubscription = __webpack_require__(225);
 	
 	/**
 	 * EmitterSubscription represents a subscription with listener and context data.
@@ -25284,7 +25651,7 @@
 	module.exports = EmitterSubscription;
 
 /***/ },
-/* 220 */
+/* 225 */
 /***/ function(module, exports) {
 
 	/**
@@ -25338,7 +25705,7 @@
 	module.exports = EventSubscription;
 
 /***/ },
-/* 221 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25357,7 +25724,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var invariant = __webpack_require__(222);
+	var invariant = __webpack_require__(227);
 	
 	/**
 	 * EventSubscriptionVendor stores a set of EventSubscriptions that are
@@ -25447,7 +25814,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 222 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25503,7 +25870,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 223 */
+/* 228 */
 /***/ function(module, exports) {
 
 	/**
@@ -25546,7 +25913,7 @@
 	module.exports = emptyFunction;
 
 /***/ },
-/* 224 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25573,7 +25940,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 225 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -30560,7 +30927,7 @@
 	}));
 
 /***/ },
-/* 226 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -30577,7 +30944,7 @@
 	
 	'use strict';
 	
-	var FluxStoreGroup = __webpack_require__(211);
+	var FluxStoreGroup = __webpack_require__(217);
 	
 	var invariant = __webpack_require__(212);
 	
@@ -30683,611 +31050,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 227 */
-/***/ function(module, exports) {
-
-	var CourseConstants = {
-	  COURSES_RECEIVED: "COURSES_RECEIVED",
-	  COURSE_RECEIVED: "COURSE_RECEIVED"
-	};
-	
-	module.exports = CourseConstants;
-
-/***/ },
-/* 228 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(229).Dispatcher;
-	module.exports = new Dispatcher();
-
-/***/ },
-/* 229 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 */
-	
-	module.exports.Dispatcher = __webpack_require__(230);
-
-
-/***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule Dispatcher
-	 * 
-	 * @preventMunge
-	 */
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var invariant = __webpack_require__(212);
-	
-	var _prefix = 'ID_';
-	
-	/**
-	 * Dispatcher is used to broadcast payloads to registered callbacks. This is
-	 * different from generic pub-sub systems in two ways:
-	 *
-	 *   1) Callbacks are not subscribed to particular events. Every payload is
-	 *      dispatched to every registered callback.
-	 *   2) Callbacks can be deferred in whole or part until other callbacks have
-	 *      been executed.
-	 *
-	 * For example, consider this hypothetical flight destination form, which
-	 * selects a default city when a country is selected:
-	 *
-	 *   var flightDispatcher = new Dispatcher();
-	 *
-	 *   // Keeps track of which country is selected
-	 *   var CountryStore = {country: null};
-	 *
-	 *   // Keeps track of which city is selected
-	 *   var CityStore = {city: null};
-	 *
-	 *   // Keeps track of the base flight price of the selected city
-	 *   var FlightPriceStore = {price: null}
-	 *
-	 * When a user changes the selected city, we dispatch the payload:
-	 *
-	 *   flightDispatcher.dispatch({
-	 *     actionType: 'city-update',
-	 *     selectedCity: 'paris'
-	 *   });
-	 *
-	 * This payload is digested by `CityStore`:
-	 *
-	 *   flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'city-update') {
-	 *       CityStore.city = payload.selectedCity;
-	 *     }
-	 *   });
-	 *
-	 * When the user selects a country, we dispatch the payload:
-	 *
-	 *   flightDispatcher.dispatch({
-	 *     actionType: 'country-update',
-	 *     selectedCountry: 'australia'
-	 *   });
-	 *
-	 * This payload is digested by both stores:
-	 *
-	 *   CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'country-update') {
-	 *       CountryStore.country = payload.selectedCountry;
-	 *     }
-	 *   });
-	 *
-	 * When the callback to update `CountryStore` is registered, we save a reference
-	 * to the returned token. Using this token with `waitFor()`, we can guarantee
-	 * that `CountryStore` is updated before the callback that updates `CityStore`
-	 * needs to query its data.
-	 *
-	 *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'country-update') {
-	 *       // `CountryStore.country` may not be updated.
-	 *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
-	 *       // `CountryStore.country` is now guaranteed to be updated.
-	 *
-	 *       // Select the default city for the new country
-	 *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
-	 *     }
-	 *   });
-	 *
-	 * The usage of `waitFor()` can be chained, for example:
-	 *
-	 *   FlightPriceStore.dispatchToken =
-	 *     flightDispatcher.register(function(payload) {
-	 *       switch (payload.actionType) {
-	 *         case 'country-update':
-	 *         case 'city-update':
-	 *           flightDispatcher.waitFor([CityStore.dispatchToken]);
-	 *           FlightPriceStore.price =
-	 *             getFlightPriceStore(CountryStore.country, CityStore.city);
-	 *           break;
-	 *     }
-	 *   });
-	 *
-	 * The `country-update` payload will be guaranteed to invoke the stores'
-	 * registered callbacks in order: `CountryStore`, `CityStore`, then
-	 * `FlightPriceStore`.
-	 */
-	
-	var Dispatcher = (function () {
-	  function Dispatcher() {
-	    _classCallCheck(this, Dispatcher);
-	
-	    this._callbacks = {};
-	    this._isDispatching = false;
-	    this._isHandled = {};
-	    this._isPending = {};
-	    this._lastID = 1;
-	  }
-	
-	  /**
-	   * Registers a callback to be invoked with every dispatched payload. Returns
-	   * a token that can be used with `waitFor()`.
-	   */
-	
-	  Dispatcher.prototype.register = function register(callback) {
-	    var id = _prefix + this._lastID++;
-	    this._callbacks[id] = callback;
-	    return id;
-	  };
-	
-	  /**
-	   * Removes a callback based on its token.
-	   */
-	
-	  Dispatcher.prototype.unregister = function unregister(id) {
-	    !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.unregister(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
-	    delete this._callbacks[id];
-	  };
-	
-	  /**
-	   * Waits for the callbacks specified to be invoked before continuing execution
-	   * of the current callback. This method should only be used by a callback in
-	   * response to a dispatched payload.
-	   */
-	
-	  Dispatcher.prototype.waitFor = function waitFor(ids) {
-	    !this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Must be invoked while dispatching.') : invariant(false) : undefined;
-	    for (var ii = 0; ii < ids.length; ii++) {
-	      var id = ids[ii];
-	      if (this._isPending[id]) {
-	        !this._isHandled[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Circular dependency detected while ' + 'waiting for `%s`.', id) : invariant(false) : undefined;
-	        continue;
-	      }
-	      !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
-	      this._invokeCallback(id);
-	    }
-	  };
-	
-	  /**
-	   * Dispatches a payload to all registered callbacks.
-	   */
-	
-	  Dispatcher.prototype.dispatch = function dispatch(payload) {
-	    !!this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.') : invariant(false) : undefined;
-	    this._startDispatching(payload);
-	    try {
-	      for (var id in this._callbacks) {
-	        if (this._isPending[id]) {
-	          continue;
-	        }
-	        this._invokeCallback(id);
-	      }
-	    } finally {
-	      this._stopDispatching();
-	    }
-	  };
-	
-	  /**
-	   * Is this Dispatcher currently dispatching.
-	   */
-	
-	  Dispatcher.prototype.isDispatching = function isDispatching() {
-	    return this._isDispatching;
-	  };
-	
-	  /**
-	   * Call the callback stored with the given id. Also do some internal
-	   * bookkeeping.
-	   *
-	   * @internal
-	   */
-	
-	  Dispatcher.prototype._invokeCallback = function _invokeCallback(id) {
-	    this._isPending[id] = true;
-	    this._callbacks[id](this._pendingPayload);
-	    this._isHandled[id] = true;
-	  };
-	
-	  /**
-	   * Set up bookkeeping needed when dispatching.
-	   *
-	   * @internal
-	   */
-	
-	  Dispatcher.prototype._startDispatching = function _startDispatching(payload) {
-	    for (var id in this._callbacks) {
-	      this._isPending[id] = false;
-	      this._isHandled[id] = false;
-	    }
-	    this._pendingPayload = payload;
-	    this._isDispatching = true;
-	  };
-	
-	  /**
-	   * Clear bookkeeping used for dispatching.
-	   *
-	   * @internal
-	   */
-	
-	  Dispatcher.prototype._stopDispatching = function _stopDispatching() {
-	    delete this._pendingPayload;
-	    this._isDispatching = false;
-	  };
-	
-	  return Dispatcher;
-	})();
-	
-	module.exports = Dispatcher;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ },
-/* 231 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var CourseIndexItem = React.createClass({
-	  displayName: "CourseIndexItem",
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "course-list-item-wrapper" },
-	      React.createElement(
-	        "a",
-	        { href: "#/courses/" + this.props.course.id,
-	          className: "course-list-item" },
-	        this.props.course.name
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = CourseIndexItem;
-
-/***/ },
 /* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CourseActions = __webpack_require__(233);
-	
-	var CoursesApiUtil = {
-	  fetchCourses: function () {
-	    $.ajax({
-	      type: "GET",
-	      url: "api/courses/",
-	      dataType: "json",
-	      success: function (courses) {
-	        CourseActions.receiveAll(courses);
-	      }
-	    });
-	  },
-	
-	  fetchCourse: function (courseId) {
-	    $.ajax({
-	      type: "GET",
-	      url: "api/courses/" + courseId,
-	      dataType: "json",
-	      success: function (course) {
-	        CourseActions.receiveCourse(course);
-	      }
-	    });
-	  }
-	};
-	
-	window.CoursesApiUtil = CoursesApiUtil;
-	
-	module.exports = CoursesApiUtil;
-
-/***/ },
-/* 233 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(228),
-	    CourseConstants = __webpack_require__(227);
-	
-	var CourseActions = {
-	  receiveAll: function (courses) {
-	    AppDispatcher.dispatch({
-	      actionType: CourseConstants.COURSES_RECEIVED,
-	      courses: courses
-	    });
-	  },
-	
-	  receiveCourse: function (course) {
-	    AppDispatcher.dispatch({
-	      actionType: CourseConstants.COURSE_RECEIVED,
-	      course: course
-	    });
-	  }
-	};
-	
-	module.exports = CourseActions;
-
-/***/ },
-/* 234 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var React = __webpack_require__(1),
-	    History = __webpack_require__(159).History;
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  mixins: [History],
-	
-	  _handleClick: function () {
-	    this.history.pushState(null, "/courses", {});
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'splash group' },
-	      React.createElement(
-	        'div',
-	        { className: 'splash-contents group' },
-	        React.createElement(
-	          'h2',
-	          { className: 'splash-header' },
-	          'Learn a language. Or maybe not. We\'ll see.'
-	        ),
-	        React.createElement(
-	          'a',
-	          { className: 'splash-button',
-	            href: '#/courses' },
-	          'Get started'
-	        )
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 235 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ModalActions = __webpack_require__(238),
-	    ModalStore = __webpack_require__(236);
-	
-	var LoginModal = React.createClass({
-	  displayName: 'LoginModal',
-	
-	  getInitialState: function () {
-	    return { modalName: "loginModal", token: "" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.modalListener = ModalStore.addListener(this._modalsChanged);
-	    var modalName = this.state.modalName;
-	    ModalActions.addModal(modalName);
-	    this.setState({
-	      modalName: modalName,
-	      token: $('meta[name=csrf-token]').attr('content')
-	    });
-	  },
-	
-	  _modalsChanged: function () {
-	    var modalName = this.state.modalName;
-	    this.setState({ modalName: modalName });
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.modalListener.remove();
-	    ModalActions.removeModal(this.state.modalName);
-	  },
-	
-	  authToken: function () {
-	    return React.createElement('input', { name: 'authenticity_token', type: 'hidden', value: this.state.token });
-	  },
-	
-	  visibleRender: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'splash-login-form splash-form' },
-	      React.createElement('div', { className: 'up-triangle' }),
-	      React.createElement(
-	        'div',
-	        { className: 'splash-login-inputs' },
-	        React.createElement(
-	          'form',
-	          { action: '/session', method: 'post' },
-	          this.authToken(),
-	          React.createElement('input', { name: 'session[username]',
-	            placeholder: 'Username' }),
-	          React.createElement('input', { type: 'password',
-	            name: 'session[password]',
-	            placeholder: 'Password' }),
-	          React.createElement(
-	            'button',
-	            { id: 'modal-login-button' },
-	            'Log in'
-	          )
-	        ),
-	        React.createElement(
-	          'form',
-	          { action: '/session', method: 'post' },
-	          this.authToken(),
-	          React.createElement(
-	            'div',
-	            { className: 'guest-inputs' },
-	            React.createElement('input', { type: 'hidden',
-	              name: 'session[username]',
-	              value: 'guest' }),
-	            React.createElement('input', { type: 'hidden',
-	              name: 'session[password]',
-	              value: 'password' }),
-	            React.createElement(
-	              'button',
-	              null,
-	              'Log in as guest'
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          'form',
-	          { className: 'signup-button', action: '/users/new', method: 'get' },
-	          React.createElement(
-	            'button',
-	            null,
-	            'Not a member yet?'
-	          )
-	        )
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
-	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
-	
-	    return renderedHTML;
-	  }
-	});
-	
-	module.exports = LoginModal;
-
-/***/ },
-/* 236 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(209).Store;
-	var ModalConstants = __webpack_require__(237);
-	var AppDispatcher = __webpack_require__(228);
-	var _modals = {};
-	var ModalStore = new Store(AppDispatcher);
-	
-	var toggleModalDisplay = function (modalName) {
-	  _modals[modalName] = _modals[modalName] === "displayed" ? "hidden" : "displayed";
-	};
-	
-	var addModal = function (modalName) {
-	  _modals[modalName] = "hidden";
-	};
-	
-	var removeModal = function (modalName) {
-	  delete _modals[modalName];
-	};
-	
-	ModalStore.all = function () {
-	  return Object.assign({}, _modals);
-	};
-	
-	ModalStore.isModalDisplayed = function (modalName) {
-	  if (!_modals[modalName] || _modals[modalName] === "hidden") {
-	    return false;
-	  } else {
-	    return true;
-	  }
-	};
-	
-	ModalStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case ModalConstants.TOGGLE_MODAL_DISPLAY:
-	      toggleModalDisplay(payload.modalName);
-	      ModalStore.__emitChange();
-	      break;
-	    case ModalConstants.ADD_MODAL:
-	      addModal(payload.modalName);
-	      ModalStore.__emitChange();
-	      break;
-	    case ModalConstants.REMOVE_MODAL:
-	      addModal(payload.modalName);
-	      ModalStore.__emitChange();
-	      break;
-	  }
-	};
-	
-	window.ModalStore = ModalStore;
-	
-	module.exports = ModalStore;
-
-/***/ },
-/* 237 */
-/***/ function(module, exports) {
-
-	var ModalConstants = {
-	  TOGGLE_MODAL_DISPLAY: "TOGGLE_MODAL_DISPLAY",
-	  ADD_MODAL: "ADD_MODAL",
-	  REMOVE_MODAL: "REMOVE_MODAL"
-	};
-	
-	module.exports = ModalConstants;
-
-/***/ },
-/* 238 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(228),
-	    ModalConstants = __webpack_require__(237);
-	
-	var ModalActions = {
-	  addModal: function (modalName) {
-	    AppDispatcher.dispatch({
-	      actionType: ModalConstants.ADD_MODAL,
-	      modalName: modalName
-	    });
-	  },
-	
-	  toggleModalDisplay: function (modalName) {
-	    AppDispatcher.dispatch({
-	      actionType: ModalConstants.TOGGLE_MODAL_DISPLAY,
-	      modalName: modalName
-	    });
-	  },
-	
-	  removeModal: function (modalName) {
-	    AppDispatcher.dispatch({
-	      actionType: ModalConstants.REMOVE_MODAL,
-	      modalName: modalName
-	    });
-	  }
-	};
-	
-	module.exports = ModalActions;
-
-/***/ },
-/* 239 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ModalActions = __webpack_require__(238),
-	    ModalStore = __webpack_require__(236),
-	    LanguageIndex = __webpack_require__(240);
+	    ModalActions = __webpack_require__(208),
+	    ModalStore = __webpack_require__(214),
+	    LanguageIndex = __webpack_require__(233);
 	
 	var LanguageIndexModal = React.createClass({
 	  displayName: 'LanguageIndexModal',
@@ -31339,13 +31108,13 @@
 	module.exports = LanguageIndexModal;
 
 /***/ },
-/* 240 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    LanguageStore = __webpack_require__(241),
-	    LanguageIndexItem = __webpack_require__(245),
-	    LanguagesApiUtil = __webpack_require__(243);
+	    LanguageStore = __webpack_require__(234),
+	    LanguageIndexItem = __webpack_require__(236),
+	    LanguagesApiUtil = __webpack_require__(237);
 	
 	var LanguageIndex = React.createClass({
 	  displayName: 'LanguageIndex',
@@ -31388,12 +31157,12 @@
 	module.exports = LanguageIndex;
 
 /***/ },
-/* 241 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(209).Store;
-	var LanguageConstants = __webpack_require__(242);
-	var AppDispatcher = __webpack_require__(228);
+	var Store = __webpack_require__(215).Store;
+	var LanguageConstants = __webpack_require__(235);
+	var AppDispatcher = __webpack_require__(209);
 	var _languages = [];
 	var LanguageStore = new Store(AppDispatcher);
 	
@@ -31419,7 +31188,7 @@
 	module.exports = LanguageStore;
 
 /***/ },
-/* 242 */
+/* 235 */
 /***/ function(module, exports) {
 
 	var LanguageConstants = {
@@ -31429,48 +31198,7 @@
 	module.exports = LanguageConstants;
 
 /***/ },
-/* 243 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var LanguageActions = __webpack_require__(244);
-	
-	var LanguageApiUtil = {
-		fetchLanguages: function () {
-			$.ajax({
-				type: "GET",
-				url: "api/languages",
-				dataType: "json",
-				success: function (languages) {
-					LanguageActions.receiveAll(languages);
-				}
-			});
-		}
-	};
-	
-	window.LanguageApiUtil = LanguageApiUtil;
-	
-	module.exports = LanguageApiUtil;
-
-/***/ },
-/* 244 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(228),
-	    LanguageConstants = __webpack_require__(242);
-	
-	var LanguageActions = {
-	  receiveAll: function (languages) {
-	    AppDispatcher.dispatch({
-	      actionType: LanguageConstants.LANGUAGES_RECEIVED,
-	      languages: languages
-	    });
-	  }
-	};
-	
-	module.exports = LanguageActions;
-
-/***/ },
-/* 245 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -31495,28 +31223,278 @@
 	module.exports = LanguageIndexItem;
 
 /***/ },
-/* 246 */
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var LanguageActions = __webpack_require__(238);
+	
+	var LanguageApiUtil = {
+		fetchLanguages: function () {
+			$.ajax({
+				type: "GET",
+				url: "api/languages",
+				dataType: "json",
+				success: function (languages) {
+					LanguageActions.receiveAll(languages);
+				}
+			});
+		}
+	};
+	
+	window.LanguageApiUtil = LanguageApiUtil;
+	
+	module.exports = LanguageApiUtil;
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(209),
+	    LanguageConstants = __webpack_require__(235);
+	
+	var LanguageActions = {
+	  receiveAll: function (languages) {
+	    AppDispatcher.dispatch({
+	      actionType: LanguageConstants.LANGUAGES_RECEIVED,
+	      languages: languages
+	    });
+	  }
+	};
+	
+	module.exports = LanguageActions;
+
+/***/ },
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    History = __webpack_require__(159).History,
-	    CourseStore = __webpack_require__(208),
-	    SkillIndex = __webpack_require__(247),
-	    CoursesApiUtil = __webpack_require__(232);
+	    CourseStore = __webpack_require__(240),
+	    CourseIndexItem = __webpack_require__(242),
+	    CoursesApiUtil = __webpack_require__(243);
+	
+	var CourseIndex = React.createClass({
+	  displayName: 'CourseIndex',
+	
+	  getInitialState: function () {
+	    return { courses: CourseStore.all() };
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ courses: CourseStore.all() });
+	  },
+	
+	  componentDidMount: function () {
+	    this.courseListener = CourseStore.addListener(this._onChange);
+	    CoursesApiUtil.fetchCourses();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.courseListener.remove();
+	  },
+	
+	  render: function () {
+	    if (this.state.courses === {}) {
+	      return React.createElement('div', null);
+	    }
+	
+	    var courses = this.state.courses;
+	    var courseKeys = Object.keys(this.state.courses);
+	    courses = courseKeys.map(function (key, idx) {
+	      var course = courses[key];
+	      return React.createElement(CourseIndexItem, { key: idx, course: course });
+	    });
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'course-index-container' },
+	      React.createElement(
+	        'div',
+	        { className: 'course-index' },
+	        React.createElement(
+	          'h2',
+	          { className: 'course-index-header' },
+	          'I want to learn...'
+	        ),
+	        React.createElement(
+	          'ul',
+	          { className: 'course-list group' },
+	          courses
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = CourseIndex;
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(215).Store;
+	var CourseConstants = __webpack_require__(241);
+	var AppDispatcher = __webpack_require__(209);
+	var _courses = {};
+	var CourseStore = new Store(AppDispatcher);
+	
+	var resetCourses = function (courses) {
+	  _courses = Object.assign({}, courses);
+	};
+	
+	var addCourse = function (course) {
+	  _courses[course.id] = course;
+	};
+	
+	CourseStore.all = function () {
+	  return Object.assign({}, _courses);
+	};
+	
+	CourseStore.find = function (courseId) {
+	  return _courses[courseId];
+	};
+	
+	CourseStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case CourseConstants.COURSES_RECEIVED:
+	      resetCourses(payload.courses);
+	      CourseStore.__emitChange();
+	      break;
+	    case CourseConstants.COURSE_RECEIVED:
+	      addCourse(payload.course);
+	      CourseStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.CourseStore = CourseStore;
+	
+	module.exports = CourseStore;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports) {
+
+	var CourseConstants = {
+	  COURSES_RECEIVED: "COURSES_RECEIVED",
+	  COURSE_RECEIVED: "COURSE_RECEIVED"
+	};
+	
+	module.exports = CourseConstants;
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var CourseIndexItem = React.createClass({
+	  displayName: "CourseIndexItem",
+	
+	  render: function () {
+	
+	    return React.createElement(
+	      "div",
+	      { className: "course-list-item-wrapper" },
+	      React.createElement(
+	        "a",
+	        { href: "#/courses/" + this.props.course.id,
+	          className: "course-list-item" },
+	        this.props.course.name
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = CourseIndexItem;
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var CourseActions = __webpack_require__(244);
+	
+	var CoursesApiUtil = {
+	  fetchCourses: function () {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/courses/",
+	      dataType: "json",
+	      success: function (courses) {
+	        var coursesPayload = {};
+	        courses.forEach(function (course) {
+	          coursesPayload[course.id] = course;
+	        });
+	        CourseActions.receiveAll(coursesPayload);
+	      }
+	    });
+	  },
+	
+	  fetchCourse: function (courseId) {
+	
+	    $.ajax({
+	      type: "GET",
+	      url: "api/courses/" + courseId,
+	      dataType: "json",
+	      success: function (course) {
+	        CourseActions.receiveCourse(course);
+	      }
+	    });
+	  }
+	};
+	
+	window.CoursesApiUtil = CoursesApiUtil;
+	
+	module.exports = CoursesApiUtil;
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(209),
+	    CourseConstants = __webpack_require__(241);
+	
+	var CourseActions = {
+	  receiveAll: function (courses) {
+	    AppDispatcher.dispatch({
+	      actionType: CourseConstants.COURSES_RECEIVED,
+	      courses: courses
+	    });
+	  },
+	
+	  receiveCourse: function (course) {
+	    AppDispatcher.dispatch({
+	      actionType: CourseConstants.COURSE_RECEIVED,
+	      course: course
+	    });
+	  }
+	};
+	
+	module.exports = CourseActions;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    CourseStore = __webpack_require__(240),
+	    SkillIndex = __webpack_require__(246),
+	    CoursesApiUtil = __webpack_require__(243);
 	
 	var Course = React.createClass({
 	  displayName: 'Course',
 	
-	  mixins: [History],
-	
 	  getInitialState: function () {
-	    return { course: null };
+	    return { course: CourseStore.find(this.props.params.courseId) };
 	  },
 	
 	  componentDidMount: function () {
 	    var courseId = this.props.params.courseId;
+	    this.courseListener = CourseStore.addListener(this._coursesChanged);
 	    CoursesApiUtil.fetchCourse(courseId);
-	    var courseListener = CourseStore.addListener(this._coursesChanged);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.courseListener.remove();
 	  },
 	
 	  _coursesChanged: function () {
@@ -31524,10 +31502,10 @@
 	  },
 	
 	  render: function () {
-	    if (this.state.course === null) {
+	
+	    if (typeof this.state.course === "undefined") {
 	      return React.createElement('div', null);
 	    }
-	
 	    return React.createElement(
 	      'div',
 	      { className: 'course-page' },
@@ -31549,13 +31527,13 @@
 	module.exports = Course;
 
 /***/ },
-/* 247 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    SkillStore = __webpack_require__(248),
-	    SkillIndexItem = __webpack_require__(250),
-	    SkillsApiUtil = __webpack_require__(251);
+	    SkillStore = __webpack_require__(247),
+	    SkillIndexItem = __webpack_require__(249),
+	    SkillsApiUtil = __webpack_require__(250);
 	
 	var SkillIndex = React.createClass({
 	  displayName: 'SkillIndex',
@@ -31569,8 +31547,8 @@
 	  },
 	
 	  componentDidMount: function () {
-	    SkillsApiUtil.fetchSkills(this.props.courseId);
 	    this.skillListener = SkillStore.addListener(this._onChange);
+	    SkillsApiUtil.fetchSkills(this.props.courseId);
 	  },
 	
 	  componentWillUnmount: function () {
@@ -31578,6 +31556,10 @@
 	  },
 	
 	  render: function () {
+	    if (this.state.skills === {}) {
+	      return React.createElement('div', null);
+	    }
+	
 	    var skills = this.state.skills;
 	    var skillKeys = Object.keys(this.state.skills);
 	    skills = skillKeys.map(function (key, idx) {
@@ -31600,12 +31582,12 @@
 	module.exports = SkillIndex;
 
 /***/ },
-/* 248 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(209).Store;
-	var SkillConstants = __webpack_require__(249);
-	var AppDispatcher = __webpack_require__(228);
+	var Store = __webpack_require__(215).Store;
+	var SkillConstants = __webpack_require__(248);
+	var AppDispatcher = __webpack_require__(209);
 	var _skills = {};
 	var SkillStore = new Store(AppDispatcher);
 	
@@ -31643,7 +31625,7 @@
 	module.exports = SkillStore;
 
 /***/ },
-/* 249 */
+/* 248 */
 /***/ function(module, exports) {
 
 	var SkillConstants = {
@@ -31654,7 +31636,7 @@
 	module.exports = SkillConstants;
 
 /***/ },
-/* 250 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -31680,19 +31662,24 @@
 	module.exports = SkillIndexItem;
 
 /***/ },
-/* 251 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var SkillActions = __webpack_require__(252);
+	var SkillActions = __webpack_require__(251);
 	
 	var SkillsApiUtil = {
 	  fetchSkills: function (courseId) {
+	
 	    $.ajax({
 	      type: "GET",
 	      url: "api/courses/" + courseId + "/skills",
 	      dataType: "json",
 	      success: function (skills) {
-	        SkillActions.receiveAll(skills);
+	        var skillsPayload = {};
+	        skills.forEach(function (skill) {
+	          skillsPayload[skill.id] = skill;
+	        });
+	        SkillActions.receiveAll(skillsPayload);
 	      }
 	    });
 	  },
@@ -31714,11 +31701,11 @@
 	module.exports = SkillsApiUtil;
 
 /***/ },
-/* 252 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var AppDispatcher = __webpack_require__(228),
-	    SkillConstants = __webpack_require__(249);
+	var AppDispatcher = __webpack_require__(209),
+	    SkillConstants = __webpack_require__(248);
 	
 	var SkillActions = {
 	  receiveAll: function (skills) {
@@ -31739,25 +31726,64 @@
 	module.exports = SkillActions;
 
 /***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    History = __webpack_require__(159).History;
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  mixins: [History],
+	
+	  _handleClick: function () {
+	    this.history.pushState(null, "/courses", {});
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'splash group' },
+	      React.createElement(
+	        'div',
+	        { className: 'splash-contents group' },
+	        React.createElement(
+	          'h2',
+	          { className: 'splash-header' },
+	          'Learn a language. Or maybe not. We\'ll see.'
+	        ),
+	        React.createElement(
+	          'a',
+	          { className: 'splash-button',
+	            href: '#/courses' },
+	          'Get started'
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
 /* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    SkillStore = __webpack_require__(248),
-	    LessonIndex = __webpack_require__(256),
-	    SkillsApiUtil = __webpack_require__(251);
+	    SkillStore = __webpack_require__(247),
+	    LessonIndex = __webpack_require__(254),
+	    SkillsApiUtil = __webpack_require__(250);
 	
 	var Skill = React.createClass({
 	  displayName: 'Skill',
 	
 	  getInitialState: function () {
-	    return { skill: null };
+	    return {};
 	  },
 	
 	  componentDidMount: function () {
 	    var skillId = this.props.params.skillId;
-	    SkillsApiUtil.fetchSkill(skillId);
 	    this.skillListener = SkillStore.addListener(this._skillsChanged);
+	    SkillsApiUtil.fetchSkill(skillId);
 	  },
 	
 	  componentWillUnmount: function () {
@@ -31769,7 +31795,7 @@
 	  },
 	
 	  render: function () {
-	    if (this.state.skill === null) {
+	    if (typeof this.state.skill === "undefined") {
 	      return React.createElement('div', null);
 	    }
 	
@@ -31807,67 +31833,13 @@
 	module.exports = Skill;
 
 /***/ },
-/* 254 */,
-/* 255 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    LessonStore = __webpack_require__(258),
-	    LessonIndex = __webpack_require__(256),
-	    LessonsApiUtil = __webpack_require__(260);
-	
-	var Lesson = React.createClass({
-	  displayName: 'Lesson',
-	
-	  getInitialState: function () {
-	    return { lesson: null };
-	  },
-	
-	  componentDidMount: function () {
-	    var lessonId = this.props.params.lessonId;
-	    LessonsApiUtil.fetchLesson(lessonId);
-	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.lessonListener.remove();
-	  },
-	
-	  _lessonsChanged: function () {
-	    this.setState({ lesson: LessonStore.find(this.props.params.lessonId) });
-	  },
-	
-	  render: function () {
-	    if (this.state.lesson === null) {
-	      return React.createElement('div', null);
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-page' },
-	      React.createElement(
-	        'div',
-	        { className: 'lesson-page-content' },
-	        React.createElement(
-	          'h2',
-	          { className: 'lesson-page-header' },
-	          'Inside lesson'
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Lesson;
-
-/***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    LessonStore = __webpack_require__(258),
+	    LessonStore = __webpack_require__(255),
 	    LessonIndexItem = __webpack_require__(257),
-	    LessonsApiUtil = __webpack_require__(260);
+	    LessonsApiUtil = __webpack_require__(258);
 	
 	var LessonIndex = React.createClass({
 	  displayName: 'LessonIndex',
@@ -31912,46 +31884,12 @@
 	module.exports = LessonIndex;
 
 /***/ },
-/* 257 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	
-	var LessonIndexItem = React.createClass({
-	  displayName: "LessonIndexItem",
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "lesson-list-item-wrapper" },
-	      React.createElement(
-	        "h2",
-	        { className: "lesson-list-item" },
-	        this.props.lesson.name
-	      ),
-	      React.createElement(
-	        "div",
-	        { className: "lesson-list-contents" },
-	        React.createElement(
-	          "a",
-	          { className: "lesson-begin-button",
-	            href: "#/lessons/" + this.props.lesson.id },
-	          "Begin"
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = LessonIndexItem;
-
-/***/ },
-/* 258 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(209).Store;
-	var LessonConstants = __webpack_require__(259);
-	var AppDispatcher = __webpack_require__(228);
+	var Store = __webpack_require__(215).Store;
+	var LessonConstants = __webpack_require__(256);
+	var AppDispatcher = __webpack_require__(209);
 	var _lessons = {};
 	var LessonStore = new Store(AppDispatcher);
 	
@@ -31989,7 +31927,7 @@
 	module.exports = LessonStore;
 
 /***/ },
-/* 259 */
+/* 256 */
 /***/ function(module, exports) {
 
 	var SkillConstants = {
@@ -32000,10 +31938,44 @@
 	module.exports = SkillConstants;
 
 /***/ },
-/* 260 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var LessonActions = __webpack_require__(261);
+	var React = __webpack_require__(1);
+	
+	var LessonIndexItem = React.createClass({
+	  displayName: "LessonIndexItem",
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-list-item-wrapper" },
+	      React.createElement(
+	        "h2",
+	        { className: "lesson-list-item" },
+	        this.props.lesson.name
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "lesson-list-contents" },
+	        React.createElement(
+	          "a",
+	          { className: "lesson-begin-button",
+	            href: "#/lessons/" + this.props.lesson.id },
+	          "Begin"
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LessonIndexItem;
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var LessonActions = __webpack_require__(259);
 	
 	var LessonsApiUtil = {
 	  fetchLessons: function (lessonId) {
@@ -32012,7 +31984,11 @@
 	      url: "api/skills/" + lessonId + "/lessons",
 	      dataType: "json",
 	      success: function (lessons) {
-	        LessonActions.receiveAll(lessons);
+	        var lessonsPayload = {};
+	        lessons.forEach(function (lesson) {
+	          lessonsPayload[lesson.id] = lesson;
+	        });
+	        LessonActions.receiveAll(lessonsPayload);
 	      }
 	    });
 	  },
@@ -32034,11 +32010,11 @@
 	module.exports = LessonsApiUtil;
 
 /***/ },
-/* 261 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var AppDispatcher = __webpack_require__(228),
-	    LessonConstants = __webpack_require__(259);
+	var AppDispatcher = __webpack_require__(209),
+	    LessonConstants = __webpack_require__(256);
 	
 	var LessonActions = {
 	  receiveAll: function (lessons) {
@@ -32057,6 +32033,59 @@
 	};
 	
 	module.exports = LessonActions;
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    LessonStore = __webpack_require__(255),
+	    LessonIndex = __webpack_require__(254),
+	    LessonsApiUtil = __webpack_require__(258);
+	
+	var Lesson = React.createClass({
+	  displayName: 'Lesson',
+	
+	  getInitialState: function () {
+	    return { lesson: null };
+	  },
+	
+	  componentDidMount: function () {
+	    var lessonId = this.props.params.lessonId;
+	    LessonsApiUtil.fetchLesson(lessonId);
+	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.lessonListener.remove();
+	  },
+	
+	  _lessonsChanged: function () {
+	    this.setState({ lesson: LessonStore.find(this.props.params.lessonId) });
+	  },
+	
+	  render: function () {
+	    if (this.state.lesson === null) {
+	      return React.createElement('div', null);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-page' },
+	      React.createElement(
+	        'div',
+	        { className: 'lesson-page-content' },
+	        React.createElement(
+	          'h2',
+	          { className: 'lesson-page-header' },
+	          'Inside lesson'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Lesson;
 
 /***/ }
 /******/ ]);

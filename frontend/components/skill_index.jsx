@@ -22,6 +22,8 @@ var SkillIndex = React.createClass({
   },
 
   render: function () {
+    if (this.state.skills === {}) { return <div />; }
+
     var skills = this.state.skills;
     var skillKeys = Object.keys(this.state.skills);
     skills = skillKeys.map(function (key, idx) {

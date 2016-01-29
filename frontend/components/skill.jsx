@@ -5,7 +5,7 @@ var React = require('react'),
 
 var Skill = React.createClass({
   getInitialState: function () {
-    return({ skill: null });
+    return({});
   },
 
   componentDidMount: function () {
@@ -23,7 +23,7 @@ var Skill = React.createClass({
   },
 
   render: function () {
-    if(this.state.skill === null) { return <div></div>; }
+    if (typeof this.state.skill === "undefined") { return <div></div>; }
 
     return(
       <div className="skill-page">

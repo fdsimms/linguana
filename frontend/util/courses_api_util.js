@@ -7,12 +7,17 @@ var CoursesApiUtil = {
 			url: "api/courses/",
 			dataType: "json",
 			success: function (courses) {
-				CourseActions.receiveAll(courses);
+        var coursesPayload = {};
+        courses.forEach(function (course) {
+          coursesPayload[course.id] = course;
+        });
+				CourseActions.receiveAll(coursesPayload);
 			},
 		});
 	},
 
   fetchCourse: function (courseId) {
+
     $.ajax({
       type: "GET",
       url: "api/courses/" + courseId,

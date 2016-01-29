@@ -23,8 +23,8 @@ var Course = React.createClass({
   },
 
   render: function () {
-    if(typeof this.state.course === undefined) { return <div></div>; }
 
+    if (typeof this.state.course === "undefined") { return <div></div>; }
     return(
       <div className="course-page">
         <div className="course-page-content">
