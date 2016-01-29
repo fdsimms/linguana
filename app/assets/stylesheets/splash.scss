@@ -7,12 +7,13 @@
 .splash-contents:before {
   content: "";
   border-radius: 100%;
-  background-color: rgb(81, 196, 211);
+  background-color: #51c4d3;
   padding: 125px 125px;
   left: -315px;
   top: -20px;
-  border: 10px solid rgb(17, 111, 170);
+  border: 11px solid #0e69a8;
   position: absolute;
+  box-shadow: 0 0 3px 14px #0D6490;
 }
 
 .splash-header {
