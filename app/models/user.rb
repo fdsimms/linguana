@@ -8,6 +8,15 @@ class User < ActiveRecord::Base
 
   attr_reader :password
 
+  has_many :course_enrollments
+
+  has_many(
+    :enrolled_courses,
+    through: :course_enrollments,
+    source: :course
+  )
+
+
   def self.find_by_credentials(username, password)
     user = User.find_by_username(username)
     return nil unless user

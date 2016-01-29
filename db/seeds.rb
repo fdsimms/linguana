@@ -138,3 +138,11 @@ french_basic_1_3 = Lesson.create!(
   skill_id: french_for_english.id
 
 )
+
+# course enrollments
+
+CourseEnrollment.destroy_all
+ce1 = CourseEnrollment.create!(
+  user_id: guest.id,
+  course_id: french_for_english.id
+)

@@ -16,5 +16,12 @@ class Course < ActiveRecord::Base
   )
 
   has_many :skills, dependent: :destroy
+  has_many :course_enrollments
   has_many :lessons, through: :skills
+  has_many(
+    :enrolled_students,
+    through: :course_enrollments,
+    source: :user
+  )
+
 end
