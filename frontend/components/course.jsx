@@ -23,7 +23,7 @@ var Course = React.createClass({
 
   render: function () {
     if(this.state.course === null) { return <div></div>; }
-    
+
     return(
       <div className="course-page">
         <div className="course-page-content">

@@ -54,7 +54,8 @@
 	    Course = __webpack_require__(246),
 	    Splash = __webpack_require__(234),
 	    SkillIndex = __webpack_require__(247),
-	    Skill = __webpack_require__(253);
+	    Skill = __webpack_require__(253),
+	    Lesson = __webpack_require__(255);
 	
 	var routes = React.createElement(
 	  Route,
@@ -62,7 +63,8 @@
 	  React.createElement(IndexRoute, { component: Splash }),
 	  React.createElement(Route, { path: '/courses', component: CourseIndex }),
 	  React.createElement(Route, { path: '/courses/:courseId', component: Course }),
-	  React.createElement(Route, { path: '/skills/:skillId', component: Skill })
+	  React.createElement(Route, { path: '/skills/:skillId', component: Skill }),
+	  React.createElement(Route, { path: '/lessons/:lessonId', component: Lesson })
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
@@ -31742,7 +31744,7 @@
 
 	var React = __webpack_require__(1),
 	    SkillStore = __webpack_require__(248),
-	    SkillIndex = __webpack_require__(247),
+	    LessonIndex = __webpack_require__(256),
 	    SkillsApiUtil = __webpack_require__(251);
 	
 	var Skill = React.createClass({
@@ -31778,6 +31780,7 @@
 	          { className: 'skill-page-header' },
 	          'Lessons'
 	        ),
+	        React.createElement(LessonIndex, { skillId: this.state.skill.id }),
 	        React.createElement(
 	          'div',
 	          { className: 'tips-and-notes' },
@@ -31798,6 +31801,246 @@
 	});
 	
 	module.exports = Skill;
+
+/***/ },
+/* 254 */,
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    LessonStore = __webpack_require__(258),
+	    LessonIndex = __webpack_require__(256),
+	    LessonsApiUtil = __webpack_require__(260);
+	
+	var Lesson = React.createClass({
+	  displayName: 'Lesson',
+	
+	  getInitialState: function () {
+	    return { lesson: null };
+	  },
+	
+	  componentDidMount: function () {
+	    var lessonId = this.props.params.lessonId;
+	    LessonsApiUtil.fetchLesson(lessonId);
+	    var lessonListener = LessonStore.addListener(this._lessonsChanged);
+	  },
+	
+	  _lessonsChanged: function () {
+	    this.setState({ lesson: LessonStore.find(this.props.params.lessonId) });
+	  },
+	
+	  render: function () {
+	    if (this.state.lesson === null) {
+	      return React.createElement('div', null);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-page' },
+	      React.createElement(
+	        'div',
+	        { className: 'lesson-page-content' },
+	        React.createElement(
+	          'h2',
+	          { className: 'lesson-page-header' },
+	          'Inside lesson'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Lesson;
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    LessonStore = __webpack_require__(258),
+	    LessonIndexItem = __webpack_require__(257),
+	    LessonsApiUtil = __webpack_require__(260);
+	
+	var LessonIndex = React.createClass({
+	  displayName: 'LessonIndex',
+	
+	  getInitialState: function () {
+	    return { lessons: LessonStore.all() };
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ lessons: LessonStore.all() });
+	  },
+	
+	  componentDidMount: function () {
+	    LessonsApiUtil.fetchLessons(this.props.skillId);
+	    this.lessonListener = LessonStore.addListener(this._onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.lessonListener.remove();
+	  },
+	
+	  render: function () {
+	    var lessons = this.state.lessons;
+	    var lessonKeys = Object.keys(this.state.lessons);
+	    lessons = lessonKeys.map(function (key, idx) {
+	      var lesson = lessons[key];
+	      return React.createElement(LessonIndexItem, { key: idx, lesson: lesson });
+	    });
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-index' },
+	      React.createElement(
+	        'ul',
+	        { className: 'lesson-list group' },
+	        lessons
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LessonIndex;
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var LessonIndexItem = React.createClass({
+	  displayName: "LessonIndexItem",
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-list-item-wrapper" },
+	      React.createElement(
+	        "p",
+	        { className: "lesson-list-item" },
+	        React.createElement("a", { className: "lesson-list-circle",
+	          href: "#/lessons/" + this.props.lesson.id }),
+	        this.props.lesson.name
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LessonIndexItem;
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(209).Store;
+	var LessonConstants = __webpack_require__(259);
+	var AppDispatcher = __webpack_require__(228);
+	var _lessons = {};
+	var LessonStore = new Store(AppDispatcher);
+	
+	var resetLessons = function (lessons) {
+	  _lessons = Object.assign({}, lessons);
+	};
+	
+	var addLesson = function (lesson) {
+	  _lessons[lesson.id] = lesson;
+	};
+	
+	LessonStore.all = function () {
+	  return Object.assign({}, _lessons);
+	};
+	
+	LessonStore.find = function (lessonId) {
+	  return _lessons[lessonId];
+	};
+	
+	LessonStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case LessonConstants.LESSONS_RECEIVED:
+	      resetLessons(payload.lessons);
+	      LessonStore.__emitChange();
+	      break;
+	    case LessonConstants.LESSON_RECEIVED:
+	      addLesson(payload.lesson);
+	      LessonStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.LessonStore = LessonStore;
+	
+	module.exports = LessonStore;
+
+/***/ },
+/* 259 */
+/***/ function(module, exports) {
+
+	var SkillConstants = {
+	  LESSONS_RECEIVED: "LESSONS_RECEIVED",
+	  LESSON_RECEIVED: "LESSON_RECEIVED"
+	};
+	
+	module.exports = SkillConstants;
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var LessonActions = __webpack_require__(261);
+	
+	var LessonsApiUtil = {
+	  fetchLessons: function (lessonId) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/skills/" + lessonId + "/lessons",
+	      dataType: "json",
+	      success: function (lessons) {
+	        LessonActions.receiveAll(lessons);
+	      }
+	    });
+	  },
+	
+	  fetchLesson: function (lessonId) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/lessons/" + lessonId,
+	      dataType: "json",
+	      success: function (lesson) {
+	        LessonActions.receiveLesson(lesson);
+	      }
+	    });
+	  }
+	};
+	
+	window.LessonsApiUtil = LessonsApiUtil;
+	
+	module.exports = LessonsApiUtil;
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(228),
+	    LessonConstants = __webpack_require__(259);
+	
+	var LessonActions = {
+	  receiveAll: function (lessons) {
+	    AppDispatcher.dispatch({
+	      actionType: LessonConstants.LESSONS_RECEIVED,
+	      lessons: lessons
+	    });
+	  },
+	
+	  receiveLesson: function (lesson) {
+	    AppDispatcher.dispatch({
+	      actionType: LessonConstants.LESSON_RECEIVED,
+	      lesson: lesson
+	    });
+	  }
+	};
+	
+	module.exports = LessonActions;
 
 /***/ }
 /******/ ]);

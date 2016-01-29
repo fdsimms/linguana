@@ -1,12 +1,14 @@
 .course-page,
-.skill-page {
+.skill-page,
+.lesson-page {
   background-color: #eee;
   display: block;
   padding: 30px 0 50px 0;
 }
 
 .course-page-content,
-.skill-page-content {
+.skill-page-content,
+.lesson-page-content {
   width: 700px;
   display: block;
   margin: auto;
@@ -17,7 +19,8 @@
 }
 
 .course-page-header,
-.skill-page-header {
+.skill-page-header,
+.lesson-page-header {
   color: black;
   padding: 40px;
   font-size: 24px;

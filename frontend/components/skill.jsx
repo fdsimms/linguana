@@ -1,6 +1,6 @@
 var React = require('react'),
     SkillStore = require('../stores/skill_store'),
-    SkillIndex = require('./skill_index'),
+    LessonIndex = require('./lessons/lesson_index'),
     SkillsApiUtil = require('../util/skills_api_util');
 
 var Skill = React.createClass({
@@ -27,6 +27,7 @@ var Skill = React.createClass({
           <h2 className="skill-page-header">
             Lessons
           </h2>
+          <LessonIndex skillId={this.state.skill.id} />
           <div className="tips-and-notes">
             <h2 className="tips-and-notes-header">
             Tips and Notes

@@ -8,7 +8,8 @@ var React = require('react'),
     Course = require('./components/course'),
     Splash = require('./components/splash'),
     SkillIndex = require('./components/skill_index'),
-    Skill = require('./components/skill');
+    Skill = require('./components/skill'),
+    Lesson = require('./components/lessons/lesson');
 
 
   var routes = (
@@ -17,6 +18,7 @@ var React = require('react'),
       <Route path="/courses" component={CourseIndex} />
       <Route path="/courses/:courseId" component={Course} />
       <Route path="/skills/:skillId" component={Skill} />
+      <Route path="/lessons/:lessonId" component={Lesson} />
     </Route>
   );
 

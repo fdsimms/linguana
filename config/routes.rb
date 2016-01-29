@@ -8,6 +8,9 @@ Rails.application.routes.draw do
     resources :courses, except: [:new, :edit] do
       resources :skills, except: [:new, :edit, :create, :show]
     end
-    resources :skills, only: [:create, :show, :destroy, :update]
+    resources :skills, only: [:create, :show, :destroy, :update] do
+      resources :lessons, except: [:new, :edit, :create, :show]
+    end
+    resources :lessons, only: [:create, :show, :destroy, :update]
   end
 end
