@@ -24069,7 +24069,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        null,
+	        { className: 'main-content' },
 	        this.props.children
 	      )
 	    );

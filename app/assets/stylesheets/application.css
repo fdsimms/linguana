@@ -29,6 +29,11 @@
    text-decoration: none;
  }
 
+ .main-content {
+   height: 100%;
+   width: 100%;
+ }
+
  ul {
    list-style: none;
  }
@@ -53,7 +58,7 @@
    position: relative;
    display: block;
    min-width: 600px;
-   width: 1500px;
+   width: calc(100% -100px);
  }
 
  .splash-login-form {

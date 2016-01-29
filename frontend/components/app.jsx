@@ -39,7 +39,7 @@ module.exports = React.createClass({
             </div>
           </nav>
         </header>
-        <div>{this.props.children}</div>
+        <div className="main-content">{this.props.children}</div>
       </div>
     );
   }
