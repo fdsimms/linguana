@@ -5,7 +5,7 @@ var React = require('react'),
 
 var Skill = React.createClass({
   getInitialState: function () {
-    return({});
+    return({ skill: SkillStore.find(this.props.params.skillId) });
   },
 
   componentDidMount: function () {

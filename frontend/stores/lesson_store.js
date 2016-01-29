@@ -1,9 +1,10 @@
 var Store = require('flux/utils').Store;
 var LessonConstants = require('../constants/lesson_constants');
 var AppDispatcher = require('../dispatcher/dispatcher');
-var _lessons = {};
+var ModalStore = require('./modal_store');
 var LessonStore = new Store(AppDispatcher);
 
+var _lessons = {};
 var resetLessons = function (lessons) {
   _lessons = Object.assign({}, lessons);
 };

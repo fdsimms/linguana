@@ -28,6 +28,7 @@ class Api::LessonsController < ApplicationController
 
   def show
     @lesson = Lesson.find(params[:id])
+    @skill = @lesson.skill
   end
 
   def index

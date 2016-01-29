@@ -31062,17 +31062,14 @@
 	  displayName: 'LanguageIndexModal',
 	
 	  getInitialState: function () {
-	    return { modalName: "languageIndexModal", token: "" };
+	    return { modalName: "languageIndexModal" };
 	  },
 	
 	  componentDidMount: function () {
 	    this.modalListener = ModalStore.addListener(this._modalsChanged);
 	    var modalName = this.state.modalName;
 	    ModalActions.addModal(modalName);
-	    this.setState({
-	      modalName: modalName,
-	      token: $('meta[name=csrf-token]').attr('content')
-	    });
+	    this.setState({ modalName: modalName });
 	  },
 	
 	  _modalsChanged: function () {
@@ -31083,10 +31080,6 @@
 	  componentWillUnmount: function () {
 	    this.modalListener.remove();
 	    ModalActions.removeModal(this.state.modalName);
-	  },
-	
-	  authToken: function () {
-	    return React.createElement('input', { name: 'authenticity_token', type: 'hidden', value: this.state.token });
 	  },
 	
 	  visibleRender: function () {
@@ -31777,7 +31770,7 @@
 	  displayName: 'Skill',
 	
 	  getInitialState: function () {
-	    return {};
+	    return { skill: SkillStore.find(this.props.params.skillId) };
 	  },
 	
 	  componentDidMount: function () {
@@ -31890,9 +31883,10 @@
 	var Store = __webpack_require__(215).Store;
 	var LessonConstants = __webpack_require__(256);
 	var AppDispatcher = __webpack_require__(209);
-	var _lessons = {};
+	var ModalStore = __webpack_require__(214);
 	var LessonStore = new Store(AppDispatcher);
 	
+	var _lessons = {};
 	var resetLessons = function (lessons) {
 	  _lessons = Object.assign({}, lessons);
 	};
@@ -31993,13 +31987,14 @@
 	    });
 	  },
 	
-	  fetchLesson: function (lessonId) {
+	  fetchLesson: function (lessonId, successCallback) {
 	    $.ajax({
 	      type: "GET",
 	      url: "api/lessons/" + lessonId,
 	      dataType: "json",
 	      success: function (lesson) {
 	        LessonActions.receiveLesson(lesson);
+	        successCallback && successCallback();
 	      }
 	    });
 	  }
@@ -32041,19 +32036,24 @@
 	var React = __webpack_require__(1),
 	    LessonStore = __webpack_require__(255),
 	    LessonIndex = __webpack_require__(254),
-	    LessonsApiUtil = __webpack_require__(258);
+	    LessonsApiUtil = __webpack_require__(258),
+	    TipsAndNotesModal = __webpack_require__(261),
+	    ModalActions = __webpack_require__(208);
 	
 	var Lesson = React.createClass({
 	  displayName: 'Lesson',
 	
 	  getInitialState: function () {
-	    return { lesson: null };
+	    return { lesson: LessonStore.find(this.props.params.lessonId),
+	      showModal: false };
 	  },
 	
 	  componentDidMount: function () {
 	    var lessonId = this.props.params.lessonId;
-	    LessonsApiUtil.fetchLesson(lessonId);
 	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+	    LessonsApiUtil.fetchLesson(lessonId, function () {
+	      this.setState({ lesson: LessonStore.find(this.props.params.lessonId), showModal: true });
+	    }.bind(this));
 	  },
 	
 	  componentWillUnmount: function () {
@@ -32061,12 +32061,23 @@
 	  },
 	
 	  _lessonsChanged: function () {
-	    this.setState({ lesson: LessonStore.find(this.props.params.lessonId) });
+	    this.setState({ lesson: LessonStore.find(this.props.params.lessonId),
+	      showModal: this.state.showModal });
+	  },
+	
+	  _handleTipsAndNotesClick: function () {
+	    ModalActions.toggleModalDisplay("tipsAndNotesModal");
 	  },
 	
 	  render: function () {
-	    if (this.state.lesson === null) {
+	    if (typeof this.state.lesson === "undefined") {
 	      return React.createElement('div', null);
+	    }
+	
+	    var modal;
+	    if (this.state.showModal) {
+	      modal = React.createElement(TipsAndNotesModal, {
+	        tipsAndNotes: this.state.lesson.tips_and_notes });
 	    }
 	
 	    return React.createElement(
@@ -32074,11 +32085,17 @@
 	      { className: 'lesson-page' },
 	      React.createElement(
 	        'div',
-	        { className: 'lesson-page-content' },
+	        { className: 'lesson-page-content box-shadowed' },
 	        React.createElement(
-	          'h2',
-	          { className: 'lesson-page-header' },
-	          'Inside lesson'
+	          'div',
+	          { className: 'tips-and-notes-wrapper' },
+	          React.createElement(
+	            'h3',
+	            { onClick: this._handleTipsAndNotesClick,
+	              className: 'tips-and-notes-modal-button' },
+	            'Tips & notes'
+	          ),
+	          modal
 	        )
 	      )
 	    );
@@ -32086,6 +32103,71 @@
 	});
 	
 	module.exports = Lesson;
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(208),
+	    ModalStore = __webpack_require__(214);
+	
+	var TipsAndNotesModal = React.createClass({
+	  displayName: 'TipsAndNotesModal',
+	
+	  getInitialState: function () {
+	    return { modalName: "tipsAndNotesModal" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    var modalName = this.state.modalName;
+	    ModalActions.addModal(modalName);
+	    this.forceUpdate();
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.forceUpdate();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	    ModalActions.removeModal(this.state.modalName);
+	  },
+	
+	  visibleRender: function () {
+	    var tipsAndNotes;
+	
+	    if (this.props.tipsAndNotes) {
+	      tipsAndNotes = this.props.tipsAndNotes;
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'tips-and-notes-modal box-shadowed' },
+	      React.createElement(
+	        'div',
+	        { className: 'triangle' },
+	        '▲'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'tips-and-notes-modal-text' },
+	        tipsAndNotes
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = TipsAndNotesModal;
 
 /***/ }
 /******/ ]);

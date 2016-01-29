@@ -1,23 +1,23 @@
 var React = require('react'),
-    ModalActions = require('../actions/modal_actions'),
-    ModalStore = require('../stores/modal_store'),
-    LanguageIndex = require('./language_index');
+    ModalActions = require('../../actions/modal_actions'),
+    ModalStore = require('../../stores/modal_store');
 
-var LanguageIndexModal = React.createClass({
+var TipsAndNotesModal = React.createClass({
   getInitialState: function () {
-    return { modalName: "languageIndexModal" };
+    return { modalName: "tipsAndNotesModal" };
   },
+
 
   componentDidMount: function () {
     this.modalListener = ModalStore.addListener(this._modalsChanged);
     var modalName = this.state.modalName;
     ModalActions.addModal(modalName);
-    this.setState({ modalName: modalName });
+    this.forceUpdate();
   },
 
   _modalsChanged: function () {
     var modalName = this.state.modalName;
-    this.setState({ modalName: modalName});
+    this.forceUpdate();
   },
 
   componentWillUnmount: function () {
@@ -26,9 +26,20 @@ var LanguageIndexModal = React.createClass({
   },
 
   visibleRender: function () {
+    var tipsAndNotes;
+
+    if (this.props.tipsAndNotes) {
+      tipsAndNotes = this.props.tipsAndNotes;
+    }
+
     return(
-      <div className="languages-modal">
-        <LanguageIndex />
+      <div className="tips-and-notes-modal box-shadowed">
+        <div className="triangle">
+          ▲
+        </div>
+        <p className="tips-and-notes-modal-text">
+        {tipsAndNotes}
+        </p>
       </div>
     );
   },
@@ -41,4 +52,4 @@ var LanguageIndexModal = React.createClass({
   }
 });
 
-module.exports = LanguageIndexModal;
+module.exports = TipsAndNotesModal;

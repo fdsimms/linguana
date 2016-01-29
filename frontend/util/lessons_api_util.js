@@ -16,13 +16,14 @@ var LessonsApiUtil = {
 		});
 	},
 
-  fetchLesson: function (lessonId) {
+  fetchLesson: function (lessonId, successCallback) {
     $.ajax({
       type: "GET",
       url: "api/lessons/" + lessonId,
       dataType: "json",
       success: function (lesson) {
         LessonActions.receiveLesson(lesson);
+        successCallback && successCallback();
       },
     });
   }

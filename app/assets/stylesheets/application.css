@@ -110,6 +110,10 @@
    margin: 15px auto 10px auto;
  }
 
+.box-shadowed {
+  box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
+}
+
  body {
    color: #fff;
    background-color: rgb(10, 68, 121);
