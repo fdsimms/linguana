@@ -33,7 +33,7 @@
 .tips-and-notes-modal {
   position: absolute;
   width: 400px;
-
+  z-index: 1;
   padding: 10px;
   border-radius: 10px;
   margin: 5px 10px;

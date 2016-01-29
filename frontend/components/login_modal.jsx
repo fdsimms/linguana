@@ -36,10 +36,8 @@ var LoginModal = React.createClass({
   visibleRender: function () {
     return(
       <div className="splash-login-form splash-form">
-        <div className="up-triangle">
-        </div>
 
-        <div className="splash-login-inputs">
+        <div className="splash-login-inputs box-shadowed">
         <form action="/session" method="post">
           {this.authToken()}
             <input name="session[username]"

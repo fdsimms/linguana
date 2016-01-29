@@ -28,9 +28,7 @@ var LanguageIndex = React.createClass({
 
     return(
       <div className="language-index">
-      <div className="up-triangle">
-      </div>
-        <ul className="language-list">
+        <ul className="language-list box-shadowed">
           {languages}
         </ul>
       </div>

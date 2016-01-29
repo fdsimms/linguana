@@ -24125,10 +24125,9 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'splash-login-form splash-form' },
-	      React.createElement('div', { className: 'up-triangle' }),
 	      React.createElement(
 	        'div',
-	        { className: 'splash-login-inputs' },
+	        { className: 'splash-login-inputs box-shadowed' },
 	        React.createElement(
 	          'form',
 	          { action: '/session', method: 'post' },
@@ -31137,10 +31136,9 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'language-index' },
-	      React.createElement('div', { className: 'up-triangle' }),
 	      React.createElement(
 	        'ul',
-	        { className: 'language-list' },
+	        { className: 'language-list box-shadowed' },
 	        languages
 	      )
 	    );

@@ -5,21 +5,17 @@
 
 .languages-modal {
   position: absolute;
+  z-index: 1;
 }
 
 .language-list {
+  border-radius: 10px;
 }
 .language-index {
     right: -190px;
     top: -44px;
     width: 325px;
     position: absolute;
-}
-
-.languages-modal .up-triangle {
-  position: absolute;
-  top: -8px;
-  right: 16px;
 }
 
 .language-list li {
@@ -33,14 +29,21 @@
   cursor: pointer;
 }
 
-.language-list li:after {
-  content: "❯";
+.language-list li:first-child:before {
+  content: "▲";
   position: absolute;
-  font-size: 20px;
-  right: 20px;
-  top: 8px;
-  color: #ccc;
-  display: block;
+  font-size: 17px;
+  right: 17px;
+  top: -17px;
+  color: #fff;
+}
+
+.language-list li:first-child:hover:before {
+  color: #ddd;
+}
+
+
+.language-list li:after {
 }
 
 .language-list li:hover:after {
@@ -58,6 +61,7 @@
 }
 
 .language-list li:first-child {
+  position: relative;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }

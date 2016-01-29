@@ -52,7 +52,7 @@
    clear: both;
    content: "";
    display: block;
- }
+  }
 
  .header-nav {
    position: relative;
@@ -61,28 +61,27 @@
    width: calc(100% -100px);
  }
 
- .splash-login-form {
-   position: absolute;
-   display: block;
-   right: 0px;
+.splash-login-form {
+  position: absolute;
+  display: block;
+  z-index: 1;
+  right: 0px;
+  top: 70px;
+}
 
-   top: 70px;
+.splash-login-form:before {
+  content: "▲";
+  position: absolute;
+  font-size: 17px;
+  right: 71px;
+  top: -17px;
+  color: #fff;
  }
 
- .up-triangle {
-   width: 0;
-   height: 0;
-   border-left: 10px solid transparent;
-   border-right: 10px solid transparent;
-   border-bottom: 10px solid #fff;
-   position: absolute;
-   right: 72px;
-   top: -10px;
- }
+
 
 .splash-login-form .header-nav-login-button:hover {
   display: block;
-
  }
 
  .splash-login-inputs {
