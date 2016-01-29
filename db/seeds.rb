@@ -37,6 +37,11 @@ esperanto = Language.create!(name: "Esperanto", abbreviation: "ep")
 
 # courses
 Course.destroy_all
+spanish_for_english = Course.create!(
+  name: "Spanish",
+  target_language_id: spanish.id,
+  known_language_id: english.id
+)
 french_for_english = Course.create!(
   name: "French",
   target_language_id: french.id,
@@ -45,11 +50,6 @@ french_for_english = Course.create!(
 portuguese_for_english = Course.create!(
   name: "Portuguese",
   target_language_id: portuguese.id,
-  known_language_id: english.id
-)
-spanish_for_english = Course.create!(
-  name: "Spanish",
-  target_language_id: spanish.id,
   known_language_id: english.id
 )
 esperanto_for_english = Course.create!(
@@ -125,18 +125,54 @@ portuguese_basic_3 = Skill.create!(
 # lessons
 
 Lesson.destroy_all
-french_basic_1_1 = Lesson.create!(
+spanish_basic_1_1 = Lesson.create!(
   name: "Lesson 1",
-  skill_id: french_basic_1.id
+  skill_id: spanish_basic_1.id
 )
-french_basic_1_2 = Lesson.create!(
+spanish_basic_1_2 = Lesson.create!(
   name: "Lesson 2",
-  skill_id: french_for_english.id
+  skill_id: spanish_for_english.id
 )
-french_basic_1_3 = Lesson.create!(
+spanish_basic_1_3 = Lesson.create!(
   name: "Lesson 3",
-  skill_id: french_for_english.id
+  skill_id: spanish_for_english.id
 
+)
+
+# multiple_choice_qs
+
+MultipleChoiceQ.destroy_all
+mcq1 = MultipleChoiceQ.create!(
+  lesson_id: spanish_basic_1_1.id,
+  body: "The boy"
+)
+mcq2 = MultipleChoiceQ.create!(
+  lesson_id: spanish_basic_1_1.id,
+  body: "The girl"
+)
+mcq3 = MultipleChoiceQ.create!(
+  lesson_id: spanish_basic_1_1.id,
+  body: "The dog"
+)
+mcq4 = MultipleChoiceQ.create!(
+  lesson_id: spanish_basic_1_1.id,
+  body: "The mother"
+)
+mcq5 = MultipleChoiceQ.create!(
+  lesson_id: spanish_basic_1_1.id,
+  body: "The doorknob"
+)
+mcq6 = MultipleChoiceQ.create!(
+  lesson_id: spanish_basic_1_1.id,
+  body: "The truck"
+)
+mcq7 = MultipleChoiceQ.create!(
+  lesson_id: spanish_basic_1_1.id,
+  body: "The bear"
+)
+mcq8 = MultipleChoiceQ.create!(
+  lesson_id: spanish_basic_1_1.id,
+  body: "The bicycle"
 )
 
 # course enrollments
