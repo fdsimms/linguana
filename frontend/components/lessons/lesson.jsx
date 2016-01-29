@@ -3,7 +3,8 @@ var React = require('react'),
     LessonIndex = require('./lesson_index'),
     LessonsApiUtil = require('../../util/lessons_api_util'),
     TipsAndNotesModal = require("../modals/tips_and_notes_modal"),
-    ModalActions = require("../../actions/modal_actions");
+    ModalActions = require("../../actions/modal_actions"),
+    LessonBottomBar = require("./lesson_bottom_bar");
 
 var Lesson = React.createClass({
   getInitialState: function () {
@@ -53,6 +54,7 @@ var Lesson = React.createClass({
             </h3>
             {modal}
           </div>
+          <LessonBottomBar />
         </div>
       </div>
     );

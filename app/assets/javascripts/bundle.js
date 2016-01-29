@@ -32038,7 +32038,8 @@
 	    LessonIndex = __webpack_require__(254),
 	    LessonsApiUtil = __webpack_require__(258),
 	    TipsAndNotesModal = __webpack_require__(261),
-	    ModalActions = __webpack_require__(208);
+	    ModalActions = __webpack_require__(208),
+	    LessonBottomBar = __webpack_require__(262);
 	
 	var Lesson = React.createClass({
 	  displayName: 'Lesson',
@@ -32096,7 +32097,8 @@
 	            'Tips & notes'
 	          ),
 	          modal
-	        )
+	        ),
+	        React.createElement(LessonBottomBar, null)
 	      )
 	    );
 	  }
@@ -32168,6 +32170,35 @@
 	});
 	
 	module.exports = TipsAndNotesModal;
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var LessonBottomBar = React.createClass({
+	  displayName: "LessonBottomBar",
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar group" },
+	      React.createElement(
+	        "a",
+	        { className: "skip-button" },
+	        "Skip"
+	      ),
+	      React.createElement(
+	        "a",
+	        { className: "check-button" },
+	        "Check"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LessonBottomBar;
 
 /***/ }
 /******/ ]);
