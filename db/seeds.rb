@@ -139,40 +139,49 @@ spanish_basic_1_3 = Lesson.create!(
 
 )
 
-# multiple_choice_qs
+# exercises
+#   multiple_choice
 
-MultipleChoiceQ.destroy_all
-mcq1 = MultipleChoiceQ.create!(
+Exercise.destroy_all
+mcq1 = Exercise.create!(
   lesson_id: spanish_basic_1_1.id,
-  body: "The boy"
+  thing_to_translate: "The boy",
+  exercise_type: "multiple_choice"
 )
-mcq2 = MultipleChoiceQ.create!(
+mcq2 = Exercise.create!(
   lesson_id: spanish_basic_1_1.id,
-  body: "The girl"
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The girl"
 )
-mcq3 = MultipleChoiceQ.create!(
+mcq3 = Exercise.create!(
   lesson_id: spanish_basic_1_1.id,
-  body: "The dog"
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The dog"
 )
-mcq4 = MultipleChoiceQ.create!(
+mcq4 = Exercise.create!(
   lesson_id: spanish_basic_1_1.id,
-  body: "The mother"
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The mother"
 )
-mcq5 = MultipleChoiceQ.create!(
+mcq5 = Exercise.create!(
   lesson_id: spanish_basic_1_1.id,
-  body: "The doorknob"
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The doorknob"
 )
-mcq6 = MultipleChoiceQ.create!(
+mcq6 = Exercise.create!(
   lesson_id: spanish_basic_1_1.id,
-  body: "The truck"
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The truck"
 )
-mcq7 = MultipleChoiceQ.create!(
+mcq7 = Exercise.create!(
   lesson_id: spanish_basic_1_1.id,
-  body: "The bear"
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The bear"
 )
-mcq8 = MultipleChoiceQ.create!(
+mcq8 = Exercise.create!(
   lesson_id: spanish_basic_1_1.id,
-  body: "The bicycle"
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The bicycle"
 )
 
 # course enrollments

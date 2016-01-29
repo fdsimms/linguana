@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129203026) do
+ActiveRecord::Schema.define(version: 20160129222606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,16 @@ ActiveRecord::Schema.define(version: 20160129203026) do
 
   add_index "courses", ["target_language_id", "known_language_id"], name: "index_courses_on_target_language_id_and_known_language_id", unique: true, using: :btree
 
+  create_table "exercises", force: :cascade do |t|
+    t.integer  "lesson_id",          null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "exercise_type",      null: false
+    t.string   "thing_to_translate", null: false
+  end
+
+  add_index "exercises", ["lesson_id"], name: "index_exercises_on_lesson_id", using: :btree
+
   create_table "languages", force: :cascade do |t|
     t.string   "name",         null: false
     t.string   "abbreviation", null: false
@@ -55,15 +65,6 @@ ActiveRecord::Schema.define(version: 20160129203026) do
 
   add_index "lessons", ["name"], name: "index_lessons_on_name", using: :btree
   add_index "lessons", ["skill_id"], name: "index_lessons_on_skill_id", using: :btree
-
-  create_table "multiple_choice_qs", force: :cascade do |t|
-    t.integer  "lesson_id",  null: false
-    t.string   "body",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "multiple_choice_qs", ["lesson_id"], name: "index_multiple_choice_qs_on_lesson_id", using: :btree
 
   create_table "skills", force: :cascade do |t|
     t.integer  "course_id",      null: false

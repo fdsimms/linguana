@@ -4,5 +4,5 @@ class Lesson < ActiveRecord::Base
 
   belongs_to :skill
   has_one :course, through: :skill
-  has_many :multiple_choice_qs, dependent: :destroy
+  has_many :exercises, dependent: :destroy
 end
