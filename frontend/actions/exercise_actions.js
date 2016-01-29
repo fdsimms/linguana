@@ -4,14 +4,14 @@ var AppDispatcher = require('../dispatcher/dispatcher'),
 var ExerciseActions = {
   receiveAll: function (exercises) {
     AppDispatcher.dispatch({
-      actionType: ExerciseConstants.LESSONS_RECEIVED,
+      actionType: ExerciseConstants.EXERCISES_RECEIVED,
       exercises: exercises
     });
   },
 
   receiveExercise: function (exercise) {
     AppDispatcher.dispatch({
-      actionType: ExerciseConstants.LESSON_RECEIVED,
+      actionType: ExerciseConstants.EXERCISE_RECEIVED,
       exercise: exercise
     });
   }

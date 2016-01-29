@@ -1,17 +1,14 @@
 var ExerciseActions = require('../actions/exercise_actions');
 
 var ExercisesApiUtil = {
-	fetchExercises: function (exerciseId) {
+	fetchExercises: function (lessonId, successCallback) {
 		$.ajax({
 			type: "GET",
-			url: "api/lessons/" + exerciseId + "/exercises",
+			url: "api/lessons/" + lessonId + "/exercises",
 			dataType: "json",
 			success: function (exercises) {
-        var exercisesPayload = {};
-        exercises.forEach(function (exercise) {
-          exercisesPayload[exercise.id] = exercise;
-        });
-  			ExerciseActions.receiveAll(exercisesPayload);
+  			ExerciseActions.receiveAll(exercises);
+        successCallback && successCallback();
 			},
 		});
 	},

@@ -2,32 +2,28 @@ var Store = require('flux/utils').Store;
 var ExerciseConstants = require('../constants/exercise_constants');
 var AppDispatcher = require('../dispatcher/dispatcher');
 var ModalStore = require('./modal_store');
+
 var ExerciseStore = new Store(AppDispatcher);
 
-var _exercises = {};
+var _exercises = [];
 var resetExercises = function (exercises) {
-  _exercises = Object.assign({}, exercises);
-};
-
-var addExercise = function (exercise) {
-  _exercises[exercise.id] = exercise;
+  _exercises = exercises.slice();
 };
 
 ExerciseStore.all = function () {
-  return Object.assign({}, _exercises);
+  return _exercises.slice();
 };
 
-ExerciseStore.find = function (exerciseId) {
-  return _exercises[exerciseId];
+ExerciseStore.findByIdx = function (idx) {
+  return _exercises[idx];
 };
 
 ExerciseStore.findByLesson = function (lessonId) {
-  var result = {};
-  if (_exercises === {}) { return {}; }
-  Object.keys(_exercises).forEach(function (key) {
-    var exercise = _exercises[key];
+  var result = [];
+  if (_exercises === []) { return {}; }
+  _exercises.forEach(function (exercise) {
     if (exercise.lesson_id === lessonId) {
-      result[exercise.id] = exercise;
+      result.push(exercise);
     }
   });
   return result;
@@ -40,7 +36,7 @@ ExerciseStore.__onDispatch = function (payload) {
       ExerciseStore.__emitChange();
       break;
     case ExerciseConstants.EXERCISE_RECEIVED:
-      addExercise(payload.exercise);
+      resetExercises([payload.exercise]);
       ExerciseStore.__emitChange();
       break;
   }

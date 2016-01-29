@@ -32082,8 +32082,10 @@
 	    LessonStore = __webpack_require__(255),
 	    LessonIndex = __webpack_require__(254),
 	    LessonsApiUtil = __webpack_require__(258),
+	    ExercisesApiUtil = __webpack_require__(266),
 	    TipsAndNotesModal = __webpack_require__(261),
 	    ModalActions = __webpack_require__(208),
+	    Exercise = __webpack_require__(263),
 	    LessonBottomBar = __webpack_require__(262);
 	
 	var Lesson = React.createClass({
@@ -32091,7 +32093,7 @@
 	
 	  getInitialState: function () {
 	    return { lesson: LessonStore.find(this.props.params.lessonId),
-	      showModal: false };
+	      showModal: false, showExercise: false, currentExerciseIdx: 0 };
 	  },
 	
 	  componentDidMount: function () {
@@ -32099,6 +32101,10 @@
 	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
 	    LessonsApiUtil.fetchLesson(lessonId, function () {
 	      this.setState({ lesson: LessonStore.find(this.props.params.lessonId), showModal: true });
+	      ExercisesApiUtil.fetchExercises(this.state.lesson.id, function () {
+	        debugger;
+	        this.setState({ showExercise: true });
+	      }.bind(this));
 	    }.bind(this));
 	  },
 	
@@ -32110,6 +32116,8 @@
 	    this.setState({ lesson: LessonStore.find(this.props.params.lessonId),
 	      showModal: this.state.showModal });
 	  },
+	
+	  _exercisesChanged: function () {},
 	
 	  _handleTipsAndNotesClick: function () {
 	    ModalActions.toggleModalDisplay("tipsAndNotesModal");
@@ -32125,6 +32133,11 @@
 	      modal = React.createElement(TipsAndNotesModal, {
 	        tipsAndNotes: this.state.lesson.tips_and_notes });
 	    }
+	    var exercise;
+	    if (this.state.showExercise) {
+	      exercise = React.createElement(Exercise, { exerciseIdx: this.state.currentExerciseIdx });
+	    }
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'lesson-page' },
@@ -32148,6 +32161,7 @@
 	            'Quit'
 	          )
 	        ),
+	        exercise,
 	        React.createElement(LessonBottomBar, null)
 	      )
 	    );
@@ -32249,6 +32263,175 @@
 	});
 	
 	module.exports = LessonBottomBar;
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ExerciseStore = __webpack_require__(264),
+	    ExercisesApiUtil = __webpack_require__(266);
+	
+	var Exercise = React.createClass({
+	  displayName: 'Exercise',
+	
+	  getInitialState: function () {
+	    return { exercise: ExerciseStore.findByIdx(this.props.exerciseIdx) };
+	  },
+	
+	  componentDidMount: function () {
+	    this.exerciseListener = ExerciseStore.addListener(this._exercisesChanged);
+	    var exerciseId = this.state.exercise.id;
+	    ExercisesApiUtil.fetchExercise(exerciseId, function () {
+	      this.setState({ exercise: ExerciseStore.findByIdx(this.props.exerciseIdx) });
+	    }.bind(this));
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.exerciseListener.remove();
+	  },
+	
+	  _exercisesChanged: function () {
+	    var exercise = ExerciseStore.findByIdx(this.props.exerciseIdx);
+	    this.setState({ exercise: exercise });
+	  },
+	
+	  render: function () {
+	    if (typeof this.state.exercise === "undefined") {
+	      return React.createElement('div', null);
+	    }
+	
+	    return React.createElement('div', null);
+	  }
+	});
+	
+	module.exports = Exercise;
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(215).Store;
+	var ExerciseConstants = __webpack_require__(265);
+	var AppDispatcher = __webpack_require__(209);
+	var ModalStore = __webpack_require__(214);
+	
+	var ExerciseStore = new Store(AppDispatcher);
+	
+	var _exercises = [];
+	var resetExercises = function (exercises) {
+	  _exercises = exercises.slice();
+	};
+	
+	ExerciseStore.all = function () {
+	  return _exercises.slice();
+	};
+	
+	ExerciseStore.findByIdx = function (idx) {
+	  return _exercises[idx];
+	};
+	
+	ExerciseStore.findByLesson = function (lessonId) {
+	  var result = [];
+	  if (_exercises === []) {
+	    return {};
+	  }
+	  _exercises.forEach(function (exercise) {
+	    if (exercise.lesson_id === lessonId) {
+	      result.push(exercise);
+	    }
+	  });
+	  return result;
+	};
+	
+	ExerciseStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ExerciseConstants.EXERCISES_RECEIVED:
+	      resetExercises(payload.exercises);
+	      ExerciseStore.__emitChange();
+	      break;
+	    case ExerciseConstants.EXERCISE_RECEIVED:
+	      resetExercises([payload.exercise]);
+	      ExerciseStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.ExerciseStore = ExerciseStore;
+	
+	module.exports = ExerciseStore;
+
+/***/ },
+/* 265 */
+/***/ function(module, exports) {
+
+	var ExerciseConstants = {
+	  EXERCISES_RECEIVED: "EXERCISES_RECEIVED",
+	  EXERCISE_RECEIVED: "EXERCISE_RECEIVED"
+	};
+	
+	module.exports = ExerciseConstants;
+
+/***/ },
+/* 266 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ExerciseActions = __webpack_require__(267);
+	
+	var ExercisesApiUtil = {
+	  fetchExercises: function (lessonId, successCallback) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/lessons/" + lessonId + "/exercises",
+	      dataType: "json",
+	      success: function (exercises) {
+	        ExerciseActions.receiveAll(exercises);
+	        successCallback && successCallback();
+	      }
+	    });
+	  },
+	
+	  fetchExercise: function (exerciseId, successCallback) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/exercises/" + exerciseId,
+	      dataType: "json",
+	      success: function (exercise) {
+	        ExerciseActions.receiveExercise(exercise);
+	        successCallback && successCallback();
+	      }
+	    });
+	  }
+	};
+	
+	window.ExercisesApiUtil = ExercisesApiUtil;
+	
+	module.exports = ExercisesApiUtil;
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(209),
+	    ExerciseConstants = __webpack_require__(265);
+	
+	var ExerciseActions = {
+	  receiveAll: function (exercises) {
+	    AppDispatcher.dispatch({
+	      actionType: ExerciseConstants.EXERCISES_RECEIVED,
+	      exercises: exercises
+	    });
+	  },
+	
+	  receiveExercise: function (exercise) {
+	    AppDispatcher.dispatch({
+	      actionType: ExerciseConstants.EXERCISE_RECEIVED,
+	      exercise: exercise
+	    });
+	  }
+	};
+	
+	module.exports = ExerciseActions;
 
 /***/ }
 /******/ ]);

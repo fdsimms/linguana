@@ -14,7 +14,8 @@ Rails.application.routes.draw do
       resources :lessons, except: [:new, :edit, :create, :show]
     end
     resources :lessons, only: [:create, :show, :destroy, :update] do
-      resources :multiple_choice_qs, only: [:show, :create, :destroy, :update]
+      resources :exercises, only: [:create, :index, :destroy, :update]
     end
+    resources :exercises, only: [:show]
   end
 end
