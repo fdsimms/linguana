@@ -10,8 +10,8 @@ var Skill = React.createClass({
 
   componentDidMount: function () {
     var skillId = this.props.params.skillId;
-    SkillsApiUtil.fetchSkill(skillId);
     this.skillListener = SkillStore.addListener(this._skillsChanged);
+    SkillsApiUtil.fetchSkill(skillId);
   },
 
   componentWillUnmount: function () {

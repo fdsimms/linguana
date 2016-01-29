@@ -1,23 +1,20 @@
 var React = require('react'),
-    History = require('react-router').History,
     CourseStore = require('../stores/course_store'),
     SkillIndex = require('./skill_index'),
     CoursesApiUtil = require('../util/courses_api_util');
 
 var Course = React.createClass({
-  mixins: [History],
-
   getInitialState: function () {
-    return({ course: null });
+    return({ course: CourseStore.find(this.props.params.courseId) });
   },
 
   componentDidMount: function () {
     var courseId = this.props.params.courseId;
-    CoursesApiUtil.fetchCourse(courseId);
     this.courseListener = CourseStore.addListener(this._coursesChanged);
+    CoursesApiUtil.fetchCourse(courseId);
   },
 
-  componentDidMount: function () {
+  componentWillUnmount: function () {
     this.courseListener.remove();
   },
 
@@ -26,7 +23,7 @@ var Course = React.createClass({
   },
 
   render: function () {
-    if(this.state.course === null) { return <div></div>; }
+    if(typeof this.state.course === undefined) { return <div></div>; }
 
     return(
       <div className="course-page">
