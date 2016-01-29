@@ -121,3 +121,20 @@ portuguese_basic_3 = Skill.create!(
   course_id: portuguese_for_english.id,
   tips_and_notes: "So many basics of Portuguese!"
 )
+
+# lessons
+
+Lesson.destroy_all
+french_basic_1_1 = Lesson.create!(
+  name: "Lesson 1",
+  skill_id: french_basic_1.id
+)
+french_basic_1_2 = Lesson.create!(
+  name: "Lesson 2",
+  skill_id: french_for_english.id
+)
+french_basic_1_3 = Lesson.create!(
+  name: "Lesson 3",
+  skill_id: french_for_english.id
+
+)

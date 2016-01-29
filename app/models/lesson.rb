@@ -3,6 +3,6 @@ class Lesson < ActiveRecord::Base
   validates :name, uniqueness: true
 
   belongs_to :skill, dependent: :destroy
-  belongs_to :course, through: :skill
+  has_one :course, through: :skill
 
 end
