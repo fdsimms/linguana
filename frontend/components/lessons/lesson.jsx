@@ -11,7 +11,11 @@ var Lesson = React.createClass({
   componentDidMount: function () {
     var lessonId = this.props.params.lessonId;
     LessonsApiUtil.fetchLesson(lessonId);
-    var lessonListener = LessonStore.addListener(this._lessonsChanged);
+    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+  },
+
+  componentWillUnmount: function () {
+    this.lessonListener.remove();
   },
 
   _lessonsChanged: function () {

@@ -31757,7 +31757,11 @@
 	  componentDidMount: function () {
 	    var skillId = this.props.params.skillId;
 	    SkillsApiUtil.fetchSkill(skillId);
-	    var skillListener = SkillStore.addListener(this._skillsChanged);
+	    this.skillListener = SkillStore.addListener(this._skillsChanged);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.skillListener.remove();
 	  },
 	
 	  _skillsChanged: function () {
@@ -31822,7 +31826,11 @@
 	  componentDidMount: function () {
 	    var lessonId = this.props.params.lessonId;
 	    LessonsApiUtil.fetchLesson(lessonId);
-	    var lessonListener = LessonStore.addListener(this._lessonsChanged);
+	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.lessonListener.remove();
 	  },
 	
 	  _lessonsChanged: function () {
@@ -31917,11 +31925,19 @@
 	      "div",
 	      { className: "lesson-list-item-wrapper" },
 	      React.createElement(
-	        "p",
+	        "h2",
 	        { className: "lesson-list-item" },
-	        React.createElement("a", { className: "lesson-list-circle",
-	          href: "#/lessons/" + this.props.lesson.id }),
 	        this.props.lesson.name
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "lesson-list-contents" },
+	        React.createElement(
+	          "a",
+	          { className: "lesson-begin-button",
+	            href: "#/lessons/" + this.props.lesson.id },
+	          "Begin"
+	        )
 	      )
 	    );
 	  }

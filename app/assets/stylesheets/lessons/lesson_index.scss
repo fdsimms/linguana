@@ -1,0 +1,57 @@
+.lesson-index {
+  margin: auto;
+  width: 641px;
+  margin-bottom: 60px;
+}
+.lesson-index-container {
+  width: 100%;
+  margin-top: 100px;
+}
+
+.lesson-index-header {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.lesson-list {
+}
+
+.lesson-list-item {
+  display: block;
+  padding: 15px;
+
+  color: #000;
+  font-weight: bold;
+  position: relative;
+}
+
+.lesson-begin-button {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  margin-top: 70px;
+}
+
+.lesson-list-contents {
+  width: calc(100% - 25px);
+  margin: auto;
+}
+
+.lesson-list-item-wrapper {
+  margin: 10px;
+  content: "";
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  top: -110px;
+  right: 19px;
+  background: #fff;
+  float: left;
+  width: 175px;
+  height: 175px;
+}
+
+.lesson-list-item-wrapper:before:hover {
+  background-color: rgb(47, 99, 149);
+  border: 1px solid black;
+}

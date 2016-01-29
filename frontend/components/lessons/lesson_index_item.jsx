@@ -4,12 +4,15 @@ var LessonIndexItem = React.createClass({
   render: function () {
     return(
       <div className="lesson-list-item-wrapper">
-        <p className="lesson-list-item">
-          <a className="lesson-list-circle"
-             href={"#/lessons/" + this.props.lesson.id }>
-          </a>
+        <h2 className="lesson-list-item">
           {this.props.lesson.name}
-        </p>
+        </h2>
+        <div className="lesson-list-contents">
+          <a className="lesson-begin-button"
+             href={"#/lessons/" + this.props.lesson.id }>
+            Begin
+          </a>
+        </div>
       </div>
     );
   }

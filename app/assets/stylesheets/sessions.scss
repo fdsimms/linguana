@@ -102,7 +102,8 @@
 
 .inputs button,
 .splash-login-inputs button,
-.guest-inputs > button {
+.guest-inputs > button,
+.lesson-begin-button {
   display: block;
   border-radius: 20px;
   background-color: rgb(33, 176, 249);
@@ -126,6 +127,7 @@
 
 .inputs button:hover,
 .guest-inputs > button:hover,
+.lesson-begin-button:hover,
 .splash-login-inputs button:hover {
   background-color: rgb(65, 188, 250);
 }
