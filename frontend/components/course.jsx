@@ -14,7 +14,11 @@ var Course = React.createClass({
   componentDidMount: function () {
     var courseId = this.props.params.courseId;
     CoursesApiUtil.fetchCourse(courseId);
-    var courseListener = CourseStore.addListener(this._coursesChanged);
+    this.courseListener = CourseStore.addListener(this._coursesChanged);
+  },
+
+  componentDidMount: function () {
+    this.courseListener.remove();
   },
 
   _coursesChanged: function () {
