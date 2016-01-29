@@ -21,6 +21,18 @@ LessonStore.find = function (lessonId) {
   return _lessons[lessonId];
 };
 
+LessonStore.findBySkill = function (skillId) {
+  var result = {};
+  if (_lessons === {}) { return {}; }
+  Object.keys(_lessons).forEach(function (key) {
+    var lesson = _lessons[key];
+    if (lesson.skill_id === skillId) {
+      result[lesson.id] = lesson;
+    }
+  });
+  return result;
+};
+
 LessonStore.__onDispatch = function (payload) {
   switch(payload.actionType) {
     case LessonConstants.LESSONS_RECEIVED:

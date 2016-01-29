@@ -12,6 +12,18 @@ var addCourse = function (course) {
   _courses[course.id] = course;
 };
 
+// CourseStore.findByLanguage = function (languageId) {
+//   var result = {};
+//   if (courses === {}) { return {}; }
+//   Object.keys(courses).forEach(function (key) {
+//     var course = courses[key];
+//     if (course.language_id === languageId) {
+//       result[course.id] = course;
+//     }
+//   });
+//   return result;
+// };
+
 CourseStore.all = function () {
   return Object.assign({}, _courses);
 };

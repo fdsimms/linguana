@@ -5,7 +5,7 @@ var React = require('react'),
 
 var SkillIndex = React.createClass({
   getInitialState: function () {
-    return { skills: SkillStore.all() };
+    return { skills: SkillStore.findByCourse(this.props.courseId) };
   },
 
   _onChange: function () {

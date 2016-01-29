@@ -31338,6 +31338,18 @@
 	  _courses[course.id] = course;
 	};
 	
+	// CourseStore.findByLanguage = function (languageId) {
+	//   var result = {};
+	//   if (courses === {}) { return {}; }
+	//   Object.keys(courses).forEach(function (key) {
+	//     var course = courses[key];
+	//     if (course.language_id === languageId) {
+	//       result[course.id] = course;
+	//     }
+	//   });
+	//   return result;
+	// };
+	
 	CourseStore.all = function () {
 	  return Object.assign({}, _courses);
 	};
@@ -31532,7 +31544,7 @@
 	  displayName: 'SkillIndex',
 	
 	  getInitialState: function () {
-	    return { skills: SkillStore.all() };
+	    return { skills: SkillStore.findByCourse(this.props.courseId) };
 	  },
 	
 	  _onChange: function () {
@@ -31590,6 +31602,20 @@
 	
 	var addSkill = function (skill) {
 	  _skills[skill.id] = skill;
+	};
+	
+	SkillStore.findByCourse = function (courseId) {
+	  var result = {};
+	  if (_skills === {}) {
+	    return {};
+	  }
+	  Object.keys(_skills).forEach(function (key) {
+	    var skill = _skills[key];
+	    if (skill.course_id === courseId) {
+	      result[skill.id] = skill;
+	    }
+	  });
+	  return result;
 	};
 	
 	SkillStore.all = function () {
@@ -31838,7 +31864,9 @@
 	  displayName: 'LessonIndex',
 	
 	  getInitialState: function () {
-	    return { lessons: LessonStore.all() };
+	    var lessons = LessonStore.findBySkill(this.props.skillId);
+	
+	    return { lessons: lessons };
 	  },
 	
 	  _onChange: function () {
@@ -31846,8 +31874,8 @@
 	  },
 	
 	  componentDidMount: function () {
-	    LessonsApiUtil.fetchLessons(this.props.skillId);
 	    this.lessonListener = LessonStore.addListener(this._onChange);
+	    LessonsApiUtil.fetchLessons(this.props.skillId);
 	  },
 	
 	  componentWillUnmount: function () {
@@ -31856,7 +31884,12 @@
 	
 	  render: function () {
 	    var lessons = this.state.lessons;
+	    if (typeof lessons === "undefined") {
+	      return React.createElement('div', null);
+	    }
+	
 	    var lessonKeys = Object.keys(this.state.lessons);
+	
 	    lessons = lessonKeys.map(function (key, idx) {
 	      var lesson = lessons[key];
 	      return React.createElement(LessonIndexItem, { key: idx, lesson: lesson });
@@ -31901,6 +31934,20 @@
 	
 	LessonStore.find = function (lessonId) {
 	  return _lessons[lessonId];
+	};
+	
+	LessonStore.findBySkill = function (skillId) {
+	  var result = {};
+	  if (_lessons === {}) {
+	    return {};
+	  }
+	  Object.keys(_lessons).forEach(function (key) {
+	    var lesson = _lessons[key];
+	    if (lesson.skill_id === skillId) {
+	      result[lesson.id] = lesson;
+	    }
+	  });
+	  return result;
 	};
 	
 	LessonStore.__onDispatch = function (payload) {

@@ -5,7 +5,9 @@ var React = require('react'),
 
 var LessonIndex = React.createClass({
   getInitialState: function () {
-    return { lessons: LessonStore.all() };
+    var lessons = LessonStore.findBySkill(this.props.skillId);
+
+    return { lessons: lessons };
   },
 
   _onChange: function () {
@@ -13,8 +15,8 @@ var LessonIndex = React.createClass({
   },
 
   componentDidMount: function () {
-    LessonsApiUtil.fetchLessons(this.props.skillId);
     this.lessonListener = LessonStore.addListener(this._onChange);
+    LessonsApiUtil.fetchLessons(this.props.skillId);
   },
 
   componentWillUnmount: function () {
@@ -23,7 +25,12 @@ var LessonIndex = React.createClass({
 
   render: function () {
     var lessons = this.state.lessons;
+    if (typeof lessons === "undefined") {
+      return <div />;
+    }
+
     var lessonKeys = Object.keys(this.state.lessons);
+
     lessons = lessonKeys.map(function (key, idx) {
       var lesson = lessons[key];
       return <LessonIndexItem key={idx} lesson={lesson} />;

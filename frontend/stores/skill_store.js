@@ -13,6 +13,18 @@ var addSkill = function (skill) {
 
 };
 
+SkillStore.findByCourse = function (courseId) {
+  var result = {};
+  if (_skills === {}) { return {}; }
+  Object.keys(_skills).forEach(function (key) {
+    var skill = _skills[key];
+    if (skill.course_id === courseId) {
+      result[skill.id] = skill;
+    }
+  });
+  return result;
+};
+
 SkillStore.all = function () {
   return Object.assign({}, _skills);
 };
