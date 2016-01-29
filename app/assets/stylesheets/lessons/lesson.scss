@@ -22,12 +22,16 @@
   display: block;
 }
 
-.tips-and-notes-modal-button {
+.tips-and-notes-modal-button,
+.tips-and-notes-quit {
   color: #aaa;
   display: block;
   cursor: pointer;
   padding: 25px;
-  width: 108px;
+}
+
+.tips-and-notes-modal-button {
+  float: left;
 }
 
 .tips-and-notes-modal {
@@ -37,6 +41,11 @@
   padding: 10px;
   border-radius: 10px;
   margin: 5px 10px;
+}
+
+.tips-and-notes-quit {
+  float: right;
+
 }
 
 .tips-and-notes-modal-text {

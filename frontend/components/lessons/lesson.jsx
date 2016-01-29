@@ -43,16 +43,19 @@ var Lesson = React.createClass({
           <TipsAndNotesModal
             tipsAndNotes={this.state.lesson.tips_and_notes}/>;
       }
-
     return(
       <div className="lesson-page">
         <div className="lesson-page-content box-shadowed">
-          <div className="tips-and-notes-wrapper">
+          <div className="tips-and-notes-wrapper group">
             <h3 onClick={this._handleTipsAndNotesClick}
                 className="tips-and-notes-modal-button">
               Tips & notes
             </h3>
             {modal}
+            <a className="tips-and-notes-quit"
+              href={"#/skills/" + this.state.lesson.skill_id }>
+              Quit
+            </a>
           </div>
           <LessonBottomBar />
         </div>
