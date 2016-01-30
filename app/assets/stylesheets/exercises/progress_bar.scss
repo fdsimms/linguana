@@ -1,0 +1,35 @@
+.unfilled-chunk {
+  background-color: #fff;
+}
+
+.filled-chunk {
+  background-color: rgb(255, 0, 0)
+}
+
+.current-chunk {
+  background-color: rgb(255, 102, 102);
+}
+
+.chunk {
+  height: 100%;
+  border-left: 1px solid #aaa;
+  display: block;
+  width: calc(100% / 8 - 1px);
+  float: left;
+}
+
+.chunk:first-child {
+  border-left: none;
+}
+
+.progress-bar {
+  margin-bottom: 50px;
+  display: block;
+  margin: auto;
+  width: 600px;
+  overflow: hidden;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  height: 30px;
+
+}

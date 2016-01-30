@@ -6,6 +6,7 @@ var React = require('react'),
     TipsAndNotesModal = require("../modals/tips_and_notes_modal"),
     ModalActions = require("../../actions/modal_actions"),
     Exercise = require("../exercises/exercise"),
+    ProgressBar = require("./progress_bar"),
     LessonBottomBar = require("./lesson_bottom_bar");
 
 var Lesson = React.createClass({
@@ -54,11 +55,14 @@ var Lesson = React.createClass({
           <TipsAndNotesModal
             tipsAndNotes={this.state.lesson.tips_and_notes}/>;
       }
-      var exercise;
+      var exercise,
+          progress_bar
       if (this.state.showExercise) {
         exercise =
-        <Exercise lessonId ={this.state.lesson.id}
-                  exerciseIdx={this.state.currentExerciseIdx} />;
+          <Exercise lessonId ={this.state.lesson.id}
+                    exerciseIdx={this.state.currentExerciseIdx} />;
+        progress_bar =
+          <ProgressBar currentIdx={this.state.currentExerciseIdx} />
       }
 
     return(
@@ -75,6 +79,7 @@ var Lesson = React.createClass({
               Quit
             </a>
           </div>
+          {progress_bar}
           {exercise}
           <LessonBottomBar
             onClickCheck={this._handleCheckClick}

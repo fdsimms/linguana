@@ -35,16 +35,10 @@ var Exercise = React.createClass({
       return <div></div>
     }
 
-    var counter = this.props.exerciseIdx + 1;
-    var total = ExerciseStore.all().length;
-
     var thing_to_translate = this.state.exercise.thing_to_translate
     return(
       <div className="exercise">
         <div className="exercise-contents">
-          <h2 className="counter">
-            Exercise {counter}/{total}
-          </h2>
           <h2 className="exercise-header">
             Choose the right translation for "{thing_to_translate}."
           </h2>

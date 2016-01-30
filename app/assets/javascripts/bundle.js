@@ -32086,6 +32086,7 @@
 	    TipsAndNotesModal = __webpack_require__(264),
 	    ModalActions = __webpack_require__(208),
 	    Exercise = __webpack_require__(265),
+	    ProgressBar = __webpack_require__(268),
 	    LessonBottomBar = __webpack_require__(267);
 	
 	var Lesson = React.createClass({
@@ -32135,10 +32136,11 @@
 	      modal = React.createElement(TipsAndNotesModal, {
 	        tipsAndNotes: this.state.lesson.tips_and_notes });
 	    }
-	    var exercise;
+	    var exercise, progress_bar;
 	    if (this.state.showExercise) {
 	      exercise = React.createElement(Exercise, { lessonId: this.state.lesson.id,
 	        exerciseIdx: this.state.currentExerciseIdx });
+	      progress_bar = React.createElement(ProgressBar, { currentIdx: this.state.currentExerciseIdx });
 	    }
 	
 	    return React.createElement(
@@ -32164,6 +32166,7 @@
 	            'Quit'
 	          )
 	        ),
+	        progress_bar,
 	        exercise,
 	        React.createElement(LessonBottomBar, {
 	          onClickCheck: this._handleCheckClick,
@@ -32354,9 +32357,6 @@
 	      return React.createElement('div', null);
 	    }
 	
-	    var counter = this.props.exerciseIdx + 1;
-	    var total = ExerciseStore.all().length;
-	
 	    var thing_to_translate = this.state.exercise.thing_to_translate;
 	    return React.createElement(
 	      'div',
@@ -32364,14 +32364,6 @@
 	      React.createElement(
 	        'div',
 	        { className: 'exercise-contents' },
-	        React.createElement(
-	          'h2',
-	          { className: 'counter' },
-	          'Exercise ',
-	          counter,
-	          '/',
-	          total
-	        ),
 	        React.createElement(
 	          'h2',
 	          { className: 'exercise-header' },
@@ -32469,6 +32461,71 @@
 	});
 	
 	module.exports = LessonBottomBar;
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ProgressBarChunk = __webpack_require__(269),
+	    ExerciseStore = __webpack_require__(266);
+	
+	var ProgressBar = React.createClass({
+	  displayName: 'ProgressBar',
+	
+	  componentWillReceiveProps: function (newProps) {},
+	
+	  render: function () {
+	    var totalChunks = ExerciseStore.all().length;
+	    var currentChunkIdx = this.props.currentIdx;
+	    var bar = [];
+	    for (var i = 0; i < totalChunks; i++) {
+	
+	      if (i > currentChunkIdx) {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          className: 'unfilled-chunk',
+	          key: i }));
+	      } else if (i === currentChunkIdx) {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          className: 'current-chunk',
+	          key: i }));
+	      } else {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          className: 'filled-chunk',
+	          key: i }));
+	      }
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'progress-bar group' },
+	      bar
+	    );
+	  }
+	});
+	
+	module.exports = ProgressBar;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ExerciseStore = __webpack_require__(266);
+	
+	var ProgressBarChunk = React.createClass({
+	  displayName: 'ProgressBarChunk',
+	
+	  render: function () {
+	
+	    return React.createElement('div', { className: "chunk " + this.props.className });
+	  }
+	});
+	
+	module.exports = ProgressBarChunk;
 
 /***/ }
 /******/ ]);
