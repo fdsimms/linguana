@@ -26,10 +26,19 @@ var Exercise = React.createClass({
   },
 
   render: function () {
-    if(typeof this.state.exercise === "undefined") { return <div></div>; }
+    if (typeof this.state.exercise === "undefined") {
+      return <div></div>
+    }
 
+    var thing_to_translate = this.state.exercise.thing_to_translate
     return(
-      <div></div>
+      <div className="exercise">
+        <div className="exercise-contents">
+          <h2 className="exercise-header">
+            Choose the right translation for "{thing_to_translate}"
+          </h2>
+        </div>
+      </div>
     );
   }
 });

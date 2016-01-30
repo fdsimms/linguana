@@ -20,7 +20,6 @@ var Lesson = React.createClass({
     LessonsApiUtil.fetchLesson(lessonId, function () {
       this.setState({ lesson: LessonStore.find(this.props.params.lessonId), showModal: true});
       ExercisesApiUtil.fetchExercises(this.state.lesson.id, function () {
-        debugger
         this.setState({ showExercise: true });
       }.bind(this));
     }.bind(this));
