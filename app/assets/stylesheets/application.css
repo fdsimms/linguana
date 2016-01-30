@@ -41,7 +41,7 @@
  img {
    display: block;
    height: auto;
-   width: auto;
+   width: 100%;
  }
 
  button {
@@ -54,12 +54,6 @@
    display: block;
   }
 
- .header-nav {
-   position: relative;
-   display: block;
-   min-width: 600px;
-   width: calc(100% -100px);
- }
 
 .splash-login-form {
   position: absolute;
