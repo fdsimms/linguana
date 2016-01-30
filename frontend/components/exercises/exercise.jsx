@@ -10,9 +10,14 @@ var Exercise = React.createClass({
   componentDidMount: function () {
     this.exerciseListener = ExerciseStore.addListener(this._exercisesChanged);
     var exerciseId = this.state.exercise.id;
-    ExercisesApiUtil.fetchExercise(exerciseId, function () {
+    ExercisesApiUtil.fetchExercises(this.props.lessonId, function () {
       this.setState({ exercise: ExerciseStore.findByIdx(this.props.exerciseIdx) });
     }.bind(this));
+  },
+
+  componentWillReceiveProps: function (newProps) {
+    var newExercise = ExerciseStore.findByIdx(newProps.exerciseIdx);
+    this.setState({ exercise: newExercise });
   },
 
   componentWillUnmount: function () {
@@ -35,7 +40,7 @@ var Exercise = React.createClass({
       <div className="exercise">
         <div className="exercise-contents">
           <h2 className="exercise-header">
-            Choose the right translation for "{thing_to_translate}"
+            Choose the right translation for "{thing_to_translate}."
           </h2>
         </div>
       </div>

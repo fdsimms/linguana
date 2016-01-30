@@ -35,12 +35,14 @@ var Lesson = React.createClass({
 
   },
 
-  _exercisesChanged: function () {
-
-  },
-
   _handleTipsAndNotesClick: function () {
     ModalActions.toggleModalDisplay("tipsAndNotesModal");
+  },
+
+  _handleCheckClick: function () {
+    var nextExerciseIdx = this.state.currentExerciseIdx + 1;
+    this.setState( { currentExerciseIdx: nextExerciseIdx });
+
   },
 
   render: function () {
@@ -55,7 +57,8 @@ var Lesson = React.createClass({
       var exercise;
       if (this.state.showExercise) {
         exercise =
-        <Exercise exerciseIdx={this.state.currentExerciseIdx} />;
+        <Exercise lessonId ={this.state.lesson.id}
+                  exerciseIdx={this.state.currentExerciseIdx} />;
       }
 
     return(
@@ -73,7 +76,9 @@ var Lesson = React.createClass({
             </a>
           </div>
           {exercise}
-          <LessonBottomBar />
+          <LessonBottomBar
+            onClickCheck={this._handleCheckClick}
+            onClickSkip={this.onClickSkip} />
         </div>
       </div>
     );

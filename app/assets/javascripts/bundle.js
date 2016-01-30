@@ -32116,10 +32116,13 @@
 	      showModal: this.state.showModal });
 	  },
 	
-	  _exercisesChanged: function () {},
-	
 	  _handleTipsAndNotesClick: function () {
 	    ModalActions.toggleModalDisplay("tipsAndNotesModal");
+	  },
+	
+	  _handleCheckClick: function () {
+	    var nextExerciseIdx = this.state.currentExerciseIdx + 1;
+	    this.setState({ currentExerciseIdx: nextExerciseIdx });
 	  },
 	
 	  render: function () {
@@ -32134,7 +32137,8 @@
 	    }
 	    var exercise;
 	    if (this.state.showExercise) {
-	      exercise = React.createElement(Exercise, { exerciseIdx: this.state.currentExerciseIdx });
+	      exercise = React.createElement(Exercise, { lessonId: this.state.lesson.id,
+	        exerciseIdx: this.state.currentExerciseIdx });
 	    }
 	
 	    return React.createElement(
@@ -32161,7 +32165,9 @@
 	          )
 	        ),
 	        exercise,
-	        React.createElement(LessonBottomBar, null)
+	        React.createElement(LessonBottomBar, {
+	          onClickCheck: this._handleCheckClick,
+	          onClickSkip: this.onClickSkip })
 	      )
 	    );
 	  }
@@ -32324,9 +32330,14 @@
 	  componentDidMount: function () {
 	    this.exerciseListener = ExerciseStore.addListener(this._exercisesChanged);
 	    var exerciseId = this.state.exercise.id;
-	    ExercisesApiUtil.fetchExercise(exerciseId, function () {
+	    ExercisesApiUtil.fetchExercises(this.props.lessonId, function () {
 	      this.setState({ exercise: ExerciseStore.findByIdx(this.props.exerciseIdx) });
 	    }.bind(this));
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    var newExercise = ExerciseStore.findByIdx(newProps.exerciseIdx);
+	    this.setState({ exercise: newExercise });
 	  },
 	
 	  componentWillUnmount: function () {
@@ -32355,7 +32366,7 @@
 	          { className: 'exercise-header' },
 	          'Choose the right translation for "',
 	          thing_to_translate,
-	          '"'
+	          '."'
 	        )
 	      )
 	    );
@@ -32437,8 +32448,9 @@
 	        "Skip"
 	      ),
 	      React.createElement(
-	        "a",
-	        { className: "check-button" },
+	        "button",
+	        { onClick: this.props.onClickCheck,
+	          className: "check-button" },
 	        "Check"
 	      )
 	    );
