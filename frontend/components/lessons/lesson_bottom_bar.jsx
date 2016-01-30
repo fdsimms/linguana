@@ -5,8 +5,8 @@ var LessonBottomBar = React.createClass({
     return(
       <div className="lesson-bottom-bar group">
         <a className="skip-button">Skip</a>
-        <button onClick={this.props.onClickCheck}
-                className="check-button">Check</button>
+        <a onClick={this.props.onClickCheck}
+                className="check-button">Check</a>
       </div>
     );
   }

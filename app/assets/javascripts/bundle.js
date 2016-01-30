@@ -32354,6 +32354,9 @@
 	      return React.createElement('div', null);
 	    }
 	
+	    var counter = this.props.exerciseIdx + 1;
+	    var total = ExerciseStore.all().length;
+	
 	    var thing_to_translate = this.state.exercise.thing_to_translate;
 	    return React.createElement(
 	      'div',
@@ -32361,6 +32364,14 @@
 	      React.createElement(
 	        'div',
 	        { className: 'exercise-contents' },
+	        React.createElement(
+	          'h2',
+	          { className: 'counter' },
+	          'Exercise ',
+	          counter,
+	          '/',
+	          total
+	        ),
 	        React.createElement(
 	          'h2',
 	          { className: 'exercise-header' },
@@ -32448,7 +32459,7 @@
 	        "Skip"
 	      ),
 	      React.createElement(
-	        "button",
+	        "a",
 	        { onClick: this.props.onClickCheck,
 	          className: "check-button" },
 	        "Check"
