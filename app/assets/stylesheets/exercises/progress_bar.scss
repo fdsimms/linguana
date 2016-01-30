@@ -1,21 +1,23 @@
 .unfilled-chunk {
-  background-color: #fff;
+  background-color: transparent;
+  border-left: 1px solid #aaa;
 }
 
-.filled-chunk {
-  background-color: rgb(255, 0, 0)
-}
-
-.current-chunk {
-  background-color: rgb(255, 102, 102);
-}
 
 .chunk {
   height: 100%;
-  border-left: 1px solid #aaa;
   display: block;
   width: calc(100% / 8 - 1px);
   float: left;
+}
+.current-chunk {
+  background-image: linear-gradient( to right, red, pink );
+}
+
+.filled-chunk {
+  box-sizing: border-box;
+  background-color: rgb(255, 0, 0);
+  border: none;
 }
 
 .chunk:first-child {
