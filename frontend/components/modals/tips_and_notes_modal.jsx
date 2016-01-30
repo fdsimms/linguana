@@ -34,9 +34,6 @@ var TipsAndNotesModal = React.createClass({
 
     return(
       <div className="tips-and-notes-modal box-shadowed">
-        <div className="triangle">
-          ▲
-        </div>
         <p className="tips-and-notes-modal-text">
         {tipsAndNotes}
         </p>

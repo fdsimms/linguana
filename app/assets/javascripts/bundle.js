@@ -24162,15 +24162,6 @@
 	              'Log in as guest'
 	            )
 	          )
-	        ),
-	        React.createElement(
-	          'form',
-	          { className: 'signup-button', action: '/users/new', method: 'get' },
-	          React.createElement(
-	            'button',
-	            null,
-	            'Not a member yet?'
-	          )
 	        )
 	      )
 	    );
@@ -32292,11 +32283,6 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'tips-and-notes-modal box-shadowed' },
-	      React.createElement(
-	        'div',
-	        { className: 'triangle' },
-	        '▲'
-	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'tips-and-notes-modal-text' },

@@ -38,38 +38,33 @@ var LoginModal = React.createClass({
       <div className="splash-login-form splash-form">
 
         <div className="splash-login-inputs box-shadowed">
-        <form action="/session" method="post">
+          <form action="/session" method="post">
+            {this.authToken()}
+              <input name="session[username]"
+                     placeholder="Username" />
+
+              <input type="password"
+                     name="session[password]"
+                     placeholder="Password" />
+
+              <button id="modal-login-button">Log in</button>
+          </form>
+
+          <form action="/session" method="post">
           {this.authToken()}
-            <input name="session[username]"
-                   placeholder="Username" />
+            <div className="guest-inputs">
 
-            <input type="password"
-                   name="session[password]"
-                   placeholder="Password" />
+              <input type="hidden"
+                     name="session[username]"
+                     value="guest" />
 
-            <button id="modal-login-button">Log in</button>
-        </form>
+              <input type="hidden"
+                     name="session[password]"
+                     value="password" />
 
-        <form action="/session" method="post">
-        {this.authToken()}
-          <div className="guest-inputs">
-
-            <input type="hidden"
-                   name="session[username]"
-                   value="guest" />
-
-            <input type="hidden"
-                   name="session[password]"
-                   value="password" />
-
-            <button>Log in as guest</button>
-          </div>
-        </form>
-
-
-        <form className="signup-button" action="/users/new" method="get">
-          <button>Not a member yet?</button>
-        </form>
+              <button>Log in as guest</button>
+            </div>
+          </form>
 
         </div>
       </div>
