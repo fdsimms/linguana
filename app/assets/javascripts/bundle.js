@@ -32629,7 +32629,9 @@
 	var ProgressBar = React.createClass({
 	  displayName: 'ProgressBar',
 	
-	  componentWillReceiveProps: function (newProps) {},
+	  componentWillReceiveProps: function (newProps) {
+	    this.forceUpdate();
+	  },
 	
 	  render: function () {
 	    var totalChunks = ExerciseStore.all().length;
@@ -32655,10 +32657,20 @@
 	      }
 	    }
 	
+	    var trophyClass = "fa fa-3x fa-trophy disabled-trophy";
+	    if (this.props.currentIdx === ExerciseStore.all().length) {
+	      trophyClass = "fa fa-3x fa-trophy";
+	    }
+	
 	    return React.createElement(
 	      'div',
-	      { className: 'progress-bar group' },
-	      bar
+	      { className: 'progress-bar' },
+	      React.createElement(
+	        'div',
+	        { className: 'progress-bar-chunks group' },
+	        bar
+	      ),
+	      React.createElement('i', { className: trophyClass })
 	    );
 	  }
 	});

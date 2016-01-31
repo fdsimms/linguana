@@ -7,7 +7,7 @@
 .chunk {
   height: 100%;
   display: block;
-  width: calc(100% / 8 - 1px);
+  width: 74px;
   float: left;
 }
 .current-chunk {
@@ -25,6 +25,13 @@
 }
 
 .progress-bar {
+  position: relative;
+  display: block;
+  width: 800px;
+  margin: auto;
+}
+
+.progress-bar-chunks {
   margin-bottom: 50px;
   display: block;
   margin: auto;
@@ -32,6 +39,23 @@
   overflow: hidden;
   border: 2px solid #ccc;
   border-radius: 20px;
-  height: 30px;
+  height: 20px;
+}
 
+.progress-bar .fa-trophy {
+  position: absolute;
+  color: gold;
+  width: 45px;
+  top: -30px;
+  left: 651px;
+  z-index: 1;
+  background-color: red;
+  padding: 16px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+.progress-bar .disabled-trophy {
+  color: #ccc;
+  background-color: #fff;
 }

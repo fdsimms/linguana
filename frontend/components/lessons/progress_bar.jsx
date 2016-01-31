@@ -4,7 +4,7 @@ var React = require('react'),
 
 var ProgressBar = React.createClass({
   componentWillReceiveProps: function (newProps) {
-
+    this.forceUpdate();
   },
 
   render: function () {
@@ -36,8 +36,18 @@ var ProgressBar = React.createClass({
       }
     }
 
+    var trophyClass = "fa fa-3x fa-trophy disabled-trophy";
+    if (this.props.currentIdx === ExerciseStore.all().length) {
+      trophyClass = "fa fa-3x fa-trophy";
+    }
+
     return(
-      <div className="progress-bar group">{bar}</div>
+      <div className="progress-bar">
+        <div className="progress-bar-chunks group">
+          {bar}
+        </div>
+        <i className={trophyClass}></i>
+      </div>
     );
   }
 });
