@@ -62,7 +62,7 @@ var LessonBottomBar = React.createClass({
 
   _finalPageBar: function () {
     return(
-      <div className="lesson-bottom-bar group">
+      <div className="lesson-bottom-bar final-page-bar group">
 
         <a onClick={this.props.onClickContinue}
            className="check-button">

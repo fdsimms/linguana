@@ -32188,7 +32188,7 @@
 	  _finalPageBar: function () {
 	    return React.createElement(
 	      "div",
-	      { className: "lesson-bottom-bar group" },
+	      { className: "lesson-bottom-bar final-page-bar group" },
 	      React.createElement(
 	        "a",
 	        { onClick: this.props.onClickContinue,

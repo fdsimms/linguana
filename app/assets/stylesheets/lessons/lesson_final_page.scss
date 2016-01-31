@@ -25,6 +25,17 @@
   border-radius: 50%;
 }
 
+.lesson-final-contents .fa-trophy:after {
+  content: "#1";
+  font-size: 31px;
+  position: absolute;
+  color: goldenrod;
+  font-weight: bold;
+  top: 50px;
+  text-shadow: none;
+  left: 60px;
+}
+
 .lesson-final-header {
   font-weight: bold;
   display: inline;
