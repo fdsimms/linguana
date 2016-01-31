@@ -32077,8 +32077,8 @@
 	    TipsAndNotesModal = __webpack_require__(264),
 	    ModalActions = __webpack_require__(208),
 	    Exercise = __webpack_require__(265),
-	    ProgressBar = __webpack_require__(267),
-	    LessonBottomBar = __webpack_require__(269);
+	    ProgressBar = __webpack_require__(269),
+	    LessonBottomBar = __webpack_require__(271);
 	
 	var Lesson = React.createClass({
 	  displayName: 'Lesson',
@@ -32243,31 +32243,33 @@
 
 	var ExerciseActions = __webpack_require__(262);
 	
+	var shuffleArray = function (array) {
+		for (var i = array.length - 1; i > 0; i--) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
+		return array;
+	};
+	
 	var ExercisesApiUtil = {
-	  fetchExercises: function (lessonId, successCallback) {
-	    $.ajax({
-	      type: "GET",
-	      url: "api/lessons/" + lessonId + "/exercises",
-	      dataType: "json",
-	      success: function (exercises) {
+		fetchExercises: function (lessonId, successCallback) {
+			$.ajax({
+				type: "GET",
+				url: "api/lessons/" + lessonId + "/exercises",
+				dataType: "json",
+				success: function (exercises) {
+					exercises.forEach(function (exercise, idx) {
+						var shuffled = shuffleArray(exercise.answer_choices);
+						exercises[idx].answer_choices = shuffled;
+					});
 	
-	        ExerciseActions.receiveAll(exercises);
-	        successCallback && successCallback();
-	      }
-	    });
-	  },
-	
-	  fetchExercise: function (exerciseId, successCallback) {
-	    $.ajax({
-	      type: "GET",
-	      url: "api/exercises/" + exerciseId,
-	      dataType: "json",
-	      success: function (exercise) {
-	        ExerciseActions.receiveExercise(exercise);
-	        successCallback && successCallback();
-	      }
-	    });
-	  }
+					ExerciseActions.receiveAll(exercises);
+					successCallback && successCallback();
+				}
+			});
+		}
 	};
 	
 	window.ExercisesApiUtil = ExercisesApiUtil;
@@ -32377,7 +32379,7 @@
 	var React = __webpack_require__(1),
 	    ExerciseStore = __webpack_require__(266),
 	    ExercisesApiUtil = __webpack_require__(261),
-	    AnswerChoiceIndex = __webpack_require__(270);
+	    AnswerChoiceIndex = __webpack_require__(267);
 	
 	var shuffleArray = function (array) {
 	  for (var i = array.length - 1; i > 0; i--) {
@@ -32520,7 +32522,108 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    ProgressBarChunk = __webpack_require__(268),
+	    AnswerChoiceIndexItem = __webpack_require__(268);
+	
+	var AnswerChoiceIndex = React.createClass({
+	  displayName: 'AnswerChoiceIndex',
+	
+	  _handleClick: function (idx) {
+	    if (this.props.answerChoices[idx].is_correct) {
+	      this.props.getAnswerChoiceStatus("correctIsSelected", idx);
+	    } else {
+	      this.props.getAnswerChoiceStatus("otherIsSelected", idx);
+	    }
+	  },
+	
+	  componentWillReceiveProps: function () {
+	    this.forceUpdate();
+	  },
+	
+	  answerChoices: function () {
+	    var answerChoices = this.props.answerChoices;
+	    answerChoices = answerChoices.map(function (choice, idx) {
+	
+	      var selected;
+	
+	      if (idx === this.props.currentAnswerChoiceIdx) {
+	        selected = "selected";
+	      }
+	
+	      var _handleClick;
+	      if (!this.props.checkClicked) {
+	        _handleClick = this._handleClick;
+	      }
+	
+	      return React.createElement(AnswerChoiceIndexItem, {
+	        key: idx,
+	        selected: selected,
+	        answerChoice: choice,
+	        idx: idx,
+	        _handleClick: _handleClick });
+	    }.bind(this));
+	    return answerChoices;
+	  },
+	
+	  render: function () {
+	    if (this.props.answerChoices === []) {
+	      return React.createElement('div', null);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'answer-choice-index' },
+	      React.createElement(
+	        'ul',
+	        { className: 'answer-choice-list group' },
+	        this.answerChoices()
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = AnswerChoiceIndex;
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var AnswerChoiceIndexItem = React.createClass({
+	  displayName: "AnswerChoiceIndexItem",
+	
+	  _handleClick: function () {
+	    var idx = this.props.idx;
+	    this.props._handleClick(idx);
+	  },
+	
+	  render: function () {
+	    var classes = "answer-choice-list-item-wrapper";
+	    if (this.props.selected) {
+	      classes = "answer-choice-list-item-wrapper selected";
+	    }
+	
+	    return React.createElement(
+	      "div",
+	      { onClick: this._handleClick,
+	        className: classes },
+	      React.createElement(
+	        "li",
+	        { className: "answer-choice-list-item" },
+	        this.props.answerChoice.body
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = AnswerChoiceIndexItem;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ProgressBarChunk = __webpack_require__(270),
 	    ExerciseStore = __webpack_require__(266);
 	
 	var ProgressBar = React.createClass({
@@ -32563,7 +32666,7 @@
 	module.exports = ProgressBar;
 
 /***/ },
-/* 268 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
@@ -32581,7 +32684,7 @@
 	module.exports = ProgressBarChunk;
 
 /***/ },
-/* 269 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32687,107 +32790,6 @@
 	});
 	
 	module.exports = LessonBottomBar;
-
-/***/ },
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    AnswerChoiceIndexItem = __webpack_require__(271);
-	
-	var AnswerChoiceIndex = React.createClass({
-	  displayName: 'AnswerChoiceIndex',
-	
-	  _handleClick: function (idx) {
-	    if (this.props.answerChoices[idx].is_correct) {
-	      this.props.getAnswerChoiceStatus("correctIsSelected", idx);
-	    } else {
-	      this.props.getAnswerChoiceStatus("otherIsSelected", idx);
-	    }
-	  },
-	
-	  componentWillReceiveProps: function () {
-	    this.forceUpdate();
-	  },
-	
-	  answerChoices: function () {
-	    var answerChoices = this.props.answerChoices;
-	    answerChoices = answerChoices.map(function (choice, idx) {
-	
-	      var selected;
-	
-	      if (idx === this.props.currentAnswerChoiceIdx) {
-	        selected = "selected";
-	      }
-	
-	      var _handleClick;
-	      if (!this.props.checkClicked) {
-	        _handleClick = this._handleClick;
-	      }
-	
-	      return React.createElement(AnswerChoiceIndexItem, {
-	        key: idx,
-	        selected: selected,
-	        answerChoice: choice,
-	        idx: idx,
-	        _handleClick: _handleClick });
-	    }.bind(this));
-	    return answerChoices;
-	  },
-	
-	  render: function () {
-	    if (this.props.answerChoices === []) {
-	      return React.createElement('div', null);
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'answer-choice-index' },
-	      React.createElement(
-	        'ul',
-	        { className: 'answer-choice-list group' },
-	        this.answerChoices()
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = AnswerChoiceIndex;
-
-/***/ },
-/* 271 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var AnswerChoiceIndexItem = React.createClass({
-	  displayName: "AnswerChoiceIndexItem",
-	
-	  _handleClick: function () {
-	    var idx = this.props.idx;
-	    this.props._handleClick(idx);
-	  },
-	
-	  render: function () {
-	    var classes = "answer-choice-list-item-wrapper";
-	    if (this.props.selected) {
-	      classes = "answer-choice-list-item-wrapper selected";
-	    }
-	
-	    return React.createElement(
-	      "div",
-	      { onClick: this._handleClick,
-	        className: classes },
-	      React.createElement(
-	        "li",
-	        { className: "answer-choice-list-item" },
-	        this.props.answerChoice.body
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = AnswerChoiceIndexItem;
 
 /***/ }
 /******/ ]);
