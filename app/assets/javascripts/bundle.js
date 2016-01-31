@@ -32132,7 +32132,9 @@
 	
 	  _handleCheckClick: function () {
 	    if (ExerciseStore.all().length === this.state.currentExerciseIdx + 1) {
-	      this.setState({ checkButtonClicked: true, lessonOver: true });
+	      setTimeout(function () {
+	        this.setState({ checkButtonClicked: true, lessonOver: true });
+	      }.bind(this), 750);
 	    } else {
 	      this.setState({ checkButtonClicked: true });
 	    }
@@ -32316,7 +32318,7 @@
 						exercises[idx].answer_choices = shuffled;
 					});
 	
-					ExerciseActions.receiveAll(exercises);
+					ExerciseActions.receiveAll(shuffleArray(exercises));
 					successCallback && successCallback();
 				}
 			});
@@ -32906,7 +32908,7 @@
 	        React.createElement(
 	          'h2',
 	          { className: 'lesson-final-counter' },
-	          '+ 10xp'
+	          '+10 xp'
 	        ),
 	        React.createElement('i', { className: 'fa fa-5x fa-trophy' })
 	      )

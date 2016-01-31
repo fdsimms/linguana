@@ -63,7 +63,9 @@ var Lesson = React.createClass({
 
   _handleCheckClick: function () {
     if (ExerciseStore.all().length === this.state.currentExerciseIdx + 1) {
-      this.setState({ checkButtonClicked: true, lessonOver: true });
+      setTimeout(function () {
+        this.setState({ checkButtonClicked: true, lessonOver: true });
+      }.bind(this), 750)
     } else {
       this.setState({ checkButtonClicked: true })
     }

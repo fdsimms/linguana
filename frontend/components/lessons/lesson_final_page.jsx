@@ -11,7 +11,7 @@ module.exports = React.createClass({
             Lesson complete!
           </h2>
           <h2 className="lesson-final-counter">
-            + 10xp
+            +10 xp
           </h2>
           <i className="fa fa-5x fa-trophy" />
         </div>

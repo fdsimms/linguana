@@ -23,7 +23,7 @@ var ExercisesApiUtil = {
 					exercises[idx].answer_choices = shuffled;
 				});
 
-  			ExerciseActions.receiveAll(exercises);
+  			ExerciseActions.receiveAll(shuffleArray(exercises));
         successCallback && successCallback();
 			}
 		});
