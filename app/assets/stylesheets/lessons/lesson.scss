@@ -86,13 +86,13 @@
   padding: 10px 25px;
   margin: 25px 50px;
   width: 75px;
-  cursor: pointer;
   text-align: center;
   border-radius: 20px;
 }
 
 .skip-button {
   float: left;
+  cursor: pointer;
   background-color: #ddd;
   color: rgb(153, 153, 153);
   border: 2px solid #ccc;
@@ -103,10 +103,21 @@
   color: #000;
 }
 
+.check-button,
+.disabled-check-button {
+  float: right;
+}
+
 .check-button {
   color: #fff;
-  float: right;
+  cursor: pointer;
   background-color: rgb(128, 179, 22)
+}
+
+.disabled-check-button {
+  color: #eee;
+  cursor: default;
+  background-color: #bbb;
 }
 
 .check-button:hover {

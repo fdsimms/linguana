@@ -11,19 +11,32 @@ var React = require('react'),
 
 var Lesson = React.createClass({
   getInitialState: function () {
-    return({ lesson: LessonStore.find(this.props.params.lessonId),
-      showModal: false, showExercise: false, currentExerciseIdx: 0 });
+    return({
+      lesson: LessonStore.find(this.props.params.lessonId),
+      showModal: false,
+      showExercise: false,
+      currentExerciseIdx: 0,
+      answerChoiceStatus: ""
+    });
   },
 
   componentDidMount: function () {
-    var lessonId = this.props.params.lessonId;
     this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+
+    var lessonId = this.props.params.lessonId;
+
     LessonsApiUtil.fetchLesson(lessonId, function () {
-      this.setState({ lesson: LessonStore.find(this.props.params.lessonId), showModal: true});
+
+      this.setState({
+        lesson: LessonStore.find(this.props.params.lessonId),
+        showModal: true
+      });
+
       ExercisesApiUtil.fetchExercises(this.state.lesson.id, function () {
         this.setState({ showExercise: true });
       }.bind(this));
     }.bind(this));
+
   },
 
   componentWillUnmount: function () {
@@ -31,9 +44,10 @@ var Lesson = React.createClass({
   },
 
   _lessonsChanged: function () {
-    this.setState({ lesson: LessonStore.find(this.props.params.lessonId),
-    showModal: this.state.showModal });
-
+    this.setState({
+      lesson: LessonStore.find(this.props.params.lessonId),
+      showModal: this.state.showModal
+    });
   },
 
   _handleTipsAndNotesClick: function () {
@@ -42,8 +56,12 @@ var Lesson = React.createClass({
 
   _handleCheckClick: function () {
     var nextExerciseIdx = this.state.currentExerciseIdx + 1;
-    this.setState( { currentExerciseIdx: nextExerciseIdx });
+    this.setState({ currentExerciseIdx: nextExerciseIdx });
+  },
 
+  getAnswerChoiceStatus: function (status, cb) {
+    this.setState({ answerChoiceStatus: status });
+    cb();
   },
 
   render: function () {
@@ -55,14 +73,41 @@ var Lesson = React.createClass({
           <TipsAndNotesModal
             tipsAndNotes={this.state.lesson.tips_and_notes}/>;
       }
+
       var exercise,
-          progress_bar
+          progress_bar,
+          bottom_bar
+
       if (this.state.showExercise) {
         exercise =
-          <Exercise lessonId ={this.state.lesson.id}
-                    exerciseIdx={this.state.currentExerciseIdx} />;
+          <Exercise lessonId={this.state.lesson.id}
+                    exerciseIdx={this.state.currentExerciseIdx}
+                    getAnswerChoiceStatus={this.getAnswerChoiceStatus} />;
+
         progress_bar =
-          <ProgressBar currentIdx={this.state.currentExerciseIdx} />
+          <ProgressBar currentIdx={this.state.currentExerciseIdx} />;
+
+        if (this.state.answerChoiceStatus === "correctIsSelected") {
+          bottom_bar =
+            <LessonBottomBar
+              selected="correct-selected"
+              onClickCheck={this._handleCheckClick}
+              onClickSkip={this.onClickSkip} />;
+
+        } else if (this.state.answerChoiceStatus === "otherIsSelected") {
+          bottom_bar =
+            <LessonBottomBar
+              selected="other-selected"
+              onClickCheck={this._handleCheckClick}
+              onClickSkip={this.onClickSkip} />;
+
+        } else {
+          bottom_bar =
+            <LessonBottomBar
+              onClickCheck={this._handleCheckClick}
+              onClickSkip={this.onClickSkip} />;
+        }
+
       }
 
     return(
@@ -81,9 +126,7 @@ var Lesson = React.createClass({
           </div>
           {progress_bar}
           {exercise}
-          <LessonBottomBar
-            onClickCheck={this._handleCheckClick}
-            onClickSkip={this.onClickSkip} />
+          {bottom_bar}
         </div>
       </div>
     );

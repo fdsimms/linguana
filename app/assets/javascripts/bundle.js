@@ -32084,15 +32084,27 @@
 	  displayName: 'Lesson',
 	
 	  getInitialState: function () {
-	    return { lesson: LessonStore.find(this.props.params.lessonId),
-	      showModal: false, showExercise: false, currentExerciseIdx: 0 };
+	    return {
+	      lesson: LessonStore.find(this.props.params.lessonId),
+	      showModal: false,
+	      showExercise: false,
+	      currentExerciseIdx: 0,
+	      answerChoiceStatus: ""
+	    };
 	  },
 	
 	  componentDidMount: function () {
-	    var lessonId = this.props.params.lessonId;
 	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+	
+	    var lessonId = this.props.params.lessonId;
+	
 	    LessonsApiUtil.fetchLesson(lessonId, function () {
-	      this.setState({ lesson: LessonStore.find(this.props.params.lessonId), showModal: true });
+	
+	      this.setState({
+	        lesson: LessonStore.find(this.props.params.lessonId),
+	        showModal: true
+	      });
+	
 	      ExercisesApiUtil.fetchExercises(this.state.lesson.id, function () {
 	        this.setState({ showExercise: true });
 	      }.bind(this));
@@ -32104,8 +32116,10 @@
 	  },
 	
 	  _lessonsChanged: function () {
-	    this.setState({ lesson: LessonStore.find(this.props.params.lessonId),
-	      showModal: this.state.showModal });
+	    this.setState({
+	      lesson: LessonStore.find(this.props.params.lessonId),
+	      showModal: this.state.showModal
+	    });
 	  },
 	
 	  _handleTipsAndNotesClick: function () {
@@ -32115,6 +32129,11 @@
 	  _handleCheckClick: function () {
 	    var nextExerciseIdx = this.state.currentExerciseIdx + 1;
 	    this.setState({ currentExerciseIdx: nextExerciseIdx });
+	  },
+	
+	  getAnswerChoiceStatus: function (status, cb) {
+	    this.setState({ answerChoiceStatus: status });
+	    cb();
 	  },
 	
 	  render: function () {
@@ -32127,11 +32146,31 @@
 	      modal = React.createElement(TipsAndNotesModal, {
 	        tipsAndNotes: this.state.lesson.tips_and_notes });
 	    }
-	    var exercise, progress_bar;
+	
+	    var exercise, progress_bar, bottom_bar;
+	
 	    if (this.state.showExercise) {
 	      exercise = React.createElement(Exercise, { lessonId: this.state.lesson.id,
-	        exerciseIdx: this.state.currentExerciseIdx });
+	        exerciseIdx: this.state.currentExerciseIdx,
+	        getAnswerChoiceStatus: this.getAnswerChoiceStatus });
+	
 	      progress_bar = React.createElement(ProgressBar, { currentIdx: this.state.currentExerciseIdx });
+	
+	      if (this.state.answerChoiceStatus === "correctIsSelected") {
+	        bottom_bar = React.createElement(LessonBottomBar, {
+	          selected: 'correct-selected',
+	          onClickCheck: this._handleCheckClick,
+	          onClickSkip: this.onClickSkip });
+	      } else if (this.state.answerChoiceStatus === "otherIsSelected") {
+	        bottom_bar = React.createElement(LessonBottomBar, {
+	          selected: 'other-selected',
+	          onClickCheck: this._handleCheckClick,
+	          onClickSkip: this.onClickSkip });
+	      } else {
+	        bottom_bar = React.createElement(LessonBottomBar, {
+	          onClickCheck: this._handleCheckClick,
+	          onClickSkip: this.onClickSkip });
+	      }
 	    }
 	
 	    return React.createElement(
@@ -32159,9 +32198,7 @@
 	        ),
 	        progress_bar,
 	        exercise,
-	        React.createElement(LessonBottomBar, {
-	          onClickCheck: this._handleCheckClick,
-	          onClickSkip: this.onClickSkip })
+	        bottom_bar
 	      )
 	    );
 	  }
@@ -32355,7 +32392,8 @@
 	    if (this.state.showAnswerChoices) {
 	
 	      answerChoices = React.createElement(AnswerChoiceIndex, {
-	        answerChoices: this.state.exercise.answer_choices });
+	        answerChoices: this.state.exercise.answer_choices,
+	        getAnswerChoiceStatus: this.props.getAnswerChoiceStatus });
 	    }
 	
 	    var thing_to_translate = this.state.exercise.thing_to_translate;
@@ -32508,7 +32546,28 @@
 	var LessonBottomBar = React.createClass({
 	  displayName: "LessonBottomBar",
 	
+	  componentWillReceiveProps: function () {
+	    this.forceUpdate();
+	  },
+	
 	  render: function () {
+	    var secondButton;
+	    debugger;
+	    if (this.props.selected) {
+	      secondButton = React.createElement(
+	        "a",
+	        { onClick: this.props.onClickCheck,
+	          className: "check-button" },
+	        "Check"
+	      );
+	    } else {
+	      secondButton = React.createElement(
+	        "a",
+	        { className: "disabled-check-button" },
+	        "Check"
+	      );
+	    }
+	
 	    return React.createElement(
 	      "div",
 	      { className: "lesson-bottom-bar group" },
@@ -32517,12 +32576,7 @@
 	        { className: "skip-button" },
 	        "Skip"
 	      ),
-	      React.createElement(
-	        "a",
-	        { onClick: this.props.onClickCheck,
-	          className: "check-button" },
-	        "Check"
-	      )
+	      secondButton
 	    );
 	  }
 	});
@@ -32544,7 +32598,13 @@
 	  },
 	
 	  _handleClick: function (idx) {
+	
 	    this.setState({ selectedItemIdx: idx });
+	    if (this.props.answerChoices[idx].is_correct) {
+	      this.props.getAnswerChoiceStatus("correctIsSelected");
+	    } else {
+	      this.props.getAnswerChoiceStatus("otherIsSelected");
+	    }
 	  },
 	
 	  componentWillReceiveProps: function () {

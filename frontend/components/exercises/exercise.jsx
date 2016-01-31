@@ -47,7 +47,8 @@ var Exercise = React.createClass({
 
       answerChoices =
         <AnswerChoiceIndex
-          answerChoices={this.state.exercise.answer_choices} />
+          answerChoices={this.state.exercise.answer_choices}
+          getAnswerChoiceStatus={this.props.getAnswerChoiceStatus } />
     }
 
     var thing_to_translate = this.state.exercise.thing_to_translate

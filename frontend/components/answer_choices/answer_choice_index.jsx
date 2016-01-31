@@ -7,7 +7,14 @@ var AnswerChoiceIndex = React.createClass({
   },
 
   _handleClick: function (idx) {
+
     this.setState({ selectedItemIdx: idx });
+    if (this.props.answerChoices[idx].is_correct) {
+      this.props.getAnswerChoiceStatus("correctIsSelected")
+    } else {
+      this.props.getAnswerChoiceStatus("otherIsSelected")
+    }
+
   },
 
   componentWillReceiveProps: function () {
