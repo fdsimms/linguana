@@ -1,0 +1,37 @@
+.answer-choice-index {
+}
+
+.answer-choice-list {
+  width: 492px;
+  height: 400px;
+  display: block;
+  margin: 25px auto;
+}
+
+.answer-choice-list-item-wrapper {
+  width: 140px;
+  height: 150px;
+  float: left;
+  margin: 10px;
+  padding: 10px 0;
+  border: 2px solid #ccc;
+  display: block;
+  color: #000;
+  cursor: pointer;
+  border-radius: 10px;
+  position: relative;
+}
+
+.answer-choice-list-item-wrapper:hover {
+  border: 2px solid rgb(28, 175, 246);
+  color: rgb(28, 175, 246);
+}
+
+.answer-choice-list-item {
+  width: 100%;
+  position: absolute;
+  margin: auto;
+  text-align: center;
+  display: block;
+  bottom: 10px;
+}

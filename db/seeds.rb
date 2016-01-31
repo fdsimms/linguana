@@ -154,10 +154,7 @@ choice_1_1 = AnswerChoice.create!(
   body: "El niño",
   exercise_id: mcq1.id,
   is_correct: true
-)
-choice_1_2 = AnswerChoice.create!(
-  body: "La niña",
-  exercise_id: mcq1.id
+
 )
 choice_1_3 = AnswerChoice.create!(
   body: "El hombre",
@@ -187,10 +184,6 @@ choice_2_3 = AnswerChoice.create!(
   body: "La cuchara",
   exercise_id: mcq2.id
 )
-choice_2_4 = AnswerChoice.create!(
-  body: "La mujer",
-  exercise_id: mcq2.id
-)
 
 
 mcq3 = Exercise.create!(
@@ -206,10 +199,7 @@ choice_3_2 = AnswerChoice.create!(
   body: "El gato",
   exercise_id: mcq3.id
 )
-choice_3_3 = AnswerChoice.create!(
-  body: "El hombre",
-  exercise_id: mcq3.id
-)
+
 choice_3_4 = AnswerChoice.create!(
   body: "El perro",
   is_correct: true,
@@ -221,10 +211,6 @@ mcq4 = Exercise.create!(
   lesson_id: spanish_basic_1_1.id,
   exercise_type: "multiple_choice",
   thing_to_translate: "The mother"
-)
-choice_4_1 = AnswerChoice.create!(
-  body: "El hombre",
-  exercise_id: mcq4.id,
 )
 choice_4_2 = AnswerChoice.create!(
   body: "La madre",
@@ -251,10 +237,7 @@ choice_5_1 = AnswerChoice.create!(
   body: "El niño",
   exercise_id: mcq5.id,
 )
-choice_5_2 = AnswerChoice.create!(
-  body: "La mujer",
-  exercise_id: mcq5.id
-)
+
 choice_5_3 = AnswerChoice.create!(
   body: "El hombre",
   is_correct: true,
@@ -275,10 +258,6 @@ choice_6_1 = AnswerChoice.create!(
   body: "El bebé",
   is_correct: true,
   exercise_id: mcq6.id,
-)
-choice_6_2 = AnswerChoice.create!(
-  body: "El hombre",
-  exercise_id: mcq6.id
 )
 choice_6_3 = AnswerChoice.create!(
   body: "El niño",
@@ -308,10 +287,7 @@ choice_7_3 = AnswerChoice.create!(
   body: "La mano",
   exercise_id: mcq7.id
 )
-choice_7_4 = AnswerChoice.create!(
-  body: "La chica",
-  exercise_id: mcq7.id
-)
+
 
 mcq8 = Exercise.create!(
   lesson_id: spanish_basic_1_1.id,
@@ -323,10 +299,6 @@ choice_8_1 = AnswerChoice.create!(
   body: "El gato",
   is_correct: true,
   exercise_id: mcq8.id,
-)
-choice_8_2 = AnswerChoice.create!(
-  body: "La banana",
-  exercise_id: mcq8.id
 )
 choice_8_3 = AnswerChoice.create!(
   body: "La mujer",

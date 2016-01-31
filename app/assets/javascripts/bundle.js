@@ -32574,9 +32574,13 @@
 	
 	  render: function () {
 	    return React.createElement(
-	      "li",
-	      { className: "answer-choice-list-item" },
-	      this.props.answerChoice.body
+	      "div",
+	      { className: "answer-choice-list-item-wrapper" },
+	      React.createElement(
+	        "li",
+	        { className: "answer-choice-list-item" },
+	        this.props.answerChoice.body
+	      )
 	    );
 	  }
 	});
