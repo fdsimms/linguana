@@ -35,7 +35,7 @@ var LessonIndex = React.createClass({
       var lesson = lessons[key];
       return <LessonIndexItem key={idx} lesson={lesson} />;
     });
-    
+
     return(
       <div className="lesson-index">
         <ul className="lesson-list group">

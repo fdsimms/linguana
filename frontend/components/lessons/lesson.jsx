@@ -1,6 +1,5 @@
 var React = require('react'),
     LessonStore = require('../../stores/lesson_store'),
-    LessonIndex = require('./lesson_index'),
     LessonsApiUtil = require('../../util/lessons_api_util'),
     ExercisesApiUtil = require('../../util/exercises_api_util'),
     TipsAndNotesModal = require("../modals/tips_and_notes_modal"),
@@ -8,9 +7,12 @@ var React = require('react'),
     ExerciseActions = require("../../actions/exercise_actions"),
     Exercise = require("../exercises/exercise"),
     ProgressBar = require("./progress_bar"),
-    LessonBottomBar = require("./lesson_bottom_bar");
+    LessonBottomBar = require("./lesson_bottom_bar"),
+    History = require('react-router').History;
 
 var Lesson = React.createClass({
+  mixins: [History],
+
   getInitialState: function () {
     return({
       lesson: LessonStore.find(this.props.params.lessonId),
@@ -19,7 +21,8 @@ var Lesson = React.createClass({
       checkButtonClicked: false,
       currentExerciseIdx: 0,
       answerChoiceStatus: "",
-      currentAnswerChoiceIdx: -1
+      currentAnswerChoiceIdx: -1,
+      lessonOver: false
     });
   },
 
@@ -58,7 +61,11 @@ var Lesson = React.createClass({
   },
 
   _handleCheckClick: function () {
-    this.setState({ checkButtonClicked: true })
+    if (ExerciseStore.all().length === this.state.currentExerciseIdx + 1) {
+      this.setState({ checkButtonClicked: true, lessonOver: true });
+    } else {
+      this.setState({ checkButtonClicked: true })
+    }
     if (this.state.answerChoiceStatus === "otherIsSelected") {
       ExerciseActions.pushExercise(this.state.currentExerciseIdx);
     }
@@ -66,7 +73,11 @@ var Lesson = React.createClass({
 
   _handleContinueClick: function () {
     var nextExerciseIdx = this.state.currentExerciseIdx + 1;
-    if (this.state.answerChoiceStatus === "otherIsSelected") {
+    if (this.state.lessonOver) {
+      var skillId = this.state.lesson.skill_id;
+      this.history.pushState(null, "/skills/" + skillId);
+    }
+    else if (this.state.answerChoiceStatus === "otherIsSelected") {
       ExerciseActions.removeFirstExercise();
       nextExerciseIdx = this.state.currentExerciseIdx;
     }
@@ -93,6 +104,55 @@ var Lesson = React.createClass({
     });
   },
 
+  exercise: function () {
+      return(
+        <Exercise lessonId={this.state.lesson.id}
+                  exerciseIdx={this.state.currentExerciseIdx}
+                  currentAnswerChoiceIdx={this.state.currentAnswerChoiceIdx}
+                  getAnswerChoiceStatus={this.getAnswerChoiceStatus}
+                  checkClicked={this.state.checkButtonClicked} />
+      );
+  },
+
+  bottomBar: function () {
+    var bottomBar;
+    if (this.state.lessonOver) {
+      bottomBar =
+        <LessonBottomBar
+          lessonOver={this.state.lessonOver}
+          onClickContinue={this._handleContinueClick} />
+    }
+    else if (this.state.answerChoiceStatus === "correctIsSelected") {
+      bottomBar =
+        <LessonBottomBar
+          selected="correctIsSelected"
+          checkClicked={this.state.checkButtonClicked}
+          onClickContinue={this._handleContinueClick}
+          onClickCheck={this._handleCheckClick}
+          onClickSkip={this._handleSkipClick} />;
+
+    } else if (this.state.answerChoiceStatus === "otherIsSelected") {
+      bottomBar =
+        <LessonBottomBar
+          selected="otherIsSelected"
+          checkClicked={this.state.checkButtonClicked}
+          onClickContinue={this._handleContinueClick}
+          onClickCheck={this._handleCheckClick}
+          onClickSkip={this._handleSkipClick} />;
+
+    } else {
+      bottomBar =
+        <LessonBottomBar
+          onClickCheck={this._handleCheckClick}
+          onClickSkip={this._handleSkipClick} />;
+    }
+    return bottomBar;
+  },
+
+  progressBar: function () {
+    return <ProgressBar currentIdx={this.state.currentExerciseIdx} />;
+  },
+
   render: function () {
     if(typeof this.state.lesson === "undefined") { return <div></div>; }
 
@@ -104,44 +164,13 @@ var Lesson = React.createClass({
       }
 
       var exercise,
-          progress_bar,
-          bottom_bar
+          progressBar,
+          bottomBar;
 
-      if (this.state.showExercise) {
-        exercise =
-          <Exercise lessonId={this.state.lesson.id}
-                    exerciseIdx={this.state.currentExerciseIdx}
-                    currentAnswerChoiceIdx={this.state.currentAnswerChoiceIdx}
-                    getAnswerChoiceStatus={this.getAnswerChoiceStatus}
-                    checkClicked={this.state.checkButtonClicked} />;
-
-        progress_bar =
-          <ProgressBar currentIdx={this.state.currentExerciseIdx} />;
-
-        if (this.state.answerChoiceStatus === "correctIsSelected") {
-          bottom_bar =
-            <LessonBottomBar
-              selected="correctIsSelected"
-              checkClicked={this.state.checkButtonClicked}
-              onClickContinue={this._handleContinueClick}
-              onClickCheck={this._handleCheckClick}
-              onClickSkip={this.onClickSkip} />;
-
-        } else if (this.state.answerChoiceStatus === "otherIsSelected") {
-          bottom_bar =
-            <LessonBottomBar
-              selected="otherIsSelected"
-              checkClicked={this.state.checkButtonClicked}
-              onClickContinue={this._handleContinueClick}
-              onClickCheck={this._handleCheckClick}
-              onClickSkip={this._handleSkipClick} />;
-
-        } else {
-          bottom_bar =
-            <LessonBottomBar
-              onClickCheck={this._handleCheckClick}
-              onClickSkip={this._handleSkipClick} />;
-        }
+      if (this.state.showExercise)
+        progressBar = this.progressBar();
+        exercise = this.exercise();
+        bottomBar = this.bottomBar();
       }
 
       var lessonClass = "lesson-page";
@@ -163,9 +192,9 @@ var Lesson = React.createClass({
               Quit
             </a>
           </div>
-          {progress_bar}
+          {progressBar}
           {exercise}
-          {bottom_bar}
+          {bottomBar}
         </div>
       </div>
     );

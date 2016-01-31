@@ -33,7 +33,7 @@ var LessonBottomBar = React.createClass({
   _selectedAnswerBar: function () {
     return(
       <div className="lesson-bottom-bar group">
-        <a onClick={this.props.handleClick}
+        <a onClick={this.props.onClickSkip}
            className="skip-button">
            Skip
         </a>
@@ -48,7 +48,7 @@ var LessonBottomBar = React.createClass({
   _unselectedAnswerBar: function () {
     return(
       <div className="lesson-bottom-bar group">
-        <a onClick={this.props.handleClick}
+        <a onClick={this.props.onClickSkip}
            className="skip-button">
            Skip
         </a>
@@ -59,10 +59,25 @@ var LessonBottomBar = React.createClass({
     )
   },
 
+  _finalPageBar: function () {
+    return(
+      <div className="lesson-bottom-bar group">
+
+        <a onClick={this.props.onClickContinue}
+           className="check-button">
+          Continue
+        </a>
+      </div>
+    );
+  },
+
   render: function () {
     var bar;
-
-    if (this.props.checkClicked) {
+    debugger
+    if (this.props.lessonOver) {
+      bar = this._finalPageBar();
+    }
+    else if (this.props.checkClicked) {
       if (this.props.selected === "correctIsSelected") {
         bar = this._correctAnswerBar();
       } else {
