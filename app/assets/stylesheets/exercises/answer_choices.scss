@@ -16,7 +16,7 @@
   padding: 10px 0;
   border: 2px solid #ccc;
   display: block;
-  color: #000;
+  color: #aaa;
   cursor: pointer;
   border-radius: 10px;
   position: relative;
@@ -34,4 +34,14 @@
   text-align: center;
   display: block;
   bottom: 10px;
+}
+
+.selected {
+  background-color: rgb(28, 175, 246);
+  color: #fff;
+}
+
+.selected:hover {
+  border: 2px solid #ccc;
+  color: #fff;
 }

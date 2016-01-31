@@ -32539,15 +32539,42 @@
 	var AnswerChoiceIndex = React.createClass({
 	  displayName: 'AnswerChoiceIndex',
 	
+	  getInitialState: function () {
+	    return { selectedItemIdx: -1 };
+	  },
+	
+	  _handleClick: function (idx) {
+	    this.setState({ selectedItemIdx: idx });
+	  },
+	
+	  componentWillReceiveProps: function () {
+	    this.setState({ selectedItemIdx: -1 });
+	  },
+	
+	  answerChoices: function () {
+	    var answerChoices = this.props.answerChoices;
+	    answerChoices = answerChoices.map(function (choice, idx) {
+	      var selected;
+	
+	      if (idx === this.state.selectedItemIdx) {
+	        selected = "selected";
+	      }
+	
+	      return React.createElement(AnswerChoiceIndexItem, {
+	        key: idx,
+	        selected: selected,
+	        answerChoice: choice,
+	        idx: idx,
+	        _handleClick: this._handleClick });
+	    }.bind(this));
+	
+	    return answerChoices;
+	  },
+	
 	  render: function () {
 	    if (this.props.answerChoices === []) {
 	      return React.createElement('div', null);
 	    }
-	
-	    var answerChoices = this.props.answerChoices;
-	    answerChoices = answerChoices.map(function (choice, idx) {
-	      return React.createElement(AnswerChoiceIndexItem, { key: idx, answerChoice: choice });
-	    });
 	
 	    return React.createElement(
 	      'div',
@@ -32555,7 +32582,7 @@
 	      React.createElement(
 	        'ul',
 	        { className: 'answer-choice-list group' },
-	        answerChoices
+	        this.answerChoices()
 	      )
 	    );
 	  }
@@ -32572,10 +32599,21 @@
 	var AnswerChoiceIndexItem = React.createClass({
 	  displayName: "AnswerChoiceIndexItem",
 	
+	  _handleClick: function () {
+	    var idx = this.props.idx;
+	    this.props._handleClick(idx);
+	  },
+	
 	  render: function () {
+	    var classes = "answer-choice-list-item-wrapper";
+	    if (this.props.selected) {
+	      classes = "answer-choice-list-item-wrapper selected";
+	    }
+	
 	    return React.createElement(
 	      "div",
-	      { className: "answer-choice-list-item-wrapper" },
+	      { onClick: this._handleClick,
+	        className: classes },
 	      React.createElement(
 	        "li",
 	        { className: "answer-choice-list-item" },
