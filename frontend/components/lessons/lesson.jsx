@@ -15,6 +15,7 @@ var Lesson = React.createClass({
       lesson: LessonStore.find(this.props.params.lessonId),
       showModal: false,
       showExercise: false,
+      checkButtonClicked: false,
       currentExerciseIdx: 0,
       answerChoiceStatus: "",
       currentAnswerChoiceIdx: -1
@@ -56,8 +57,23 @@ var Lesson = React.createClass({
   },
 
   _handleCheckClick: function () {
+    this.setState({ checkButtonClicked: true })
+  },
+
+  _handleContinueClick: function () {
     var nextExerciseIdx = this.state.currentExerciseIdx + 1;
-    this.setState({ currentExerciseIdx: nextExerciseIdx });
+    this.setState({
+      currentExerciseIdx: nextExerciseIdx,
+      checkButtonClicked: false,
+      answerChoiceStatus: ""
+     });
+  },
+
+  _handleSkipClick: function () {
+    this.setState({
+      checkButtonClicked: true,
+      answerChoiceStatus: "otherIsSelected"
+    })
   },
 
   getAnswerChoiceStatus: function (status, idx ) {
@@ -94,24 +110,27 @@ var Lesson = React.createClass({
         if (this.state.answerChoiceStatus === "correctIsSelected") {
           bottom_bar =
             <LessonBottomBar
-              selected="correct-selected"
+              selected="correctIsSelected"
+              checkClicked={this.state.checkButtonClicked}
+              onClickContinue={this._handleContinueClick}
               onClickCheck={this._handleCheckClick}
               onClickSkip={this.onClickSkip} />;
 
         } else if (this.state.answerChoiceStatus === "otherIsSelected") {
           bottom_bar =
             <LessonBottomBar
-              selected="other-selected"
+              selected="otherIsSelected"
+              checkClicked={this.state.checkButtonClicked}
+              onClickContinue={this._handleContinueClick}
               onClickCheck={this._handleCheckClick}
-              onClickSkip={this.onClickSkip} />;
+              onClickSkip={this._handleSkipClick} />;
 
         } else {
           bottom_bar =
             <LessonBottomBar
               onClickCheck={this._handleCheckClick}
-              onClickSkip={this.onClickSkip} />;
+              onClickSkip={this._handleSkipClick} />;
         }
-
       }
 
     return(

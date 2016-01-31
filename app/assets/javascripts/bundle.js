@@ -32088,6 +32088,7 @@
 	      lesson: LessonStore.find(this.props.params.lessonId),
 	      showModal: false,
 	      showExercise: false,
+	      checkButtonClicked: false,
 	      currentExerciseIdx: 0,
 	      answerChoiceStatus: "",
 	      currentAnswerChoiceIdx: -1
@@ -32128,8 +32129,23 @@
 	  },
 	
 	  _handleCheckClick: function () {
+	    this.setState({ checkButtonClicked: true });
+	  },
+	
+	  _handleContinueClick: function () {
 	    var nextExerciseIdx = this.state.currentExerciseIdx + 1;
-	    this.setState({ currentExerciseIdx: nextExerciseIdx });
+	    this.setState({
+	      currentExerciseIdx: nextExerciseIdx,
+	      checkButtonClicked: false,
+	      answerChoiceStatus: ""
+	    });
+	  },
+	
+	  _handleSkipClick: function () {
+	    this.setState({
+	      checkButtonClicked: true,
+	      answerChoiceStatus: "otherIsSelected"
+	    });
 	  },
 	
 	  getAnswerChoiceStatus: function (status, idx) {
@@ -32162,18 +32178,22 @@
 	
 	      if (this.state.answerChoiceStatus === "correctIsSelected") {
 	        bottom_bar = React.createElement(LessonBottomBar, {
-	          selected: 'correct-selected',
+	          selected: 'correctIsSelected',
+	          checkClicked: this.state.checkButtonClicked,
+	          onClickContinue: this._handleContinueClick,
 	          onClickCheck: this._handleCheckClick,
 	          onClickSkip: this.onClickSkip });
 	      } else if (this.state.answerChoiceStatus === "otherIsSelected") {
 	        bottom_bar = React.createElement(LessonBottomBar, {
-	          selected: 'other-selected',
+	          selected: 'otherIsSelected',
+	          checkClicked: this.state.checkButtonClicked,
+	          onClickContinue: this._handleContinueClick,
 	          onClickCheck: this._handleCheckClick,
-	          onClickSkip: this.onClickSkip });
+	          onClickSkip: this._handleSkipClick });
 	      } else {
 	        bottom_bar = React.createElement(LessonBottomBar, {
 	          onClickCheck: this._handleCheckClick,
-	          onClickSkip: this.onClickSkip });
+	          onClickSkip: this._handleSkipClick });
 	      }
 	    }
 	
@@ -32555,33 +32575,96 @@
 	    this.forceUpdate();
 	  },
 	
-	  render: function () {
-	    var secondButton;
-	    if (this.props.selected) {
-	      secondButton = React.createElement(
+	  _correctAnswerBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar-correct group" },
+	      React.createElement("i", { className: "fa fa-4x fa-check-circle-o" }),
+	      React.createElement(
+	        "h2",
+	        { className: "bottom-bar-header" },
+	        "You got it!"
+	      ),
+	      React.createElement(
 	        "a",
-	        { onClick: this.props.onClickCheck,
+	        { onClick: this.props.onClickContinue,
 	          className: "check-button" },
-	        "Check"
-	      );
-	    } else {
-	      secondButton = React.createElement(
+	        "Continue"
+	      )
+	    );
+	  },
+	  _incorrectAnswerBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar-incorrect group" },
+	      React.createElement("i", { className: "fa fa-4x fa-times-circle-o" }),
+	      React.createElement(
+	        "h2",
+	        { className: "bottom-bar-header" },
+	        "That wasn't right..."
+	      ),
+	      React.createElement(
 	        "a",
-	        { className: "disabled-check-button" },
-	        "Check"
-	      );
-	    }
+	        { onClick: this.props.onClickContinue,
+	          className: "check-button" },
+	        "Continue"
+	      )
+	    );
+	  },
 	
+	  _selectedAnswerBar: function () {
 	    return React.createElement(
 	      "div",
 	      { className: "lesson-bottom-bar group" },
 	      React.createElement(
 	        "a",
-	        { className: "skip-button" },
+	        { onClick: this.props.handleClick,
+	          className: "skip-button" },
 	        "Skip"
 	      ),
-	      secondButton
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickCheck,
+	          className: "check-button" },
+	        "Check"
+	      )
 	    );
+	  },
+	
+	  _unselectedAnswerBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar group" },
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.handleClick,
+	          className: "skip-button" },
+	        "Skip"
+	      ),
+	      React.createElement(
+	        "a",
+	        { className: "disabled-check-button" },
+	        "Check"
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var bar;
+	
+	    if (this.props.checkClicked) {
+	      if (this.props.selected === "correctIsSelected") {
+	        bar = this._correctAnswerBar();
+	      } else {
+	        bar = this._incorrectAnswerBar();
+	      }
+	    } else if (this.props.selected) {
+	      bar = this._selectedAnswerBar();
+	    } else {
+	      bar = this._unselectedAnswerBar();
+	    }
+	
+	    return bar;
 	  }
 	});
 	
