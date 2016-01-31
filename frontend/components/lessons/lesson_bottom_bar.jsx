@@ -18,6 +18,7 @@ var LessonBottomBar = React.createClass({
     )
   },
   _incorrectAnswerBar: function () {
+
     return(
       <div className="lesson-bottom-bar-incorrect group">
       <i className="fa fa-4x fa-times-circle-o"></i>
@@ -73,7 +74,7 @@ var LessonBottomBar = React.createClass({
 
   render: function () {
     var bar;
-    if (this.props.lessonOver) {
+    if (this.props.showFinalPageBar) {
       bar = this._finalPageBar();
     }
     else if (this.props.checkClicked) {

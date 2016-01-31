@@ -55,7 +55,8 @@
 	    Splash = __webpack_require__(252),
 	    SkillIndex = __webpack_require__(246),
 	    Skill = __webpack_require__(253),
-	    Lesson = __webpack_require__(260);
+	    LessonFinalPage = __webpack_require__(260),
+	    Lesson = __webpack_require__(262);
 	
 	var routes = React.createElement(
 	  Route,
@@ -64,7 +65,8 @@
 	  React.createElement(Route, { path: '/courses', component: CourseIndex }),
 	  React.createElement(Route, { path: '/courses/:courseId', component: Course }),
 	  React.createElement(Route, { path: '/skills/:skillId', component: Skill }),
-	  React.createElement(Route, { path: '/lessons/:lessonId', component: Lesson })
+	  React.createElement(Route, { path: '/lessons/:lessonId', component: Lesson }),
+	  React.createElement(Route, { path: '/congrats', component: LessonFinalPage })
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
@@ -32067,17 +32069,173 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
+	    LessonBottomBar = __webpack_require__(261);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-final group' },
+	      React.createElement(
+	        'div',
+	        { className: 'lesson-final-contents group' },
+	        React.createElement(
+	          'h2',
+	          { className: 'lesson-final-header' },
+	          'Lesson complete!'
+	        ),
+	        React.createElement(
+	          'h2',
+	          { className: 'lesson-final-counter' },
+	          '+10 xp'
+	        ),
+	        React.createElement('i', { className: 'fa fa-5x fa-trophy' })
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var LessonBottomBar = React.createClass({
+	  displayName: "LessonBottomBar",
+	
+	  componentWillReceiveProps: function () {
+	    this.forceUpdate();
+	  },
+	
+	  _correctAnswerBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar-correct group" },
+	      React.createElement("i", { className: "fa fa-4x fa-check-circle-o" }),
+	      React.createElement(
+	        "h2",
+	        { className: "bottom-bar-header" },
+	        "You got it!"
+	      ),
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickContinue,
+	          className: "check-button" },
+	        "Continue"
+	      )
+	    );
+	  },
+	  _incorrectAnswerBar: function () {
+	
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar-incorrect group" },
+	      React.createElement("i", { className: "fa fa-4x fa-times-circle-o" }),
+	      React.createElement(
+	        "h2",
+	        { className: "bottom-bar-header" },
+	        "That wasn't right..."
+	      ),
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickContinue,
+	          className: "check-button" },
+	        "Continue"
+	      )
+	    );
+	  },
+	
+	  _selectedAnswerBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar group" },
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickSkip,
+	          className: "skip-button" },
+	        "Skip"
+	      ),
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickCheck,
+	          className: "check-button" },
+	        "Check"
+	      )
+	    );
+	  },
+	
+	  _unselectedAnswerBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar group" },
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickSkip,
+	          className: "skip-button" },
+	        "Skip"
+	      ),
+	      React.createElement(
+	        "a",
+	        { className: "disabled-check-button" },
+	        "Check"
+	      )
+	    );
+	  },
+	
+	  _finalPageBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar group" },
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickContinue,
+	          className: "check-button" },
+	        "Continue"
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var bar;
+	    if (this.props.showFinalPageBar) {
+	      bar = this._finalPageBar();
+	    } else if (this.props.checkClicked) {
+	      if (this.props.selected === "correctIsSelected") {
+	        bar = this._correctAnswerBar();
+	      } else {
+	        bar = this._incorrectAnswerBar();
+	      }
+	    } else if (this.props.selected) {
+	      bar = this._selectedAnswerBar();
+	    } else {
+	      bar = this._unselectedAnswerBar();
+	    }
+	
+	    return bar;
+	  }
+	});
+	
+	module.exports = LessonBottomBar;
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
 	    LessonStore = __webpack_require__(255),
 	    LessonsApiUtil = __webpack_require__(258),
-	    ExercisesApiUtil = __webpack_require__(261),
-	    TipsAndNotesModal = __webpack_require__(264),
+	    ExercisesApiUtil = __webpack_require__(263),
+	    TipsAndNotesModal = __webpack_require__(266),
 	    ModalActions = __webpack_require__(208),
-	    ExerciseActions = __webpack_require__(262),
-	    Exercise = __webpack_require__(265),
-	    ProgressBar = __webpack_require__(269),
-	    LessonBottomBar = __webpack_require__(271),
-	    LessonFinalPage = __webpack_require__(272),
-	    History = __webpack_require__(159).History;
+	    ExerciseActions = __webpack_require__(264),
+	    Exercise = __webpack_require__(267),
+	    ProgressBar = __webpack_require__(271),
+	    LessonBottomBar = __webpack_require__(261),
+	    History = __webpack_require__(159).History,
+	    LessonFinalPage = __webpack_require__(260);
 	
 	var Lesson = React.createClass({
 	  displayName: 'Lesson',
@@ -32089,11 +32247,13 @@
 	      lesson: LessonStore.find(this.props.params.lessonId),
 	      showModal: false,
 	      showExercise: false,
+	      showFinalPage: false,
 	      checkButtonClicked: false,
+	      lessonOver: false,
+	
 	      currentExerciseIdx: 0,
 	      answerChoiceStatus: "",
-	      currentAnswerChoiceIdx: -1,
-	      lessonOver: false
+	      currentAnswerChoiceIdx: -1
 	    };
 	  },
 	
@@ -32131,23 +32291,26 @@
 	  },
 	
 	  _handleCheckClick: function () {
-	    if (ExerciseStore.all().length === this.state.currentExerciseIdx + 1) {
-	      setTimeout(function () {
-	        this.setState({ checkButtonClicked: true, lessonOver: true });
-	      }.bind(this), 750);
-	    } else {
-	      this.setState({ checkButtonClicked: true });
-	    }
 	    if (this.state.answerChoiceStatus === "otherIsSelected") {
 	      ExerciseActions.pushExercise(this.state.currentExerciseIdx);
+	    }
+	    var exercisesLength = ExerciseStore.all().length,
+	        nextExerciseIdx = this.state.currentExerciseIdx + 1,
+	        isCorrect = this.state.answerChoiceStatus === "correctIsSelected";
+	    if (exercisesLength === nextExerciseIdx && isCorrect) {
+	      this.setState({ checkButtonClicked: true, lessonOver: true });
+	    } else {
+	      this.setState({ checkButtonClicked: true });
 	    }
 	  },
 	
 	  _handleContinueClick: function () {
 	    var nextExerciseIdx = this.state.currentExerciseIdx + 1;
-	    if (this.state.lessonOver) {
-	      var skillId = this.state.lesson.skill_id;
-	      this.history.pushState(null, "/skills/" + skillId);
+	    if (this.state.showFinalPage) {
+	      var url = "/skills/" + this.state.lesson.skill_id;
+	      this.history.pushState(null, url);
+	    } else if (this.state.lessonOver) {
+	      this.setState({ showFinalPage: true });
 	    } else if (this.state.answerChoiceStatus === "otherIsSelected") {
 	      ExerciseActions.removeFirstExercise();
 	      nextExerciseIdx = this.state.currentExerciseIdx;
@@ -32162,9 +32325,10 @@
 	  },
 	
 	  _handleSkipClick: function () {
+	    ExerciseActions.pushExercise(this.state.currentExerciseIdx);
 	    this.setState({
-	      checkButtonClicked: true,
-	      answerChoiceStatus: "otherIsSelected"
+	      answerChoiceStatus: "otherIsSelected",
+	      checkButtonClicked: true
 	    });
 	  },
 	
@@ -32184,35 +32348,23 @@
 	  },
 	
 	  bottomBar: function () {
-	    var bottomBar;
-	    if (this.state.lessonOver) {
-	      bottomBar = React.createElement(LessonBottomBar, {
-	        lessonOver: this.state.lessonOver,
-	        onClickContinue: this._handleContinueClick });
-	    } else if (this.state.answerChoiceStatus === "correctIsSelected") {
-	      bottomBar = React.createElement(LessonBottomBar, {
-	        selected: 'correctIsSelected',
-	        checkClicked: this.state.checkButtonClicked,
-	        onClickContinue: this._handleContinueClick,
-	        onClickCheck: this._handleCheckClick,
-	        onClickSkip: this._handleSkipClick });
-	    } else if (this.state.answerChoiceStatus === "otherIsSelected") {
-	      bottomBar = React.createElement(LessonBottomBar, {
-	        selected: 'otherIsSelected',
-	        checkClicked: this.state.checkButtonClicked,
-	        onClickContinue: this._handleContinueClick,
-	        onClickCheck: this._handleCheckClick,
-	        onClickSkip: this._handleSkipClick });
-	    } else {
-	      bottomBar = React.createElement(LessonBottomBar, {
-	        onClickCheck: this._handleCheckClick,
-	        onClickSkip: this._handleSkipClick });
-	    }
+	    var bottomBar = React.createElement(LessonBottomBar, {
+	      selected: this.state.answerChoiceStatus,
+	      showFinalPageBar: this.state.showFinalPage,
+	      checkClicked: this.state.checkButtonClicked,
+	      onClickContinue: this._handleContinueClick,
+	      onClickCheck: this._handleCheckClick,
+	      onClickSkip: this._handleSkipClick });
+	
 	    return bottomBar;
 	  },
 	
 	  progressBar: function () {
-	    return React.createElement(ProgressBar, { currentIdx: this.state.currentExerciseIdx });
+	    var currentIdx = this.state.currentExerciseIdx;
+	    if (this.state.lessonOver) {
+	      currentIdx = this.state.currentExerciseIdx + 1;
+	    }
+	    return React.createElement(ProgressBar, { currentIdx: currentIdx });
 	  },
 	
 	  exercisePage: function () {
@@ -32273,13 +32425,11 @@
 	    if (typeof this.state.lesson === "undefined") {
 	      return React.createElement('div', null);
 	    }
-	    var toRender;
-	    if (this.state.lessonOver) {
-	      toRender = this.finalPage();
-	    } else {
-	      toRender = this.exercisePage();
-	    }
 	
+	    var toRender = this.exercisePage();
+	    if (this.state.showFinalPage) {
+	      toRender = this.finalPage();
+	    }
 	    return React.createElement(
 	      'div',
 	      { className: lessonClass },
@@ -32291,10 +32441,10 @@
 	module.exports = Lesson;
 
 /***/ },
-/* 261 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ExerciseActions = __webpack_require__(262);
+	var ExerciseActions = __webpack_require__(264);
 	
 	var shuffleArray = function (array) {
 		for (var i = array.length - 1; i > 0; i--) {
@@ -32330,11 +32480,11 @@
 	module.exports = ExercisesApiUtil;
 
 /***/ },
-/* 262 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(209),
-	    ExerciseConstants = __webpack_require__(263);
+	    ExerciseConstants = __webpack_require__(265);
 	
 	var ExerciseActions = {
 	  receiveAll: function (exercises) {
@@ -32361,7 +32511,7 @@
 	module.exports = ExerciseActions;
 
 /***/ },
-/* 263 */
+/* 265 */
 /***/ function(module, exports) {
 
 	var ExerciseConstants = {
@@ -32373,7 +32523,7 @@
 	module.exports = ExerciseConstants;
 
 /***/ },
-/* 264 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
@@ -32433,13 +32583,13 @@
 	module.exports = TipsAndNotesModal;
 
 /***/ },
-/* 265 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    ExerciseStore = __webpack_require__(266),
-	    ExercisesApiUtil = __webpack_require__(261),
-	    AnswerChoiceIndex = __webpack_require__(267);
+	    ExerciseStore = __webpack_require__(268),
+	    ExercisesApiUtil = __webpack_require__(263),
+	    AnswerChoiceIndex = __webpack_require__(269);
 	
 	var Exercise = React.createClass({
 	  displayName: 'Exercise',
@@ -32513,11 +32663,11 @@
 	module.exports = Exercise;
 
 /***/ },
-/* 266 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(215).Store;
-	var ExerciseConstants = __webpack_require__(263);
+	var ExerciseConstants = __webpack_require__(265);
 	var AppDispatcher = __webpack_require__(209);
 	var ModalStore = __webpack_require__(214);
 	
@@ -32583,11 +32733,11 @@
 	module.exports = ExerciseStore;
 
 /***/ },
-/* 267 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    AnswerChoiceIndexItem = __webpack_require__(268);
+	    AnswerChoiceIndexItem = __webpack_require__(270);
 	
 	var AnswerChoiceIndex = React.createClass({
 	  displayName: 'AnswerChoiceIndex',
@@ -32649,7 +32799,7 @@
 	module.exports = AnswerChoiceIndex;
 
 /***/ },
-/* 268 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32684,12 +32834,12 @@
 	module.exports = AnswerChoiceIndexItem;
 
 /***/ },
-/* 269 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    ProgressBarChunk = __webpack_require__(270),
-	    ExerciseStore = __webpack_require__(266);
+	    ProgressBarChunk = __webpack_require__(272),
+	    ExerciseStore = __webpack_require__(268);
 	
 	var ProgressBar = React.createClass({
 	  displayName: 'ProgressBar',
@@ -32743,11 +32893,11 @@
 	module.exports = ProgressBar;
 
 /***/ },
-/* 270 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    ExerciseStore = __webpack_require__(266);
+	    ExerciseStore = __webpack_require__(268);
 	
 	var ProgressBarChunk = React.createClass({
 	  displayName: 'ProgressBarChunk',
@@ -32759,161 +32909,6 @@
 	});
 	
 	module.exports = ProgressBarChunk;
-
-/***/ },
-/* 271 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var LessonBottomBar = React.createClass({
-	  displayName: "LessonBottomBar",
-	
-	  componentWillReceiveProps: function () {
-	    this.forceUpdate();
-	  },
-	
-	  _correctAnswerBar: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "lesson-bottom-bar-correct group" },
-	      React.createElement("i", { className: "fa fa-4x fa-check-circle-o" }),
-	      React.createElement(
-	        "h2",
-	        { className: "bottom-bar-header" },
-	        "You got it!"
-	      ),
-	      React.createElement(
-	        "a",
-	        { onClick: this.props.onClickContinue,
-	          className: "check-button" },
-	        "Continue"
-	      )
-	    );
-	  },
-	  _incorrectAnswerBar: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "lesson-bottom-bar-incorrect group" },
-	      React.createElement("i", { className: "fa fa-4x fa-times-circle-o" }),
-	      React.createElement(
-	        "h2",
-	        { className: "bottom-bar-header" },
-	        "That wasn't right..."
-	      ),
-	      React.createElement(
-	        "a",
-	        { onClick: this.props.onClickContinue,
-	          className: "check-button" },
-	        "Continue"
-	      )
-	    );
-	  },
-	
-	  _selectedAnswerBar: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "lesson-bottom-bar group" },
-	      React.createElement(
-	        "a",
-	        { onClick: this.props.onClickSkip,
-	          className: "skip-button" },
-	        "Skip"
-	      ),
-	      React.createElement(
-	        "a",
-	        { onClick: this.props.onClickCheck,
-	          className: "check-button" },
-	        "Check"
-	      )
-	    );
-	  },
-	
-	  _unselectedAnswerBar: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "lesson-bottom-bar group" },
-	      React.createElement(
-	        "a",
-	        { onClick: this.props.onClickSkip,
-	          className: "skip-button" },
-	        "Skip"
-	      ),
-	      React.createElement(
-	        "a",
-	        { className: "disabled-check-button" },
-	        "Check"
-	      )
-	    );
-	  },
-	
-	  _finalPageBar: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "lesson-bottom-bar group" },
-	      React.createElement(
-	        "a",
-	        { onClick: this.props.onClickContinue,
-	          className: "check-button" },
-	        "Continue"
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var bar;
-	    if (this.props.lessonOver) {
-	      bar = this._finalPageBar();
-	    } else if (this.props.checkClicked) {
-	      if (this.props.selected === "correctIsSelected") {
-	        bar = this._correctAnswerBar();
-	      } else {
-	        bar = this._incorrectAnswerBar();
-	      }
-	    } else if (this.props.selected) {
-	      bar = this._selectedAnswerBar();
-	    } else {
-	      bar = this._unselectedAnswerBar();
-	    }
-	
-	    return bar;
-	  }
-	});
-	
-	module.exports = LessonBottomBar;
-
-/***/ },
-/* 272 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    LessonBottomBar = __webpack_require__(271);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-final group' },
-	      React.createElement(
-	        'div',
-	        { className: 'lesson-final-contents group' },
-	        React.createElement(
-	          'h2',
-	          { className: 'lesson-final-header' },
-	          'Lesson complete!'
-	        ),
-	        React.createElement(
-	          'h2',
-	          { className: 'lesson-final-counter' },
-	          '+10 xp'
-	        ),
-	        React.createElement('i', { className: 'fa fa-5x fa-trophy' })
-	      )
-	    );
-	  }
-	});
 
 /***/ }
 /******/ ]);

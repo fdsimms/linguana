@@ -8,8 +8,8 @@ var React = require('react'),
     Exercise = require("../exercises/exercise"),
     ProgressBar = require("./progress_bar"),
     LessonBottomBar = require("./lesson_bottom_bar"),
-    LessonFinalPage = require("./lesson_final_page"),
-    History = require('react-router').History;
+    History = require("react-router").History,
+    LessonFinalPage = require("./lesson_final_page");
 
 var Lesson = React.createClass({
   mixins: [History],
@@ -19,11 +19,13 @@ var Lesson = React.createClass({
       lesson: LessonStore.find(this.props.params.lessonId),
       showModal: false,
       showExercise: false,
+      showFinalPage: false,
       checkButtonClicked: false,
+      lessonOver: false,
+
       currentExerciseIdx: 0,
       answerChoiceStatus: "",
       currentAnswerChoiceIdx: -1,
-      lessonOver: false
     });
   },
 
@@ -62,23 +64,26 @@ var Lesson = React.createClass({
   },
 
   _handleCheckClick: function () {
-    if (ExerciseStore.all().length === this.state.currentExerciseIdx + 1) {
-      setTimeout(function () {
-        this.setState({ checkButtonClicked: true, lessonOver: true });
-      }.bind(this), 750)
-    } else {
-      this.setState({ checkButtonClicked: true })
-    }
     if (this.state.answerChoiceStatus === "otherIsSelected") {
       ExerciseActions.pushExercise(this.state.currentExerciseIdx);
+    }
+    var exercisesLength = ExerciseStore.all().length,
+        nextExerciseIdx = this.state.currentExerciseIdx + 1,
+        isCorrect = this.state.answerChoiceStatus === "correctIsSelected"
+    if (exercisesLength === nextExerciseIdx && isCorrect ) {
+      this.setState({ checkButtonClicked: true, lessonOver: true });
+    } else {
+      this.setState({ checkButtonClicked: true })
     }
   },
 
   _handleContinueClick: function () {
     var nextExerciseIdx = this.state.currentExerciseIdx + 1;
-    if (this.state.lessonOver) {
-      var skillId = this.state.lesson.skill_id;
-      this.history.pushState(null, "/skills/" + skillId);
+    if (this.state.showFinalPage) {
+      var url = "/skills/" + this.state.lesson.skill_id
+      this.history.pushState(null, url)
+    } else if (this.state.lessonOver) {
+      this.setState({ showFinalPage: true})
     }
     else if (this.state.answerChoiceStatus === "otherIsSelected") {
       ExerciseActions.removeFirstExercise();
@@ -94,10 +99,11 @@ var Lesson = React.createClass({
   },
 
   _handleSkipClick: function () {
+    ExerciseActions.pushExercise(this.state.currentExerciseIdx);
     this.setState({
-      checkButtonClicked: true,
-      answerChoiceStatus: "otherIsSelected"
-    })
+      answerChoiceStatus: "otherIsSelected",
+      checkButtonClicked: true
+    });
   },
 
   getAnswerChoiceStatus: function (status, idx ) {
@@ -118,42 +124,23 @@ var Lesson = React.createClass({
   },
 
   bottomBar: function () {
-    var bottomBar;
-    if (this.state.lessonOver) {
-      bottomBar =
-        <LessonBottomBar
-          lessonOver={this.state.lessonOver}
-          onClickContinue={this._handleContinueClick} />
-    }
-    else if (this.state.answerChoiceStatus === "correctIsSelected") {
-      bottomBar =
-        <LessonBottomBar
-          selected="correctIsSelected"
-          checkClicked={this.state.checkButtonClicked}
-          onClickContinue={this._handleContinueClick}
-          onClickCheck={this._handleCheckClick}
-          onClickSkip={this._handleSkipClick} />;
+    var bottomBar = <LessonBottomBar
+                      selected={this.state.answerChoiceStatus}
+                      showFinalPageBar={this.state.showFinalPage}
+                      checkClicked={this.state.checkButtonClicked}
+                      onClickContinue={this._handleContinueClick}
+                      onClickCheck={this._handleCheckClick}
+                      onClickSkip={this._handleSkipClick} />;
 
-    } else if (this.state.answerChoiceStatus === "otherIsSelected") {
-      bottomBar =
-        <LessonBottomBar
-          selected="otherIsSelected"
-          checkClicked={this.state.checkButtonClicked}
-          onClickContinue={this._handleContinueClick}
-          onClickCheck={this._handleCheckClick}
-          onClickSkip={this._handleSkipClick} />;
-
-    } else {
-      bottomBar =
-        <LessonBottomBar
-          onClickCheck={this._handleCheckClick}
-          onClickSkip={this._handleSkipClick} />;
-    }
     return bottomBar;
   },
 
   progressBar: function () {
-    return <ProgressBar currentIdx={this.state.currentExerciseIdx} />;
+    var currentIdx = this.state.currentExerciseIdx;
+    if (this.state.lessonOver) {
+      currentIdx = this.state.currentExerciseIdx + 1
+    }
+    return <ProgressBar currentIdx={currentIdx} />;
   },
 
   exercisePage: function () {
@@ -173,7 +160,6 @@ var Lesson = React.createClass({
       exercise = this.exercise();
       bottomBar = this.bottomBar();
     }
-
 
     return(
       <div className="lesson-page-content box-shadowed">
@@ -211,13 +197,11 @@ var Lesson = React.createClass({
       lessonClass = "disabled-lesson lesson-page";
     }
     if(typeof this.state.lesson === "undefined") { return <div></div>; }
-    var toRender;
-    if (this.state.lessonOver) {
-      toRender = this.finalPage();
-    } else {
-      toRender = this.exercisePage();
-    }
 
+    var toRender = this.exercisePage();
+    if (this.state.showFinalPage) {
+      toRender = this.finalPage();
+    }
     return(
       <div className={lessonClass}>
         {toRender}

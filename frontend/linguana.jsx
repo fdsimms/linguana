@@ -9,6 +9,7 @@ var React = require('react'),
     Splash = require('./components/splash'),
     SkillIndex = require('./components/skill_index'),
     Skill = require('./components/skill'),
+    LessonFinalPage = require('./components/lessons/lesson_final_page'),
     Lesson = require('./components/lessons/lesson');
 
 
@@ -19,6 +20,7 @@ var React = require('react'),
       <Route path="/courses/:courseId" component={Course} />
       <Route path="/skills/:skillId" component={Skill} />
       <Route path="/lessons/:lessonId" component={Lesson} />
+      <Route path="/congrats" component={LessonFinalPage} />
     </Route>
   );
 
