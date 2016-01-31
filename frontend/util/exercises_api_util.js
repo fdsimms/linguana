@@ -7,6 +7,7 @@ var ExercisesApiUtil = {
 			url: "api/lessons/" + lessonId + "/exercises",
 			dataType: "json",
 			success: function (exercises) {
+
   			ExerciseActions.receiveAll(exercises);
         successCallback && successCallback();
 			},

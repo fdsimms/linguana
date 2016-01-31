@@ -1,17 +1,24 @@
 var React = require('react'),
     ExerciseStore = require('../../stores/exercise_store'),
-    ExercisesApiUtil = require('../../util/exercises_api_util');
+    ExercisesApiUtil = require('../../util/exercises_api_util'),
+    AnswerChoiceIndex = require('../answer_choices/answer_choice_index');
 
 var Exercise = React.createClass({
   getInitialState: function () {
-    return({ exercise: ExerciseStore.findByIdx(this.props.exerciseIdx) });
+    return({
+      exercise: ExerciseStore.findByIdx(this.props.exerciseIdx),
+      showAnswerChoices: false
+    });
   },
 
   componentDidMount: function () {
     this.exerciseListener = ExerciseStore.addListener(this._exercisesChanged);
     var exerciseId = this.state.exercise.id;
     ExercisesApiUtil.fetchExercises(this.props.lessonId, function () {
-      this.setState({ exercise: ExerciseStore.findByIdx(this.props.exerciseIdx) });
+      this.setState({
+        exercise: ExerciseStore.findByIdx(this.props.exerciseIdx),
+        showAnswerChoices: true
+      });
     }.bind(this));
   },
 
@@ -32,7 +39,15 @@ var Exercise = React.createClass({
 
   render: function () {
     if (typeof this.state.exercise === "undefined") {
-      return <div></div>
+      return <div></div>;
+    }
+
+    var answerChoices;
+    if (this.state.showAnswerChoices) {
+
+      answerChoices =
+        <AnswerChoiceIndex
+          answerChoices={this.state.exercise.answer_choices} />
     }
 
     var thing_to_translate = this.state.exercise.thing_to_translate
@@ -42,6 +57,7 @@ var Exercise = React.createClass({
           <h2 className="exercise-header">
             Choose the right translation for "{thing_to_translate}."
           </h2>
+          {answerChoices}
         </div>
       </div>
     );

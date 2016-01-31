@@ -27,13 +27,15 @@ class Api::ExercisesController < ApplicationController
   end
 
   def show
-    @exercise = Exercise.find(params[:id])
+    @exercise = Exercise.includes(:answer_choices).find(params[:id])
     @lesson = @exercise.lesson
   end
 
   def index
     @lesson = Lesson.find(params[:lesson_id])
-    @exercises = Exercise.all.where(lesson_id: @lesson.id)
+    @exercises = Exercise.includes(:answer_choices)
+                         .all
+                         .where(lesson_id: @lesson.id)
   end
 
   private

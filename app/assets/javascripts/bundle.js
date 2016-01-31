@@ -32182,6 +32182,7 @@
 	      url: "api/lessons/" + lessonId + "/exercises",
 	      dataType: "json",
 	      success: function (exercises) {
+	
 	        ExerciseActions.receiveAll(exercises);
 	        successCallback && successCallback();
 	      }
@@ -32307,20 +32308,27 @@
 
 	var React = __webpack_require__(1),
 	    ExerciseStore = __webpack_require__(266),
-	    ExercisesApiUtil = __webpack_require__(261);
+	    ExercisesApiUtil = __webpack_require__(261),
+	    AnswerChoiceIndex = __webpack_require__(270);
 	
 	var Exercise = React.createClass({
 	  displayName: 'Exercise',
 	
 	  getInitialState: function () {
-	    return { exercise: ExerciseStore.findByIdx(this.props.exerciseIdx) };
+	    return {
+	      exercise: ExerciseStore.findByIdx(this.props.exerciseIdx),
+	      showAnswerChoices: false
+	    };
 	  },
 	
 	  componentDidMount: function () {
 	    this.exerciseListener = ExerciseStore.addListener(this._exercisesChanged);
 	    var exerciseId = this.state.exercise.id;
 	    ExercisesApiUtil.fetchExercises(this.props.lessonId, function () {
-	      this.setState({ exercise: ExerciseStore.findByIdx(this.props.exerciseIdx) });
+	      this.setState({
+	        exercise: ExerciseStore.findByIdx(this.props.exerciseIdx),
+	        showAnswerChoices: true
+	      });
 	    }.bind(this));
 	  },
 	
@@ -32343,6 +32351,13 @@
 	      return React.createElement('div', null);
 	    }
 	
+	    var answerChoices;
+	    if (this.state.showAnswerChoices) {
+	
+	      answerChoices = React.createElement(AnswerChoiceIndex, {
+	        answerChoices: this.state.exercise.answer_choices });
+	    }
+	
 	    var thing_to_translate = this.state.exercise.thing_to_translate;
 	    return React.createElement(
 	      'div',
@@ -32356,7 +32371,8 @@
 	          'Choose the right translation for "',
 	          thing_to_translate,
 	          '."'
-	        )
+	        ),
+	        answerChoices
 	      )
 	    );
 	  }
@@ -32512,6 +32528,60 @@
 	});
 	
 	module.exports = LessonBottomBar;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    AnswerChoiceIndexItem = __webpack_require__(271);
+	
+	var AnswerChoiceIndex = React.createClass({
+	  displayName: 'AnswerChoiceIndex',
+	
+	  render: function () {
+	    if (this.props.answerChoices === []) {
+	      return React.createElement('div', null);
+	    }
+	
+	    var answerChoices = this.props.answerChoices;
+	    answerChoices = answerChoices.map(function (choice, idx) {
+	      return React.createElement(AnswerChoiceIndexItem, { key: idx, answerChoice: choice });
+	    });
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'answer-choice-index' },
+	      React.createElement(
+	        'ul',
+	        { className: 'answer-choice-list group' },
+	        answerChoices
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = AnswerChoiceIndex;
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var AnswerChoiceIndexItem = React.createClass({
+	  displayName: "AnswerChoiceIndexItem",
+	
+	  render: function () {
+	    return React.createElement(
+	      "li",
+	      { className: "answer-choice-list-item" },
+	      this.props.answerChoice.body
+	    );
+	  }
+	});
+	
+	module.exports = AnswerChoiceIndexItem;
 
 /***/ }
 /******/ ]);

@@ -6,6 +6,6 @@ class Exercise < ActiveRecord::Base
   has_many :answer_choices
 
   def correct_answer
-    self.answer_choices.where(is_correct: true)
+    self.answer_choices.find_by_is_correct(true)
   end
 end
