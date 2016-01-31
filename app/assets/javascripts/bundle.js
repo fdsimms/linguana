@@ -32685,6 +32685,16 @@
 	var React = __webpack_require__(1),
 	    AnswerChoiceIndexItem = __webpack_require__(271);
 	
+	var shuffleArray = function (array) {
+	  for (var i = array.length - 1; i > 0; i--) {
+	    var j = Math.floor(Math.random() * (i + 1));
+	    var temp = array[i];
+	    array[i] = array[j];
+	    array[j] = temp;
+	  }
+	  return array;
+	};
+	
 	var AnswerChoiceIndex = React.createClass({
 	  displayName: 'AnswerChoiceIndex',
 	
@@ -32722,8 +32732,7 @@
 	        idx: idx,
 	        _handleClick: _handleClick });
 	    }.bind(this));
-	
-	    return answerChoices;
+	    return shuffleArray(answerChoices);
 	  },
 	
 	  render: function () {

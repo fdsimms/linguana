@@ -1,6 +1,16 @@
 var React = require('react'),
     AnswerChoiceIndexItem = require('./answer_choice_index_item');
 
+var shuffleArray = function (array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+};
+
 var AnswerChoiceIndex = React.createClass({
   _handleClick: function (idx) {
     if (this.props.answerChoices[idx].is_correct) {
@@ -38,8 +48,7 @@ var AnswerChoiceIndex = React.createClass({
           _handleClick={_handleClick} />
       );
     }.bind(this));
-
-    return answerChoices;
+    return shuffleArray(answerChoices);
   },
 
   render: function () {
