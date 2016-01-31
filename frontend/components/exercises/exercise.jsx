@@ -6,14 +6,13 @@ var React = require('react'),
 var Exercise = React.createClass({
   getInitialState: function () {
     return({
-      exercise: ExerciseStore.findByIdx(this.props.exerciseIdx),
+      exercise: undefined,
       showAnswerChoices: false
     });
   },
 
   componentDidMount: function () {
     this.exerciseListener = ExerciseStore.addListener(this._exercisesChanged);
-    var exerciseId = this.state.exercise.id;
     ExercisesApiUtil.fetchExercises(this.props.lessonId, function () {
       this.setState({
         exercise: ExerciseStore.findByIdx(this.props.exerciseIdx),
