@@ -102,7 +102,8 @@ var Lesson = React.createClass({
           <Exercise lessonId={this.state.lesson.id}
                     exerciseIdx={this.state.currentExerciseIdx}
                     currentAnswerChoiceIdx={this.state.currentAnswerChoiceIdx}
-                    getAnswerChoiceStatus={this.getAnswerChoiceStatus} />;
+                    getAnswerChoiceStatus={this.getAnswerChoiceStatus}
+                    checkClicked={this.state.checkButtonClicked} />;
 
         progress_bar =
           <ProgressBar currentIdx={this.state.currentExerciseIdx} />;
@@ -133,8 +134,13 @@ var Lesson = React.createClass({
         }
       }
 
+      var lessonClass = "lesson-page";
+      if (this.state.checkButtonClicked) {
+        lessonClass = "disabled-lesson lesson-page";
+      }
+
     return(
-      <div className="lesson-page">
+      <div className={lessonClass}>
         <div className="lesson-page-content box-shadowed">
           <div className="tips-and-notes-wrapper group">
             <h3 onClick={this._handleTipsAndNotesClick}

@@ -22,6 +22,10 @@
   position: relative;
 }
 
+.disabled-lesson .answer-choice-list-item-wrapper {
+  cursor: default;
+}
+
 .answer-choice-list-item-wrapper:hover {
   border: 2px solid rgb(28, 175, 246);
   color: rgb(28, 175, 246);
@@ -42,6 +46,16 @@
 }
 
 .selected:hover {
+  border: 2px solid #ccc;
+  color: #fff;
+}
+
+.disabled-lesson .answer-choice-list-item-wrapper:hover {
+  border: 2px solid #ccc;
+  color: #aaa;
+}
+
+.disabled-lesson .selected:hover {
   border: 2px solid #ccc;
   color: #fff;
 }

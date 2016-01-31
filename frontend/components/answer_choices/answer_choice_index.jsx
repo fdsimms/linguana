@@ -24,13 +24,18 @@ var AnswerChoiceIndex = React.createClass({
         selected = "selected";
       }
 
+      var _handleClick;
+      if (!this.props.checkClicked) {
+        _handleClick = this._handleClick;
+      }
+
       return(
         <AnswerChoiceIndexItem
           key={idx}
           selected={selected}
           answerChoice={choice}
           idx={idx}
-          _handleClick={this._handleClick} />
+          _handleClick={_handleClick} />
       );
     }.bind(this));
 

@@ -32172,7 +32172,8 @@
 	      exercise = React.createElement(Exercise, { lessonId: this.state.lesson.id,
 	        exerciseIdx: this.state.currentExerciseIdx,
 	        currentAnswerChoiceIdx: this.state.currentAnswerChoiceIdx,
-	        getAnswerChoiceStatus: this.getAnswerChoiceStatus });
+	        getAnswerChoiceStatus: this.getAnswerChoiceStatus,
+	        checkClicked: this.state.checkButtonClicked });
 	
 	      progress_bar = React.createElement(ProgressBar, { currentIdx: this.state.currentExerciseIdx });
 	
@@ -32197,9 +32198,14 @@
 	      }
 	    }
 	
+	    var lessonClass = "lesson-page";
+	    if (this.state.checkButtonClicked) {
+	      lessonClass = "disabled-lesson lesson-page";
+	    }
+	
 	    return React.createElement(
 	      'div',
-	      { className: 'lesson-page' },
+	      { className: lessonClass },
 	      React.createElement(
 	        'div',
 	        { className: 'lesson-page-content box-shadowed' },
@@ -32418,7 +32424,8 @@
 	      answerChoices = React.createElement(AnswerChoiceIndex, {
 	        currentAnswerChoiceIdx: this.props.currentAnswerChoiceIdx,
 	        answerChoices: this.state.exercise.answer_choices,
-	        getAnswerChoiceStatus: this.props.getAnswerChoiceStatus });
+	        getAnswerChoiceStatus: this.props.getAnswerChoiceStatus,
+	        checkClicked: this.props.checkClicked });
 	    }
 	
 	    var thing_to_translate = this.state.exercise.thing_to_translate;
@@ -32702,12 +32709,17 @@
 	        selected = "selected";
 	      }
 	
+	      var _handleClick;
+	      if (!this.props.checkClicked) {
+	        _handleClick = this._handleClick;
+	      }
+	
 	      return React.createElement(AnswerChoiceIndexItem, {
 	        key: idx,
 	        selected: selected,
 	        answerChoice: choice,
 	        idx: idx,
-	        _handleClick: this._handleClick });
+	        _handleClick: _handleClick });
 	    }.bind(this));
 	
 	    return answerChoices;

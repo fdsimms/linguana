@@ -50,7 +50,8 @@ var Exercise = React.createClass({
         <AnswerChoiceIndex
           currentAnswerChoiceIdx={this.props.currentAnswerChoiceIdx}
           answerChoices={this.state.exercise.answer_choices}
-          getAnswerChoiceStatus={this.props.getAnswerChoiceStatus } />
+          getAnswerChoiceStatus={this.props.getAnswerChoiceStatus }
+          checkClicked = {this.props.checkClicked} />
     }
 
     var thing_to_translate = this.state.exercise.thing_to_translate
