@@ -1,0 +1,38 @@
+.lesson-final {
+  height: 100%;
+}
+
+.lesson-final-contents {
+  color: #000;
+  width: 700px;
+  margin: auto;
+  text-align: center;
+  display: block;
+  padding-top: 85px;
+}
+
+.lesson-final-contents .fa-trophy {
+  color: gold;
+  position: absolute;
+  margin: auto;
+  padding: 15px;
+  top: 177px;
+  text-shadow: 0 0 8px yellow;
+  left: 376px;
+  box-shadow: 0 0 8px yellow;
+  font-size: 9em;
+  border: 2px solid gold;
+  border-radius: 50%;
+}
+
+.lesson-final-header {
+  font-weight: bold;
+  display: inline;
+  font-size: 30px;
+}
+
+.lesson-final-counter {
+  padding: 0 10px;
+  display: inline;
+  font-size: 25px;
+}

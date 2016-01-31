@@ -55,7 +55,7 @@
 	    Splash = __webpack_require__(252),
 	    SkillIndex = __webpack_require__(246),
 	    Skill = __webpack_require__(253),
-	    Lesson = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/lessons/lesson\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	    Lesson = __webpack_require__(260);
 	
 	var routes = React.createElement(
 	  Route,
@@ -31737,13 +31737,10 @@
 /* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1),
-	    History = __webpack_require__(159).History;
+	var React = __webpack_require__(1);
 	
 	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  mixins: [History],
+	  displayName: "exports",
 	
 	  _handleClick: function () {
 	    this.history.pushState(null, "/courses", {});
@@ -31751,21 +31748,21 @@
 	
 	  render: function () {
 	    return React.createElement(
-	      'div',
-	      { className: 'splash group' },
+	      "div",
+	      { className: "splash group" },
 	      React.createElement(
-	        'div',
-	        { className: 'splash-contents group' },
+	        "div",
+	        { className: "splash-contents group" },
 	        React.createElement(
-	          'h2',
-	          { className: 'splash-header' },
-	          'Learn a language. Or maybe not. We\'ll see.'
+	          "h2",
+	          { className: "splash-header" },
+	          "Learn a language. Or maybe not. We'll see."
 	        ),
 	        React.createElement(
-	          'a',
-	          { className: 'splash-button',
-	            href: '#/courses' },
-	          'Get started'
+	          "a",
+	          { className: "splash-button",
+	            href: "#/courses" },
+	          "Get started"
 	        )
 	      )
 	    );
@@ -32064,6 +32061,858 @@
 	};
 	
 	module.exports = LessonActions;
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    LessonStore = __webpack_require__(255),
+	    LessonsApiUtil = __webpack_require__(258),
+	    ExercisesApiUtil = __webpack_require__(261),
+	    TipsAndNotesModal = __webpack_require__(264),
+	    ModalActions = __webpack_require__(208),
+	    ExerciseActions = __webpack_require__(262),
+	    Exercise = __webpack_require__(265),
+	    ProgressBar = __webpack_require__(269),
+	    LessonBottomBar = __webpack_require__(271),
+	    LessonFinalPage = __webpack_require__(272),
+	    History = __webpack_require__(159).History;
+	
+	var Lesson = React.createClass({
+	  displayName: 'Lesson',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return {
+	      lesson: LessonStore.find(this.props.params.lessonId),
+	      showModal: false,
+	      showExercise: false,
+	      checkButtonClicked: false,
+	      currentExerciseIdx: 0,
+	      answerChoiceStatus: "",
+	      currentAnswerChoiceIdx: -1,
+	      lessonOver: false
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+	
+	    var lessonId = this.props.params.lessonId;
+	
+	    LessonsApiUtil.fetchLesson(lessonId, function () {
+	
+	      this.setState({
+	        lesson: LessonStore.find(this.props.params.lessonId),
+	        showModal: true
+	      });
+	
+	      ExercisesApiUtil.fetchExercises(this.state.lesson.id, function () {
+	        this.setState({ showExercise: true });
+	      }.bind(this));
+	    }.bind(this));
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.lessonListener.remove();
+	  },
+	
+	  _lessonsChanged: function () {
+	    this.setState({
+	      lesson: LessonStore.find(this.props.params.lessonId),
+	      showModal: this.state.showModal
+	    });
+	  },
+	
+	  _handleTipsAndNotesClick: function () {
+	    ModalActions.toggleModalDisplay("tipsAndNotesModal");
+	  },
+	
+	  _handleCheckClick: function () {
+	    if (ExerciseStore.all().length === this.state.currentExerciseIdx + 1) {
+	      this.setState({ checkButtonClicked: true, lessonOver: true });
+	    } else {
+	      this.setState({ checkButtonClicked: true });
+	    }
+	    if (this.state.answerChoiceStatus === "otherIsSelected") {
+	      ExerciseActions.pushExercise(this.state.currentExerciseIdx);
+	    }
+	  },
+	
+	  _handleContinueClick: function () {
+	    var nextExerciseIdx = this.state.currentExerciseIdx + 1;
+	    if (this.state.lessonOver) {
+	      var skillId = this.state.lesson.skill_id;
+	      this.history.pushState(null, "/skills/" + skillId);
+	    } else if (this.state.answerChoiceStatus === "otherIsSelected") {
+	      ExerciseActions.removeFirstExercise();
+	      nextExerciseIdx = this.state.currentExerciseIdx;
+	    }
+	
+	    this.setState({
+	      currentExerciseIdx: nextExerciseIdx,
+	      checkButtonClicked: false,
+	      answerChoiceStatus: "",
+	      currentAnswerChoiceIdx: -1
+	    });
+	  },
+	
+	  _handleSkipClick: function () {
+	    this.setState({
+	      checkButtonClicked: true,
+	      answerChoiceStatus: "otherIsSelected"
+	    });
+	  },
+	
+	  getAnswerChoiceStatus: function (status, idx) {
+	    this.setState({
+	      answerChoiceStatus: status,
+	      currentAnswerChoiceIdx: idx
+	    });
+	  },
+	
+	  exercise: function () {
+	    return React.createElement(Exercise, { lessonId: this.state.lesson.id,
+	      exerciseIdx: this.state.currentExerciseIdx,
+	      currentAnswerChoiceIdx: this.state.currentAnswerChoiceIdx,
+	      getAnswerChoiceStatus: this.getAnswerChoiceStatus,
+	      checkClicked: this.state.checkButtonClicked });
+	  },
+	
+	  bottomBar: function () {
+	    var bottomBar;
+	    if (this.state.lessonOver) {
+	      bottomBar = React.createElement(LessonBottomBar, {
+	        lessonOver: this.state.lessonOver,
+	        onClickContinue: this._handleContinueClick });
+	    } else if (this.state.answerChoiceStatus === "correctIsSelected") {
+	      bottomBar = React.createElement(LessonBottomBar, {
+	        selected: 'correctIsSelected',
+	        checkClicked: this.state.checkButtonClicked,
+	        onClickContinue: this._handleContinueClick,
+	        onClickCheck: this._handleCheckClick,
+	        onClickSkip: this._handleSkipClick });
+	    } else if (this.state.answerChoiceStatus === "otherIsSelected") {
+	      bottomBar = React.createElement(LessonBottomBar, {
+	        selected: 'otherIsSelected',
+	        checkClicked: this.state.checkButtonClicked,
+	        onClickContinue: this._handleContinueClick,
+	        onClickCheck: this._handleCheckClick,
+	        onClickSkip: this._handleSkipClick });
+	    } else {
+	      bottomBar = React.createElement(LessonBottomBar, {
+	        onClickCheck: this._handleCheckClick,
+	        onClickSkip: this._handleSkipClick });
+	    }
+	    return bottomBar;
+	  },
+	
+	  progressBar: function () {
+	    return React.createElement(ProgressBar, { currentIdx: this.state.currentExerciseIdx });
+	  },
+	
+	  exercisePage: function () {
+	    var modal;
+	    if (this.state.showModal) {
+	      modal = React.createElement(TipsAndNotesModal, {
+	        tipsAndNotes: this.state.lesson.tips_and_notes });
+	    }
+	
+	    var exercise, progressBar, bottomBar;
+	
+	    if (this.state.showExercise) {
+	      progressBar = this.progressBar();
+	      exercise = this.exercise();
+	      bottomBar = this.bottomBar();
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-page-content box-shadowed' },
+	      React.createElement(
+	        'div',
+	        { className: 'tips-and-notes-wrapper group' },
+	        React.createElement(
+	          'h3',
+	          { onClick: this._handleTipsAndNotesClick,
+	            className: 'tips-and-notes-modal-button' },
+	          'Tips & notes'
+	        ),
+	        modal,
+	        React.createElement(
+	          'a',
+	          { className: 'tips-and-notes-quit',
+	            href: "#/skills/" + this.state.lesson.skill_id },
+	          'Quit'
+	        )
+	      ),
+	      progressBar,
+	      exercise,
+	      bottomBar
+	    );
+	  },
+	
+	  finalPage: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-page-content box-shadowed' },
+	      React.createElement(LessonFinalPage, null),
+	      this.bottomBar()
+	    );
+	  },
+	
+	  render: function () {
+	    var lessonClass = "lesson-page";
+	    if (this.state.checkButtonClicked) {
+	      lessonClass = "disabled-lesson lesson-page";
+	    }
+	    if (typeof this.state.lesson === "undefined") {
+	      return React.createElement('div', null);
+	    }
+	    var toRender;
+	    if (this.state.lessonOver) {
+	      toRender = this.finalPage();
+	    } else {
+	      toRender = this.exercisePage();
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: lessonClass },
+	      toRender
+	    );
+	  }
+	});
+	
+	module.exports = Lesson;
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ExerciseActions = __webpack_require__(262);
+	
+	var shuffleArray = function (array) {
+		for (var i = array.length - 1; i > 0; i--) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
+		return array;
+	};
+	
+	var ExercisesApiUtil = {
+		fetchExercises: function (lessonId, successCallback) {
+			$.ajax({
+				type: "GET",
+				url: "api/lessons/" + lessonId + "/exercises",
+				dataType: "json",
+				success: function (exercises) {
+					exercises.forEach(function (exercise, idx) {
+						var shuffled = shuffleArray(exercise.answer_choices);
+						exercises[idx].answer_choices = shuffled;
+					});
+	
+					ExerciseActions.receiveAll(exercises);
+					successCallback && successCallback();
+				}
+			});
+		}
+	};
+	
+	window.ExercisesApiUtil = ExercisesApiUtil;
+	
+	module.exports = ExercisesApiUtil;
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(209),
+	    ExerciseConstants = __webpack_require__(263);
+	
+	var ExerciseActions = {
+	  receiveAll: function (exercises) {
+	    AppDispatcher.dispatch({
+	      actionType: ExerciseConstants.EXERCISES_RECEIVED,
+	      exercises: exercises
+	    });
+	  },
+	
+	  pushExercise: function (exercise) {
+	    AppDispatcher.dispatch({
+	      actionType: ExerciseConstants.EXERCISE_RECEIVED,
+	      exercise: exercise
+	    });
+	  },
+	
+	  removeFirstExercise: function () {
+	    AppDispatcher.dispatch({
+	      actionType: ExerciseConstants.REMOVE_FIRST_EXERCISE
+	    });
+	  }
+	};
+	
+	module.exports = ExerciseActions;
+
+/***/ },
+/* 263 */
+/***/ function(module, exports) {
+
+	var ExerciseConstants = {
+	  EXERCISES_RECEIVED: "EXERCISES_RECEIVED",
+	  EXERCISE_RECEIVED: "EXERCISE_RECEIVED",
+	  REMOVE_FIRST_EXERCISE: "REMOVE_FIRST_EXERCISE"
+	};
+	
+	module.exports = ExerciseConstants;
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(208),
+	    ModalStore = __webpack_require__(214);
+	
+	var TipsAndNotesModal = React.createClass({
+	  displayName: 'TipsAndNotesModal',
+	
+	  getInitialState: function () {
+	    return { modalName: "tipsAndNotesModal" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    var modalName = this.state.modalName;
+	    ModalActions.addModal(modalName);
+	    this.forceUpdate();
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.forceUpdate();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	    ModalActions.removeModal(this.state.modalName);
+	  },
+	
+	  visibleRender: function () {
+	    var tipsAndNotes;
+	
+	    if (this.props.tipsAndNotes) {
+	      tipsAndNotes = this.props.tipsAndNotes;
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'tips-and-notes-modal box-shadowed' },
+	      React.createElement(
+	        'p',
+	        { className: 'tips-and-notes-modal-text' },
+	        tipsAndNotes
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = TipsAndNotesModal;
+
+/***/ },
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ExerciseStore = __webpack_require__(266),
+	    ExercisesApiUtil = __webpack_require__(261),
+	    AnswerChoiceIndex = __webpack_require__(267);
+	
+	var Exercise = React.createClass({
+	  displayName: 'Exercise',
+	
+	  getInitialState: function () {
+	    return {
+	      exercise: ExerciseStore.findByIdx(this.props.exerciseIdx),
+	      showAnswerChoices: false
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    this.exerciseListener = ExerciseStore.addListener(this._exercisesChanged);
+	    var exerciseId = this.state.exercise.id;
+	    ExercisesApiUtil.fetchExercises(this.props.lessonId, function () {
+	      this.setState({
+	        exercise: ExerciseStore.findByIdx(this.props.exerciseIdx),
+	        showAnswerChoices: true
+	      });
+	    }.bind(this));
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    var newExercise = ExerciseStore.findByIdx(newProps.exerciseIdx);
+	    this.setState({ exercise: newExercise });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.exerciseListener.remove();
+	  },
+	
+	  _exercisesChanged: function () {
+	    var exercise = ExerciseStore.findByIdx(this.props.exerciseIdx);
+	    this.setState({ exercise: exercise });
+	  },
+	
+	  render: function () {
+	    if (typeof this.state.exercise === "undefined") {
+	      return React.createElement('div', null);
+	    }
+	
+	    var answerChoices;
+	    if (this.state.showAnswerChoices) {
+	
+	      answerChoices = React.createElement(AnswerChoiceIndex, {
+	        currentAnswerChoiceIdx: this.props.currentAnswerChoiceIdx,
+	        answerChoices: this.state.exercise.answer_choices,
+	        getAnswerChoiceStatus: this.props.getAnswerChoiceStatus,
+	        checkClicked: this.props.checkClicked });
+	    }
+	
+	    var thing_to_translate = this.state.exercise.thing_to_translate;
+	    return React.createElement(
+	      'div',
+	      { className: 'exercise' },
+	      React.createElement(
+	        'div',
+	        { className: 'exercise-contents' },
+	        React.createElement(
+	          'h2',
+	          { className: 'exercise-header' },
+	          'Choose the right translation for "',
+	          thing_to_translate,
+	          '."'
+	        ),
+	        answerChoices
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Exercise;
+
+/***/ },
+/* 266 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(215).Store;
+	var ExerciseConstants = __webpack_require__(263);
+	var AppDispatcher = __webpack_require__(209);
+	var ModalStore = __webpack_require__(214);
+	
+	var ExerciseStore = new Store(AppDispatcher);
+	
+	var _exercises = [];
+	
+	var resetExercises = function (exercises) {
+	  _exercises = exercises.slice();
+	};
+	
+	var pushExercise = function (exerciseIdx) {
+	  var toPush = _exercises[exerciseIdx];
+	  _exercises.push(toPush);
+	  return _exercises;
+	};
+	
+	var removeFirstExercise = function () {
+	  _exercises.splice(0, 1);
+	  return _exercises;
+	};
+	
+	ExerciseStore.all = function () {
+	  return _exercises.slice();
+	};
+	
+	ExerciseStore.findByIdx = function (idx) {
+	  return _exercises[idx];
+	};
+	
+	ExerciseStore.findByLesson = function (lessonId) {
+	  var result = [];
+	  if (_exercises === []) {
+	    return {};
+	  }
+	  _exercises.forEach(function (exercise) {
+	    if (exercise.lesson_id === lessonId) {
+	      result.push(exercise);
+	    }
+	  });
+	  return result;
+	};
+	
+	ExerciseStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ExerciseConstants.EXERCISES_RECEIVED:
+	      resetExercises(payload.exercises);
+	      ExerciseStore.__emitChange();
+	      break;
+	    case ExerciseConstants.EXERCISE_RECEIVED:
+	      pushExercise(payload.exercise);
+	      ExerciseStore.__emitChange();
+	      break;
+	    case ExerciseConstants.REMOVE_FIRST_EXERCISE:
+	      removeFirstExercise();
+	      ExerciseStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.ExerciseStore = ExerciseStore;
+	
+	module.exports = ExerciseStore;
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    AnswerChoiceIndexItem = __webpack_require__(268);
+	
+	var AnswerChoiceIndex = React.createClass({
+	  displayName: 'AnswerChoiceIndex',
+	
+	  _handleClick: function (idx) {
+	    if (this.props.answerChoices[idx].is_correct) {
+	      this.props.getAnswerChoiceStatus("correctIsSelected", idx);
+	    } else {
+	      this.props.getAnswerChoiceStatus("otherIsSelected", idx);
+	    }
+	  },
+	
+	  componentWillReceiveProps: function () {
+	    this.forceUpdate();
+	  },
+	
+	  answerChoices: function () {
+	    var answerChoices = this.props.answerChoices;
+	    answerChoices = answerChoices.map(function (choice, idx) {
+	
+	      var selected;
+	
+	      if (idx === this.props.currentAnswerChoiceIdx) {
+	        selected = "selected";
+	      }
+	
+	      var _handleClick;
+	      if (!this.props.checkClicked) {
+	        _handleClick = this._handleClick;
+	      }
+	
+	      return React.createElement(AnswerChoiceIndexItem, {
+	        key: idx,
+	        selected: selected,
+	        answerChoice: choice,
+	        idx: idx,
+	        _handleClick: _handleClick });
+	    }.bind(this));
+	    return answerChoices;
+	  },
+	
+	  render: function () {
+	    if (this.props.answerChoices === []) {
+	      return React.createElement('div', null);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'answer-choice-index' },
+	      React.createElement(
+	        'ul',
+	        { className: 'answer-choice-list group' },
+	        this.answerChoices()
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = AnswerChoiceIndex;
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var AnswerChoiceIndexItem = React.createClass({
+	  displayName: "AnswerChoiceIndexItem",
+	
+	  _handleClick: function () {
+	    var idx = this.props.idx;
+	    this.props._handleClick(idx);
+	  },
+	
+	  render: function () {
+	    var classes = "answer-choice-list-item-wrapper";
+	    if (this.props.selected) {
+	      classes = "answer-choice-list-item-wrapper selected";
+	    }
+	
+	    return React.createElement(
+	      "div",
+	      { onClick: this._handleClick,
+	        className: classes },
+	      React.createElement(
+	        "li",
+	        { className: "answer-choice-list-item" },
+	        this.props.answerChoice.body
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = AnswerChoiceIndexItem;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ProgressBarChunk = __webpack_require__(270),
+	    ExerciseStore = __webpack_require__(266);
+	
+	var ProgressBar = React.createClass({
+	  displayName: 'ProgressBar',
+	
+	  componentWillReceiveProps: function (newProps) {
+	    this.forceUpdate();
+	  },
+	
+	  render: function () {
+	    var totalChunks = ExerciseStore.all().length;
+	    var currentChunkIdx = this.props.currentIdx;
+	    var bar = [];
+	    for (var i = 0; i < totalChunks; i++) {
+	
+	      if (i > currentChunkIdx) {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          className: 'unfilled-chunk',
+	          key: i }));
+	      } else if (i === currentChunkIdx) {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          className: 'current-chunk',
+	          key: i }));
+	      } else {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          className: 'filled-chunk',
+	          key: i }));
+	      }
+	    }
+	
+	    var trophyClass = "fa fa-3x fa-trophy disabled-trophy";
+	    if (this.props.currentIdx === ExerciseStore.all().length) {
+	      trophyClass = "fa fa-3x fa-trophy";
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'progress-bar' },
+	      React.createElement(
+	        'div',
+	        { className: 'progress-bar-chunks group' },
+	        bar
+	      ),
+	      React.createElement('i', { className: trophyClass })
+	    );
+	  }
+	});
+	
+	module.exports = ProgressBar;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ExerciseStore = __webpack_require__(266);
+	
+	var ProgressBarChunk = React.createClass({
+	  displayName: 'ProgressBarChunk',
+	
+	  render: function () {
+	
+	    return React.createElement('div', { className: "chunk " + this.props.className });
+	  }
+	});
+	
+	module.exports = ProgressBarChunk;
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var LessonBottomBar = React.createClass({
+	  displayName: "LessonBottomBar",
+	
+	  componentWillReceiveProps: function () {
+	    this.forceUpdate();
+	  },
+	
+	  _correctAnswerBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar-correct group" },
+	      React.createElement("i", { className: "fa fa-4x fa-check-circle-o" }),
+	      React.createElement(
+	        "h2",
+	        { className: "bottom-bar-header" },
+	        "You got it!"
+	      ),
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickContinue,
+	          className: "check-button" },
+	        "Continue"
+	      )
+	    );
+	  },
+	  _incorrectAnswerBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar-incorrect group" },
+	      React.createElement("i", { className: "fa fa-4x fa-times-circle-o" }),
+	      React.createElement(
+	        "h2",
+	        { className: "bottom-bar-header" },
+	        "That wasn't right..."
+	      ),
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickContinue,
+	          className: "check-button" },
+	        "Continue"
+	      )
+	    );
+	  },
+	
+	  _selectedAnswerBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar group" },
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickSkip,
+	          className: "skip-button" },
+	        "Skip"
+	      ),
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickCheck,
+	          className: "check-button" },
+	        "Check"
+	      )
+	    );
+	  },
+	
+	  _unselectedAnswerBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar group" },
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickSkip,
+	          className: "skip-button" },
+	        "Skip"
+	      ),
+	      React.createElement(
+	        "a",
+	        { className: "disabled-check-button" },
+	        "Check"
+	      )
+	    );
+	  },
+	
+	  _finalPageBar: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar group" },
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickContinue,
+	          className: "check-button" },
+	        "Continue"
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var bar;
+	    if (this.props.lessonOver) {
+	      bar = this._finalPageBar();
+	    } else if (this.props.checkClicked) {
+	      if (this.props.selected === "correctIsSelected") {
+	        bar = this._correctAnswerBar();
+	      } else {
+	        bar = this._incorrectAnswerBar();
+	      }
+	    } else if (this.props.selected) {
+	      bar = this._selectedAnswerBar();
+	    } else {
+	      bar = this._unselectedAnswerBar();
+	    }
+	
+	    return bar;
+	  }
+	});
+	
+	module.exports = LessonBottomBar;
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    LessonBottomBar = __webpack_require__(271);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-final group' },
+	      React.createElement(
+	        'div',
+	        { className: 'lesson-final-contents group' },
+	        React.createElement(
+	          'h2',
+	          { className: 'lesson-final-header' },
+	          'Lesson complete!'
+	        ),
+	        React.createElement(
+	          'h2',
+	          { className: 'lesson-final-counter' },
+	          '+ 10xp'
+	        ),
+	        React.createElement('i', { className: 'fa fa-5x fa-trophy' })
+	      )
+	    );
+	  }
+	});
 
 /***/ }
 /******/ ]);

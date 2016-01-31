@@ -1,10 +1,6 @@
-var React = require('react'),
-    History = require('react-router').History;
-
+var React = require('react');
 
 module.exports = React.createClass({
-  mixins: [History],
-
   _handleClick: function () {
     this.history.pushState(null, "/courses", {});
   },

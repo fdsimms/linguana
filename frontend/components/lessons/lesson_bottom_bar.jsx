@@ -73,7 +73,6 @@ var LessonBottomBar = React.createClass({
 
   render: function () {
     var bar;
-    debugger
     if (this.props.lessonOver) {
       bar = this._finalPageBar();
     }

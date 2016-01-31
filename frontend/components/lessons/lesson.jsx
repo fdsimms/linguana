@@ -8,6 +8,7 @@ var React = require('react'),
     Exercise = require("../exercises/exercise"),
     ProgressBar = require("./progress_bar"),
     LessonBottomBar = require("./lesson_bottom_bar"),
+    LessonFinalPage = require("./lesson_final_page"),
     History = require('react-router').History;
 
 var Lesson = React.createClass({
@@ -153,49 +154,71 @@ var Lesson = React.createClass({
     return <ProgressBar currentIdx={this.state.currentExerciseIdx} />;
   },
 
+  exercisePage: function () {
+    var modal;
+    if (this.state.showModal) {
+      modal =
+        <TipsAndNotesModal
+          tipsAndNotes={this.state.lesson.tips_and_notes}/>;
+    }
+
+    var exercise,
+        progressBar,
+        bottomBar;
+
+    if (this.state.showExercise) {
+      progressBar = this.progressBar();
+      exercise = this.exercise();
+      bottomBar = this.bottomBar();
+    }
+
+
+    return(
+      <div className="lesson-page-content box-shadowed">
+        <div className="tips-and-notes-wrapper group">
+          <h3 onClick={this._handleTipsAndNotesClick}
+              className="tips-and-notes-modal-button">
+            Tips & notes
+          </h3>
+          {modal}
+          <a className="tips-and-notes-quit"
+            href={"#/skills/" + this.state.lesson.skill_id }>
+            Quit
+          </a>
+        </div>
+        {progressBar}
+        {exercise}
+        {bottomBar}
+      </div>
+
+    );
+  },
+
+  finalPage: function () {
+    return(
+    <div className="lesson-page-content box-shadowed">
+      <LessonFinalPage />
+      {this.bottomBar()}
+    </div>
+    )
+  },
+
   render: function () {
+    var lessonClass = "lesson-page";
+    if (this.state.checkButtonClicked) {
+      lessonClass = "disabled-lesson lesson-page";
+    }
     if(typeof this.state.lesson === "undefined") { return <div></div>; }
-
-      var modal;
-      if (this.state.showModal) {
-        modal =
-          <TipsAndNotesModal
-            tipsAndNotes={this.state.lesson.tips_and_notes}/>;
-      }
-
-      var exercise,
-          progressBar,
-          bottomBar;
-
-      if (this.state.showExercise)
-        progressBar = this.progressBar();
-        exercise = this.exercise();
-        bottomBar = this.bottomBar();
-      }
-
-      var lessonClass = "lesson-page";
-      if (this.state.checkButtonClicked) {
-        lessonClass = "disabled-lesson lesson-page";
-      }
+    var toRender;
+    if (this.state.lessonOver) {
+      toRender = this.finalPage();
+    } else {
+      toRender = this.exercisePage();
+    }
 
     return(
       <div className={lessonClass}>
-        <div className="lesson-page-content box-shadowed">
-          <div className="tips-and-notes-wrapper group">
-            <h3 onClick={this._handleTipsAndNotesClick}
-                className="tips-and-notes-modal-button">
-              Tips & notes
-            </h3>
-            {modal}
-            <a className="tips-and-notes-quit"
-              href={"#/skills/" + this.state.lesson.skill_id }>
-              Quit
-            </a>
-          </div>
-          {progressBar}
-          {exercise}
-          {bottomBar}
-        </div>
+        {toRender}
       </div>
     );
   }
