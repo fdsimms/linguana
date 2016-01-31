@@ -45,8 +45,10 @@ var Exercise = React.createClass({
     var answerChoices;
     if (this.state.showAnswerChoices) {
 
+
       answerChoices =
         <AnswerChoiceIndex
+          currentAnswerChoiceIdx={this.props.currentAnswerChoiceIdx}
           answerChoices={this.state.exercise.answer_choices}
           getAnswerChoiceStatus={this.props.getAnswerChoiceStatus } />
     }

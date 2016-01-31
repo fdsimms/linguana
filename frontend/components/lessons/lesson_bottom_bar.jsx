@@ -7,7 +7,6 @@ var LessonBottomBar = React.createClass({
 
   render: function () {
     var secondButton;
-    debugger
     if (this.props.selected) {
       secondButton =
         <a onClick={this.props.onClickCheck}

@@ -16,7 +16,8 @@ var Lesson = React.createClass({
       showModal: false,
       showExercise: false,
       currentExerciseIdx: 0,
-      answerChoiceStatus: ""
+      answerChoiceStatus: "",
+      currentAnswerChoiceIdx: -1
     });
   },
 
@@ -59,9 +60,11 @@ var Lesson = React.createClass({
     this.setState({ currentExerciseIdx: nextExerciseIdx });
   },
 
-  getAnswerChoiceStatus: function (status, cb) {
-    this.setState({ answerChoiceStatus: status });
-    cb();
+  getAnswerChoiceStatus: function (status, idx ) {
+    this.setState({
+      answerChoiceStatus: status,
+      currentAnswerChoiceIdx: idx
+    });
   },
 
   render: function () {
@@ -82,6 +85,7 @@ var Lesson = React.createClass({
         exercise =
           <Exercise lessonId={this.state.lesson.id}
                     exerciseIdx={this.state.currentExerciseIdx}
+                    currentAnswerChoiceIdx={this.state.currentAnswerChoiceIdx}
                     getAnswerChoiceStatus={this.getAnswerChoiceStatus} />;
 
         progress_bar =

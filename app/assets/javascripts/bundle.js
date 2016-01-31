@@ -32089,7 +32089,8 @@
 	      showModal: false,
 	      showExercise: false,
 	      currentExerciseIdx: 0,
-	      answerChoiceStatus: ""
+	      answerChoiceStatus: "",
+	      currentAnswerChoiceIdx: -1
 	    };
 	  },
 	
@@ -32131,9 +32132,11 @@
 	    this.setState({ currentExerciseIdx: nextExerciseIdx });
 	  },
 	
-	  getAnswerChoiceStatus: function (status, cb) {
-	    this.setState({ answerChoiceStatus: status });
-	    cb();
+	  getAnswerChoiceStatus: function (status, idx) {
+	    this.setState({
+	      answerChoiceStatus: status,
+	      currentAnswerChoiceIdx: idx
+	    });
 	  },
 	
 	  render: function () {
@@ -32152,6 +32155,7 @@
 	    if (this.state.showExercise) {
 	      exercise = React.createElement(Exercise, { lessonId: this.state.lesson.id,
 	        exerciseIdx: this.state.currentExerciseIdx,
+	        currentAnswerChoiceIdx: this.state.currentAnswerChoiceIdx,
 	        getAnswerChoiceStatus: this.getAnswerChoiceStatus });
 	
 	      progress_bar = React.createElement(ProgressBar, { currentIdx: this.state.currentExerciseIdx });
@@ -32392,6 +32396,7 @@
 	    if (this.state.showAnswerChoices) {
 	
 	      answerChoices = React.createElement(AnswerChoiceIndex, {
+	        currentAnswerChoiceIdx: this.props.currentAnswerChoiceIdx,
 	        answerChoices: this.state.exercise.answer_choices,
 	        getAnswerChoiceStatus: this.props.getAnswerChoiceStatus });
 	    }
@@ -32552,7 +32557,6 @@
 	
 	  render: function () {
 	    var secondButton;
-	    debugger;
 	    if (this.props.selected) {
 	      secondButton = React.createElement(
 	        "a",
@@ -32593,30 +32597,25 @@
 	var AnswerChoiceIndex = React.createClass({
 	  displayName: 'AnswerChoiceIndex',
 	
-	  getInitialState: function () {
-	    return { selectedItemIdx: -1 };
-	  },
-	
 	  _handleClick: function (idx) {
-	
-	    this.setState({ selectedItemIdx: idx });
 	    if (this.props.answerChoices[idx].is_correct) {
-	      this.props.getAnswerChoiceStatus("correctIsSelected");
+	      this.props.getAnswerChoiceStatus("correctIsSelected", idx);
 	    } else {
-	      this.props.getAnswerChoiceStatus("otherIsSelected");
+	      this.props.getAnswerChoiceStatus("otherIsSelected", idx);
 	    }
 	  },
 	
 	  componentWillReceiveProps: function () {
-	    this.setState({ selectedItemIdx: -1 });
+	    this.forceUpdate();
 	  },
 	
 	  answerChoices: function () {
 	    var answerChoices = this.props.answerChoices;
 	    answerChoices = answerChoices.map(function (choice, idx) {
+	
 	      var selected;
 	
-	      if (idx === this.state.selectedItemIdx) {
+	      if (idx === this.props.currentAnswerChoiceIdx) {
 	        selected = "selected";
 	      }
 	
