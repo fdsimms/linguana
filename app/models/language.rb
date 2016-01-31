@@ -17,4 +17,6 @@ class Language < ActiveRecord::Base
     dependent: :destroy
   )
 
+  has_many :words
+
 end

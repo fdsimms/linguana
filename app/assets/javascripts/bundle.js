@@ -32077,8 +32077,8 @@
 	    TipsAndNotesModal = __webpack_require__(264),
 	    ModalActions = __webpack_require__(208),
 	    Exercise = __webpack_require__(265),
-	    ProgressBar = __webpack_require__(268),
-	    LessonBottomBar = __webpack_require__(267);
+	    ProgressBar = __webpack_require__(267),
+	    LessonBottomBar = __webpack_require__(269);
 	
 	var Lesson = React.createClass({
 	  displayName: 'Lesson',
@@ -32422,38 +32422,8 @@
 /* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	
-	var LessonBottomBar = React.createClass({
-	  displayName: "LessonBottomBar",
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "lesson-bottom-bar group" },
-	      React.createElement(
-	        "a",
-	        { className: "skip-button" },
-	        "Skip"
-	      ),
-	      React.createElement(
-	        "a",
-	        { onClick: this.props.onClickCheck,
-	          className: "check-button" },
-	        "Check"
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = LessonBottomBar;
-
-/***/ },
-/* 268 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var React = __webpack_require__(1),
-	    ProgressBarChunk = __webpack_require__(269),
+	    ProgressBarChunk = __webpack_require__(268),
 	    ExerciseStore = __webpack_require__(266);
 	
 	var ProgressBar = React.createClass({
@@ -32496,7 +32466,7 @@
 	module.exports = ProgressBar;
 
 /***/ },
-/* 269 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
@@ -32512,6 +32482,36 @@
 	});
 	
 	module.exports = ProgressBarChunk;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var LessonBottomBar = React.createClass({
+	  displayName: "LessonBottomBar",
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "lesson-bottom-bar group" },
+	      React.createElement(
+	        "a",
+	        { className: "skip-button" },
+	        "Skip"
+	      ),
+	      React.createElement(
+	        "a",
+	        { onClick: this.props.onClickCheck,
+	          className: "check-button" },
+	        "Check"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LessonBottomBar;
 
 /***/ }
 /******/ ]);

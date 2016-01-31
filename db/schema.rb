@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129222606) do
+ActiveRecord::Schema.define(version: 20160131030639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answer_choices", force: :cascade do |t|
+    t.integer  "exercise_id",                 null: false
+    t.string   "body",                        null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.boolean  "is_correct",  default: false, null: false
+  end
+
+  add_index "answer_choices", ["created_at"], name: "index_answer_choices_on_created_at", using: :btree
+  add_index "answer_choices", ["exercise_id", "body"], name: "index_answer_choices_on_exercise_id_and_body", unique: true, using: :btree
+  add_index "answer_choices", ["exercise_id"], name: "index_answer_choices_on_exercise_id", using: :btree
+  add_index "answer_choices", ["updated_at"], name: "index_answer_choices_on_updated_at", using: :btree
 
   create_table "course_enrollments", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -36,6 +49,14 @@ ActiveRecord::Schema.define(version: 20160129222606) do
   end
 
   add_index "courses", ["target_language_id", "known_language_id"], name: "index_courses_on_target_language_id_and_known_language_id", unique: true, using: :btree
+
+  create_table "dictionaries", force: :cascade do |t|
+    t.integer  "language_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "dictionaries", ["language_id"], name: "index_dictionaries_on_language_id", using: :btree
 
   create_table "exercises", force: :cascade do |t|
     t.integer  "lesson_id",          null: false
@@ -96,5 +117,26 @@ ActiveRecord::Schema.define(version: 20160129222606) do
   add_index "users", ["password_digest"], name: "index_users_on_password_digest", using: :btree
   add_index "users", ["session_token"], name: "index_users_on_session_token", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", using: :btree
+
+  create_table "word_debuts", force: :cascade do |t|
+    t.integer  "lesson_id",  null: false
+    t.integer  "word_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "word_debuts", ["lesson_id"], name: "index_word_debuts_on_lesson_id", using: :btree
+  add_index "word_debuts", ["word_id"], name: "index_word_debuts_on_word_id", using: :btree
+
+  create_table "words", force: :cascade do |t|
+    t.integer  "language_id", null: false
+    t.string   "content",     null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "words", ["content"], name: "index_words_on_content", using: :btree
+  add_index "words", ["language_id", "content"], name: "index_words_on_language_id_and_content", unique: true, using: :btree
+  add_index "words", ["language_id"], name: "index_words_on_language_id", using: :btree
 
 end
