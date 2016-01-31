@@ -3,4 +3,9 @@ class Exercise < ActiveRecord::Base
 
   belongs_to :lesson
   has_one :skill, through: :lesson
+  has_many :answer_choices
+
+  def correct_answer
+    self.answer_choices.where(is_correct: true)
+  end
 end

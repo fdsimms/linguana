@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131030639) do
+ActiveRecord::Schema.define(version: 20160131031414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,14 +49,6 @@ ActiveRecord::Schema.define(version: 20160131030639) do
   end
 
   add_index "courses", ["target_language_id", "known_language_id"], name: "index_courses_on_target_language_id_and_known_language_id", unique: true, using: :btree
-
-  create_table "dictionaries", force: :cascade do |t|
-    t.integer  "language_id", null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "dictionaries", ["language_id"], name: "index_dictionaries_on_language_id", using: :btree
 
   create_table "exercises", force: :cascade do |t|
     t.integer  "lesson_id",          null: false
