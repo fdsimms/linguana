@@ -65,7 +65,8 @@ var Lesson = React.createClass({
     this.setState({
       currentExerciseIdx: nextExerciseIdx,
       checkButtonClicked: false,
-      answerChoiceStatus: ""
+      answerChoiceStatus: "",
+      currentAnswerChoiceIdx: -1
      });
   },
 
