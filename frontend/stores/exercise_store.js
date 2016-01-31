@@ -6,8 +6,20 @@ var ModalStore = require('./modal_store');
 var ExerciseStore = new Store(AppDispatcher);
 
 var _exercises = [];
+
 var resetExercises = function (exercises) {
   _exercises = exercises.slice();
+};
+
+var pushExercise = function (exerciseIdx) {
+  var toPush = _exercises[exerciseIdx];
+  _exercises.push(toPush);
+  return _exercises;
+};
+
+var removeFirstExercise = function () {
+  _exercises.splice(0, 1);
+  return _exercises;
 };
 
 ExerciseStore.all = function () {
@@ -36,7 +48,11 @@ ExerciseStore.__onDispatch = function (payload) {
       ExerciseStore.__emitChange();
       break;
     case ExerciseConstants.EXERCISE_RECEIVED:
-      resetExercises([payload.exercise]);
+      pushExercise(payload.exercise);
+      ExerciseStore.__emitChange();
+      break;
+    case ExerciseConstants.REMOVE_FIRST_EXERCISE:
+      removeFirstExercise();
       ExerciseStore.__emitChange();
       break;
   }

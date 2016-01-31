@@ -9,10 +9,16 @@ var ExerciseActions = {
     });
   },
 
-  receiveExercise: function (exercise) {
+  pushExercise: function (exercise) {
     AppDispatcher.dispatch({
       actionType: ExerciseConstants.EXERCISE_RECEIVED,
       exercise: exercise
+    });
+  },
+
+  removeFirstExercise: function () {
+    AppDispatcher.dispatch({
+      actionType: ExerciseConstants.REMOVE_FIRST_EXERCISE
     });
   }
 };

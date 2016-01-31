@@ -5,6 +5,7 @@ var React = require('react'),
     ExercisesApiUtil = require('../../util/exercises_api_util'),
     TipsAndNotesModal = require("../modals/tips_and_notes_modal"),
     ModalActions = require("../../actions/modal_actions"),
+    ExerciseActions = require("../../actions/exercise_actions"),
     Exercise = require("../exercises/exercise"),
     ProgressBar = require("./progress_bar"),
     LessonBottomBar = require("./lesson_bottom_bar");
@@ -58,10 +59,18 @@ var Lesson = React.createClass({
 
   _handleCheckClick: function () {
     this.setState({ checkButtonClicked: true })
+    if (this.state.answerChoiceStatus === "otherIsSelected") {
+      ExerciseActions.pushExercise(this.state.currentExerciseIdx);
+    }
   },
 
   _handleContinueClick: function () {
     var nextExerciseIdx = this.state.currentExerciseIdx + 1;
+    if (this.state.answerChoiceStatus === "otherIsSelected") {
+      ExerciseActions.removeFirstExercise();
+      nextExerciseIdx = this.state.currentExerciseIdx;
+    }
+
     this.setState({
       currentExerciseIdx: nextExerciseIdx,
       checkButtonClicked: false,

@@ -32076,6 +32076,7 @@
 	    ExercisesApiUtil = __webpack_require__(261),
 	    TipsAndNotesModal = __webpack_require__(264),
 	    ModalActions = __webpack_require__(208),
+	    ExerciseActions = __webpack_require__(262),
 	    Exercise = __webpack_require__(265),
 	    ProgressBar = __webpack_require__(269),
 	    LessonBottomBar = __webpack_require__(271);
@@ -32130,10 +32131,18 @@
 	
 	  _handleCheckClick: function () {
 	    this.setState({ checkButtonClicked: true });
+	    if (this.state.answerChoiceStatus === "otherIsSelected") {
+	      ExerciseActions.pushExercise(this.state.currentExerciseIdx);
+	    }
 	  },
 	
 	  _handleContinueClick: function () {
 	    var nextExerciseIdx = this.state.currentExerciseIdx + 1;
+	    if (this.state.answerChoiceStatus === "otherIsSelected") {
+	      ExerciseActions.removeFirstExercise();
+	      nextExerciseIdx = this.state.currentExerciseIdx;
+	    }
+	
 	    this.setState({
 	      currentExerciseIdx: nextExerciseIdx,
 	      checkButtonClicked: false,
@@ -32291,10 +32300,16 @@
 	    });
 	  },
 	
-	  receiveExercise: function (exercise) {
+	  pushExercise: function (exercise) {
 	    AppDispatcher.dispatch({
 	      actionType: ExerciseConstants.EXERCISE_RECEIVED,
 	      exercise: exercise
+	    });
+	  },
+	
+	  removeFirstExercise: function () {
+	    AppDispatcher.dispatch({
+	      actionType: ExerciseConstants.REMOVE_FIRST_EXERCISE
 	    });
 	  }
 	};
@@ -32307,7 +32322,8 @@
 
 	var ExerciseConstants = {
 	  EXERCISES_RECEIVED: "EXERCISES_RECEIVED",
-	  EXERCISE_RECEIVED: "EXERCISE_RECEIVED"
+	  EXERCISE_RECEIVED: "EXERCISE_RECEIVED",
+	  REMOVE_FIRST_EXERCISE: "REMOVE_FIRST_EXERCISE"
 	};
 	
 	module.exports = ExerciseConstants;
@@ -32475,8 +32491,20 @@
 	var ExerciseStore = new Store(AppDispatcher);
 	
 	var _exercises = [];
+	
 	var resetExercises = function (exercises) {
 	  _exercises = exercises.slice();
+	};
+	
+	var pushExercise = function (exerciseIdx) {
+	  var toPush = _exercises[exerciseIdx];
+	  _exercises.push(toPush);
+	  return _exercises;
+	};
+	
+	var removeFirstExercise = function () {
+	  _exercises.splice(0, 1);
+	  return _exercises;
 	};
 	
 	ExerciseStore.all = function () {
@@ -32507,7 +32535,11 @@
 	      ExerciseStore.__emitChange();
 	      break;
 	    case ExerciseConstants.EXERCISE_RECEIVED:
-	      resetExercises([payload.exercise]);
+	      pushExercise(payload.exercise);
+	      ExerciseStore.__emitChange();
+	      break;
+	    case ExerciseConstants.REMOVE_FIRST_EXERCISE:
+	      removeFirstExercise();
 	      ExerciseStore.__emitChange();
 	      break;
 	  }
