@@ -24018,10 +24018,17 @@
 	var React = __webpack_require__(1),
 	    LoginModal = __webpack_require__(207),
 	    LanguageIndexModal = __webpack_require__(232),
-	    ModalActions = __webpack_require__(208);
+	    ModalActions = __webpack_require__(208),
+	    CurrentUserStore = __webpack_require__(277),
+	    SessionsApiUtil = __webpack_require__(274);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
+	
+	  componentDidMount: function () {
+	    CurrentUserStore.addListener(this.forceUpdate.bind(this));
+	    SessionsApiUtil.fetchCurrentUser();
+	  },
 	
 	  _handleLoginClick: function () {
 	    ModalActions.toggleModalDisplay("loginModal");
@@ -24090,7 +24097,8 @@
 
 	var React = __webpack_require__(1),
 	    ModalActions = __webpack_require__(208),
-	    ModalStore = __webpack_require__(214);
+	    ModalStore = __webpack_require__(214),
+	    NewSessionForm = __webpack_require__(273);
 	
 	var LoginModal = React.createClass({
 	  displayName: 'LoginModal',
@@ -24124,49 +24132,7 @@
 	  },
 	
 	  visibleRender: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'splash-login-form splash-form' },
-	      React.createElement(
-	        'div',
-	        { className: 'splash-login-inputs box-shadowed' },
-	        React.createElement(
-	          'form',
-	          { action: '/session', method: 'post' },
-	          this.authToken(),
-	          React.createElement('input', { name: 'session[username]',
-	            placeholder: 'Username' }),
-	          React.createElement('input', { type: 'password',
-	            name: 'session[password]',
-	            placeholder: 'Password' }),
-	          React.createElement(
-	            'button',
-	            { id: 'modal-login-button' },
-	            'Log in'
-	          )
-	        ),
-	        React.createElement(
-	          'form',
-	          { action: '/session', method: 'post' },
-	          this.authToken(),
-	          React.createElement(
-	            'div',
-	            { className: 'guest-inputs' },
-	            React.createElement('input', { type: 'hidden',
-	              name: 'session[username]',
-	              value: 'guest' }),
-	            React.createElement('input', { type: 'hidden',
-	              name: 'session[password]',
-	              value: 'password' }),
-	            React.createElement(
-	              'button',
-	              null,
-	              'Log in as guest'
-	            )
-	          )
-	        )
-	      )
-	    );
+	    return React.createElement(NewSessionForm, null);
 	  },
 	
 	  render: function () {
@@ -32909,6 +32875,195 @@
 	});
 	
 	module.exports = ProgressBarChunk;
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    History = __webpack_require__(159).History,
+	    SessionsApiUtil = __webpack_require__(274);
+	
+	var NewSessionForm = React.createClass({
+	  displayName: 'NewSessionForm',
+	
+	  mixins: [History],
+	
+	  submit: function (e) {
+	    e.preventDefault();
+	    debugger;
+	
+	    var credentials = e.currentTarget;
+	    SessionsApiUtil.logIn(credentials, function () {
+	      this.history.pushState(null, "/");
+	    }.bind(this));
+	  },
+	
+	  render: function () {
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'splash-login-form splash-form' },
+	      React.createElement(
+	        'div',
+	        { className: 'splash-login-inputs box-shadowed' },
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.submit },
+	          React.createElement('input', { name: 'session[username]',
+	            placeholder: 'Username' }),
+	          React.createElement('input', { type: 'password',
+	            name: 'session[password]',
+	            placeholder: 'Password' }),
+	          React.createElement(
+	            'button',
+	            { id: 'modal-login-button' },
+	            'Log in'
+	          )
+	        ),
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.submit },
+	          React.createElement(
+	            'div',
+	            { className: 'guest-inputs' },
+	            React.createElement('input', { type: 'hidden',
+	              name: 'session[username]',
+	              value: 'guest' }),
+	            React.createElement('input', { type: 'hidden',
+	              name: 'session[password]',
+	              value: 'password' }),
+	            React.createElement(
+	              'button',
+	              null,
+	              'Log in as guest'
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = NewSessionForm;
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var CurrentUserActions = __webpack_require__(275);
+	var SessionsApiUtil = {
+	  logIn: function (credentials, success) {
+	
+	    var username = credentials.children[0].children[0].value,
+	        password = credentials.children[0].children[1].value,
+	        sessionParams = { session: { username: username, password: password } };
+	
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'POST',
+	      dataType: 'json',
+	      data: sessionParams,
+	      success: function (currentUser) {
+	        console.log('yay');
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        success && success();
+	      }
+	    });
+	  },
+	
+	  logOut: function () {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'DELETE',
+	      dataType: 'json',
+	      success: function () {
+	        console.log("logged out!");
+	      }
+	    });
+	  },
+	
+	  fetchCurrentUser: function (cb) {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'GET',
+	      dataType: 'json',
+	      success: function (currentUser) {
+	        console.log("fetched current user!");
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        cb && cb(currentUser);
+	      }
+	    });
+	  }
+	
+	};
+	
+	module.exports = SessionsApiUtil;
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(209);
+	var CurrentUserConstants = __webpack_require__(276);
+	
+	var CurrentUserActions = {
+	  receiveCurrentUser: function (currentUser) {
+	    AppDispatcher.dispatch({
+	      actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
+	      currentUser: currentUser
+	    });
+	  }
+	};
+	
+	module.exports = CurrentUserActions;
+
+/***/ },
+/* 276 */
+/***/ function(module, exports) {
+
+	var CurrentUserConstants = {
+	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER"
+	};
+	
+	module.exports = CurrentUserConstants;
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(215).Store;
+	var AppDispatcher = __webpack_require__(209);
+	var CurrentUserConstants = __webpack_require__(276);
+	
+	var _currentUser = {};
+	var _userHasBeenFetched = false;
+	var CurrentUserStore = new Store(AppDispatcher);
+	
+	CurrentUserStore.currentUser = function () {
+	  return Object.assign({}, _currentUser);
+	};
+	
+	CurrentUserStore.isLoggedIn = function () {
+	  return !!_currentUser.id;
+	};
+	
+	CurrentUserStore.userHasBeenFetched = function () {
+	  return _currentUserHasBeenFetched;
+	};
+	
+	CurrentUserStore.__onDispatch = function (payload) {
+	  if (payload.actionType === CurrentUserConstants.RECEIVE_CURRENT_USER) {
+	    _userHasBeenFetched = true;
+	    _currentUser = payload.currentUser;
+	    CurrentUserStore.__emitChange();
+	  }
+	};
+	
+	window.CurrentUserStore = CurrentUserStore;
+	
+	module.exports = CurrentUserStore;
 
 /***/ }
 /******/ ]);

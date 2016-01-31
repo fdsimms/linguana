@@ -1,9 +1,16 @@
 var React = require('react'),
     LoginModal = require('./login_modal'),
     LanguageIndexModal = require('./language_index_modal'),
-    ModalActions = require('../actions/modal_actions');
+    ModalActions = require('../actions/modal_actions'),
+    CurrentUserStore = require("../stores/current_user_store"),
+    SessionsApiUtil = require("../util/sessions_api_util");
 
 module.exports = React.createClass({
+  componentDidMount: function () {
+    CurrentUserStore.addListener(this.forceUpdate.bind(this));
+    SessionsApiUtil.fetchCurrentUser();
+  },
+
   _handleLoginClick: function () {
     ModalActions.toggleModalDisplay("loginModal");
     this._hideOtherModal("languageIndexModal");

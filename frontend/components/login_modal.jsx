@@ -1,6 +1,7 @@
 var React = require('react'),
     ModalActions = require('../actions/modal_actions'),
-    ModalStore = require('../stores/modal_store');
+    ModalStore = require('../stores/modal_store'),
+    NewSessionForm = require('./sessions/new_session_form');
 
 var LoginModal = React.createClass({
   getInitialState: function () {
@@ -34,41 +35,7 @@ var LoginModal = React.createClass({
   },
 
   visibleRender: function () {
-    return(
-      <div className="splash-login-form splash-form">
-
-        <div className="splash-login-inputs box-shadowed">
-          <form action="/session" method="post">
-            {this.authToken()}
-              <input name="session[username]"
-                     placeholder="Username" />
-
-              <input type="password"
-                     name="session[password]"
-                     placeholder="Password" />
-
-              <button id="modal-login-button">Log in</button>
-          </form>
-
-          <form action="/session" method="post">
-          {this.authToken()}
-            <div className="guest-inputs">
-
-              <input type="hidden"
-                     name="session[username]"
-                     value="guest" />
-
-              <input type="hidden"
-                     name="session[password]"
-                     value="password" />
-
-              <button>Log in as guest</button>
-            </div>
-          </form>
-
-        </div>
-      </div>
-    );
+    return <NewSessionForm />;
   },
 
   render: function () {
