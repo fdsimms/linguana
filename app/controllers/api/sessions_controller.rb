@@ -1,23 +1,30 @@
 class SessionsController < ApplicationController
 
   def create
-    password = session_params[:password]
-    username = session_params[:username]
-    user = User.find_by_credentials(username, password)
+    @user = User.find_by_credentials(
+      params[:email],
+      params[:password]
+    )
 
-    if user
-      log_in!(user)
-
-      render "/"
+    if @user.nil?
+      render json: ["Wrong email/password combo!"], status: 401
     else
-      flash.now[:errors] = "Invalid username or password!"
-      render :new
+      sign_in!(@user)
+      render "api/users/show"
     end
   end
 
+  def show
+  if current_user
+    @user = current_user
+    render "api/users/show"
+  else
+    render json: {}
+  end
+end
+
   def destroy
     log_out!
-    redirect_to new_session_url
   end
 
   private
