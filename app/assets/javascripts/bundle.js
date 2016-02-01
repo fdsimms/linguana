@@ -24020,6 +24020,7 @@
 	    LanguageIndexModal = __webpack_require__(232),
 	    ModalActions = __webpack_require__(208),
 	    CurrentUserStore = __webpack_require__(277),
+	    CookieStore = __webpack_require__(278),
 	    SessionsApiUtil = __webpack_require__(274);
 	
 	module.exports = React.createClass({
@@ -31151,14 +31152,15 @@
 /* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
+	var React = __webpack_require__(1),
+	    CookieActions = __webpack_require__(280);
 	
 	var LanguageIndexItem = React.createClass({
 	  displayName: 'LanguageIndexItem',
 	
 	  setLanguageCookie: function () {
-	    window.localStorage.setItem("curLng", this.props.language.id);
+	    var languageCookie = { curLng: this.props.language.id };
+	    CookieActions.receiveCookie(languageCookie);
 	  },
 	
 	  render: function () {
@@ -33064,6 +33066,88 @@
 	window.CurrentUserStore = CurrentUserStore;
 	
 	module.exports = CurrentUserStore;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(215).Store;
+	var AppDispatcher = __webpack_require__(209);
+	var CookieConstants = __webpack_require__(279);
+	
+	var _cookies = {};
+	var CookieStore = new Store(AppDispatcher);
+	
+	var _COOKIE_NAMES = {
+	  curLng: "curLng"
+	};
+	
+	var addCookie = function (cookie) {
+	  var key = Object.keys(cookie)[0];
+	  window.localStorage.setItem(key, cookie[key]);
+	  _cookies[key] = cookie[key];
+	};
+	
+	var receiveCookies = function (cookies) {
+	  var key = Object.keys(cookies)[0];
+	  _cookies = cookies;
+	};
+	
+	CookieStore.all = function () {
+	  return Object.assign({}, _cookies);
+	};
+	
+	CookieStore.__onDispatch = function (payload) {
+	  if (payload.actionType === CookieConstants.COOKIES_RECEIVED) {
+	    var cookies = payload.cookies;
+	    receiveCookies(cookies);
+	    CookieStore.__emitChange();
+	  } else if (payload.actionType === CookieConstants.COOKIE_RECEIVED) {
+	    var cookie = payload.cookie;
+	    addCookie(cookie);
+	    CookieStore.__emitChange();
+	  }
+	};
+	
+	window.CookieStore = CookieStore;
+	
+	module.exports = CookieStore;
+
+/***/ },
+/* 279 */
+/***/ function(module, exports) {
+
+	var CookieConstants = {
+	  COOKIES_RECEIVED: "COOKIES_RECEIVED",
+	  COOKIE_RECEIVED: "COOKIE_RECEIVED"
+	};
+	
+	module.exports = CookieConstants;
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(209),
+	    CookieConstants = __webpack_require__(279);
+	
+	var CookieActions = {
+	  receiveAll: function (cookies) {
+	    AppDispatcher.dispatch({
+	      actionType: CookieConstants.COOKIES_RECEIVED,
+	      cookies: cookies
+	    });
+	  },
+	
+	  receiveCookie: function (cookie) {
+	    AppDispatcher.dispatch({
+	      actionType: CookieConstants.COOKIE_RECEIVED,
+	      cookie: cookie
+	    });
+	  }
+	};
+	
+	module.exports = CookieActions;
 
 /***/ }
 /******/ ]);

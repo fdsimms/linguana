@@ -3,6 +3,7 @@ var React = require('react'),
     LanguageIndexModal = require('./language_index_modal'),
     ModalActions = require('../actions/modal_actions'),
     CurrentUserStore = require("../stores/current_user_store"),
+    CookieStore = require("../stores/cookie_store"),
     SessionsApiUtil = require("../util/sessions_api_util");
 
 module.exports = React.createClass({

@@ -1,9 +1,10 @@
-var React = require('react');
-var History = require('react-router').History;
+var React = require('react'),
+    CookieActions = require('../actions/cookie_actions');
 
 var LanguageIndexItem = React.createClass({
   setLanguageCookie: function () {
-    window.localStorage.setItem("curLng", this.props.language.id);
+    var languageCookie = {curLng: this.props.language.id};
+    CookieActions.receiveCookie(languageCookie);
   },
 
   render: function () {
