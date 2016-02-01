@@ -27,6 +27,13 @@ var ModalActions = {
     AppDispatcher.dispatch({
       actionType: ModalConstants.HIDE_MODALS
     });
+  },
+
+  hideModal: function (modalName) {
+    AppDispatcher.dispatch({
+      actionType: ModalConstants.HIDE_MODAL,
+      modalName: modalName
+    });
   }
 };
 

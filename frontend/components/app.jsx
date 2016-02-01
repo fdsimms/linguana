@@ -1,8 +1,6 @@
 var React = require('react'),
-    LoginDropdown = require('./modals/login_dropdown'),
-    LanguageIndexDropdown = require('./modals/language_index_dropdown'),
     ModalActions = require('../actions/modal_actions'),
-    ModalStore = require('../stores/modal_store'),
+    NavBar = require('./nav_bar'),
     CurrentUserStore = require("../stores/current_user_store"),
     CookieStore = require("../stores/cookie_store"),
     CookieActions = require("../actions/cookie_actions"),
@@ -10,8 +8,6 @@ var React = require('react'),
 
 module.exports = React.createClass({
   componentDidMount: function () {
-    this.modelListener =
-      ModalStore.addListener(this.forceUpdate.bind(this));
     this.currentUserListener =
       CurrentUserStore.addListener(this.forceUpdate.bind(this));
     this.cookieListener =
@@ -23,7 +19,6 @@ module.exports = React.createClass({
   componentWillUnmount: function () {
     this.currentUserListener.remove();
     this.cookieListener.remove();
-    this.modalListener.remove();
   },
 
   _handleLoginClick: function () {
@@ -42,26 +37,7 @@ module.exports = React.createClass({
   render: function () {
     return(
       <div className="login-modal">
-        <header className="header">
-          <nav className="header-nav group">
-            <h1 className="header-nav-logo">
-              <a href="/">Linguana</a>
-            </h1>
-              <div className="header-buttons group">
-              <button onClick={this._handleLanguagesHover}
-                  className="header-nav-languages-button">
-                Site language: {CookieStore.curLng()}
-              </button>
-              <LanguageIndexDropdown />
-              <button onClick={this._handleLoginClick}
-                  className="header-nav-login-button">
-                Login
-              </button>
-              <LoginDropdown />
-            </div>
-          </nav>
-        </header>
-
+        <NavBar />
         <div className="main-content">{this.props.children}</div>
       </div>
     );

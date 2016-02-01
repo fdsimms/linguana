@@ -24016,10 +24016,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    LoginDropdown = __webpack_require__(291),
-	    LanguageIndexDropdown = __webpack_require__(290),
 	    ModalActions = __webpack_require__(208),
-	    ModalStore = __webpack_require__(214),
+	    NavBar = __webpack_require__(292),
 	    CurrentUserStore = __webpack_require__(245),
 	    CookieStore = __webpack_require__(246),
 	    CookieActions = __webpack_require__(241),
@@ -24029,7 +24027,6 @@
 	  displayName: 'exports',
 	
 	  componentDidMount: function () {
-	    this.modelListener = ModalStore.addListener(this.forceUpdate.bind(this));
 	    this.currentUserListener = CurrentUserStore.addListener(this.forceUpdate.bind(this));
 	    this.cookieListener = CookieStore.addListener(this.forceUpdate.bind(this));
 	    CookieActions.fetchCookiesFromBrowser();
@@ -24039,7 +24036,6 @@
 	  componentWillUnmount: function () {
 	    this.currentUserListener.remove();
 	    this.cookieListener.remove();
-	    this.modalListener.remove();
 	  },
 	
 	  _handleLoginClick: function () {
@@ -24059,42 +24055,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'login-modal' },
-	      React.createElement(
-	        'header',
-	        { className: 'header' },
-	        React.createElement(
-	          'nav',
-	          { className: 'header-nav group' },
-	          React.createElement(
-	            'h1',
-	            { className: 'header-nav-logo' },
-	            React.createElement(
-	              'a',
-	              { href: '/' },
-	              'Linguana'
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'header-buttons group' },
-	            React.createElement(
-	              'button',
-	              { onClick: this._handleLanguagesHover,
-	                className: 'header-nav-languages-button' },
-	              'Site language: ',
-	              CookieStore.curLng()
-	            ),
-	            React.createElement(LanguageIndexDropdown, null),
-	            React.createElement(
-	              'button',
-	              { onClick: this._handleLoginClick,
-	                className: 'header-nav-login-button' },
-	              'Login'
-	            ),
-	            React.createElement(LoginDropdown, null)
-	          )
-	        )
-	      ),
+	      React.createElement(NavBar, null),
 	      React.createElement(
 	        'div',
 	        { className: 'main-content' },
@@ -24137,6 +24098,13 @@
 	  hideModals: function () {
 	    AppDispatcher.dispatch({
 	      actionType: ModalConstants.HIDE_MODALS
+	    });
+	  },
+	
+	  hideModal: function (modalName) {
+	    AppDispatcher.dispatch({
+	      actionType: ModalConstants.HIDE_MODAL,
+	      modalName: modalName
 	    });
 	  }
 	};
@@ -24466,7 +24434,8 @@
 	  TOGGLE_MODAL_DISPLAY: "TOGGLE_MODAL_DISPLAY",
 	  ADD_MODAL: "ADD_MODAL",
 	  REMOVE_MODAL: "REMOVE_MODAL",
-	  HIDE_MODALS: "HIDE_MODALS"
+	  HIDE_MODALS: "HIDE_MODALS",
+	  HIDE_MODAL: "HIDE_MODAL"
 	};
 	
 	module.exports = ModalConstants;
@@ -24491,6 +24460,10 @@
 	
 	var removeModal = function (modalName) {
 	  delete _modals[modalName];
+	};
+	
+	var hideModal = function (modalName) {
+	  addModal(modalName);
 	};
 	
 	var hideAllModals = function () {
@@ -24527,6 +24500,10 @@
 	      break;
 	    case ModalConstants.HIDE_MODALS:
 	      hideAllModals();
+	      ModalStore.__emitChange();
+	      break;
+	    case ModalConstants.HIDE_MODAL:
+	      hideModal(payload.modalName);
 	      ModalStore.__emitChange();
 	      break;
 	  }
@@ -33231,6 +33208,90 @@
 	});
 	
 	module.exports = LoginDropdown;
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(208),
+	    ModalStore = __webpack_require__(214),
+	    CurrentUserStore = __webpack_require__(245),
+	    CookieStore = __webpack_require__(246),
+	    CookieActions = __webpack_require__(241),
+	    LanguageIndexDropdown = __webpack_require__(290),
+	    LoginDropdown = __webpack_require__(291);
+	
+	var NavBar = React.createClass({
+	  displayName: 'NavBar',
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	  },
+	
+	  componentWillReceiveProps: function () {
+	    this.forceUpdate();
+	  },
+	
+	  _modalsChanged: function () {
+	    this.forceUpdate();
+	  },
+	
+	  _handleLoginClick: function () {
+	    ModalActions.toggleModalDisplay("loginDropdown");
+	    ModalActions.hideModal("languageIndexDropdown");
+	  },
+	
+	  _handleLanguagesHover: function () {
+	    ModalActions.toggleModalDisplay("languageIndexDropdown");
+	    ModalActions.hideModal("loginDropdown");
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'header',
+	      { className: 'header' },
+	      React.createElement(
+	        'nav',
+	        { className: 'header-nav group' },
+	        React.createElement(
+	          'h1',
+	          { className: 'header-nav-logo' },
+	          React.createElement(
+	            'a',
+	            { href: '/' },
+	            'Linguana'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'header-buttons group' },
+	          React.createElement(
+	            'button',
+	            { onClick: this._handleLanguagesHover,
+	              className: 'header-nav-languages-button' },
+	            'Site language: ',
+	            CookieStore.curLng()
+	          ),
+	          React.createElement(LanguageIndexDropdown, null),
+	          React.createElement(
+	            'button',
+	            { onClick: this._handleLoginClick,
+	              className: 'header-nav-login-button' },
+	            'Login'
+	          ),
+	          React.createElement(LoginDropdown, null)
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NavBar;
 
 /***/ }
 /******/ ]);
