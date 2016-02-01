@@ -1,9 +1,12 @@
 json.extract! @user,
               :bio,
               :id,
-              :name,
+              :fname,
+              :lname,
+              :current_course_id,
+              :current_language_id,
               :email,
               :username,
               :streak_length,
-              :points
+              :points,
               :hometown

@@ -59,13 +59,35 @@ module.exports = React.createClass({
     );
   },
 
+  fetchesCompleted: function () {
+    return(
+      CookieStore.cookiesHaveBeenFetched() &&
+      LanguageStore.languagesHaveBeenFetched() &&
+      CurrentUserStore.userHasBeenFetched()
+    );
+  },
+
+  lessonView: function () {
+    var children;
+    if (this.fetchesCompleted()) {
+      children = this.props.children;
+    }
+
+    return(
+      <div className="main-wrapper">
+        <SignupModal />
+        <header className="header-bar">
+          <NavBar view="main" />
+        </header>
+          {children}
+      </div>
+    );
+  },
+
   mainView: function () {
     var children;
-    if (CookieStore.cookiesHaveBeenFetched() &&
-        LanguageStore.languagesHaveBeenFetched() &&
-        CurrentUserStore.userHasBeenFetched()) {
-
-        children = this.props.children;
+    if (this.fetchesCompleted()) {
+      children = this.props.children;
     }
 
     return(
@@ -84,7 +106,9 @@ module.exports = React.createClass({
   },
 
   render: function () {
-    if (CookieStore.curCourse()) {
+    if (/.*(lessons).*/.test(location.hash)) {
+      return this.lessonView();
+    } else if (CookieStore.curCourse() || CurrentUserStore.currentUser()) {
       return this.mainView();
     } else {
       return this.splashView();

@@ -6,6 +6,7 @@ var SessionsApiUtil = {
         password = credentials.children[0].children[1].value,
         sessionParams = {session: {username: username, password: password}};
 
+        debugger
     $.ajax({
       url: '/api/session',
       type: 'POST',

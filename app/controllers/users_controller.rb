@@ -30,7 +30,9 @@ class UsersController < ApplicationController
       :hometown,
       :email,
       :streak_length,
-      :points
+      :points,
+      :current_course_id,
+      :current_language_id
     )
   end
 

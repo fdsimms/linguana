@@ -64,15 +64,15 @@ var NavBar = React.createClass({
   },
 
   normalNavBarButtons: function () {
-    // if (CurrentUserStore.isLoggedIn()) {
+    if (CurrentUserStore.isLoggedIn()) {
+      return(<div />);
+    } else {
       return(
-          <a className="create-profile-button"
-             onClick={this._handleCreateProfClick}
-             href="#">Create a profile</a>
+        <a className="create-profile-button"
+          onClick={this._handleCreateProfClick}
+          href="#">Create a profile</a>
       );
-    // } else {
-    //
-    // }
+    }
   },
 
   normalNavBar: function () {

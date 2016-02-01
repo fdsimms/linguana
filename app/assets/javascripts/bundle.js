@@ -121,7 +121,7 @@
 	
 	    var path;
 	    if (CurrentUserStore.isLoggedIn()) {
-	      path = "/courses/"; //+ user.course.name
+	      path = "/courses/" + CurrentUserStore.currentUser().current_course_id;
 	      replace({}, path);
 	    } else if (CookieStore.curCourse()) {
 	      path = "/courses/" + CookieStore.curCourse();
@@ -24137,10 +24137,32 @@
 	    );
 	  },
 	
+	  fetchesCompleted: function () {
+	    return CookieStore.cookiesHaveBeenFetched() && LanguageStore.languagesHaveBeenFetched() && CurrentUserStore.userHasBeenFetched();
+	  },
+	
+	  lessonView: function () {
+	    var children;
+	    if (this.fetchesCompleted()) {
+	      children = this.props.children;
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'main-wrapper' },
+	      React.createElement(SignupModal, null),
+	      React.createElement(
+	        'header',
+	        { className: 'header-bar' },
+	        React.createElement(NavBar, { view: 'main' })
+	      ),
+	      children
+	    );
+	  },
+	
 	  mainView: function () {
 	    var children;
-	    if (CookieStore.cookiesHaveBeenFetched() && LanguageStore.languagesHaveBeenFetched() && CurrentUserStore.userHasBeenFetched()) {
-	
+	    if (this.fetchesCompleted()) {
 	      children = this.props.children;
 	    }
 	
@@ -24166,7 +24188,9 @@
 	  },
 	
 	  render: function () {
-	    if (CookieStore.curCourse()) {
+	    if (/.*(lessons).*/.test(location.hash)) {
+	      return this.lessonView();
+	    } else if (CookieStore.curCourse() || CurrentUserStore.currentUser()) {
 	      return this.mainView();
 	    } else {
 	      return this.splashView();
@@ -24633,17 +24657,17 @@
 	  },
 	
 	  normalNavBarButtons: function () {
-	    // if (CurrentUserStore.isLoggedIn()) {
-	    return React.createElement(
-	      'a',
-	      { className: 'create-profile-button',
-	        onClick: this._handleCreateProfClick,
-	        href: '#' },
-	      'Create a profile'
-	    );
-	    // } else {
-	    //
-	    // }
+	    if (CurrentUserStore.isLoggedIn()) {
+	      return React.createElement('div', null);
+	    } else {
+	      return React.createElement(
+	        'a',
+	        { className: 'create-profile-button',
+	          onClick: this._handleCreateProfClick,
+	          href: '#' },
+	        'Create a profile'
+	      );
+	    }
 	  },
 	
 	  normalNavBar: function () {
@@ -31730,6 +31754,7 @@
 	    e.preventDefault();
 	    var credentials = e.currentTarget;
 	    SessionsApiUtil.logIn(credentials, function () {
+	      debugger;
 	      ModalActions.hideModals();
 	      this.history.pushState(null, "/");
 	    }.bind(this));
@@ -31796,6 +31821,7 @@
 	        password = credentials.children[0].children[1].value,
 	        sessionParams = { session: { username: username, password: password } };
 	
+	    debugger;
 	    $.ajax({
 	      url: '/api/session',
 	      type: 'POST',
