@@ -92,9 +92,12 @@
 
 .screen-cover {
   background-color: rgba(0, 0, 0, 0.6);
-  position: absolute;
+  position: fixed;
   margin: 135px;
   display: block;
+  height: 100%;
   z-index: 200;
   width: 100%;
+  top: 0px;
+  margin: 0;
 }

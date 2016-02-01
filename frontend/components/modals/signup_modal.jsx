@@ -25,7 +25,11 @@ var SignupModal = React.createClass({
   },
 
   visibleRender: function () {
-    return <SignupForm />;
+    return(
+      <div className="screen-cover">
+        <SignupForm />
+      </div>
+    );
   },
 
   render: function () {

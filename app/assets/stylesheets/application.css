@@ -30,7 +30,7 @@
    text-decoration: none;
  }
 
- html, body, #root, .splash-wrapper, .main-wrapper, .screen-cover {
+ html, body, #root, .splash-wrapper, .main-wrapper {
     height: 100%;
     min-height: 100%;
     margin: 0;

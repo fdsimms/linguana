@@ -21,7 +21,6 @@ var SignupForm = React.createClass({
   render: function() {
 
     return (
-      <div className="screen-cover">
         <div className="signup-form group box-shadowed">
           <i className="fa fa-2x fa-times-circle-o"
              onClick={this._closeModal}>
@@ -51,7 +50,6 @@ var SignupForm = React.createClass({
             </form>
           </div>
         </div>
-      </div>
     );
   },
 
