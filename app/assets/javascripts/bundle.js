@@ -31296,13 +31296,15 @@
 	    CookieConstants = __webpack_require__(242);
 	
 	var _cookies = {
-	  curLng: "English"
+	  curLng: "English",
+	  curCourse: ""
 	};
 	
 	var CookieStore = new Store(AppDispatcher);
 	
 	var _COOKIE_NAMES = {
-	  curLng: "curLng"
+	  curLng: "curLng",
+	  curCourse: "curCourse"
 	};
 	
 	var addCookie = function (cookie) {
@@ -32999,21 +33001,27 @@
 /* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
+	var React = __webpack_require__(1),
+	    CookieActions = __webpack_require__(241);
 	
 	var CourseIndexItem = React.createClass({
-	  displayName: "CourseIndexItem",
+	  displayName: 'CourseIndexItem',
 	
+	  setCourseCookie: function (curCourse) {
+	    CookieActions.receiveCookie({ curCourse: this.props.course.name });
+	  },
 	  render: function () {
+	    var courseName = this.props.course.name;
 	
 	    return React.createElement(
-	      "div",
-	      { className: "course-list-item-wrapper" },
+	      'div',
+	      { className: 'course-list-item-wrapper' },
 	      React.createElement(
-	        "a",
+	        'a',
 	        { href: "#/courses/" + this.props.course.id,
-	          className: "course-list-item" },
-	        this.props.course.name
+	          className: 'course-list-item',
+	          onClick: this.setCourseCookie },
+	        courseName
 	      )
 	    );
 	  }
@@ -33251,7 +33259,7 @@
 	    ModalActions.hideModal("loginDropdown");
 	  },
 	
-	  render: function () {
+	  splashNavBar: function () {
 	    return React.createElement(
 	      'header',
 	      { className: 'header' },
@@ -33288,6 +33296,10 @@
 	        )
 	      )
 	    );
+	  },
+	
+	  render: function () {
+	    return this.splashNavBar();
 	  }
 	});
 	

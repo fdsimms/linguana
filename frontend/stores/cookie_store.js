@@ -4,13 +4,15 @@ var Store = require('flux/utils').Store,
     CookieConstants = require('../constants/cookie_constants');
 
 var _cookies = {
-  curLng: "English"
+  curLng: "English",
+  curCourse: ""
 };
 
 var CookieStore = new Store(AppDispatcher);
 
 var _COOKIE_NAMES = {
-  curLng: "curLng"
+  curLng: "curLng",
+  curCourse: "curCourse"
 };
 
 var addCookie = function (cookie) {

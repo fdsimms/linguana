@@ -34,7 +34,7 @@ var NavBar = React.createClass({
     ModalActions.hideModal("loginDropdown");
   },
 
-  render: function () {
+  splashNavBar: function () {
     return(
       <header className="header">
         <nav className="header-nav group">
@@ -56,6 +56,10 @@ var NavBar = React.createClass({
         </nav>
       </header>
     );
+  },
+
+  render: function () {
+    return this.splashNavBar();
   }
 });
 
