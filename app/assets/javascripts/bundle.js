@@ -119,6 +119,8 @@
 	      CookieActions.fetchCookiesFromBrowser();
 	    }
 	
+	    debugger;
+	
 	    var path;
 	    if (CurrentUserStore.isLoggedIn()) {
 	      path = "/courses/" + CurrentUserStore.currentUser().current_course_id;
@@ -24188,9 +24190,10 @@
 	  },
 	
 	  render: function () {
+	    debugger;
 	    if (/.*(lessons).*/.test(location.hash)) {
 	      return this.lessonView();
-	    } else if (CookieStore.curCourse() || CurrentUserStore.currentUser()) {
+	    } else if (CookieStore.curCourse() || CurrentUserStore.isLoggedIn()) {
 	      return this.mainView();
 	    } else {
 	      return this.splashView();
@@ -24649,9 +24652,9 @@
 	          'button',
 	          { onClick: this._handleLoginClick,
 	            className: 'splash-header-login-button' },
-	          'Login'
-	        ),
-	        React.createElement(LoginDropdown, null)
+	          'Login',
+	          React.createElement(LoginDropdown, null)
+	        )
 	      )
 	    );
 	  },

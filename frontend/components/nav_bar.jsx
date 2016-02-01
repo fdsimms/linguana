@@ -56,8 +56,8 @@ var NavBar = React.createClass({
           <button onClick={ this._handleLoginClick }
               className="splash-header-login-button">
             Login
+            <LoginDropdown />
           </button>
-          <LoginDropdown />
         </div>
       </nav>
     );

@@ -75,6 +75,7 @@ var React = require('react'),
         CookieActions.fetchCookiesFromBrowser();
       }
 
+      debugger
 
       var path;
       if (CurrentUserStore.isLoggedIn()) {
