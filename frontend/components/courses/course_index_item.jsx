@@ -2,8 +2,8 @@ var React = require('react'),
     CookieActions = require('./../../actions/cookie_actions');
 
 var CourseIndexItem = React.createClass({
-  setCourseCookie: function (curCourse) {
-    CookieActions.receiveCookie({ curCourse: this.props.course.name });
+  setCourseCookie: function () {
+    CookieActions.receiveCookie({ curCourseId: this.props.course.id });
   },
   render: function () {
     var courseName = this.props.course.name;

@@ -15,7 +15,7 @@ CurrentUserStore.isLoggedIn = function () {
 };
 
 CurrentUserStore.userHasBeenFetched = function () {
-  return _currentUserHasBeenFetched;
+  return _userHasBeenFetched;
 };
 
 CurrentUserStore.__onDispatch = function (payload) {

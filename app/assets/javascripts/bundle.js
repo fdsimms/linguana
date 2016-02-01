@@ -51,23 +51,72 @@
 	    IndexRoute = __webpack_require__(159).IndexRoute,
 	    App = __webpack_require__(206),
 	    CourseIndex = __webpack_require__(281),
+	    LanguageIndex = __webpack_require__(283),
 	    Course = __webpack_require__(282),
 	    Splash = __webpack_require__(260),
 	    SkillIndex = __webpack_require__(288),
 	    Skill = __webpack_require__(286),
 	    LessonFinalPage = __webpack_require__(268),
-	    Lesson = __webpack_require__(270);
+	    SessionsApiUtil = __webpack_require__(233),
+	    Lesson = __webpack_require__(270),
+	    CookieActions = __webpack_require__(241);
 	
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: Splash }),
-	  React.createElement(Route, { path: '/courses', component: CourseIndex }),
-	  React.createElement(Route, { path: '/courses/:courseId', component: Course }),
-	  React.createElement(Route, { path: '/skills/:skillId', component: Skill }),
-	  React.createElement(Route, { path: '/lessons/:lessonId', component: Lesson }),
+	  React.createElement(IndexRoute, { component: Splash,
+	    onEnter: _ensureLoggedOutAndNoCurrentCourse }),
+	  React.createElement(Route, { path: '/courses',
+	    component: CourseIndex }),
+	  React.createElement(Route, { path: '/courses/:courseId',
+	    component: Course }),
+	  React.createElement(Route, { path: '/skills/:skillId',
+	    component: Skill }),
+	  React.createElement(Route, { path: '/lessons/:lessonId',
+	    component: Lesson }),
 	  React.createElement(Route, { path: '/congrats', component: LessonFinalPage })
 	);
+	
+	function _ensureLoggedIn(nextState, replace, callback) {
+	  if (CurrentUserStore.userHasBeenFetched()) {
+	    _redirectIfNotLoggedIn();
+	  } else {
+	
+	    SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
+	  }
+	
+	  function _redirectIfNotLoggedIn() {
+	    if (!CurrentUserStore.isLoggedIn()) {
+	      replace({}, "/login");
+	    }
+	    callback();
+	  }
+	}
+	
+	function _ensureLoggedOutAndNoCurrentCourse(nextState, replace, callback) {
+	  if (CurrentUserStore.userHasBeenFetched() || CookieStore.curCourse()) {
+	    _redirectIfLoggedInOrCurrentCourseExists();
+	  } else {
+	
+	    SessionsApiUtil.fetchCurrentUser(_redirectIfLoggedInOrCurrentCourseExists);
+	  }
+	
+	  function _redirectIfLoggedInOrCurrentCourseExists() {
+	    if (!CookieStore.cookiesHaveBeenFetched()) {
+	      CookieActions.fetchCookiesFromBrowser();
+	    }
+	
+	    var path;
+	    if (CurrentUserStore.isLoggedIn()) {
+	      path = "/courses/"; //+ user.course.name
+	      replace({}, path);
+	    } else if (CookieStore.curCourse()) {
+	      path = "/courses/" + CookieStore.curCourse();
+	      replace({}, path);
+	    }
+	    callback();
+	  }
+	}
 	
 	document.addEventListener("DOMContentLoaded", function () {
 	  ReactDOM.render(React.createElement(
@@ -24020,6 +24069,7 @@
 	    NavBar = __webpack_require__(292),
 	    CurrentUserStore = __webpack_require__(245),
 	    CookieStore = __webpack_require__(246),
+	    LanguagesApiUtil = __webpack_require__(243),
 	    CookieActions = __webpack_require__(241),
 	    SessionsApiUtil = __webpack_require__(233);
 	
@@ -24029,13 +24079,16 @@
 	  componentDidMount: function () {
 	    this.currentUserListener = CurrentUserStore.addListener(this.forceUpdate.bind(this));
 	    this.cookieListener = CookieStore.addListener(this.forceUpdate.bind(this));
+	    this.languageListener = LanguageStore.addListener(this.forceUpdate.bind(this));
 	    CookieActions.fetchCookiesFromBrowser();
 	    SessionsApiUtil.fetchCurrentUser();
+	    LanguagesApiUtil.fetchLanguages();
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.currentUserListener.remove();
 	    this.cookieListener.remove();
+	    this.languageListener.remove();
 	  },
 	
 	  _handleLoginClick: function () {
@@ -24052,6 +24105,12 @@
 	  },
 	
 	  splashView: function () {
+	    var children;
+	
+	    if (CookieStore.cookiesHaveBeenFetched() && LanguageStore.languagesHaveBeenFetched() && CurrentUserStore.userHasBeenFetched()) {
+	      children = this.props.children;
+	    }
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'splash-wrapper' },
@@ -24060,11 +24119,17 @@
 	        { className: 'splash-header-bar' },
 	        React.createElement(NavBar, { view: 'splash' })
 	      ),
-	      this.props.children
+	      children
 	    );
 	  },
 	
 	  mainView: function () {
+	    var children;
+	    if (CookieStore.cookiesHaveBeenFetched() && LanguageStore.languagesHaveBeenFetched() && CurrentUserStore.userHasBeenFetched()) {
+	
+	      children = this.props.children;
+	    }
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'main-wrapper' },
@@ -24079,7 +24144,7 @@
 	        React.createElement(
 	          'main',
 	          { className: 'main-content box-shadowed' },
-	          this.props.children
+	          children
 	        )
 	      )
 	    );
@@ -31155,6 +31220,8 @@
 	var _languages = [];
 	var LanguageStore = new Store(AppDispatcher);
 	
+	var _languagesHaveBeenFetched = false;
+	
 	var resetLanguages = function (languages) {
 	  _languages = languages.slice();
 	};
@@ -31164,16 +31231,24 @@
 	};
 	
 	LanguageStore.findByName = function (name) {
+	  var result;
 	  _languages.forEach(function (language) {
 	    if (language.name === name) {
-	      return language;
+	      result = language;
+	      return;
 	    }
 	  });
+	  return result;
+	};
+	
+	LanguageStore.languagesHaveBeenFetched = function () {
+	  return _languagesHaveBeenFetched;
 	};
 	
 	LanguageStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case LanguageConstants.LANGUAGES_RECEIVED:
+	      _languagesHaveBeenFetched = true;
 	      var result = resetLanguages(payload.languages);
 	      LanguageStore.__emitChange();
 	      break;
@@ -31242,7 +31317,8 @@
 /* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var LanguageActions = __webpack_require__(244);
+	var LanguageActions = __webpack_require__(244),
+	    LanguageStore = __webpack_require__(238);
 	
 	var LanguageApiUtil = {
 		fetchLanguages: function () {
@@ -31300,7 +31376,7 @@
 	};
 	
 	CurrentUserStore.userHasBeenFetched = function () {
-	  return _currentUserHasBeenFetched;
+	  return _userHasBeenFetched;
 	};
 	
 	CurrentUserStore.__onDispatch = function (payload) {
@@ -31322,18 +31398,21 @@
 	var Store = __webpack_require__(215).Store,
 	    AppDispatcher = __webpack_require__(209),
 	    LanguageStore = __webpack_require__(238),
+	    CourseStore = __webpack_require__(248),
 	    CookieConstants = __webpack_require__(242);
+	
+	var _cookiesHaveBeenFetched = false;
 	
 	var _cookies = {
 	  curLng: "English",
-	  curCourse: ""
+	  curCourseId: ""
 	};
 	
 	var CookieStore = new Store(AppDispatcher);
 	
 	var _COOKIE_NAMES = {
 	  curLng: "curLng",
-	  curCourse: "curCourse"
+	  curCourseId: "curCourseId"
 	};
 	
 	var addCookie = function (cookie) {
@@ -31364,7 +31443,11 @@
 	};
 	
 	CookieStore.curCourse = function () {
-	  return _cookies.curCourse;
+	  return _cookies.curCourseId;
+	};
+	
+	CookieStore.cookiesHaveBeenFetched = function () {
+	  return _cookiesHaveBeenFetched;
 	};
 	
 	CookieStore.__onDispatch = function (payload) {
@@ -31377,6 +31460,7 @@
 	    addCookie(cookie);
 	    CookieStore.__emitChange();
 	  } else if (payload.actionType === CookieConstants.FETCH_COOKIES) {
+	    _cookiesHaveBeenFetched = true;
 	    fetchCookiesFromBrowser();
 	    CookieStore.__emitChange();
 	  }
@@ -31405,17 +31489,19 @@
 	  _courses[course.id] = course;
 	};
 	
-	// CourseStore.findByLanguage = function (languageId) {
-	//   var result = {};
-	//   if (courses === {}) { return {}; }
-	//   Object.keys(courses).forEach(function (key) {
-	//     var course = courses[key];
-	//     if (course.language_id === languageId) {
-	//       result[course.id] = course;
-	//     }
-	//   });
-	//   return result;
-	// };
+	CourseStore.findByName = function (name) {
+	  var result;
+	  if (_courses === {}) {
+	    return {};
+	  }
+	  Object.keys(_courses).forEach(function (key) {
+	    var course = _courses[key];
+	    if (course.name === name) {
+	      result = course;
+	    }
+	  });
+	  return result;
+	};
 	
 	CourseStore.all = function () {
 	  return Object.assign({}, _courses);
@@ -31477,7 +31563,7 @@
 	  },
 	
 	  fetchCourse: function (courseId) {
-	
+	    debugger;
 	    $.ajax({
 	      type: "GET",
 	      url: "api/courses/" + courseId,
@@ -33032,8 +33118,8 @@
 	var CourseIndexItem = React.createClass({
 	  displayName: 'CourseIndexItem',
 	
-	  setCourseCookie: function (curCourse) {
-	    CookieActions.receiveCookie({ curCourse: this.props.course.name });
+	  setCourseCookie: function () {
+	    CookieActions.receiveCookie({ curCourseId: this.props.course.id });
 	  },
 	  render: function () {
 	    var courseName = this.props.course.name;
@@ -33251,6 +33337,7 @@
 	    ModalStore = __webpack_require__(214),
 	    CurrentUserStore = __webpack_require__(245),
 	    CookieStore = __webpack_require__(246),
+	    LanguageStore = __webpack_require__(238),
 	    CookieActions = __webpack_require__(241),
 	    LanguageIndexDropdown = __webpack_require__(290),
 	    LoginDropdown = __webpack_require__(291);
@@ -33285,6 +33372,10 @@
 	  },
 	
 	  splashNavBar: function () {
+	    var siteLang;
+	    if (LanguageStore.languagesHaveBeenFetched()) {
+	      siteLang = CookieStore.curLng().name;
+	    }
 	    return React.createElement(
 	      'nav',
 	      { className: 'splash-header group' },
@@ -33305,7 +33396,7 @@
 	          { onClick: this._handleLanguagesHover,
 	            className: 'splash-header-languages-button' },
 	          'Site language: ',
-	          CookieStore.curLng()
+	          siteLang
 	        ),
 	        React.createElement(LanguageIndexDropdown, null),
 	        React.createElement(

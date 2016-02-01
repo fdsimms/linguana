@@ -1,18 +1,22 @@
 var Store = require('flux/utils').Store,
     AppDispatcher = require('../dispatcher/dispatcher'),
     LanguageStore = require('./language_store'),
+    CourseStore = require('./course_store'),
     CookieConstants = require('../constants/cookie_constants');
+
+
+var _cookiesHaveBeenFetched = false;
 
 var _cookies = {
   curLng: "English",
-  curCourse: ""
+  curCourseId: ""
 };
 
 var CookieStore = new Store(AppDispatcher);
 
 var _COOKIE_NAMES = {
   curLng: "curLng",
-  curCourse: "curCourse"
+  curCourseId: "curCourseId"
 };
 
 var addCookie = function (cookie) {
@@ -34,7 +38,6 @@ var receiveCookies = function (cookies) {
   _cookies = cookies;
 };
 
-
 CookieStore.all = function () {
   return Object.assign({}, _cookies);
 };
@@ -44,7 +47,11 @@ CookieStore.curLng = function () {
 };
 
 CookieStore.curCourse = function () {
-  return _cookies.curCourse;
+  return _cookies.curCourseId;
+};
+
+CookieStore.cookiesHaveBeenFetched = function () {
+  return _cookiesHaveBeenFetched;
 };
 
 CookieStore.__onDispatch = function (payload) {
@@ -57,6 +64,7 @@ CookieStore.__onDispatch = function (payload) {
     addCookie(cookie);
     CookieStore.__emitChange();
   } else if (payload.actionType === CookieConstants.FETCH_COOKIES) {
+    _cookiesHaveBeenFetched = true;
     fetchCookiesFromBrowser();
     CookieStore.__emitChange();
   }

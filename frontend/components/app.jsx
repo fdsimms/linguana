@@ -3,6 +3,7 @@ var React = require('react'),
     NavBar = require('./nav_bar'),
     CurrentUserStore = require("../stores/current_user_store"),
     CookieStore = require("../stores/cookie_store"),
+    LanguagesApiUtil = require("../util/languages_api_util"),
     CookieActions = require("../actions/cookie_actions"),
     SessionsApiUtil = require("../util/sessions_api_util");
 
@@ -12,13 +13,17 @@ module.exports = React.createClass({
       CurrentUserStore.addListener(this.forceUpdate.bind(this));
     this.cookieListener =
       CookieStore.addListener(this.forceUpdate.bind(this));
+    this.languageListener =
+      LanguageStore.addListener(this.forceUpdate.bind(this));
     CookieActions.fetchCookiesFromBrowser();
     SessionsApiUtil.fetchCurrentUser();
+    LanguagesApiUtil.fetchLanguages();
   },
 
   componentWillUnmount: function () {
     this.currentUserListener.remove();
     this.cookieListener.remove();
+    this.languageListener.remove();
   },
 
   _handleLoginClick: function () {
@@ -35,17 +40,33 @@ module.exports = React.createClass({
   },
 
   splashView: function () {
+    var children;
+
+    if (CookieStore.cookiesHaveBeenFetched() &&
+        LanguageStore.languagesHaveBeenFetched() &&
+        CurrentUserStore.userHasBeenFetched()) {
+        children = this.props.children;
+    }
+
     return(
       <div className="splash-wrapper">
         <header className="splash-header-bar">
           <NavBar view="splash" />
         </header>
-        {this.props.children}
+        {children}
       </div>
     );
   },
 
   mainView: function () {
+    var children;
+    if (CookieStore.cookiesHaveBeenFetched() &&
+        LanguageStore.languagesHaveBeenFetched() &&
+        CurrentUserStore.userHasBeenFetched()) {
+
+        children = this.props.children;
+    }
+
     return(
       <div className="main-wrapper">
         <header className="header-bar">
@@ -53,7 +74,7 @@ module.exports = React.createClass({
         </header>
         <div className="main">
           <main className="main-content box-shadowed">
-            {this.props.children}
+            {children}
           </main>
         </div>
       </div>

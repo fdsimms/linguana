@@ -1,4 +1,5 @@
-var LanguageActions = require('../actions/language_actions');
+var LanguageActions = require('../actions/language_actions'),
+    LanguageStore = require('../stores/language_store');
 
 var LanguageApiUtil = {
 	fetchLanguages: function () {

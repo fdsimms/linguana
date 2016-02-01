@@ -3,6 +3,7 @@ var React = require('react'),
     ModalStore = require('../stores/modal_store'),
     CurrentUserStore = require("../stores/current_user_store"),
     CookieStore = require("../stores/cookie_store"),
+    LanguageStore = require("../stores/language_store"),
     CookieActions = require("../actions/cookie_actions"),
     LanguageIndexDropdown = require("./modals/language_index_dropdown"),
     LoginDropdown = require("./modals/login_dropdown");
@@ -35,18 +36,22 @@ var NavBar = React.createClass({
   },
 
   splashNavBar: function () {
+    var siteLang;
+    if (LanguageStore.languagesHaveBeenFetched()) {
+      siteLang = CookieStore.curLng().name;
+    }
     return(
       <nav className="splash-header group">
         <h1 className="splash-header-logo">
           <a href="/">Linguana</a>
         </h1>
           <div className="splash-header-buttons group">
-          <button onClick={this._handleLanguagesHover}
+          <button onClick={ this._handleLanguagesHover }
               className="splash-header-languages-button">
-            Site language: {CookieStore.curLng()}
+            Site language: { siteLang }
           </button>
           <LanguageIndexDropdown />
-          <button onClick={this._handleLoginClick}
+          <button onClick={ this._handleLoginClick }
               className="splash-header-login-button">
             Login
           </button>
