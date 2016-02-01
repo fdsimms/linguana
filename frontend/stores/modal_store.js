@@ -20,6 +20,10 @@ var hideModal = function (modalName) {
   addModal(modalName);
 };
 
+var displayModal = function (modalName) {
+  _modals[modalName] = "displayed";
+};
+
 var hideAllModals = function () {
   Object.keys(_modals).forEach(function (modalName) {
     _modals[modalName] = "hidden";
@@ -58,6 +62,10 @@ ModalStore.__onDispatch = function (payload) {
       break;
     case ModalConstants.HIDE_MODAL:
       hideModal(payload.modalName);
+      ModalStore.__emitChange();
+      break;
+    case ModalConstants.DISPLAY_MODAL:
+      displayModal(payload.modalName);
       ModalStore.__emitChange();
       break;
   }

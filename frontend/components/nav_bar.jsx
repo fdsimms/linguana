@@ -34,9 +34,13 @@ var NavBar = React.createClass({
     ModalActions.toggleModalDisplay("signupModal");
   },
 
-  _handleLanguagesHover: function () {
-    ModalActions.toggleModalDisplay("languageIndexDropdown");
+  _handleLanguagesEnter: function () {
+    ModalActions.displayModal("languageIndexDropdown");
     ModalActions.hideModal("loginDropdown");
+  },
+
+  _handleLanguagesLeave: function () {
+    ModalActions.hideModal("languageIndexDropdown");
   },
 
   splashNavBar: function () {
@@ -48,16 +52,17 @@ var NavBar = React.createClass({
           <a href="/">Linguana</a>
         </h1>
           <div className="splash-header-buttons group">
-          <button onClick={ this._handleLanguagesHover }
-              className="splash-header-languages-button">
+          <button onMouseEnter={ this._handleLanguagesEnter }
+                  onMouseLeave={ this._handleLanguagesLeave }
+                  className="splash-header-languages-button">
             Site language: { siteLang }
+            <LanguageIndexDropdown />
           </button>
-          <LanguageIndexDropdown />
           <button onClick={ this._handleLoginClick }
               className="splash-header-login-button">
             Login
-            <LoginDropdown />
           </button>
+          <LoginDropdown />
         </div>
       </nav>
     );

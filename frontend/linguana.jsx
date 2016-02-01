@@ -75,8 +75,6 @@ var React = require('react'),
         CookieActions.fetchCookiesFromBrowser();
       }
 
-      debugger
-
       var path;
       if (CurrentUserStore.isLoggedIn()) {
         path = "/courses/" + CurrentUserStore.currentUser().current_course_id;

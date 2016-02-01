@@ -119,8 +119,6 @@
 	      CookieActions.fetchCookiesFromBrowser();
 	    }
 	
-	    debugger;
-	
 	    var path;
 	    if (CurrentUserStore.isLoggedIn()) {
 	      path = "/courses/" + CurrentUserStore.currentUser().current_course_id;
@@ -24190,7 +24188,6 @@
 	  },
 	
 	  render: function () {
-	    debugger;
 	    if (/.*(lessons).*/.test(location.hash)) {
 	      return this.lessonView();
 	    } else if (CookieStore.curCourse() || CurrentUserStore.isLoggedIn()) {
@@ -24219,6 +24216,13 @@
 	  toggleModalDisplay: function (modalName) {
 	    AppDispatcher.dispatch({
 	      actionType: ModalConstants.TOGGLE_MODAL_DISPLAY,
+	      modalName: modalName
+	    });
+	  },
+	
+	  displayModal: function (modalName) {
+	    AppDispatcher.dispatch({
+	      actionType: ModalConstants.DISPLAY_MODAL,
 	      modalName: modalName
 	    });
 	  },
@@ -24570,6 +24574,7 @@
 	  ADD_MODAL: "ADD_MODAL",
 	  REMOVE_MODAL: "REMOVE_MODAL",
 	  HIDE_MODALS: "HIDE_MODALS",
+	  DISPLAY_MODAL: "DISPLAY_MODAL",
 	  HIDE_MODAL: "HIDE_MODAL"
 	};
 	
@@ -24617,9 +24622,13 @@
 	    ModalActions.toggleModalDisplay("signupModal");
 	  },
 	
-	  _handleLanguagesHover: function () {
-	    ModalActions.toggleModalDisplay("languageIndexDropdown");
+	  _handleLanguagesEnter: function () {
+	    ModalActions.displayModal("languageIndexDropdown");
 	    ModalActions.hideModal("loginDropdown");
+	  },
+	
+	  _handleLanguagesLeave: function () {
+	    ModalActions.hideModal("languageIndexDropdown");
 	  },
 	
 	  splashNavBar: function () {
@@ -24642,19 +24651,20 @@
 	        { className: 'splash-header-buttons group' },
 	        React.createElement(
 	          'button',
-	          { onClick: this._handleLanguagesHover,
+	          { onMouseEnter: this._handleLanguagesEnter,
+	            onMouseLeave: this._handleLanguagesLeave,
 	            className: 'splash-header-languages-button' },
 	          'Site language: ',
-	          siteLang
+	          siteLang,
+	          React.createElement(LanguageIndexDropdown, null)
 	        ),
-	        React.createElement(LanguageIndexDropdown, null),
 	        React.createElement(
 	          'button',
 	          { onClick: this._handleLoginClick,
 	            className: 'splash-header-login-button' },
-	          'Login',
-	          React.createElement(LoginDropdown, null)
-	        )
+	          'Login'
+	        ),
+	        React.createElement(LoginDropdown, null)
 	      )
 	    );
 	  },
@@ -24731,6 +24741,10 @@
 	  addModal(modalName);
 	};
 	
+	var displayModal = function (modalName) {
+	  _modals[modalName] = "displayed";
+	};
+	
 	var hideAllModals = function () {
 	  Object.keys(_modals).forEach(function (modalName) {
 	    _modals[modalName] = "hidden";
@@ -24769,6 +24783,10 @@
 	      break;
 	    case ModalConstants.HIDE_MODAL:
 	      hideModal(payload.modalName);
+	      ModalStore.__emitChange();
+	      break;
+	    case ModalConstants.DISPLAY_MODAL:
+	      displayModal(payload.modalName);
 	      ModalStore.__emitChange();
 	      break;
 	  }

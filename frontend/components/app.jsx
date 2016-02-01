@@ -106,7 +106,6 @@ module.exports = React.createClass({
   },
 
   render: function () {
-    debugger
     if (/.*(lessons).*/.test(location.hash)) {
       return this.lessonView();
     } else if (CookieStore.curCourse() || CurrentUserStore.isLoggedIn()) {

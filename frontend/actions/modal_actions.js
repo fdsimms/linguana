@@ -16,6 +16,13 @@ var ModalActions = {
     });
   },
 
+  displayModal: function (modalName) {
+    AppDispatcher.dispatch({
+      actionType: ModalConstants.DISPLAY_MODAL,
+      modalName: modalName
+    });
+  },
+
   removeModal: function (modalName) {
     AppDispatcher.dispatch({
       actionType: ModalConstants.REMOVE_MODAL,
