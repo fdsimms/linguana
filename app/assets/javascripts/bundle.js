@@ -33562,7 +33562,17 @@
 	                { htmlFor: 'username-signup' },
 	                'Username'
 	              ),
-	              React.createElement('input', { id: 'username-signup', name: 'user[email]' })
+	              React.createElement('input', { id: 'username-signup', name: 'user[username]' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'signup-input group' },
+	              React.createElement(
+	                'label',
+	                { htmlFor: 'email-signup' },
+	                'Email'
+	              ),
+	              React.createElement('input', { id: 'email-signup', name: 'user[email]' })
 	            ),
 	            React.createElement(
 	              'div',

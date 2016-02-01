@@ -31,7 +31,11 @@ var SignupForm = React.createClass({
               <div className="inputs group">
                 <div className="signup-input group">
                     <label htmlFor="username-signup">Username</label>
-                    <input id="username-signup"name="user[email]" />
+                    <input id="username-signup"name="user[username]" />
+                </div>
+                <div className="signup-input group">
+                    <label htmlFor="email-signup">Email</label>
+                    <input id="email-signup"name="user[email]" />
                 </div>
                 <div className="signup-input group">
                     <label htmlFor="password-signup">Password</label>

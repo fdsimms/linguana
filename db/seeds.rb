@@ -6,25 +6,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-# users
-User.destroy_all
-
-guest = User.create!(
-  name: "G.K. Guesterton",
-  email: "gk@mailinator.com",
-  username: "guest",
-  password: "password",
-  hometown: "Guestvalia",
-  bio: "No one ever saw a better guest than he."
-)
-firetrux = User.create!(
-  name: "Firetrux O'Nally",
-  email: "firetrux@mailinator.com",
-  username: "firetrux",
-  password: "password",
-  hometown: "Houston, TX",
-  bio: "The dog, the myth, the legend."
-)
 
 # languages
 Language.destroy_all
@@ -309,6 +290,27 @@ choice_8_4 = AnswerChoice.create!(
   exercise_id: mcq8.id
 )
 
+# users
+User.destroy_all
+
+guest = User.create!(
+  fname: "G.K.",
+  lname: "Guesterton",
+  email: "gk@mailinator.com",
+  username: "guest",
+  password: "password",
+  current_course_id: spanish_for_english.id,
+  hometown: "Guestvalia",
+  bio: "No one ever saw a better guest than he."
+)
+firetrux = User.create!(
+  fname: "Firetrux",
+  email: "firetrux@mailinator.com",
+  username: "firetrux",
+  password: "password",
+  hometown: "Houston, TX",
+  bio: "The dog, the myth, the legend."
+)
 
 # course enrollments
 
