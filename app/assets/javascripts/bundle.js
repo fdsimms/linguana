@@ -24156,7 +24156,11 @@
 	        { className: 'header-bar' },
 	        React.createElement(NavBar, { view: 'main' })
 	      ),
-	      children
+	      React.createElement(
+	        'div',
+	        { className: 'main group' },
+	        children
+	      )
 	    );
 	  },
 	
@@ -31571,7 +31575,6 @@
 	
 	  componentWillUnmount: function () {
 	    this.modalListener.remove();
-	    ModalActions.removeModal(this.state.modalName);
 	  },
 	
 	  visibleRender: function () {
@@ -31740,7 +31743,6 @@
 	
 	  componentWillUnmount: function () {
 	    this.modalListener.remove();
-	    ModalActions.removeModal(this.state.modalName);
 	  },
 	
 	  visibleRender: function () {
@@ -31774,11 +31776,7 @@
 	  submit: function (e) {
 	    e.preventDefault();
 	    var credentials = e.currentTarget;
-	    SessionsApiUtil.logIn(credentials, function () {
-	      debugger;
-	      ModalActions.hideModals();
-	      this.history.pushState(null, "/");
-	    }.bind(this));
+	    SessionsApiUtil.logIn(credentials);
 	  },
 	
 	  render: function () {

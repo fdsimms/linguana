@@ -69,21 +69,21 @@ var Lesson = React.createClass({
     }
     var exercisesLength = ExerciseStore.all().length,
         nextExerciseIdx = this.state.currentExerciseIdx + 1,
-        isCorrect = this.state.answerChoiceStatus === "correctIsSelected"
+        isCorrect = this.state.answerChoiceStatus === "correctIsSelected";
     if (exercisesLength === nextExerciseIdx && isCorrect ) {
       this.setState({ checkButtonClicked: true, lessonOver: true });
     } else {
-      this.setState({ checkButtonClicked: true })
+      this.setState({ checkButtonClicked: true });
     }
   },
 
   _handleContinueClick: function () {
     var nextExerciseIdx = this.state.currentExerciseIdx + 1;
     if (this.state.showFinalPage) {
-      var url = "/skills/" + this.state.lesson.skill_id
-      this.history.pushState(null, url)
+      var url = "/skills/" + this.state.lesson.skill_id;
+      this.history.pushState(null, url);
     } else if (this.state.lessonOver) {
-      this.setState({ showFinalPage: true})
+      this.setState({ showFinalPage: true});
     }
     else if (this.state.answerChoiceStatus === "otherIsSelected") {
       ExerciseActions.removeFirstExercise();
@@ -138,7 +138,7 @@ var Lesson = React.createClass({
   progressBar: function () {
     var currentIdx = this.state.currentExerciseIdx;
     if (this.state.lessonOver) {
-      currentIdx = this.state.currentExerciseIdx + 1
+      currentIdx = this.state.currentExerciseIdx + 1;
     }
     return <ProgressBar currentIdx={currentIdx} />;
   },
@@ -188,7 +188,7 @@ var Lesson = React.createClass({
       <LessonFinalPage />
       {this.bottomBar()}
     </div>
-    )
+  );
   },
 
   render: function () {

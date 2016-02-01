@@ -79,7 +79,9 @@ module.exports = React.createClass({
         <header className="header-bar">
           <NavBar view="main" />
         </header>
+        <div className="main group">
           {children}
+        </div>
       </div>
     );
   },

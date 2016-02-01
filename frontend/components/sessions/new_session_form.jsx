@@ -9,11 +9,7 @@ var NewSessionForm = React.createClass({
   submit: function (e) {
     e.preventDefault();
     var credentials = e.currentTarget;
-    SessionsApiUtil.logIn(credentials, function () {
-      debugger
-      ModalActions.hideModals();
-      this.history.pushState(null, "/");
-    }.bind(this));
+    SessionsApiUtil.logIn(credentials);
   },
 
   render: function() {

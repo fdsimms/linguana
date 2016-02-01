@@ -24,7 +24,6 @@ var LanguageIndexDropdown = React.createClass({
 
   componentWillUnmount: function () {
     this.modalListener.remove();
-    ModalActions.removeModal(this.state.modalName);
   },
 
   visibleRender: function () {
