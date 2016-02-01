@@ -1,8 +1,8 @@
 var React = require('react'),
-    CourseStore = require('../stores/course_store'),
+    CourseStore = require('../../stores/course_store'),
     CourseIndexItem = require('./course_index_item'),
-    CookieStore = require('../stores/cookie_store'),
-    CoursesApiUtil = require('../util/courses_api_util');
+    CookieStore = require('../../stores/cookie_store'),
+    CoursesApiUtil = require('../../util/courses_api_util');
 
 var CourseIndex = React.createClass({
   getInitialState: function () {

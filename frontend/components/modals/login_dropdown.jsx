@@ -1,9 +1,9 @@
 var React = require('react'),
-    ModalActions = require('../actions/modal_actions'),
-    ModalStore = require('../stores/modal_store'),
-    NewSessionForm = require('./sessions/new_session_form');
+    ModalActions = require('../../actions/modal_actions'),
+    ModalStore = require('../../stores/modal_store'),
+    NewSessionForm = require('../sessions/new_session_form');
 
-var LoginModal = React.createClass({
+var LoginDropdown = React.createClass({
   getInitialState: function () {
     return { modalName: "loginModal", token: "" };
   },
@@ -46,4 +46,4 @@ var LoginModal = React.createClass({
   }
 });
 
-module.exports = LoginModal;
+module.exports = LoginDropdown;

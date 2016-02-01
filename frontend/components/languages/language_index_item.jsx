@@ -1,6 +1,6 @@
 var React = require('react'),
-    CookieActions = require('../actions/cookie_actions'),
-    ModalActions = require('../actions/modal_actions');
+    CookieActions = require('./../../actions/cookie_actions'),
+    ModalActions = require('./../../actions/modal_actions');
 
 var LanguageIndexItem = React.createClass({
   setLanguageCookie: function () {

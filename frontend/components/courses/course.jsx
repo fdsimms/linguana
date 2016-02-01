@@ -1,7 +1,7 @@
 var React = require('react'),
-    CourseStore = require('../stores/course_store'),
-    SkillIndex = require('./skill_index'),
-    CoursesApiUtil = require('../util/courses_api_util');
+    CourseStore = require('../../stores/course_store'),
+    SkillIndex = require('../skills/skill_index'),
+    CoursesApiUtil = require('../../util/courses_api_util');
 
 var Course = React.createClass({
   getInitialState: function () {

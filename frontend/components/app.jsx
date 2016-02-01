@@ -1,6 +1,6 @@
 var React = require('react'),
-    LoginModal = require('./login_modal'),
-    LanguageIndexModal = require('./language_index_modal'),
+    LoginDropdown = require('./modals/login_dropdown'),
+    LanguageIndexDropdown = require('./modals/language_index_dropdown'),
     ModalActions = require('../actions/modal_actions'),
     ModalStore = require('../stores/modal_store'),
     CurrentUserStore = require("../stores/current_user_store"),
@@ -52,7 +52,7 @@ module.exports = React.createClass({
                   className="header-nav-languages-button">
                 Site language: {CookieStore.curLng()}
               </button>
-              <LanguageIndexModal />
+              <LanguageIndexDropdown />
               <button onClick={this._handleLoginClick}
                   className="header-nav-login-button">
                 Login

@@ -1,10 +1,10 @@
 var React = require('react'),
-    ModalActions = require('../actions/modal_actions'),
-    ModalStore = require('../stores/modal_store'),
-    LanguageIndex = require('./language_index'),
-    LanguagesApiUtil = require('../util/languages_api_util');
+    ModalActions = require('../../actions/modal_actions'),
+    ModalStore = require('../../stores/modal_store'),
+    LanguageIndex = require('../languages/language_index'),
+    LanguagesApiUtil = require('../../util/languages_api_util');
 
-var LanguageIndexModal = React.createClass({
+var LanguageIndexDropdown = React.createClass({
   getInitialState: function () {
     return { modalName: "languageIndexModal" };
   },
@@ -43,4 +43,4 @@ var LanguageIndexModal = React.createClass({
   }
 });
 
-module.exports = LanguageIndexModal;
+module.exports = LanguageIndexDropdown;

@@ -1,7 +1,7 @@
 var React = require('react'),
-    SkillStore = require('../stores/skill_store'),
+    SkillStore = require('./../../stores/skill_store'),
     SkillIndexItem = require('./skill_index_item'),
-    SkillsApiUtil = require('../util/skills_api_util');
+    SkillsApiUtil = require('./../../util/skills_api_util');
 
 var SkillIndex = React.createClass({
   getInitialState: function () {

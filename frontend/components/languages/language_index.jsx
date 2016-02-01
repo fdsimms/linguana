@@ -1,5 +1,5 @@
 var React = require('react'),
-    LanguageStore = require('../stores/language_store'),
+    LanguageStore = require('../../stores/language_store'),
     LanguageIndexItem = require('./language_index_item');
 
 var LanguageIndex = React.createClass({
