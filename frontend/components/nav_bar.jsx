@@ -38,7 +38,7 @@ var NavBar = React.createClass({
   splashNavBar: function () {
     var siteLang;
     if (LanguageStore.languagesHaveBeenFetched()) {
-      siteLang = CookieStore.curLng().name;
+      siteLang = CookieStore.curLng();
     }
     return(
       <nav className="splash-header group">

@@ -21,31 +21,43 @@ var React = require('react'),
                   onEnter={ _ensureLoggedOutAndNoCurrentCourse }>
       </IndexRoute>
       <Route path="/courses"
+             onEnter={ _ensureLoggedInOrCurrentCourse }
              component={CourseIndex} />
       <Route path="/courses/:courseId"
+             onEnter={ _ensureLoggedInOrCurrentCourse }
              component={Course} />
       <Route path="/skills/:skillId"
+            onEnter={ _ensureLoggedInOrCurrentCourse }
              component={Skill} />
       <Route path="/lessons/:lessonId"
+             onEnter={ _ensureLoggedInOrCurrentCourse }
              component={Lesson} />
-      <Route path="/congrats" component={LessonFinalPage} />
+      <Route path="/congrats"
+             onEnter={ _ensureLoggedInOrCurrentCourse }
+             component={LessonFinalPage} />
     </Route>
   );
 
 
-
-  function _ensureLoggedIn(nextState, replace, callback) {
+  function _ensureLoggedInOrCurrentCourse(nextState, replace, callback) {
     if (CurrentUserStore.userHasBeenFetched()) {
-      _redirectIfNotLoggedIn();
+      _redirectIfNotLoggedInOrNoCurrentCourse();
     } else {
 
-      SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
+      SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedInOrNoCurrentCourse);
     }
 
-    function _redirectIfNotLoggedIn() {
-      if (!CurrentUserStore.isLoggedIn()) {
-        replace({}, "/login");
+    function _redirectIfNotLoggedInOrNoCurrentCourse() {
+      if (!CookieStore.cookiesHaveBeenFetched()) {
+        CookieActions.fetchCookiesFromBrowser();
       }
+
+      var path;
+      if (!CurrentUserStore.isLoggedIn() && !CookieStore.curCourse()) {
+        path = "/"; //+ user.course.name
+        replace({}, path);
+      }
+
       callback();
     }
   }

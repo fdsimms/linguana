@@ -17,7 +17,6 @@ var CoursesApiUtil = {
 	},
 
   fetchCourse: function (courseId) {
-    debugger
     $.ajax({
       type: "GET",
       url: "api/courses/" + courseId,
