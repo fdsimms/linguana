@@ -1,18 +1,17 @@
 var React = require('react'),
     ModalActions = require('../../actions/modal_actions'),
     ModalStore = require('../../stores/modal_store'),
-    NewSessionForm = require('../sessions/new_session_form');
+    SignupForm = require('./signup_form');
 
-var LoginDropdown = React.createClass({
+var SignupModal = React.createClass({
   getInitialState: function () {
     return { modalName: "signupModal" };
   },
 
   componentDidMount: function () {
     this.modalListener = ModalStore.addListener(this._modalsChanged);
-    var modalName = this.state.modalName;
-    ModalActions.addModal(modalName);
-    this.setState({ modalName: modalName });
+    ModalActions.addModal(this.state.modalName);
+    this.forceUpdate();
   },
 
   _modalsChanged: function () {
@@ -26,7 +25,7 @@ var LoginDropdown = React.createClass({
   },
 
   visibleRender: function () {
-    return <NewUserForm />;
+    return <SignupForm />;
   },
 
   render: function () {
@@ -36,3 +35,5 @@ var LoginDropdown = React.createClass({
     return renderedHTML;
   }
 });
+
+module.exports = SignupModal;

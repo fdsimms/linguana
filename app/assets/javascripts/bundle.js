@@ -24084,6 +24084,7 @@
 	    CookieStore = __webpack_require__(234),
 	    LanguagesApiUtil = __webpack_require__(244),
 	    CookieActions = __webpack_require__(240),
+	    SignupModal = __webpack_require__(282),
 	    SessionsApiUtil = __webpack_require__(248);
 	
 	module.exports = React.createClass({
@@ -24153,11 +24154,12 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'main' },
+	        { className: 'main group' },
 	        React.createElement(
 	          'main',
 	          { className: 'main-content box-shadowed' },
-	          children
+	          children,
+	          React.createElement(SignupModal, null)
 	        )
 	      )
 	    );
@@ -24584,6 +24586,10 @@
 	    ModalActions.hideModal("languageIndexDropdown");
 	  },
 	
+	  _handleCreateProfClick: function () {
+	    ModalActions.toggleModalDisplay("signupModal");
+	  },
+	
 	  _handleLanguagesHover: function () {
 	    ModalActions.toggleModalDisplay("languageIndexDropdown");
 	    ModalActions.hideModal("loginDropdown");
@@ -24630,7 +24636,9 @@
 	    // if (CurrentUserStore.isLoggedIn()) {
 	    return React.createElement(
 	      'a',
-	      { className: 'create-profile-button', href: '#' },
+	      { className: 'create-profile-button',
+	        onClick: this._handleCreateProfClick,
+	        href: '#' },
 	      'Create a profile'
 	    );
 	    // } else {
@@ -33448,6 +33456,148 @@
 	});
 	
 	module.exports = ProgressBarChunk;
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    ModalStore = __webpack_require__(214),
+	    SignupForm = __webpack_require__(283);
+	
+	var SignupModal = React.createClass({
+	  displayName: 'SignupModal',
+	
+	  getInitialState: function () {
+	    return { modalName: "signupModal" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    ModalActions.addModal(this.state.modalName);
+	    this.forceUpdate();
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	    ModalActions.removeModal(this.state.modalName);
+	  },
+	
+	  visibleRender: function () {
+	    return React.createElement(SignupForm, null);
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = SignupModal;
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    History = __webpack_require__(159).History,
+	    ModalActions = __webpack_require__(207);
+	
+	var SignupForm = React.createClass({
+	  displayName: 'SignupForm',
+	
+	  mixins: [History],
+	
+	  submit: function (e) {
+	    e.preventDefault();
+	    var credentials = e.currentTarget;
+	    UsersApiUtil.createUser(credentials, function () {
+	      ModalActions.hideModals();
+	      this.history.pushState(null, "/");
+	    }.bind(this));
+	  },
+	
+	  render: function () {
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'signup-form group box-shadowed' },
+	      React.createElement(
+	        'div',
+	        { className: 'signup-inputs group' },
+	        React.createElement(
+	          'h2',
+	          { className: 'signup-header' },
+	          'Sign Up'
+	        ),
+	        React.createElement(
+	          'form',
+	          { className: 'group', onSubmit: this.submit },
+	          React.createElement(
+	            'div',
+	            { className: 'inputs group' },
+	            React.createElement(
+	              'div',
+	              { className: 'signup-input group' },
+	              React.createElement(
+	                'label',
+	                { htmlFor: 'username-signup' },
+	                'Username'
+	              ),
+	              React.createElement('input', { id: 'username-signup', name: 'user[email]' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'signup-input group' },
+	              React.createElement(
+	                'label',
+	                { htmlFor: 'password-signup' },
+	                'Password'
+	              ),
+	              React.createElement('input', { id: 'password-signup', type: 'password', name: 'user[password]' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'signup-input group' },
+	              React.createElement(
+	                'label',
+	                { htmlFor: 'fname-signup' },
+	                'First Name'
+	              ),
+	              React.createElement('input', { id: 'fname-signup', name: 'user[fname]' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'signup-input group' },
+	              React.createElement(
+	                'label',
+	                { htmlFor: 'lname-signup' },
+	                'Last Name'
+	              ),
+	              React.createElement('input', { id: 'lname-signup', name: 'user[lname]' })
+	            )
+	          ),
+	          React.createElement(
+	            'button',
+	            { className: 'signup-button' },
+	            'Create Account'
+	          )
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = SignupForm;
 
 /***/ }
 /******/ ]);

@@ -5,6 +5,7 @@ var React = require('react'),
     CookieStore = require("../stores/cookie_store"),
     LanguagesApiUtil = require("../util/languages_api_util"),
     CookieActions = require("../actions/cookie_actions"),
+    SignupModal = require("./modals/signup_modal"),
     SessionsApiUtil = require("../util/sessions_api_util");
 
 module.exports = React.createClass({
@@ -72,9 +73,10 @@ module.exports = React.createClass({
         <header className="header-bar">
           <NavBar view="main" />
         </header>
-        <div className="main">
+        <div className="main group">
           <main className="main-content box-shadowed">
             {children}
+            <SignupModal />
           </main>
         </div>
       </div>

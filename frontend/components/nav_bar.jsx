@@ -30,6 +30,10 @@ var NavBar = React.createClass({
     ModalActions.hideModal("languageIndexDropdown");
   },
 
+  _handleCreateProfClick: function () {
+    ModalActions.toggleModalDisplay("signupModal");
+  },
+
   _handleLanguagesHover: function () {
     ModalActions.toggleModalDisplay("languageIndexDropdown");
     ModalActions.hideModal("loginDropdown");
@@ -62,7 +66,9 @@ var NavBar = React.createClass({
   normalNavBarButtons: function () {
     // if (CurrentUserStore.isLoggedIn()) {
       return(
-          <a className="create-profile-button" href="#">Create a profile</a>
+          <a className="create-profile-button"
+             onClick={this._handleCreateProfClick}
+             href="#">Create a profile</a>
       );
     // } else {
     //
