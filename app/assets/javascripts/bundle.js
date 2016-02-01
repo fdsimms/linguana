@@ -31676,8 +31676,7 @@
 	    var modalName = this.state.modalName;
 	    ModalActions.addModal(modalName);
 	    this.setState({
-	      modalName: modalName,
-	      token: $('meta[name=csrf-token]').attr('content')
+	      modalName: modalName
 	    });
 	  },
 	
@@ -31689,10 +31688,6 @@
 	  componentWillUnmount: function () {
 	    this.modalListener.remove();
 	    ModalActions.removeModal(this.state.modalName);
-	  },
-	
-	  authToken: function () {
-	    return React.createElement('input', { name: 'authenticity_token', type: 'hidden', value: this.state.token });
 	  },
 	
 	  visibleRender: function () {

@@ -5,17 +5,14 @@ var React = require('react'),
 
 var LoginDropdown = React.createClass({
   getInitialState: function () {
-    return { modalName: "signupModal", token: "" };
+    return { modalName: "signupModal" };
   },
 
   componentDidMount: function () {
     this.modalListener = ModalStore.addListener(this._modalsChanged);
     var modalName = this.state.modalName;
     ModalActions.addModal(modalName);
-    this.setState({
-      modalName: modalName,
-      token: $('meta[name=csrf-token]').attr('content')
-    });
+    this.setState({ modalName: modalName });
   },
 
   _modalsChanged: function () {
@@ -26,12 +23,6 @@ var LoginDropdown = React.createClass({
   componentWillUnmount: function () {
     this.modalListener.remove();
     ModalActions.removeModal(this.state.modalName);
-  },
-
-  authToken: function () {
-    return(
-      <input name="authenticity_token" type="hidden" value={this.state.token} />
-    );
   },
 
   visibleRender: function () {

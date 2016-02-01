@@ -14,7 +14,6 @@ var LoginDropdown = React.createClass({
     ModalActions.addModal(modalName);
     this.setState({
       modalName: modalName,
-      token: $('meta[name=csrf-token]').attr('content')
     });
   },
 
@@ -26,12 +25,6 @@ var LoginDropdown = React.createClass({
   componentWillUnmount: function () {
     this.modalListener.remove();
     ModalActions.removeModal(this.state.modalName);
-  },
-
-  authToken: function () {
-    return(
-      <input name="authenticity_token" type="hidden" value={this.state.token} />
-    );
   },
 
   visibleRender: function () {

@@ -58,10 +58,11 @@
   content: "▲";
   position: absolute;
   font-size: 20px;
-  right:  107px;
-  top: -16px;
+  right: 179px;
+  top: -17px;
   color: #fff;
-  text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  text-shadow: 0px -3px 3px rgba(0, 0, 0, 0.2);
  }
 
 .splash-login-form .header-nav-login-button:hover {
@@ -75,7 +76,7 @@
    border-radius: 10px;
    padding: 20px;
    position: absolute;
-   right: 49px;
+   right: 159px;
  }
 
  .splash-login-inputs input {
