@@ -4,7 +4,7 @@ var LanguageApiUtil = {
 	fetchLanguages: function () {
 		$.ajax({
 			type: "GET",
-			url: "api/languages",
+			url: "api/languages/",
 			dataType: "json",
 			success: function (languages) {
 				LanguageActions.receiveAll(languages);

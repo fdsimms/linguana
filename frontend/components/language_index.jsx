@@ -1,7 +1,6 @@
 var React = require('react'),
     LanguageStore = require('../stores/language_store'),
-    LanguageIndexItem = require('./language_index_item'),
-    LanguagesApiUtil = require('../util/languages_api_util');
+    LanguageIndexItem = require('./language_index_item');
 
 var LanguageIndex = React.createClass({
   getInitialState: function () {
@@ -14,7 +13,6 @@ var LanguageIndex = React.createClass({
 
   componentDidMount: function () {
     this.languageListener = LanguageStore.addListener(this._onChange);
-    LanguagesApiUtil.fetchLanguages();
   },
 
   componentWillUnmount: function () {

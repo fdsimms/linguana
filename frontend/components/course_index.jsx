@@ -1,6 +1,7 @@
 var React = require('react'),
     CourseStore = require('../stores/course_store'),
     CourseIndexItem = require('./course_index_item'),
+    CookieStore = require('../stores/cookie_store'),
     CoursesApiUtil = require('../util/courses_api_util');
 
 var CourseIndex = React.createClass({
@@ -8,13 +9,19 @@ var CourseIndex = React.createClass({
     return { courses: CourseStore.all() };
   },
 
-  _onChange: function () {
+  _coursesChanged: function () {
     this.setState({ courses: CourseStore.all() });
   },
 
+  _cookiesChanged: function () {
+    CoursesApiUtil.fetchCourses(CookieStore.curLng());
+    this.forceUpdate();
+  },
+
   componentDidMount: function () {
-    this.courseListener = CourseStore.addListener(this._onChange);
-    CoursesApiUtil.fetchCourses();
+    this.courseListener = CourseStore.addListener(this._coursesChanged);
+    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
+    CoursesApiUtil.fetchCourses(CookieStore.curLng());
   },
 
   componentWillUnmount: function () {

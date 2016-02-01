@@ -1,10 +1,10 @@
 var CourseActions = require('../actions/course_actions');
 
 var CoursesApiUtil = {
-	fetchCourses: function () {
+	fetchCourses: function (lngName) {
 		$.ajax({
 			type: "GET",
-			url: "api/courses/",
+			url: "api/courses/?lngName=" + lngName,
 			dataType: "json",
 			success: function (courses) {
         var coursesPayload = {};

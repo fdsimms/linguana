@@ -3,7 +3,7 @@ var React = require('react'),
 
 var LanguageIndexItem = React.createClass({
   setLanguageCookie: function () {
-    var languageCookie = {curLng: this.props.language.id};
+    var languageCookie = {curLng: this.props.language.name};
     CookieActions.receiveCookie(languageCookie);
   },
 

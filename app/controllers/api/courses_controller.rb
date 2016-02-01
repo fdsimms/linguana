@@ -31,7 +31,8 @@ class Api::CoursesController < ApplicationController
   end
 
   def index
-    @courses = Course.all
+    language = Language.find_by_name(params[:lngName])
+    @courses = Course.all.where(known_language_id: language.id)
   end
 
   private

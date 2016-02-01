@@ -1,7 +1,8 @@
 var React = require('react'),
     ModalActions = require('../actions/modal_actions'),
     ModalStore = require('../stores/modal_store'),
-    LanguageIndex = require('./language_index');
+    LanguageIndex = require('./language_index'),
+    LanguagesApiUtil = require('../util/languages_api_util');
 
 var LanguageIndexModal = React.createClass({
   getInitialState: function () {
@@ -10,6 +11,7 @@ var LanguageIndexModal = React.createClass({
 
   componentDidMount: function () {
     this.modalListener = ModalStore.addListener(this._modalsChanged);
+    LanguagesApiUtil.fetchLanguages();
     var modalName = this.state.modalName;
     ModalActions.addModal(modalName);
     this.setState({ modalName: modalName });

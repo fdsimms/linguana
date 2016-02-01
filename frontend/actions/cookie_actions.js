@@ -14,6 +14,12 @@ var CookieActions = {
       actionType: CookieConstants.COOKIE_RECEIVED,
       cookie: cookie
     });
+  },
+
+  fetchCookiesFromBrowser: function () {
+    AppDispatcher.dispatch({
+      actionType: CookieConstants.FETCH_COOKIES
+    });
   }
 };
 

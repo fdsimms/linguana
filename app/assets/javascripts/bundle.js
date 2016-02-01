@@ -24021,14 +24021,22 @@
 	    ModalActions = __webpack_require__(208),
 	    CurrentUserStore = __webpack_require__(277),
 	    CookieStore = __webpack_require__(278),
+	    CookieActions = __webpack_require__(280),
 	    SessionsApiUtil = __webpack_require__(274);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
 	  componentDidMount: function () {
-	    CurrentUserStore.addListener(this.forceUpdate.bind(this));
+	    this.currentUserListener = CurrentUserStore.addListener(this.forceUpdate.bind(this));
+	    this.cookieListener = CookieStore.addListener(this.forceUpdate.bind(this));
+	    CookieActions.fetchCookiesFromBrowser();
 	    SessionsApiUtil.fetchCurrentUser();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.currentUserListener.remove();
+	    this.cookieListener.remove();
 	  },
 	
 	  _handleLoginClick: function () {
@@ -24070,7 +24078,8 @@
 	              'button',
 	              { onClick: this._handleLanguagesHover,
 	                className: 'header-nav-languages-button' },
-	              'Site language: English'
+	              'Site language: ',
+	              CookieStore.curLng()
 	            ),
 	            React.createElement(LanguageIndexModal, null),
 	            React.createElement(
@@ -31015,7 +31024,8 @@
 	var React = __webpack_require__(1),
 	    ModalActions = __webpack_require__(208),
 	    ModalStore = __webpack_require__(214),
-	    LanguageIndex = __webpack_require__(233);
+	    LanguageIndex = __webpack_require__(233),
+	    LanguagesApiUtil = __webpack_require__(237);
 	
 	var LanguageIndexModal = React.createClass({
 	  displayName: 'LanguageIndexModal',
@@ -31026,6 +31036,7 @@
 	
 	  componentDidMount: function () {
 	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    LanguagesApiUtil.fetchLanguages();
 	    var modalName = this.state.modalName;
 	    ModalActions.addModal(modalName);
 	    this.setState({ modalName: modalName });
@@ -31065,8 +31076,7 @@
 
 	var React = __webpack_require__(1),
 	    LanguageStore = __webpack_require__(234),
-	    LanguageIndexItem = __webpack_require__(236),
-	    LanguagesApiUtil = __webpack_require__(237);
+	    LanguageIndexItem = __webpack_require__(236);
 	
 	var LanguageIndex = React.createClass({
 	  displayName: 'LanguageIndex',
@@ -31081,7 +31091,6 @@
 	
 	  componentDidMount: function () {
 	    this.languageListener = LanguageStore.addListener(this._onChange);
-	    LanguagesApiUtil.fetchLanguages();
 	  },
 	
 	  componentWillUnmount: function () {
@@ -31125,6 +31134,14 @@
 	  return _languages.slice();
 	};
 	
+	LanguageStore.findByName = function (name) {
+	  _languages.forEach(function (language) {
+	    if (language.name === name) {
+	      return language;
+	    }
+	  });
+	};
+	
 	LanguageStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case LanguageConstants.LANGUAGES_RECEIVED:
@@ -31159,7 +31176,7 @@
 	  displayName: 'LanguageIndexItem',
 	
 	  setLanguageCookie: function () {
-	    var languageCookie = { curLng: this.props.language.id };
+	    var languageCookie = { curLng: this.props.language.name };
 	    CookieActions.receiveCookie(languageCookie);
 	  },
 	
@@ -31184,7 +31201,7 @@
 		fetchLanguages: function () {
 			$.ajax({
 				type: "GET",
-				url: "api/languages",
+				url: "api/languages/",
 				dataType: "json",
 				success: function (languages) {
 					LanguageActions.receiveAll(languages);
@@ -31222,6 +31239,7 @@
 	var React = __webpack_require__(1),
 	    CourseStore = __webpack_require__(240),
 	    CourseIndexItem = __webpack_require__(242),
+	    CookieStore = __webpack_require__(278),
 	    CoursesApiUtil = __webpack_require__(243);
 	
 	var CourseIndex = React.createClass({
@@ -31231,13 +31249,19 @@
 	    return { courses: CourseStore.all() };
 	  },
 	
-	  _onChange: function () {
+	  _coursesChanged: function () {
 	    this.setState({ courses: CourseStore.all() });
 	  },
 	
+	  _cookiesChanged: function () {
+	    CoursesApiUtil.fetchCourses(CookieStore.curLng());
+	    this.forceUpdate();
+	  },
+	
 	  componentDidMount: function () {
-	    this.courseListener = CourseStore.addListener(this._onChange);
-	    CoursesApiUtil.fetchCourses();
+	    this.courseListener = CourseStore.addListener(this._coursesChanged);
+	    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
+	    CoursesApiUtil.fetchCourses(CookieStore.curLng());
 	  },
 	
 	  componentWillUnmount: function () {
@@ -31378,10 +31402,10 @@
 	var CourseActions = __webpack_require__(244);
 	
 	var CoursesApiUtil = {
-	  fetchCourses: function () {
+	  fetchCourses: function (lngName) {
 	    $.ajax({
 	      type: "GET",
-	      url: "api/courses/",
+	      url: "api/courses/?lngName=" + lngName,
 	      dataType: "json",
 	      success: function (courses) {
 	        var coursesPayload = {};
@@ -33071,11 +33095,15 @@
 /* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(215).Store;
-	var AppDispatcher = __webpack_require__(209);
-	var CookieConstants = __webpack_require__(279);
+	var Store = __webpack_require__(215).Store,
+	    AppDispatcher = __webpack_require__(209),
+	    LanguageStore = __webpack_require__(234),
+	    CookieConstants = __webpack_require__(279);
 	
-	var _cookies = {};
+	var _cookies = {
+	  curLng: "English"
+	};
+	
 	var CookieStore = new Store(AppDispatcher);
 	
 	var _COOKIE_NAMES = {
@@ -33088,6 +33116,14 @@
 	  _cookies[key] = cookie[key];
 	};
 	
+	var fetchCookiesFromBrowser = function () {
+	  Object.keys(localStorage).forEach(function (key) {
+	    if (Object.keys(_COOKIE_NAMES).includes(key)) {
+	      _cookies[key] = localStorage[key];
+	    }
+	  });
+	};
+	
 	var receiveCookies = function (cookies) {
 	  var key = Object.keys(cookies)[0];
 	  _cookies = cookies;
@@ -33095,6 +33131,10 @@
 	
 	CookieStore.all = function () {
 	  return Object.assign({}, _cookies);
+	};
+	
+	CookieStore.curLng = function () {
+	  return _cookies.curLng;
 	};
 	
 	CookieStore.__onDispatch = function (payload) {
@@ -33105,6 +33145,9 @@
 	  } else if (payload.actionType === CookieConstants.COOKIE_RECEIVED) {
 	    var cookie = payload.cookie;
 	    addCookie(cookie);
+	    CookieStore.__emitChange();
+	  } else if (payload.actionType === CookieConstants.FETCH_COOKIES) {
+	    fetchCookiesFromBrowser();
 	    CookieStore.__emitChange();
 	  }
 	};
@@ -33119,7 +33162,8 @@
 
 	var CookieConstants = {
 	  COOKIES_RECEIVED: "COOKIES_RECEIVED",
-	  COOKIE_RECEIVED: "COOKIE_RECEIVED"
+	  COOKIE_RECEIVED: "COOKIE_RECEIVED",
+	  FETCH_COOKIES: "FETCH_COOKIES"
 	};
 	
 	module.exports = CookieConstants;
@@ -33143,6 +33187,12 @@
 	    AppDispatcher.dispatch({
 	      actionType: CookieConstants.COOKIE_RECEIVED,
 	      cookie: cookie
+	    });
+	  },
+	
+	  fetchCookiesFromBrowser: function () {
+	    AppDispatcher.dispatch({
+	      actionType: CookieConstants.FETCH_COOKIES
 	    });
 	  }
 	};

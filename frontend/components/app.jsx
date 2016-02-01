@@ -4,12 +4,22 @@ var React = require('react'),
     ModalActions = require('../actions/modal_actions'),
     CurrentUserStore = require("../stores/current_user_store"),
     CookieStore = require("../stores/cookie_store"),
+    CookieActions = require("../actions/cookie_actions"),
     SessionsApiUtil = require("../util/sessions_api_util");
 
 module.exports = React.createClass({
   componentDidMount: function () {
-    CurrentUserStore.addListener(this.forceUpdate.bind(this));
+    this.currentUserListener =
+      CurrentUserStore.addListener(this.forceUpdate.bind(this));
+    this.cookieListener =
+      CookieStore.addListener(this.forceUpdate.bind(this));
+    CookieActions.fetchCookiesFromBrowser();
     SessionsApiUtil.fetchCurrentUser();
+  },
+
+  componentWillUnmount: function () {
+    this.currentUserListener.remove();
+    this.cookieListener.remove();
   },
 
   _handleLoginClick: function () {
@@ -36,7 +46,7 @@ module.exports = React.createClass({
               <div className="header-buttons group">
               <button onClick={this._handleLanguagesHover}
                   className="header-nav-languages-button">
-                Site language: English
+                Site language: {CookieStore.curLng()}
               </button>
               <LanguageIndexModal />
               <button onClick={this._handleLoginClick}

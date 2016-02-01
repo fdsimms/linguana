@@ -12,6 +12,14 @@ LanguageStore.all = function () {
   return _languages.slice();
 };
 
+LanguageStore.findByName = function (name) {
+  _languages.forEach(function (language) {
+    if (language.name === name) {
+      return language;
+    }
+  });
+};
+
 LanguageStore.__onDispatch = function (payload) {
   switch(payload.actionType) {
     case LanguageConstants.LANGUAGES_RECEIVED:
