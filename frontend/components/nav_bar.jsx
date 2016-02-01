@@ -59,6 +59,16 @@ var NavBar = React.createClass({
     );
   },
 
+  normalNavBarButtons: function () {
+    // if (CurrentUserStore.isLoggedIn()) {
+      return(
+          <a className="create-profile-button" href="#">Create a profile</a>
+      );
+    // } else {
+    //
+    // }
+  },
+
   normalNavBar: function () {
     return (
       <nav className="header-nav group">
@@ -66,7 +76,7 @@ var NavBar = React.createClass({
           <a href="/">Linguana</a>
         </h1>
         <div className="header-buttons group">
-
+          {this.normalNavBarButtons()}
         </div>
       </nav>
     );

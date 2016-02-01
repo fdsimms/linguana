@@ -10,6 +10,7 @@
 .splash-header-bar {
  display: block;
  width: 100%;
+ height: 72px;
 }
 
 .header-nav-logo,
@@ -25,7 +26,8 @@
   background-color: rgb(99, 164, 227);
 }
 
-.splash-header-logo:hover {
+.splash-header-logo:hover,
+.header-nav-logo:hover {
   color: #ddd;
 }
 
@@ -55,7 +57,8 @@
   color: #fff;
 }
 
-.splash-header-login-button:hover {
+.splash-header-login-button:hover,
+.create-profile-button:hover {
   background-color: #eee;
 }
 
@@ -64,4 +67,13 @@
 }
 
 .splash-header-bar {
+}
+
+.create-profile-button {
+  padding: 10px 10px;
+  background-color: #fff;
+  float: right;
+  border-radius: 20px;
+  margin: 17px;
+  color: rgb(101, 171, 204);
 }

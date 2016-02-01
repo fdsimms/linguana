@@ -24626,6 +24626,18 @@
 	    );
 	  },
 	
+	  normalNavBarButtons: function () {
+	    // if (CurrentUserStore.isLoggedIn()) {
+	    return React.createElement(
+	      'a',
+	      { className: 'create-profile-button', href: '#' },
+	      'Create a profile'
+	    );
+	    // } else {
+	    //
+	    // }
+	  },
+	
 	  normalNavBar: function () {
 	    return React.createElement(
 	      'nav',
@@ -24639,7 +24651,11 @@
 	          'Linguana'
 	        )
 	      ),
-	      React.createElement('div', { className: 'header-buttons group' })
+	      React.createElement(
+	        'div',
+	        { className: 'header-buttons group' },
+	        this.normalNavBarButtons()
+	      )
 	    );
 	  },
 	
