@@ -75,3 +75,26 @@
   width: 189px;
   border: none;
 }
+
+.fa-times-circle-o {
+  color: #000;
+  left: 401px;
+  cursor: pointer;
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  top: -7px;
+}
+.fa-times-circle-o:hover {
+  color: goldenrod;
+  background: #eee;
+}
+
+.screen-cover {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  margin: 135px;
+  display: block;
+  z-index: 200;
+  width: 100%;
+}

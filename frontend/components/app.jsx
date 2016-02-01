@@ -70,13 +70,13 @@ module.exports = React.createClass({
 
     return(
       <div className="main-wrapper">
+        <SignupModal />
         <header className="header-bar">
           <NavBar view="main" />
         </header>
         <div className="main group">
           <main className="main-content box-shadowed">
             {children}
-            <SignupModal />
           </main>
         </div>
       </div>
