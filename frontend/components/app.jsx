@@ -2,6 +2,7 @@ var React = require('react'),
     LoginModal = require('./login_modal'),
     LanguageIndexModal = require('./language_index_modal'),
     ModalActions = require('../actions/modal_actions'),
+    ModalStore = require('../stores/modal_store'),
     CurrentUserStore = require("../stores/current_user_store"),
     CookieStore = require("../stores/cookie_store"),
     CookieActions = require("../actions/cookie_actions"),
@@ -9,6 +10,8 @@ var React = require('react'),
 
 module.exports = React.createClass({
   componentDidMount: function () {
+    this.modelListener =
+      ModalStore.addListener(this.forceUpdate.bind(this));
     this.currentUserListener =
       CurrentUserStore.addListener(this.forceUpdate.bind(this));
     this.cookieListener =
@@ -20,6 +23,7 @@ module.exports = React.createClass({
   componentWillUnmount: function () {
     this.currentUserListener.remove();
     this.cookieListener.remove();
+    this.modalListener.remove();
   },
 
   _handleLoginClick: function () {

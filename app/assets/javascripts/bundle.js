@@ -24019,6 +24019,7 @@
 	    LoginModal = __webpack_require__(207),
 	    LanguageIndexModal = __webpack_require__(232),
 	    ModalActions = __webpack_require__(208),
+	    ModalStore = __webpack_require__(214),
 	    CurrentUserStore = __webpack_require__(277),
 	    CookieStore = __webpack_require__(278),
 	    CookieActions = __webpack_require__(280),
@@ -24028,6 +24029,7 @@
 	  displayName: 'exports',
 	
 	  componentDidMount: function () {
+	    this.modelListener = ModalStore.addListener(this.forceUpdate.bind(this));
 	    this.currentUserListener = CurrentUserStore.addListener(this.forceUpdate.bind(this));
 	    this.cookieListener = CookieStore.addListener(this.forceUpdate.bind(this));
 	    CookieActions.fetchCookiesFromBrowser();
@@ -24037,6 +24039,7 @@
 	  componentWillUnmount: function () {
 	    this.currentUserListener.remove();
 	    this.cookieListener.remove();
+	    this.modalListener.remove();
 	  },
 	
 	  _handleLoginClick: function () {
@@ -24181,6 +24184,12 @@
 	    AppDispatcher.dispatch({
 	      actionType: ModalConstants.REMOVE_MODAL,
 	      modalName: modalName
+	    });
+	  },
+	
+	  hideModals: function () {
+	    AppDispatcher.dispatch({
+	      actionType: ModalConstants.HIDE_MODALS
 	    });
 	  }
 	};
@@ -24509,7 +24518,8 @@
 	var ModalConstants = {
 	  TOGGLE_MODAL_DISPLAY: "TOGGLE_MODAL_DISPLAY",
 	  ADD_MODAL: "ADD_MODAL",
-	  REMOVE_MODAL: "REMOVE_MODAL"
+	  REMOVE_MODAL: "REMOVE_MODAL",
+	  HIDE_MODALS: "HIDE_MODALS"
 	};
 	
 	module.exports = ModalConstants;
@@ -24536,6 +24546,12 @@
 	  delete _modals[modalName];
 	};
 	
+	var hideAllModals = function () {
+	  Object.keys(_modals).forEach(function (modalName) {
+	    _modals[modalName] = "hidden";
+	  });
+	};
+	
 	ModalStore.all = function () {
 	  return Object.assign({}, _modals);
 	};
@@ -24560,6 +24576,10 @@
 	      break;
 	    case ModalConstants.REMOVE_MODAL:
 	      addModal(payload.modalName);
+	      ModalStore.__emitChange();
+	      break;
+	    case ModalConstants.HIDE_MODALS:
+	      hideAllModals();
 	      ModalStore.__emitChange();
 	      break;
 	  }
@@ -31170,13 +31190,15 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    CookieActions = __webpack_require__(280);
+	    CookieActions = __webpack_require__(280),
+	    ModalActions = __webpack_require__(208);
 	
 	var LanguageIndexItem = React.createClass({
 	  displayName: 'LanguageIndexItem',
 	
 	  setLanguageCookie: function () {
 	    var languageCookie = { curLng: this.props.language.name };
+	    ModalActions.hideModals();
 	    CookieActions.receiveCookie(languageCookie);
 	  },
 	
@@ -32908,6 +32930,7 @@
 
 	var React = __webpack_require__(1),
 	    History = __webpack_require__(159).History,
+	    ModalActions = __webpack_require__(208),
 	    SessionsApiUtil = __webpack_require__(274);
 	
 	var NewSessionForm = React.createClass({
@@ -32917,10 +32940,9 @@
 	
 	  submit: function (e) {
 	    e.preventDefault();
-	    debugger;
-	
 	    var credentials = e.currentTarget;
 	    SessionsApiUtil.logIn(credentials, function () {
+	      ModalActions.hideModals();
 	      this.history.pushState(null, "/");
 	    }.bind(this));
 	  },

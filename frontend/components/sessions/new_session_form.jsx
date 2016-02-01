@@ -1,5 +1,6 @@
 var React = require('react'),
     History = require('react-router').History,
+    ModalActions = require('./../../actions/modal_actions'),
     SessionsApiUtil = require('./../../util/sessions_api_util');
 
 var NewSessionForm = React.createClass({
@@ -7,10 +8,9 @@ var NewSessionForm = React.createClass({
 
   submit: function (e) {
     e.preventDefault();
-    debugger
-
     var credentials = e.currentTarget;
     SessionsApiUtil.logIn(credentials, function () {
+      ModalActions.hideModals();
       this.history.pushState(null, "/");
     }.bind(this));
   },

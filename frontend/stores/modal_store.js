@@ -16,6 +16,12 @@ var removeModal = function(modalName) {
   delete _modals[modalName];
 };
 
+var hideAllModals = function () {
+  Object.keys(_modals).forEach(function (modalName) {
+    _modals[modalName] = "hidden";
+  });
+};
+
 ModalStore.all = function () {
   return Object.assign({}, _modals);
 };
@@ -40,6 +46,10 @@ ModalStore.__onDispatch = function (payload) {
       break;
     case ModalConstants.REMOVE_MODAL:
       addModal(payload.modalName);
+      ModalStore.__emitChange();
+      break;
+    case ModalConstants.HIDE_MODALS:
+      hideAllModals();
       ModalStore.__emitChange();
       break;
   }
