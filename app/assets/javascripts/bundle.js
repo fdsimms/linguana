@@ -24590,10 +24590,8 @@
 	  },
 	
 	  splashNavBar: function () {
-	    var siteLang;
-	    if (LanguageStore.languagesHaveBeenFetched()) {
-	      siteLang = CookieStore.curLng();
-	    }
+	    var siteLang = CookieStore.curLng();
+	
 	    return React.createElement(
 	      'nav',
 	      { className: 'splash-header group' },
