@@ -26,8 +26,7 @@ var Skill = React.createClass({
     if (typeof this.state.skill === "undefined") { return <div></div>; }
 
     return(
-      <div className="skill-page">
-        <div className="skill-page-content">
+        <div className="skill-page">
           <h2 className="skill-page-header">
             Lessons
           </h2>
@@ -41,7 +40,6 @@ var Skill = React.createClass({
             </p>
           </div>
         </div>
-      </div>
     );
   }
 });

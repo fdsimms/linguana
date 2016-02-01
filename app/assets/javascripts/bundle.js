@@ -24054,10 +24054,14 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'login-modal' },
-	      React.createElement(NavBar, null),
+	      { className: 'main' },
 	      React.createElement(
-	        'div',
+	        'header',
+	        { className: 'header-bar' },
+	        React.createElement(NavBar, null)
+	      ),
+	      React.createElement(
+	        'main',
 	        { className: 'main-content' },
 	        this.props.children
 	      )
@@ -32838,16 +32842,12 @@
 	      'div',
 	      { className: 'course-page' },
 	      React.createElement(
-	        'div',
-	        { className: 'course-page-content' },
-	        React.createElement(
-	          'h2',
-	          { className: 'course-page-header' },
-	          this.state.course.name,
-	          ' Skills'
-	        ),
-	        React.createElement(SkillIndex, { courseId: this.state.course.id })
-	      )
+	        'h2',
+	        { className: 'course-page-header' },
+	        this.state.course.name,
+	        ' Skills'
+	      ),
+	      React.createElement(SkillIndex, { courseId: this.state.course.id })
 	    );
 	  }
 	});
@@ -32968,27 +32968,23 @@
 	      'div',
 	      { className: 'skill-page' },
 	      React.createElement(
+	        'h2',
+	        { className: 'skill-page-header' },
+	        'Lessons'
+	      ),
+	      React.createElement(LessonIndex, { skillId: this.state.skill.id }),
+	      React.createElement(
 	        'div',
-	        { className: 'skill-page-content' },
+	        { className: 'tips-and-notes' },
 	        React.createElement(
 	          'h2',
-	          { className: 'skill-page-header' },
-	          'Lessons'
+	          { className: 'tips-and-notes-header' },
+	          'Tips and Notes'
 	        ),
-	        React.createElement(LessonIndex, { skillId: this.state.skill.id }),
 	        React.createElement(
-	          'div',
-	          { className: 'tips-and-notes' },
-	          React.createElement(
-	            'h2',
-	            { className: 'tips-and-notes-header' },
-	            'Tips and Notes'
-	          ),
-	          React.createElement(
-	            'p',
-	            { className: 'tips-and-notes-text' },
-	            this.state.skill.tips_and_notes
-	          )
+	          'p',
+	          { className: 'tips-and-notes-text' },
+	          this.state.skill.tips_and_notes
 	        )
 	      )
 	    );
@@ -33261,42 +33257,40 @@
 	
 	  splashNavBar: function () {
 	    return React.createElement(
-	      'header',
-	      { className: 'header' },
+	      'nav',
+	      { className: 'header-nav group' },
 	      React.createElement(
-	        'nav',
-	        { className: 'header-nav group' },
+	        'h1',
+	        { className: 'header-nav-logo' },
 	        React.createElement(
-	          'h1',
-	          { className: 'header-nav-logo' },
-	          React.createElement(
-	            'a',
-	            { href: '/' },
-	            'Linguana'
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'header-buttons group' },
-	          React.createElement(
-	            'button',
-	            { onClick: this._handleLanguagesHover,
-	              className: 'header-nav-languages-button' },
-	            'Site language: ',
-	            CookieStore.curLng()
-	          ),
-	          React.createElement(LanguageIndexDropdown, null),
-	          React.createElement(
-	            'button',
-	            { onClick: this._handleLoginClick,
-	              className: 'header-nav-login-button' },
-	            'Login'
-	          ),
-	          React.createElement(LoginDropdown, null)
+	          'a',
+	          { href: '/' },
+	          'Linguana'
 	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'header-buttons group' },
+	        React.createElement(
+	          'button',
+	          { onClick: this._handleLanguagesHover,
+	            className: 'header-nav-languages-button' },
+	          'Site language: ',
+	          CookieStore.curLng()
+	        ),
+	        React.createElement(LanguageIndexDropdown, null),
+	        React.createElement(
+	          'button',
+	          { onClick: this._handleLoginClick,
+	            className: 'header-nav-login-button' },
+	          'Login'
+	        ),
+	        React.createElement(LoginDropdown, null)
 	      )
 	    );
 	  },
+	
+	  normalNavBar: function () {},
 	
 	  render: function () {
 	    return this.splashNavBar();

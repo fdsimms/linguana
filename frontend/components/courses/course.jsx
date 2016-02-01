@@ -26,14 +26,12 @@ var Course = React.createClass({
 
     if (typeof this.state.course === "undefined") { return <div></div>; }
     return(
-      <div className="course-page">
-        <div className="course-page-content">
+        <div className="course-page">
           <h2 className="course-page-header">
             {this.state.course.name} Skills
           </h2>
           <SkillIndex courseId={this.state.course.id} />
         </div>
-      </div>
     );
   }
 });

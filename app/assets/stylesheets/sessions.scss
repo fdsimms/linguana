@@ -1,62 +1,6 @@
 // Place all the styles related to the sessions controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-.header {
-  display: block;
-}
-
-.header-nav {
-  min-width: 400px;
-  padding: 0 75px 0 75px;
-  display: block;
-  margin: auto;
-}
-
-.header-nav-logo {
-  float: left;
-  font-weight: bold;
-  font-size: 38px;
-  margin-top: 10px;
-  display: block;
-}
-
-.header-nav-logo:hover {
-  color: #ddd;
-}
-
-.header-buttons {
-  float: right;
-  display: block;
-  margin: 17px 10px;
-  min-width: 300px;
-}
-
-.header-buttons button {
-  padding: 10px;
-  display: block;
-  cursor: pointer;
-}
-
-.header-nav-login-button {
-  color: rgb(10, 68, 121);
-  text-align: center;
-  border-radius: 20px;
-  float: right;
-  background-color: #fff;
-}
-
-.header-nav-languages-button {
-  float: left;
-  color: #fff;
-}
-
-.header-nav-login-button:hover {
-  background-color: #eee;
-}
-
-.header-nav-languages-button:hover {
-  color: #ddd;
-}
 
 .splash-form {
   display: block;

@@ -36,9 +36,13 @@ module.exports = React.createClass({
 
   render: function () {
     return(
-      <div className="login-modal">
-        <NavBar />
-        <div className="main-content">{this.props.children}</div>
+      <div className="main">
+        <header className="header-bar">
+          <NavBar />
+        </header>
+        <main className="main-content">
+          {this.props.children}
+        </main>
       </div>
     );
   }

@@ -29,9 +29,11 @@
    text-decoration: none;
  }
 
- .main-content {
-   height: 100%;
-   width: 100%;
+ body {
+   color: #fff;
+   font-family: sans-serif;
+   font-family: 'Montserrat Alternates';
+   -webkit-font-smoothing: antialiased;
  }
 
  ul {
@@ -54,12 +56,11 @@
    display: block;
   }
 
- /*.header-nav {
-   position: relative;
-   display: block;
-   min-width: 600px;
-   width: calc(100% -100px);
- }*/
+ .header-bar {
+  background-color: rgb(10, 68, 121);
+  display: block;
+  width: 100%;
+ }
 
 .splash-login-form {
   position: absolute;
@@ -78,8 +79,6 @@
   color: #fff;
   text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.2);
  }
-
-
 
 .splash-login-form .header-nav-login-button:hover {
   display: block;
@@ -113,12 +112,3 @@
 .box-shadowed {
   box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
 }
-
- body {
-   color: #fff;
-   background-color: rgb(10, 68, 121);
-   font-family: sans-serif;
-   font-family: 'Montserrat Alternates';
-   display: block;
-   -webkit-font-smoothing: antialiased;
- }
