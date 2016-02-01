@@ -7,9 +7,9 @@ module.exports = React.createClass({
 
   render: function () {
     return(
-      <div className="splash group">
+      <div className="splash-main group">
         <div className="splash-contents group">
-          <h2 className="splash-header">
+          <h2 className="splash-text">
             Learn a language. Or maybe not. We'll see.
           </h2>
             <a className="splash-button"

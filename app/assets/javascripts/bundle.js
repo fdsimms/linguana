@@ -24051,21 +24051,46 @@
 	    ModalActions.addModal(modalName);
 	  },
 	
-	  render: function () {
+	  splashView: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'main' },
+	      { className: 'splash-wrapper' },
+	      React.createElement(
+	        'header',
+	        { className: 'splash-header-bar' },
+	        React.createElement(NavBar, { view: 'splash' })
+	      ),
+	      this.props.children
+	    );
+	  },
+	
+	  mainView: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'main-wrapper' },
 	      React.createElement(
 	        'header',
 	        { className: 'header-bar' },
-	        React.createElement(NavBar, null)
+	        React.createElement(NavBar, { view: 'main' })
 	      ),
 	      React.createElement(
-	        'main',
-	        { className: 'main-content' },
-	        this.props.children
+	        'div',
+	        { className: 'main' },
+	        React.createElement(
+	          'main',
+	          { className: 'main-content box-shadowed' },
+	          this.props.children
+	        )
 	      )
 	    );
+	  },
+	
+	  render: function () {
+	    if (CookieStore.curCourse()) {
+	      return this.mainView();
+	    } else {
+	      return this.splashView();
+	    }
 	  }
 	});
 
@@ -31338,6 +31363,10 @@
 	  return _cookies.curLng;
 	};
 	
+	CookieStore.curCourse = function () {
+	  return _cookies.curCourse;
+	};
+	
 	CookieStore.__onDispatch = function (payload) {
 	  if (payload.actionType === CookieConstants.COOKIES_RECEIVED) {
 	    var cookies = payload.cookies;
@@ -31640,13 +31669,13 @@
 	  render: function () {
 	    return React.createElement(
 	      "div",
-	      { className: "splash group" },
+	      { className: "splash-main group" },
 	      React.createElement(
 	        "div",
 	        { className: "splash-contents group" },
 	        React.createElement(
 	          "h2",
-	          { className: "splash-header" },
+	          { className: "splash-text" },
 	          "Learn a language. Or maybe not. We'll see."
 	        ),
 	        React.createElement(
@@ -33258,6 +33287,41 @@
 	  splashNavBar: function () {
 	    return React.createElement(
 	      'nav',
+	      { className: 'splash-header group' },
+	      React.createElement(
+	        'h1',
+	        { className: 'splash-header-logo' },
+	        React.createElement(
+	          'a',
+	          { href: '/' },
+	          'Linguana'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'splash-header-buttons group' },
+	        React.createElement(
+	          'button',
+	          { onClick: this._handleLanguagesHover,
+	            className: 'splash-header-languages-button' },
+	          'Site language: ',
+	          CookieStore.curLng()
+	        ),
+	        React.createElement(LanguageIndexDropdown, null),
+	        React.createElement(
+	          'button',
+	          { onClick: this._handleLoginClick,
+	            className: 'splash-header-login-button' },
+	          'Login'
+	        ),
+	        React.createElement(LoginDropdown, null)
+	      )
+	    );
+	  },
+	
+	  normalNavBar: function () {
+	    return React.createElement(
+	      'nav',
 	      { className: 'header-nav group' },
 	      React.createElement(
 	        'h1',
@@ -33268,32 +33332,16 @@
 	          'Linguana'
 	        )
 	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'header-buttons group' },
-	        React.createElement(
-	          'button',
-	          { onClick: this._handleLanguagesHover,
-	            className: 'header-nav-languages-button' },
-	          'Site language: ',
-	          CookieStore.curLng()
-	        ),
-	        React.createElement(LanguageIndexDropdown, null),
-	        React.createElement(
-	          'button',
-	          { onClick: this._handleLoginClick,
-	            className: 'header-nav-login-button' },
-	          'Login'
-	        ),
-	        React.createElement(LoginDropdown, null)
-	      )
+	      React.createElement('div', { className: 'header-buttons group' })
 	    );
 	  },
 	
-	  normalNavBar: function () {},
-	
 	  render: function () {
-	    return this.splashNavBar();
+	    if (this.props.view === "main") {
+	      return this.normalNavBar();
+	    } else {
+	      return this.splashNavBar();
+	    }
 	  }
 	});
 	

@@ -1,11 +1,19 @@
-.header-nav {
+.header-nav,
+.splash-header {
   min-width: 400px;
   width: calc(100% - 300px);
   display: block;
   margin: auto;
 }
 
-.header-nav-logo {
+.header-bar,
+.splash-header-bar {
+ display: block;
+ width: 100%;
+}
+
+.header-nav-logo,
+.splash-header-logo {
   float: left;
   font-weight: bold;
   font-size: 38px;
@@ -13,24 +21,28 @@
   display: block;
 }
 
-.header-nav-logo:hover {
+.header-bar {
+  background-color: rgb(99, 164, 227);
+}
+
+.splash-header-logo:hover {
   color: #ddd;
 }
 
-.header-buttons {
+.splash-header-buttons {
   float: right;
   display: block;
   margin: 17px 10px;
   min-width: 300px;
 }
 
-.header-buttons button {
+.splash-header-buttons button {
   padding: 10px;
   display: block;
   cursor: pointer;
 }
 
-.header-nav-login-button {
+.splash-header-login-button {
   color: rgb(10, 68, 121);
   text-align: center;
   border-radius: 20px;
@@ -38,15 +50,18 @@
   background-color: #fff;
 }
 
-.header-nav-languages-button {
+.splash-header-languages-button {
   float: left;
   color: #fff;
 }
 
-.header-nav-login-button:hover {
+.splash-header-login-button:hover {
   background-color: #eee;
 }
 
-.header-nav-languages-button:hover {
+.splash-header-languages-button:hover {
   color: #ddd;
+}
+
+.splash-header-bar {
 }

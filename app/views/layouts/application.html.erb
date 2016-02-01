@@ -15,10 +15,6 @@
 </head>
 <body>
 
-<% flash[:errors].try(:each) do |error|  %>
-  <h3 class="flash-error"><%= error %><h3>
-<% end  %>
-
 <%= yield %>
 
 </body>

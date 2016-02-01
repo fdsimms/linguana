@@ -25,9 +25,17 @@
    font: inherit;
    box-sizing: inherit;
    text-align: inherit;
+   box-shadow: none;
    vertical-align: inherit;
    text-decoration: none;
  }
+
+ html, body, #root, .splash-wrapper, .main-wrapper {
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
  body {
    color: #fff;
@@ -56,58 +64,7 @@
    display: block;
   }
 
- .header-bar {
-  background-color: rgb(10, 68, 121);
-  display: block;
-  width: 100%;
- }
 
-.splash-login-form {
-  position: absolute;
-  display: block;
-  z-index: 1;
-  right: 0px;
-  top: 70px;
-}
-
-.splash-login-form:before {
-  content: "▲";
-  position: absolute;
-  font-size: 20px;
-  right:  107px;
-  top: -16px;
-  color: #fff;
-  text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.2);
- }
-
-.splash-login-form .header-nav-login-button:hover {
-  display: block;
- }
-
- .splash-login-inputs {
-   background: #fff;
-   display: block;
-   width: 200px;
-   border-radius: 10px;
-   padding: 20px;
-   position: absolute;
-   right: 49px;
- }
-
- .splash-login-inputs input {
-   border: 2px solid #ccc;
-   display: block;
-   margin: 10px auto;
-   width: 190px;
-   color: black;
-   padding: 5px;
-   border-radius: 10px;
- }
-
- .splash-login-button {
-   padding: 8px 70px;
-   margin: 15px auto 10px auto;
- }
 
 .box-shadowed {
   box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);

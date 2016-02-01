@@ -43,6 +43,9 @@ CookieStore.curLng = function () {
   return _cookies.curLng;
 };
 
+CookieStore.curCourse = function () {
+  return _cookies.curCourse;
+};
 
 CookieStore.__onDispatch = function (payload) {
   if (payload.actionType === CookieConstants.COOKIES_RECEIVED) {

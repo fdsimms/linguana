@@ -36,18 +36,18 @@ var NavBar = React.createClass({
 
   splashNavBar: function () {
     return(
-      <nav className="header-nav group">
-        <h1 className="header-nav-logo">
+      <nav className="splash-header group">
+        <h1 className="splash-header-logo">
           <a href="/">Linguana</a>
         </h1>
-          <div className="header-buttons group">
+          <div className="splash-header-buttons group">
           <button onClick={this._handleLanguagesHover}
-              className="header-nav-languages-button">
+              className="splash-header-languages-button">
             Site language: {CookieStore.curLng()}
           </button>
           <LanguageIndexDropdown />
           <button onClick={this._handleLoginClick}
-              className="header-nav-login-button">
+              className="splash-header-login-button">
             Login
           </button>
           <LoginDropdown />
@@ -57,11 +57,24 @@ var NavBar = React.createClass({
   },
 
   normalNavBar: function () {
+    return (
+      <nav className="header-nav group">
+        <h1 className="header-nav-logo">
+          <a href="/">Linguana</a>
+        </h1>
+        <div className="header-buttons group">
 
+        </div>
+      </nav>
+    );
   },
 
   render: function () {
-    return this.splashNavBar();
+    if (this.props.view === "main") {
+      return this.normalNavBar();
+    } else {
+      return this.splashNavBar();
+    }
   }
 });
 

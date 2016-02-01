@@ -34,16 +34,37 @@ module.exports = React.createClass({
     ModalActions.addModal(modalName);
   },
 
-  render: function () {
+  splashView: function () {
     return(
-      <div className="main">
-        <header className="header-bar">
-          <NavBar />
+      <div className="splash-wrapper">
+        <header className="splash-header-bar">
+          <NavBar view="splash" />
         </header>
-        <main className="main-content">
-          {this.props.children}
-        </main>
+        {this.props.children}
       </div>
     );
+  },
+
+  mainView: function () {
+    return(
+      <div className="main-wrapper">
+        <header className="header-bar">
+          <NavBar view="main" />
+        </header>
+        <div className="main">
+          <main className="main-content box-shadowed">
+            {this.props.children}
+          </main>
+        </div>
+      </div>
+    );
+  },
+
+  render: function () {
+    if (CookieStore.curCourse()) {
+      return this.mainView();
+    } else {
+      return this.splashView();
+    }
   }
 });

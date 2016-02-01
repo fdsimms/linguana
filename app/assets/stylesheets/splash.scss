@@ -1,35 +1,91 @@
-.splash {
+.splash-main {
   display: block;
-  width: 60%;
-  float: right;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.splash-wrapper {
+  overflow: hidden;
+  background: #0a4479; /* Old browsers */
+  background: -moz-linear-gradient(top,  #0a4479 0%, #207cca 99%, #2989d8 100%, #7db9e8 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #0a4479 0%,#207cca 99%,#2989d8 100%,#7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #0a4479 0%,#207cca 99%,#2989d8 100%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0a4479', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+
 }
 
 .splash-contents:before {
   content: "";
   border-radius: 100%;
-  background-color: rgb(70, 196, 212);
+  background-color: #46c4d4;
   padding: 125px 125px;
-  left: -315px;
-  top: -20px;
-  border: 11px solid #0e69a8;
+  left: 425px;
+  top: 225px;
   position: absolute;
   box-shadow: 0 0 3px 14px #0D6490;
 }
 
-.splash-header {
+.splash-text {
   font-size: 30px;
   text-align: center;
 }
 
 .splash-contents {
-  float: left;
-  margin-top: 190px;
   position: relative;
+  padding: 300px 0 300px 300px;
 }
 
 .splash-button-form {
   display: block;
 }
+
+.splash-login-form {
+  position: absolute;
+  display: block;
+  z-index: 1;
+  right: 0px;
+  top: 70px;
+}
+
+.splash-login-form:before {
+  content: "▲";
+  position: absolute;
+  font-size: 20px;
+  right:  107px;
+  top: -16px;
+  color: #fff;
+  text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.2);
+ }
+
+.splash-login-form .header-nav-login-button:hover {
+  display: block;
+ }
+
+ .splash-login-inputs {
+   background: #fff;
+   display: block;
+   width: 200px;
+   border-radius: 10px;
+   padding: 20px;
+   position: absolute;
+   right: 49px;
+ }
+
+ .splash-login-inputs input {
+   border: 2px solid #ccc;
+   display: block;
+   margin: 10px auto;
+   width: 190px;
+   color: black;
+   padding: 5px;
+   border-radius: 10px;
+ }
+
+ .splash-login-button {
+   padding: 8px 70px;
+   margin: 15px auto 10px auto;
+ }
 
 .splash-button {
   margin: auto;
