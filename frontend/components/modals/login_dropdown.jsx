@@ -5,7 +5,7 @@ var React = require('react'),
 
 var LoginDropdown = React.createClass({
   getInitialState: function () {
-    return { modalName: "loginModal", token: "" };
+    return { modalName: "loginDropdown", token: "" };
   },
 
   componentDidMount: function () {

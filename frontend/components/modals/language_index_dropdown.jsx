@@ -6,7 +6,7 @@ var React = require('react'),
 
 var LanguageIndexDropdown = React.createClass({
   getInitialState: function () {
-    return { modalName: "languageIndexModal" };
+    return { modalName: "languageIndexDropdown" };
   },
 
   componentDidMount: function () {

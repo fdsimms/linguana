@@ -24043,12 +24043,12 @@
 	  },
 	
 	  _handleLoginClick: function () {
-	    ModalActions.toggleModalDisplay("loginModal");
-	    this._hideOtherModal("languageIndexModal");
+	    ModalActions.toggleModalDisplay("loginDropdown");
+	    this._hideOtherModal("languageIndexDropdown");
 	  },
 	  _handleLanguagesHover: function () {
-	    ModalActions.toggleModalDisplay("languageIndexModal");
-	    this._hideOtherModal("loginModal");
+	    ModalActions.toggleModalDisplay("languageIndexDropdown");
+	    this._hideOtherModal("loginDropdown");
 	  },
 	
 	  _hideOtherModal: function (modalName) {
@@ -24091,7 +24091,7 @@
 	                className: 'header-nav-login-button' },
 	              'Login'
 	            ),
-	            React.createElement(LoginModal, null)
+	            React.createElement(LoginDropdown, null)
 	          )
 	        )
 	      ),
@@ -33139,7 +33139,7 @@
 	  displayName: 'LanguageIndexDropdown',
 	
 	  getInitialState: function () {
-	    return { modalName: "languageIndexModal" };
+	    return { modalName: "languageIndexDropdown" };
 	  },
 	
 	  componentDidMount: function () {
@@ -33191,7 +33191,7 @@
 	  displayName: 'LoginDropdown',
 	
 	  getInitialState: function () {
-	    return { modalName: "loginModal", token: "" };
+	    return { modalName: "loginDropdown", token: "" };
 	  },
 	
 	  componentDidMount: function () {

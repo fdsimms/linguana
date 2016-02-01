@@ -27,12 +27,12 @@ module.exports = React.createClass({
   },
 
   _handleLoginClick: function () {
-    ModalActions.toggleModalDisplay("loginModal");
-    this._hideOtherModal("languageIndexModal");
+    ModalActions.toggleModalDisplay("loginDropdown");
+    this._hideOtherModal("languageIndexDropdown");
   },
   _handleLanguagesHover: function () {
-    ModalActions.toggleModalDisplay("languageIndexModal");
-    this._hideOtherModal("loginModal");
+    ModalActions.toggleModalDisplay("languageIndexDropdown");
+    this._hideOtherModal("loginDropdown");
   },
 
   _hideOtherModal: function (modalName) {
@@ -57,7 +57,7 @@ module.exports = React.createClass({
                   className="header-nav-login-button">
                 Login
               </button>
-              <LoginModal />
+              <LoginDropdown />
             </div>
           </nav>
         </header>
