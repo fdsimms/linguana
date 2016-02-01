@@ -21,7 +21,7 @@ var React = require('react'),
                   onEnter={ _ensureLoggedOutAndNoCurrentCourse }>
       </IndexRoute>
       <Route path="/courses"
-             onEnter={ _ensureLoggedInOrCurrentCourse }
+             onEnter={ _ensureLoggedOutAndNoCurrentCourse }
              component={CourseIndex} />
       <Route path="/courses/:courseId"
              onEnter={ _ensureLoggedInOrCurrentCourse }

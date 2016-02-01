@@ -67,7 +67,7 @@
 	  React.createElement(IndexRoute, { component: Splash,
 	    onEnter: _ensureLoggedOutAndNoCurrentCourse }),
 	  React.createElement(Route, { path: '/courses',
-	    onEnter: _ensureLoggedInOrCurrentCourse,
+	    onEnter: _ensureLoggedOutAndNoCurrentCourse,
 	    component: CourseIndex }),
 	  React.createElement(Route, { path: '/courses/:courseId',
 	    onEnter: _ensureLoggedInOrCurrentCourse,
@@ -32282,6 +32282,7 @@
 	  },
 	
 	  render: function () {
+	    var splashText = "Learn a language. Or maybe not. We'll see.";
 	    return React.createElement(
 	      "div",
 	      { className: "splash-main group" },
@@ -32291,7 +32292,7 @@
 	        React.createElement(
 	          "h2",
 	          { className: "splash-text" },
-	          "Learn a language. Or maybe not. We'll see."
+	          splashText
 	        ),
 	        React.createElement(
 	          "a",
