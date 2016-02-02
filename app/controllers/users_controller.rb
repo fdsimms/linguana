@@ -26,7 +26,7 @@ class UsersController < ApplicationController
       :session_token,
       :bio,
       :fname,
-      :lname
+      :lname,
       :hometown,
       :email,
       :streak_length,

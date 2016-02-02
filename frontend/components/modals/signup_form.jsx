@@ -1,5 +1,6 @@
 var React = require('react'),
     History = require('react-router').History,
+    UsersApiUtil = require('./../../util/users_api_util'),
     ModalActions = require('./../../actions/modal_actions');
 
 var SignupForm = React.createClass({
@@ -8,10 +9,7 @@ var SignupForm = React.createClass({
   submit: function (e) {
     e.preventDefault();
     var credentials = e.currentTarget;
-    UsersApiUtil.createUser(credentials, function () {
-      ModalActions.hideModals();
-      this.history.pushState(null, "/");
-    }.bind(this));
+    UsersApiUtil.createUser(credentials);
   },
 
   _closeModal: function () {
