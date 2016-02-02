@@ -1,4 +1,5 @@
 var CurrentUserActions = require("./../actions/current_user_actions");
+var CookieActions = require("./../actions/cookie_actions");
 var SessionsApiUtil = {
   logIn: function (credentials, success) {
 
@@ -24,7 +25,7 @@ var SessionsApiUtil = {
       type: 'DELETE',
       dataType: 'json',
       success: function () {
-        CurrentUserActions.receiveCurrentUser({})
+        CurrentUserActions.receiveCurrentUser({});
       }
     });
   },

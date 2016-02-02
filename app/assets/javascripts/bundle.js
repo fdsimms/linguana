@@ -31851,6 +31851,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var CurrentUserActions = __webpack_require__(249);
+	var CookieActions = __webpack_require__(240);
 	var SessionsApiUtil = {
 	  logIn: function (credentials, success) {
 	
@@ -33546,7 +33547,6 @@
 	
 	  componentWillUnmount: function () {
 	    this.modalListener.remove();
-	    ModalActions.removeModal(this.state.modalName);
 	  },
 	
 	  visibleRender: function () {
