@@ -6,7 +6,7 @@ var SkillIndexItem = React.createClass({
       <div className="skill-list-item-wrapper">
         <p className="skill-list-item">
           <a className="skill-list-circle"
-             href={"#/skills/" + this.props.skill.id }>
+             href={"#/skill/" + this.props.skill.id }>
           </a>
           {this.props.skill.name}
         </p>

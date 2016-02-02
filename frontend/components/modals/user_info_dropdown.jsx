@@ -1,9 +1,13 @@
 var React = require('react'),
     ModalActions = require('../../actions/modal_actions'),
+    CookieActions = require('../../actions/cookie_actions'),
     SessionsApiUtil = require('../../util/sessions_api_util'),
-    ModalStore = require('../../stores/modal_store');
+    ModalStore = require('../../stores/modal_store'),
+    History = require('react-router').History;
 
 var UserInfoDropdown = React.createClass({
+  mixins: [History],
+
   getInitialState: function () {
     return { modalName: "userInfoDropdown" };
   },
@@ -23,10 +27,18 @@ var UserInfoDropdown = React.createClass({
     this.modalListener.remove();
   },
 
+  _onLogoutClick: function () {
+    SessionsApiUtil.logOut(function () {
+      ModalActions.hideModal(this.state.modalName);
+      CookieActions.clearCookies();
+      this.history.pushState(null, "/");
+    }.bind(this));
+  },
+
   visibleRender: function () {
     return(
       <ul className="box-shadowed user-info-dropdown">
-        <li onClick={SessionsApiUtil.logOut}>Log Out</li>
+        <li onClick={this._onLogoutClick}>Log Out</li>
       </ul>
     );
   },

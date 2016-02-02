@@ -50,13 +50,11 @@
 	    Route = __webpack_require__(159).Route,
 	    IndexRoute = __webpack_require__(159).IndexRoute,
 	    App = __webpack_require__(206),
-	    CourseIndex = __webpack_require__(254),
-	    LanguageIndex = __webpack_require__(244),
 	    Course = __webpack_require__(258),
 	    Splash = __webpack_require__(265),
-	    SkillIndex = __webpack_require__(259),
 	    Skill = __webpack_require__(266),
-	    LessonFinalPage = __webpack_require__(273),
+	    CourseAndSkillView = __webpack_require__(287),
+	    MainView = __webpack_require__(286),
 	    SessionsApiUtil = __webpack_require__(241),
 	    Lesson = __webpack_require__(275),
 	    CookieActions = __webpack_require__(240);
@@ -66,18 +64,23 @@
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: Splash,
 	    onEnter: _ensureLoggedOutAndNoCurrentCourse }),
-	  React.createElement(Route, { path: '/courses/:courseId',
-	    onEnter: _ensureLoggedInOrCurrentCourse,
-	    component: Course }),
-	  React.createElement(Route, { path: '/skills/:skillId',
-	    onEnter: _ensureLoggedInOrCurrentCourse,
-	    component: Skill }),
-	  React.createElement(Route, { path: '/lessons/:lessonId',
-	    onEnter: _ensureLoggedInOrCurrentCourse,
-	    component: Lesson }),
-	  React.createElement(Route, { path: '/congrats',
-	    onEnter: _ensureLoggedInOrCurrentCourse,
-	    component: LessonFinalPage })
+	  React.createElement(
+	    Route,
+	    { path: 'main', component: MainView },
+	    React.createElement(
+	      Route,
+	      { path: '/course', component: CourseAndSkillView },
+	      React.createElement(Route, { path: ':courseId',
+	        onEnter: _ensureLoggedInOrCurrentCourse,
+	        component: Course }),
+	      React.createElement(Route, { path: '/skill/:skillId',
+	        onEnter: _ensureLoggedInOrCurrentCourse,
+	        component: Skill })
+	    ),
+	    React.createElement(Route, { path: '/lessons/:lessonId',
+	      onEnter: _ensureLoggedInOrCurrentCourse,
+	      component: Lesson })
+	  )
 	);
 	
 	function _ensureLoggedInOrCurrentCourse(nextState, replace, callback) {
@@ -118,10 +121,10 @@
 	
 	    var path;
 	    if (CurrentUserStore.isLoggedIn()) {
-	      path = "/courses/" + CurrentUserStore.currentUser().current_course_id;
+	      path = "/course/" + CurrentUserStore.currentUser().current_course_id;
 	      replace({}, path);
 	    } else if (CookieStore.curCourse()) {
-	      path = "/courses/" + CookieStore.curCourse();
+	      path = "/course/" + CookieStore.curCourse();
 	      replace({}, path);
 	    }
 	    callback();
@@ -24082,13 +24085,21 @@
 	    LanguagesApiUtil = __webpack_require__(246),
 	    CookieActions = __webpack_require__(240),
 	    SignupModal = __webpack_require__(251),
+	    History = __webpack_require__(159).History,
 	    SessionsApiUtil = __webpack_require__(241);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
+	  mixins: [History],
+	
 	  componentDidMount: function () {
-	    this.currentUserListener = CurrentUserStore.addListener(this.forceUpdate.bind(this));
+	    this.currentUserListener = CurrentUserStore.addListener(function () {
+	      if (CurrentUserStore.isLoggedIn()) {
+	        var path = "/course/" + CurrentUserStore.currentUser().current_course_id;
+	        this.history.pushState(null, path);
+	      }
+	    }.bind(this));
 	    this.cookieListener = CookieStore.addListener(this.forceUpdate.bind(this));
 	    this.languageListener = LanguageStore.addListener(this.forceUpdate.bind(this));
 	    CookieActions.fetchCookiesFromBrowser();
@@ -24202,10 +24213,12 @@
 	
 	var ModalActions = {
 	  addModal: function (modalName) {
-	    AppDispatcher.dispatch({
-	      actionType: ModalConstants.ADD_MODAL,
-	      modalName: modalName
-	    });
+	    setTimeout(function () {
+	      AppDispatcher.dispatch({
+	        actionType: ModalConstants.ADD_MODAL,
+	        modalName: modalName
+	      });
+	    }, 0);
 	  },
 	
 	  toggleModalDisplay: function (modalName) {
@@ -31343,6 +31356,12 @@
 	  _cookies = cookies;
 	};
 	
+	var clearCookies = function () {
+	  _cookies = { curLng: "English", curCourseId: "" };
+	  localStorage.setItem("curLng", "English");
+	  localStorage.setItem("curCourseId", "");
+	};
+	
 	CookieStore.all = function () {
 	  return Object.assign({}, _cookies);
 	};
@@ -31371,6 +31390,9 @@
 	  } else if (payload.actionType === CookieConstants.FETCH_COOKIES) {
 	    _cookiesHaveBeenFetched = true;
 	    fetchCookiesFromBrowser();
+	    CookieStore.__emitChange();
+	  } else if (payload.actionType === CookieConstants.CLEAR_COOKIES) {
+	    clearCookies();
 	    CookieStore.__emitChange();
 	  }
 	};
@@ -31513,7 +31535,8 @@
 	var CookieConstants = {
 	  COOKIES_RECEIVED: "COOKIES_RECEIVED",
 	  COOKIE_RECEIVED: "COOKIE_RECEIVED",
-	  FETCH_COOKIES: "FETCH_COOKIES"
+	  FETCH_COOKIES: "FETCH_COOKIES",
+	  CLEAR_COOKIES: "CLEAR_COOKIES"
 	};
 	
 	module.exports = CookieConstants;
@@ -31544,6 +31567,12 @@
 	    AppDispatcher.dispatch({
 	      actionType: CookieConstants.FETCH_COOKIES
 	    });
+	  },
+	
+	  clearCookies: function () {
+	    AppDispatcher.dispatch({
+	      actionType: CookieConstants.CLEAR_COOKIES
+	    });
 	  }
 	};
 	
@@ -31557,9 +31586,8 @@
 	var CookieActions = __webpack_require__(240);
 	var SessionsApiUtil = {
 	  logIn: function (credentials, success) {
-	
-	    var username = credentials.children[0].children[0].value,
-	        password = credentials.children[0].children[1].value,
+	    var username = credentials.elements[0].value,
+	        password = credentials.elements[1].value,
 	        sessionParams = { session: { username: username, password: password } };
 	
 	    $.ajax({
@@ -31569,18 +31597,19 @@
 	      data: sessionParams,
 	      success: function (currentUser) {
 	        CurrentUserActions.receiveCurrentUser(currentUser);
-	        success && success();
+	        success && success(currentUser.current_course_id);
 	      }
 	    });
 	  },
 	
-	  logOut: function () {
+	  logOut: function (callback) {
 	    $.ajax({
 	      url: '/api/session',
 	      type: 'DELETE',
 	      dataType: 'json',
 	      success: function () {
 	        CurrentUserActions.receiveCurrentUser({});
+	        callback && callback();
 	      }
 	    });
 	  },
@@ -31794,11 +31823,15 @@
 
 	var React = __webpack_require__(1),
 	    ModalActions = __webpack_require__(207),
+	    CookieActions = __webpack_require__(240),
 	    SessionsApiUtil = __webpack_require__(241),
-	    ModalStore = __webpack_require__(214);
+	    ModalStore = __webpack_require__(214),
+	    History = __webpack_require__(159).History;
 	
 	var UserInfoDropdown = React.createClass({
 	  displayName: 'UserInfoDropdown',
+	
+	  mixins: [History],
 	
 	  getInitialState: function () {
 	    return { modalName: "userInfoDropdown" };
@@ -31819,13 +31852,21 @@
 	    this.modalListener.remove();
 	  },
 	
+	  _onLogoutClick: function () {
+	    SessionsApiUtil.logOut(function () {
+	      ModalActions.hideModal(this.state.modalName);
+	      CookieActions.clearCookies();
+	      this.history.pushState(null, "/");
+	    }.bind(this));
+	  },
+	
 	  visibleRender: function () {
 	    return React.createElement(
 	      'ul',
 	      { className: 'box-shadowed user-info-dropdown' },
 	      React.createElement(
 	        'li',
-	        { onClick: SessionsApiUtil.logOut },
+	        { onClick: this._onLogoutClick },
 	        'Log Out'
 	      )
 	    );
@@ -32138,7 +32179,7 @@
 	        email: email,
 	        current_course_id: current_course_id
 	      } };
-	    debugger;
+	
 	    $.ajax({
 	      url: '/api/users',
 	      type: 'POST',
@@ -32247,7 +32288,7 @@
 	      { className: 'course-list-item-wrapper' },
 	      React.createElement(
 	        'a',
-	        { href: "#/courses/" + this.props.course.id,
+	        { href: "#/course/" + this.props.course.id,
 	          className: 'course-list-item',
 	          onClick: this.setCourseCookie },
 	        courseName
@@ -32512,7 +32553,7 @@
 	        "p",
 	        { className: "skill-list-item" },
 	        React.createElement("a", { className: "skill-list-circle",
-	          href: "#/skills/" + this.props.skill.id }),
+	          href: "#/skill/" + this.props.skill.id }),
 	        this.props.skill.name
 	      )
 	    );
@@ -33184,7 +33225,7 @@
 	  _handleContinueClick: function () {
 	    var nextExerciseIdx = this.state.currentExerciseIdx + 1;
 	    if (this.state.showFinalPage) {
-	      var url = "/skills/" + this.state.lesson.skill_id;
+	      var url = "/skill/" + this.state.lesson.skill_id;
 	      this.history.pushState(null, url);
 	    } else if (this.state.lessonOver) {
 	      this.setState({ showFinalPage: true });
@@ -33785,6 +33826,100 @@
 	});
 	
 	module.exports = ProgressBarChunk;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    NavBar = __webpack_require__(213),
+	    SignupModal = __webpack_require__(251),
+	    CourseIndex = __webpack_require__(254);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  getInitialState: function () {
+	    return { currentView: "courseAndSkill" };
+	  },
+	
+	  _handleGetStartedClick: function () {
+	    this.setState({ currentView: "lesson" });
+	  },
+	
+	  courseAndSkillView: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'main-wrapper' },
+	      React.createElement(
+	        'div',
+	        { className: 'main group' },
+	        React.createElement(
+	          'main',
+	          { className: 'main-content box-shadowed' },
+	          this.props.children
+	        )
+	      )
+	    );
+	  },
+	
+	  lessonView: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'main-wrapper' },
+	      React.createElement(
+	        'div',
+	        { className: 'main group' },
+	        this.props.children
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var toRender;
+	    if (this.state.currentView === "courseAndSkill") {
+	      toRender = this.courseAndSkillView();
+	    } else if (/.*(lessons).*/.test(location.hash)) {
+	      toRender = this.lessonView();
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'main-wrapper' },
+	      React.createElement(SignupModal, null),
+	      React.createElement(
+	        'header',
+	        { className: 'header-bar' },
+	        React.createElement(NavBar, { view: 'main' })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'main group' },
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    NavBar = __webpack_require__(213),
+	    SignupModal = __webpack_require__(251),
+	    CourseIndex = __webpack_require__(254);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'main-content group' },
+	      this.props.children
+	    );
+	  }
+	});
 
 /***/ }
 /******/ ]);

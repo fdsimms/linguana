@@ -6,12 +6,20 @@ var React = require('react'),
     LanguagesApiUtil = require("../util/languages_api_util"),
     CookieActions = require("../actions/cookie_actions"),
     SignupModal = require("./modals/signup_modal"),
+    History = require('react-router').History,
     SessionsApiUtil = require("../util/sessions_api_util");
 
 module.exports = React.createClass({
+  mixins: [History],
+
   componentDidMount: function () {
     this.currentUserListener =
-      CurrentUserStore.addListener(this.forceUpdate.bind(this));
+      CurrentUserStore.addListener(function () {
+        if (CurrentUserStore.isLoggedIn()) {
+          var path = "/course/" + CurrentUserStore.currentUser().current_course_id;
+          this.history.pushState(null, path);
+        }
+      }.bind(this));
     this.cookieListener =
       CookieStore.addListener(this.forceUpdate.bind(this));
     this.languageListener =

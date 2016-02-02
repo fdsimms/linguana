@@ -3,10 +3,11 @@ var AppDispatcher = require('../dispatcher/dispatcher'),
 
 var ModalActions = {
   addModal: function (modalName) {
-    AppDispatcher.dispatch({
+    setTimeout(function () {
+      AppDispatcher.dispatch({
       actionType: ModalConstants.ADD_MODAL,
       modalName: modalName
-    });
+    });}, 0);
   },
 
   toggleModalDisplay: function (modalName) {

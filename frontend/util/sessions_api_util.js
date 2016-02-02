@@ -2,9 +2,8 @@ var CurrentUserActions = require("./../actions/current_user_actions");
 var CookieActions = require("./../actions/cookie_actions");
 var SessionsApiUtil = {
   logIn: function (credentials, success) {
-
-    var username = credentials.children[0].children[0].value,
-        password = credentials.children[0].children[1].value,
+    var username = credentials.elements[0].value,
+        password = credentials.elements[1].value,
         sessionParams = {session: {username: username, password: password}};
 
     $.ajax({
@@ -14,18 +13,19 @@ var SessionsApiUtil = {
       data: sessionParams,
       success: function (currentUser) {
         CurrentUserActions.receiveCurrentUser(currentUser);
-        success && success();
+        success && success(currentUser.current_course_id);
       }
     });
   },
 
-  logOut: function () {
+  logOut: function (callback) {
     $.ajax({
       url: '/api/session',
       type: 'DELETE',
       dataType: 'json',
       success: function () {
         CurrentUserActions.receiveCurrentUser({});
+        callback && callback()
       }
     });
   },

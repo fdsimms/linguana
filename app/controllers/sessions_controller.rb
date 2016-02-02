@@ -4,11 +4,10 @@ class SessionsController < ApplicationController
   end
 
   def create
-    debugger
     password = session_params[:password]
     username = session_params[:username]
     user = User.find_by_credentials(username, password)
-    debugger
+
     if user
       log_in!(user)
       redirect_to root_url

@@ -80,7 +80,7 @@ var Lesson = React.createClass({
   _handleContinueClick: function () {
     var nextExerciseIdx = this.state.currentExerciseIdx + 1;
     if (this.state.showFinalPage) {
-      var url = "/skills/" + this.state.lesson.skill_id;
+      var url = "/skill/" + this.state.lesson.skill_id;
       this.history.pushState(null, url);
     } else if (this.state.lessonOver) {
       this.setState({ showFinalPage: true});

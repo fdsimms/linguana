@@ -38,6 +38,12 @@ var receiveCookies = function (cookies) {
   _cookies = cookies;
 };
 
+var clearCookies = function () {
+  _cookies = {curLng: "English", curCourseId: ""};
+  localStorage.setItem("curLng", "English");
+  localStorage.setItem("curCourseId", "");
+};
+
 CookieStore.all = function () {
   return Object.assign({}, _cookies);
 };
@@ -66,6 +72,9 @@ CookieStore.__onDispatch = function (payload) {
   } else if (payload.actionType === CookieConstants.FETCH_COOKIES) {
     _cookiesHaveBeenFetched = true;
     fetchCookiesFromBrowser();
+    CookieStore.__emitChange();
+  } else if (payload.actionType === CookieConstants.CLEAR_COOKIES) {
+    clearCookies();
     CookieStore.__emitChange();
   }
 };

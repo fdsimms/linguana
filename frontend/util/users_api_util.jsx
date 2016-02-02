@@ -15,7 +15,7 @@ var UsersApiUtil = {
           email: email,
           current_course_id: current_course_id,
         }};
-        debugger
+
     $.ajax({
       url: '/api/users',
       type: 'POST',

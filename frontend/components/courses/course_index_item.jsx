@@ -10,7 +10,7 @@ var CourseIndexItem = React.createClass({
 
     return(
       <div className="course-list-item-wrapper">
-        <a href={"#/courses/" + this.props.course.id }
+        <a href={"#/course/" + this.props.course.id }
            className="course-list-item"
            onClick={this.setCourseCookie}>
           {courseName}
