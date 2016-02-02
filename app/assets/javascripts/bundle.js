@@ -50,15 +50,15 @@
 	    Route = __webpack_require__(159).Route,
 	    IndexRoute = __webpack_require__(159).IndexRoute,
 	    App = __webpack_require__(206),
-	    CourseIndex = __webpack_require__(250),
-	    LanguageIndex = __webpack_require__(242),
-	    Course = __webpack_require__(254),
-	    Splash = __webpack_require__(261),
-	    SkillIndex = __webpack_require__(255),
-	    Skill = __webpack_require__(262),
-	    LessonFinalPage = __webpack_require__(269),
-	    SessionsApiUtil = __webpack_require__(248),
-	    Lesson = __webpack_require__(271),
+	    CourseIndex = __webpack_require__(254),
+	    LanguageIndex = __webpack_require__(244),
+	    Course = __webpack_require__(258),
+	    Splash = __webpack_require__(265),
+	    SkillIndex = __webpack_require__(259),
+	    Skill = __webpack_require__(266),
+	    LessonFinalPage = __webpack_require__(273),
+	    SessionsApiUtil = __webpack_require__(241),
+	    Lesson = __webpack_require__(275),
 	    CookieActions = __webpack_require__(240);
 	
 	var routes = React.createElement(
@@ -66,9 +66,6 @@
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: Splash,
 	    onEnter: _ensureLoggedOutAndNoCurrentCourse }),
-	  React.createElement(Route, { path: '/courses',
-	    onEnter: _ensureLoggedOutAndNoCurrentCourse,
-	    component: CourseIndex }),
 	  React.createElement(Route, { path: '/courses/:courseId',
 	    onEnter: _ensureLoggedInOrCurrentCourse,
 	    component: Course }),
@@ -24082,10 +24079,10 @@
 	    NavBar = __webpack_require__(213),
 	    CurrentUserStore = __webpack_require__(232),
 	    CookieStore = __webpack_require__(234),
-	    LanguagesApiUtil = __webpack_require__(244),
+	    LanguagesApiUtil = __webpack_require__(246),
 	    CookieActions = __webpack_require__(240),
-	    SignupModal = __webpack_require__(282),
-	    SessionsApiUtil = __webpack_require__(248);
+	    SignupModal = __webpack_require__(251),
+	    SessionsApiUtil = __webpack_require__(241);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -24192,13 +24189,7 @@
 	  },
 	
 	  render: function () {
-	    if (/.*(lessons).*/.test(location.hash)) {
-	      return this.lessonView();
-	    } else if (CookieStore.curCourse() || CurrentUserStore.isLoggedIn()) {
-	      return this.mainView();
-	    } else {
-	      return this.splashView();
-	    }
+	    return this.props.children;
 	  }
 	});
 
@@ -24595,10 +24586,10 @@
 	    CookieStore = __webpack_require__(234),
 	    LanguageStore = __webpack_require__(235),
 	    CookieActions = __webpack_require__(240),
-	    SessionsApiUtil = __webpack_require__(248),
-	    LanguageIndexDropdown = __webpack_require__(241),
-	    UserInfoDropdown = __webpack_require__(285),
-	    LoginDropdown = __webpack_require__(246);
+	    SessionsApiUtil = __webpack_require__(241),
+	    LanguageIndexDropdown = __webpack_require__(243),
+	    UserInfoDropdown = __webpack_require__(248),
+	    LoginDropdown = __webpack_require__(249);
 	
 	var NavBar = React.createClass({
 	  displayName: 'NavBar',
@@ -24653,12 +24644,9 @@
 	      { className: 'splash-header group' },
 	      React.createElement(
 	        'h1',
-	        { className: 'splash-header-logo' },
-	        React.createElement(
-	          'a',
-	          { href: '/' },
-	          'Linguana'
-	        )
+	        { onClick: this.props.handleHeaderClick,
+	          className: 'splash-header-logo' },
+	        'Linguana'
 	      ),
 	      React.createElement(
 	        'div',
@@ -31565,11 +31553,82 @@
 /* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var CurrentUserActions = __webpack_require__(242);
+	var CookieActions = __webpack_require__(240);
+	var SessionsApiUtil = {
+	  logIn: function (credentials, success) {
+	
+	    var username = credentials.children[0].children[0].value,
+	        password = credentials.children[0].children[1].value,
+	        sessionParams = { session: { username: username, password: password } };
+	
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'POST',
+	      dataType: 'json',
+	      data: sessionParams,
+	      success: function (currentUser) {
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        success && success();
+	      }
+	    });
+	  },
+	
+	  logOut: function () {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'DELETE',
+	      dataType: 'json',
+	      success: function () {
+	        CurrentUserActions.receiveCurrentUser({});
+	      }
+	    });
+	  },
+	
+	  fetchCurrentUser: function (cb) {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'GET',
+	      dataType: 'json',
+	      success: function (currentUser) {
+	        console.log("fetched current user!");
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        cb && cb(currentUser);
+	      }
+	    });
+	  }
+	
+	};
+	
+	module.exports = SessionsApiUtil;
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(208);
+	var CurrentUserConstants = __webpack_require__(233);
+	
+	var CurrentUserActions = {
+	  receiveCurrentUser: function (currentUser) {
+	    AppDispatcher.dispatch({
+	      actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
+	      currentUser: currentUser
+	    });
+	  }
+	};
+	
+	module.exports = CurrentUserActions;
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1),
 	    ModalActions = __webpack_require__(207),
 	    ModalStore = __webpack_require__(214),
-	    LanguageIndex = __webpack_require__(242),
-	    LanguagesApiUtil = __webpack_require__(244);
+	    LanguageIndex = __webpack_require__(244),
+	    LanguagesApiUtil = __webpack_require__(246);
 	
 	var LanguageIndexDropdown = React.createClass({
 	  displayName: 'LanguageIndexDropdown',
@@ -31614,12 +31673,12 @@
 	module.exports = LanguageIndexDropdown;
 
 /***/ },
-/* 242 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
 	    LanguageStore = __webpack_require__(235),
-	    LanguageIndexItem = __webpack_require__(243);
+	    LanguageIndexItem = __webpack_require__(245);
 	
 	var LanguageIndex = React.createClass({
 	  displayName: 'LanguageIndex',
@@ -31660,7 +31719,7 @@
 	module.exports = LanguageIndex;
 
 /***/ },
-/* 243 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
@@ -31688,10 +31747,10 @@
 	module.exports = LanguageIndexItem;
 
 /***/ },
-/* 244 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var LanguageActions = __webpack_require__(245),
+	var LanguageActions = __webpack_require__(247),
 	    LanguageStore = __webpack_require__(235);
 	
 	var LanguageApiUtil = {
@@ -31712,7 +31771,7 @@
 	module.exports = LanguageApiUtil;
 
 /***/ },
-/* 245 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(208),
@@ -31730,13 +31789,66 @@
 	module.exports = LanguageActions;
 
 /***/ },
-/* 246 */
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    SessionsApiUtil = __webpack_require__(241),
+	    ModalStore = __webpack_require__(214);
+	
+	var UserInfoDropdown = React.createClass({
+	  displayName: 'UserInfoDropdown',
+	
+	  getInitialState: function () {
+	    return { modalName: "userInfoDropdown" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    ModalActions.addModal(this.state.modalName);
+	    this.forceUpdate();
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.forceUpdate();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	  },
+	
+	  visibleRender: function () {
+	    return React.createElement(
+	      'ul',
+	      { className: 'box-shadowed user-info-dropdown' },
+	      React.createElement(
+	        'li',
+	        { onClick: SessionsApiUtil.logOut },
+	        'Log Out'
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = UserInfoDropdown;
+
+/***/ },
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
 	    ModalActions = __webpack_require__(207),
 	    ModalStore = __webpack_require__(214),
-	    NewSessionForm = __webpack_require__(247);
+	    NewSessionForm = __webpack_require__(250);
 	
 	var LoginDropdown = React.createClass({
 	  displayName: 'LoginDropdown',
@@ -31778,13 +31890,13 @@
 	module.exports = LoginDropdown;
 
 /***/ },
-/* 247 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
 	    History = __webpack_require__(159).History,
 	    ModalActions = __webpack_require__(207),
-	    SessionsApiUtil = __webpack_require__(248);
+	    SessionsApiUtil = __webpack_require__(241);
 	
 	var NewSessionForm = React.createClass({
 	  displayName: 'NewSessionForm',
@@ -31847,85 +31959,211 @@
 	module.exports = NewSessionForm;
 
 /***/ },
-/* 248 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CurrentUserActions = __webpack_require__(249);
-	var CookieActions = __webpack_require__(240);
-	var SessionsApiUtil = {
-	  logIn: function (credentials, success) {
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    ModalStore = __webpack_require__(214),
+	    SignupForm = __webpack_require__(252);
 	
-	    var username = credentials.children[0].children[0].value,
-	        password = credentials.children[0].children[1].value,
-	        sessionParams = { session: { username: username, password: password } };
+	var SignupModal = React.createClass({
+	  displayName: 'SignupModal',
 	
+	  getInitialState: function () {
+	    return { modalName: "signupModal" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    ModalActions.addModal(this.state.modalName);
+	    this.forceUpdate();
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	  },
+	
+	  visibleRender: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'screen-cover' },
+	      React.createElement(SignupForm, null)
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = SignupModal;
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    History = __webpack_require__(159).History,
+	    UsersApiUtil = __webpack_require__(253),
+	    ModalActions = __webpack_require__(207);
+	
+	var SignupForm = React.createClass({
+	  displayName: 'SignupForm',
+	
+	  mixins: [History],
+	
+	  submit: function (e) {
+	    e.preventDefault();
+	    var credentials = e.currentTarget;
+	    UsersApiUtil.createUser(credentials);
+	  },
+	
+	  _closeModal: function () {
+	    ModalActions.hideModal("signupModal");
+	  },
+	
+	  render: function () {
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'signup-form group box-shadowed' },
+	      React.createElement('i', { className: 'fa fa-2x fa-times-circle-o',
+	        onClick: this._closeModal }),
+	      React.createElement(
+	        'div',
+	        { className: 'signup-inputs group' },
+	        React.createElement(
+	          'h2',
+	          { className: 'signup-header' },
+	          'Sign Up'
+	        ),
+	        React.createElement(
+	          'form',
+	          { className: 'group', onSubmit: this.submit },
+	          React.createElement(
+	            'div',
+	            { className: 'inputs group' },
+	            React.createElement(
+	              'div',
+	              { className: 'signup-input group' },
+	              React.createElement(
+	                'label',
+	                { htmlFor: 'username-signup' },
+	                'Username'
+	              ),
+	              React.createElement('input', { id: 'username-signup', name: 'user[username]' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'signup-input group' },
+	              React.createElement(
+	                'label',
+	                { htmlFor: 'email-signup' },
+	                'Email'
+	              ),
+	              React.createElement('input', { id: 'email-signup', name: 'user[email]' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'signup-input group' },
+	              React.createElement(
+	                'label',
+	                { htmlFor: 'password-signup' },
+	                'Password'
+	              ),
+	              React.createElement('input', { id: 'password-signup', type: 'password', name: 'user[password]' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'signup-input group' },
+	              React.createElement(
+	                'label',
+	                { htmlFor: 'fname-signup' },
+	                'First Name'
+	              ),
+	              React.createElement('input', { id: 'fname-signup', name: 'user[fname]' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'signup-input group' },
+	              React.createElement(
+	                'label',
+	                { htmlFor: 'lname-signup' },
+	                'Last Name'
+	              ),
+	              React.createElement('input', { id: 'lname-signup', name: 'user[lname]' })
+	            )
+	          ),
+	          React.createElement(
+	            'button',
+	            { className: 'signup-button' },
+	            'Create Account'
+	          )
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = SignupForm;
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var CurrentUserActions = __webpack_require__(242);
+	var UsersApiUtil = {
+	  createUser: function (credentials, success) {
+	    var username = credentials.elements[0].value,
+	        email = credentials.elements[1].value,
+	        password = credentials.elements[2].value,
+	        fname = credentials.elements[3].value,
+	        lname = credentials.elements[4].value,
+	        current_course_id = CookieStore.curCourse() || "",
+	        userParams = { user: {
+	        username: username,
+	        password: password,
+	        fname: fname,
+	        lname: lname,
+	        email: email,
+	        current_course_id: current_course_id
+	      } };
+	    debugger;
 	    $.ajax({
-	      url: '/api/session',
+	      url: '/api/users',
 	      type: 'POST',
 	      dataType: 'json',
-	      data: sessionParams,
+	      data: userParams,
 	      success: function (currentUser) {
+	        console.log('yay');
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success();
 	      }
 	    });
-	  },
-	
-	  logOut: function () {
-	    $.ajax({
-	      url: '/api/session',
-	      type: 'DELETE',
-	      dataType: 'json',
-	      success: function () {
-	        CurrentUserActions.receiveCurrentUser({});
-	      }
-	    });
-	  },
-	
-	  fetchCurrentUser: function (cb) {
-	    $.ajax({
-	      url: '/api/session',
-	      type: 'GET',
-	      dataType: 'json',
-	      success: function (currentUser) {
-	        console.log("fetched current user!");
-	        CurrentUserActions.receiveCurrentUser(currentUser);
-	        cb && cb(currentUser);
-	      }
-	    });
-	  }
-	
-	};
-	
-	module.exports = SessionsApiUtil;
-
-/***/ },
-/* 249 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(208);
-	var CurrentUserConstants = __webpack_require__(233);
-	
-	var CurrentUserActions = {
-	  receiveCurrentUser: function (currentUser) {
-	    AppDispatcher.dispatch({
-	      actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
-	      currentUser: currentUser
-	    });
 	  }
 	};
 	
-	module.exports = CurrentUserActions;
+	module.exports = UsersApiUtil;
 
 /***/ },
-/* 250 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
 	    CourseStore = __webpack_require__(237),
-	    CourseIndexItem = __webpack_require__(251),
+	    CourseIndexItem = __webpack_require__(255),
 	    CookieStore = __webpack_require__(234),
-	    CoursesApiUtil = __webpack_require__(252);
+	    CoursesApiUtil = __webpack_require__(256);
 	
 	var CourseIndex = React.createClass({
 	  displayName: 'CourseIndex',
@@ -31989,7 +32227,7 @@
 	module.exports = CourseIndex;
 
 /***/ },
-/* 251 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
@@ -32021,10 +32259,10 @@
 	module.exports = CourseIndexItem;
 
 /***/ },
-/* 252 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CourseActions = __webpack_require__(253);
+	var CourseActions = __webpack_require__(257);
 	
 	var CoursesApiUtil = {
 	  fetchCourses: function (lngName) {
@@ -32059,7 +32297,7 @@
 	module.exports = CoursesApiUtil;
 
 /***/ },
-/* 253 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(208),
@@ -32084,13 +32322,13 @@
 	module.exports = CourseActions;
 
 /***/ },
-/* 254 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
 	    CourseStore = __webpack_require__(237),
-	    SkillIndex = __webpack_require__(255),
-	    CoursesApiUtil = __webpack_require__(252);
+	    SkillIndex = __webpack_require__(259),
+	    CoursesApiUtil = __webpack_require__(256);
 	
 	var Course = React.createClass({
 	  displayName: 'Course',
@@ -32135,13 +32373,13 @@
 	module.exports = Course;
 
 /***/ },
-/* 255 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    SkillStore = __webpack_require__(256),
-	    SkillIndexItem = __webpack_require__(258),
-	    SkillsApiUtil = __webpack_require__(259);
+	    SkillStore = __webpack_require__(260),
+	    SkillIndexItem = __webpack_require__(262),
+	    SkillsApiUtil = __webpack_require__(263);
 	
 	var SkillIndex = React.createClass({
 	  displayName: 'SkillIndex',
@@ -32190,11 +32428,11 @@
 	module.exports = SkillIndex;
 
 /***/ },
-/* 256 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(215).Store;
-	var SkillConstants = __webpack_require__(257);
+	var SkillConstants = __webpack_require__(261);
 	var AppDispatcher = __webpack_require__(208);
 	var _skills = {};
 	var SkillStore = new Store(AppDispatcher);
@@ -32247,7 +32485,7 @@
 	module.exports = SkillStore;
 
 /***/ },
-/* 257 */
+/* 261 */
 /***/ function(module, exports) {
 
 	var SkillConstants = {
@@ -32258,7 +32496,7 @@
 	module.exports = SkillConstants;
 
 /***/ },
-/* 258 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32284,10 +32522,10 @@
 	module.exports = SkillIndexItem;
 
 /***/ },
-/* 259 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var SkillActions = __webpack_require__(260);
+	var SkillActions = __webpack_require__(264);
 	
 	var SkillsApiUtil = {
 	  fetchSkills: function (courseId) {
@@ -32323,11 +32561,11 @@
 	module.exports = SkillsApiUtil;
 
 /***/ },
-/* 260 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(208),
-	    SkillConstants = __webpack_require__(257);
+	    SkillConstants = __webpack_require__(261);
 	
 	var SkillActions = {
 	  receiveAll: function (skills) {
@@ -32348,50 +32586,80 @@
 	module.exports = SkillActions;
 
 /***/ },
-/* 261 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
+	var React = __webpack_require__(1),
+	    NavBar = __webpack_require__(213),
+	    CourseIndex = __webpack_require__(254);
 	
 	module.exports = React.createClass({
-	  displayName: "exports",
+	  displayName: 'exports',
 	
-	  _handleClick: function () {
-	    this.history.pushState(null, "/courses", {});
+	  getInitialState: function () {
+	    return { currentView: "splash" };
+	  },
+	
+	  _handleGetStartedClick: function () {
+	    this.setState({ currentView: "courses" });
+	  },
+	
+	  _handleHeaderClick: function () {
+	    this.setState({ currentView: "splash" });
+	  },
+	
+	  splashView: function () {
+	    var splashText = "Learn a language. Or maybe not. We'll see.";
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'splash-contents group' },
+	      React.createElement(
+	        'h2',
+	        { className: 'splash-text' },
+	        splashText
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this._handleGetStartedClick,
+	          className: 'splash-button' },
+	        'Get started'
+	      )
+	    );
 	  },
 	
 	  render: function () {
-	    var splashText = "Learn a language. Or maybe not. We'll see.";
+	    var toRender;
+	    if (this.state.currentView === "splash") {
+	      toRender = this.splashView();
+	    } else if (this.state.currentView === "courses") {
+	      toRender = React.createElement(CourseIndex, null);
+	    }
 	    return React.createElement(
-	      "div",
-	      { className: "splash-main group" },
+	      'div',
+	      { className: 'splash-wrapper' },
 	      React.createElement(
-	        "div",
-	        { className: "splash-contents group" },
-	        React.createElement(
-	          "h2",
-	          { className: "splash-text" },
-	          splashText
-	        ),
-	        React.createElement(
-	          "a",
-	          { className: "splash-button",
-	            href: "#/courses" },
-	          "Get started"
-	        )
+	        'header',
+	        { className: 'splash-header-bar' },
+	        React.createElement(NavBar, { view: 'splash', handleHeaderClick: this._handleHeaderClick })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'splash-main group' },
+	        toRender
 	      )
 	    );
 	  }
 	});
 
 /***/ },
-/* 262 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    SkillStore = __webpack_require__(256),
-	    LessonIndex = __webpack_require__(263),
-	    SkillsApiUtil = __webpack_require__(259);
+	    SkillStore = __webpack_require__(260),
+	    LessonIndex = __webpack_require__(267),
+	    SkillsApiUtil = __webpack_require__(263);
 	
 	var Skill = React.createClass({
 	  displayName: 'Skill',
@@ -32449,13 +32717,13 @@
 	module.exports = Skill;
 
 /***/ },
-/* 263 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    LessonStore = __webpack_require__(264),
-	    LessonIndexItem = __webpack_require__(266),
-	    LessonsApiUtil = __webpack_require__(267);
+	    LessonStore = __webpack_require__(268),
+	    LessonIndexItem = __webpack_require__(270),
+	    LessonsApiUtil = __webpack_require__(271);
 	
 	var LessonIndex = React.createClass({
 	  displayName: 'LessonIndex',
@@ -32507,11 +32775,11 @@
 	module.exports = LessonIndex;
 
 /***/ },
-/* 264 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(215).Store;
-	var LessonConstants = __webpack_require__(265);
+	var LessonConstants = __webpack_require__(269);
 	var AppDispatcher = __webpack_require__(208);
 	var ModalStore = __webpack_require__(214);
 	var LessonStore = new Store(AppDispatcher);
@@ -32565,7 +32833,7 @@
 	module.exports = LessonStore;
 
 /***/ },
-/* 265 */
+/* 269 */
 /***/ function(module, exports) {
 
 	var SkillConstants = {
@@ -32576,7 +32844,7 @@
 	module.exports = SkillConstants;
 
 /***/ },
-/* 266 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32610,10 +32878,10 @@
 	module.exports = LessonIndexItem;
 
 /***/ },
-/* 267 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var LessonActions = __webpack_require__(268);
+	var LessonActions = __webpack_require__(272);
 	
 	var LessonsApiUtil = {
 	  fetchLessons: function (lessonId) {
@@ -32649,11 +32917,11 @@
 	module.exports = LessonsApiUtil;
 
 /***/ },
-/* 268 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(208),
-	    LessonConstants = __webpack_require__(265);
+	    LessonConstants = __webpack_require__(269);
 	
 	var LessonActions = {
 	  receiveAll: function (lessons) {
@@ -32674,11 +32942,11 @@
 	module.exports = LessonActions;
 
 /***/ },
-/* 269 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    LessonBottomBar = __webpack_require__(270);
+	    LessonBottomBar = __webpack_require__(274);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -32707,7 +32975,7 @@
 	});
 
 /***/ },
-/* 270 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32830,21 +33098,21 @@
 	module.exports = LessonBottomBar;
 
 /***/ },
-/* 271 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    LessonStore = __webpack_require__(264),
-	    LessonsApiUtil = __webpack_require__(267),
-	    ExercisesApiUtil = __webpack_require__(272),
-	    TipsAndNotesModal = __webpack_require__(275),
+	    LessonStore = __webpack_require__(268),
+	    LessonsApiUtil = __webpack_require__(271),
+	    ExercisesApiUtil = __webpack_require__(276),
+	    TipsAndNotesModal = __webpack_require__(279),
 	    ModalActions = __webpack_require__(207),
-	    ExerciseActions = __webpack_require__(273),
-	    Exercise = __webpack_require__(276),
-	    ProgressBar = __webpack_require__(280),
-	    LessonBottomBar = __webpack_require__(270),
+	    ExerciseActions = __webpack_require__(277),
+	    Exercise = __webpack_require__(280),
+	    ProgressBar = __webpack_require__(284),
+	    LessonBottomBar = __webpack_require__(274),
 	    History = __webpack_require__(159).History,
-	    LessonFinalPage = __webpack_require__(269);
+	    LessonFinalPage = __webpack_require__(273);
 	
 	var Lesson = React.createClass({
 	  displayName: 'Lesson',
@@ -33050,10 +33318,10 @@
 	module.exports = Lesson;
 
 /***/ },
-/* 272 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ExerciseActions = __webpack_require__(273);
+	var ExerciseActions = __webpack_require__(277);
 	
 	var shuffleArray = function (array) {
 		for (var i = array.length - 1; i > 0; i--) {
@@ -33089,11 +33357,11 @@
 	module.exports = ExercisesApiUtil;
 
 /***/ },
-/* 273 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(208),
-	    ExerciseConstants = __webpack_require__(274);
+	    ExerciseConstants = __webpack_require__(278);
 	
 	var ExerciseActions = {
 	  receiveAll: function (exercises) {
@@ -33120,7 +33388,7 @@
 	module.exports = ExerciseActions;
 
 /***/ },
-/* 274 */
+/* 278 */
 /***/ function(module, exports) {
 
 	var ExerciseConstants = {
@@ -33132,7 +33400,7 @@
 	module.exports = ExerciseConstants;
 
 /***/ },
-/* 275 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
@@ -33191,13 +33459,13 @@
 	module.exports = TipsAndNotesModal;
 
 /***/ },
-/* 276 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    ExerciseStore = __webpack_require__(277),
-	    ExercisesApiUtil = __webpack_require__(272),
-	    AnswerChoiceIndex = __webpack_require__(278);
+	    ExerciseStore = __webpack_require__(281),
+	    ExercisesApiUtil = __webpack_require__(276),
+	    AnswerChoiceIndex = __webpack_require__(282);
 	
 	var Exercise = React.createClass({
 	  displayName: 'Exercise',
@@ -33271,11 +33539,11 @@
 	module.exports = Exercise;
 
 /***/ },
-/* 277 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(215).Store;
-	var ExerciseConstants = __webpack_require__(274);
+	var ExerciseConstants = __webpack_require__(278);
 	var AppDispatcher = __webpack_require__(208);
 	var ModalStore = __webpack_require__(214);
 	
@@ -33341,11 +33609,11 @@
 	module.exports = ExerciseStore;
 
 /***/ },
-/* 278 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    AnswerChoiceIndexItem = __webpack_require__(279);
+	    AnswerChoiceIndexItem = __webpack_require__(283);
 	
 	var AnswerChoiceIndex = React.createClass({
 	  displayName: 'AnswerChoiceIndex',
@@ -33407,7 +33675,7 @@
 	module.exports = AnswerChoiceIndex;
 
 /***/ },
-/* 279 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33442,12 +33710,12 @@
 	module.exports = AnswerChoiceIndexItem;
 
 /***/ },
-/* 280 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    ProgressBarChunk = __webpack_require__(281),
-	    ExerciseStore = __webpack_require__(277);
+	    ProgressBarChunk = __webpack_require__(285),
+	    ExerciseStore = __webpack_require__(281);
 	
 	var ProgressBar = React.createClass({
 	  displayName: 'ProgressBar',
@@ -33501,11 +33769,11 @@
 	module.exports = ProgressBar;
 
 /***/ },
-/* 281 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    ExerciseStore = __webpack_require__(277);
+	    ExerciseStore = __webpack_require__(281);
 	
 	var ProgressBarChunk = React.createClass({
 	  displayName: 'ProgressBarChunk',
@@ -33517,256 +33785,6 @@
 	});
 	
 	module.exports = ProgressBarChunk;
-
-/***/ },
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ModalActions = __webpack_require__(207),
-	    ModalStore = __webpack_require__(214),
-	    SignupForm = __webpack_require__(283);
-	
-	var SignupModal = React.createClass({
-	  displayName: 'SignupModal',
-	
-	  getInitialState: function () {
-	    return { modalName: "signupModal" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.modalListener = ModalStore.addListener(this._modalsChanged);
-	    ModalActions.addModal(this.state.modalName);
-	    this.forceUpdate();
-	  },
-	
-	  _modalsChanged: function () {
-	    var modalName = this.state.modalName;
-	    this.setState({ modalName: modalName });
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.modalListener.remove();
-	  },
-	
-	  visibleRender: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'screen-cover' },
-	      React.createElement(SignupForm, null)
-	    );
-	  },
-	
-	  render: function () {
-	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
-	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
-	
-	    return renderedHTML;
-	  }
-	});
-	
-	module.exports = SignupModal;
-
-/***/ },
-/* 283 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    History = __webpack_require__(159).History,
-	    UsersApiUtil = __webpack_require__(284),
-	    ModalActions = __webpack_require__(207);
-	
-	var SignupForm = React.createClass({
-	  displayName: 'SignupForm',
-	
-	  mixins: [History],
-	
-	  submit: function (e) {
-	    e.preventDefault();
-	    var credentials = e.currentTarget;
-	    UsersApiUtil.createUser(credentials);
-	  },
-	
-	  _closeModal: function () {
-	    ModalActions.hideModal("signupModal");
-	  },
-	
-	  render: function () {
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'signup-form group box-shadowed' },
-	      React.createElement('i', { className: 'fa fa-2x fa-times-circle-o',
-	        onClick: this._closeModal }),
-	      React.createElement(
-	        'div',
-	        { className: 'signup-inputs group' },
-	        React.createElement(
-	          'h2',
-	          { className: 'signup-header' },
-	          'Sign Up'
-	        ),
-	        React.createElement(
-	          'form',
-	          { className: 'group', onSubmit: this.submit },
-	          React.createElement(
-	            'div',
-	            { className: 'inputs group' },
-	            React.createElement(
-	              'div',
-	              { className: 'signup-input group' },
-	              React.createElement(
-	                'label',
-	                { htmlFor: 'username-signup' },
-	                'Username'
-	              ),
-	              React.createElement('input', { id: 'username-signup', name: 'user[username]' })
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'signup-input group' },
-	              React.createElement(
-	                'label',
-	                { htmlFor: 'email-signup' },
-	                'Email'
-	              ),
-	              React.createElement('input', { id: 'email-signup', name: 'user[email]' })
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'signup-input group' },
-	              React.createElement(
-	                'label',
-	                { htmlFor: 'password-signup' },
-	                'Password'
-	              ),
-	              React.createElement('input', { id: 'password-signup', type: 'password', name: 'user[password]' })
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'signup-input group' },
-	              React.createElement(
-	                'label',
-	                { htmlFor: 'fname-signup' },
-	                'First Name'
-	              ),
-	              React.createElement('input', { id: 'fname-signup', name: 'user[fname]' })
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'signup-input group' },
-	              React.createElement(
-	                'label',
-	                { htmlFor: 'lname-signup' },
-	                'Last Name'
-	              ),
-	              React.createElement('input', { id: 'lname-signup', name: 'user[lname]' })
-	            )
-	          ),
-	          React.createElement(
-	            'button',
-	            { className: 'signup-button' },
-	            'Create Account'
-	          )
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = SignupForm;
-
-/***/ },
-/* 284 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var CurrentUserActions = __webpack_require__(249);
-	var UsersApiUtil = {
-	  createUser: function (credentials, success) {
-	    var username = credentials.elements[0].value,
-	        email = credentials.elements[1].value,
-	        password = credentials.elements[2].value,
-	        fname = credentials.elements[3].value,
-	        lname = credentials.elements[4].value,
-	        current_course_id = CookieStore.curCourse() || "",
-	        userParams = { user: {
-	        username: username,
-	        password: password,
-	        fname: fname,
-	        lname: lname,
-	        email: email,
-	        current_course_id: current_course_id
-	      } };
-	    debugger;
-	    $.ajax({
-	      url: '/api/users',
-	      type: 'POST',
-	      dataType: 'json',
-	      data: userParams,
-	      success: function (currentUser) {
-	        console.log('yay');
-	        CurrentUserActions.receiveCurrentUser(currentUser);
-	        success && success();
-	      }
-	    });
-	  }
-	};
-	
-	module.exports = UsersApiUtil;
-
-/***/ },
-/* 285 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ModalActions = __webpack_require__(207),
-	    SessionsApiUtil = __webpack_require__(248),
-	    ModalStore = __webpack_require__(214);
-	
-	var UserInfoDropdown = React.createClass({
-	  displayName: 'UserInfoDropdown',
-	
-	  getInitialState: function () {
-	    return { modalName: "userInfoDropdown" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.modalListener = ModalStore.addListener(this._modalsChanged);
-	    ModalActions.addModal(this.state.modalName);
-	    this.forceUpdate();
-	  },
-	
-	  _modalsChanged: function () {
-	    var modalName = this.state.modalName;
-	    this.forceUpdate();
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.modalListener.remove();
-	  },
-	
-	  visibleRender: function () {
-	    return React.createElement(
-	      'ul',
-	      { className: 'box-shadowed user-info-dropdown' },
-	      React.createElement(
-	        'li',
-	        { onClick: SessionsApiUtil.logOut },
-	        'Log Out'
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
-	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
-	
-	    return renderedHTML;
-	  }
-	});
-	
-	module.exports = UserInfoDropdown;
 
 /***/ }
 /******/ ]);

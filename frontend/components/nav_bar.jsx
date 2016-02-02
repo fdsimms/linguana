@@ -58,8 +58,9 @@ var NavBar = React.createClass({
 
     return(
       <nav className="splash-header group">
-        <h1 className="splash-header-logo">
-          <a href="/">Linguana</a>
+        <h1 onClick={this.props.handleHeaderClick} 
+            className="splash-header-logo">
+          Linguana
         </h1>
           <div className="splash-header-buttons group">
           <button onMouseEnter={ this._handleLanguagesEnter }

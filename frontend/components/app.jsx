@@ -108,12 +108,6 @@ module.exports = React.createClass({
   },
 
   render: function () {
-    if (/.*(lessons).*/.test(location.hash)) {
-      return this.lessonView();
-    } else if (CookieStore.curCourse() || CurrentUserStore.isLoggedIn()) {
-      return this.mainView();
-    } else {
-      return this.splashView();
-    }
+    return this.props.children;
   }
 });

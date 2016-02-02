@@ -20,9 +20,6 @@ var React = require('react'),
       <IndexRoute component={Splash}
                   onEnter={ _ensureLoggedOutAndNoCurrentCourse }>
       </IndexRoute>
-      <Route path="/courses"
-             onEnter={ _ensureLoggedOutAndNoCurrentCourse }
-             component={CourseIndex} />
       <Route path="/courses/:courseId"
              onEnter={ _ensureLoggedInOrCurrentCourse }
              component={Course} />
