@@ -21,12 +21,12 @@ var LessonBottomBar = React.createClass({
 
     return(
       <div className="lesson-bottom-bar-incorrect group">
-      <i className="fa fa-4x fa-times-circle-o"></i>
-      <h2 className="bottom-bar-header">That wasn't right...</h2>
-        <a onClick={this.props.onClickContinue}
-           className="check-button">
-           Continue
-        </a>
+        <i className="fa fa-4x fa-times-circle-o"></i>
+        <h2 className="bottom-bar-header">That wasn't right...</h2>
+          <a onClick={this.props.onClickContinue}
+            className="check-button">
+            Continue
+          </a>
       </div>
     )
   },
