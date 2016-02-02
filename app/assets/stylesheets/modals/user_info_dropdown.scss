@@ -1,0 +1,37 @@
+.user-info-dropdown {
+  display: block;
+  width: 100px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  color: #000;
+  padding: 10px;
+  z-index: 1;
+  position: absolute;
+  top: 35px;
+  left: -20px;
+}
+
+.user-info-button {
+  display: block;
+  float: right;
+  color: #000;
+  text-align: center;
+  margin-top: 25px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.user-info-dropdown li:hover {
+  color: #aaa;
+}
+
+.user-info-dropdown li:first-child:before {
+  content: "▲";
+  position: absolute;
+  font-size: 20px;
+  right: 52px;
+  top: -16px;
+  text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}

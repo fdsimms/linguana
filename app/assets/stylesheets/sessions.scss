@@ -9,16 +9,20 @@
 }
 
 .inputs {
-  margin: 175px auto 0 auto;
-  width: 292px;
+  background: #eee;
+  margin: auto;
+  padding: 5px 10px 0 0;
+  width: 310px;
+  color: black;
   display: block;
+  border: 1px solid #eee;
 }
 
 .inputs input {
-  background: #fff;
-  margin: auto;
-  padding: 15px;
-  width: 260px;
+  background: #eee;
+  margin: 5px auto;
+  padding-top: 15px;
+  width: 165px;
   color: black;
   display: block;
   border: 1px solid #eee;

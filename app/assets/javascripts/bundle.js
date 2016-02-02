@@ -24596,6 +24596,7 @@
 	    LanguageStore = __webpack_require__(235),
 	    CookieActions = __webpack_require__(240),
 	    LanguageIndexDropdown = __webpack_require__(241),
+	    UserInfoDropdown = __webpack_require__(285),
 	    LoginDropdown = __webpack_require__(246);
 	
 	var NavBar = React.createClass({
@@ -24624,6 +24625,14 @@
 	
 	  _handleCreateProfClick: function () {
 	    ModalActions.toggleModalDisplay("signupModal");
+	  },
+	
+	  _handleUserInfoEnter: function () {
+	    ModalActions.displayModal("userInfoDropdown");
+	  },
+	
+	  _handleUserInfoLeave: function () {
+	    ModalActions.hideModal("userInfoDropdown");
 	  },
 	
 	  _handleLanguagesEnter: function () {
@@ -24703,6 +24712,14 @@
 	      React.createElement(
 	        'div',
 	        { className: 'header-buttons group' },
+	        React.createElement(
+	          'button',
+	          { className: 'user-info-button',
+	            onMouseEnter: this._handleUserInfoEnter,
+	            onMouseLeave: this._handleUserInfoLeave },
+	          CurrentUserStore.currentUser().username,
+	          React.createElement(UserInfoDropdown, null)
+	        ),
 	        this.normalNavBarButtons()
 	      )
 	    );
@@ -33698,6 +33715,59 @@
 	};
 	
 	module.exports = UsersApiUtil;
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    SessionsApiUtil = __webpack_require__(248),
+	    ModalStore = __webpack_require__(214);
+	
+	var UserInfoDropdown = React.createClass({
+	  displayName: 'UserInfoDropdown',
+	
+	  getInitialState: function () {
+	    return { modalName: "userInfoDropdown" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    ModalActions.addModal(this.state.modalName);
+	    this.forceUpdate();
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.forceUpdate();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	  },
+	
+	  visibleRender: function () {
+	    return React.createElement(
+	      'ul',
+	      { className: 'box-shadowed user-info-dropdown' },
+	      React.createElement(
+	        'li',
+	        { onClick: SessionsApiUtil.logOut },
+	        'Log Out'
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = UserInfoDropdown;
 
 /***/ }
 /******/ ]);

@@ -6,6 +6,7 @@ var React = require('react'),
     LanguageStore = require("../stores/language_store"),
     CookieActions = require("../actions/cookie_actions"),
     LanguageIndexDropdown = require("./modals/language_index_dropdown"),
+    UserInfoDropdown = require("./modals/user_info_dropdown"),
     LoginDropdown = require("./modals/login_dropdown");
 
 var NavBar = React.createClass({
@@ -32,6 +33,14 @@ var NavBar = React.createClass({
 
   _handleCreateProfClick: function () {
     ModalActions.toggleModalDisplay("signupModal");
+  },
+
+  _handleUserInfoEnter: function () {
+    ModalActions.displayModal("userInfoDropdown");
+  },
+
+  _handleUserInfoLeave: function () {
+    ModalActions.hideModal("userInfoDropdown");
   },
 
   _handleLanguagesEnter: function () {
@@ -87,6 +96,12 @@ var NavBar = React.createClass({
           <a href="/">Linguana</a>
         </h1>
         <div className="header-buttons group">
+          <button className="user-info-button"
+                  onMouseEnter={this._handleUserInfoEnter}
+                  onMouseLeave={this._handleUserInfoLeave}>
+           {CurrentUserStore.currentUser().username}
+           <UserInfoDropdown />
+          </button>
           {this.normalNavBarButtons()}
         </div>
       </nav>

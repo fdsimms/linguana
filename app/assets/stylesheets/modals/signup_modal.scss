@@ -24,7 +24,7 @@
 
 .signup-header {
   font-size: 25px;
-  padding: 25px 0 0 0;
+  padding: 25px 0 25px 0;
   text-align: center;
 }
 
@@ -41,14 +41,13 @@
 }
 
 .inputs {
-  /* height: 166px; */
-  width: 325px;
   background-color: #eee;
-  margin: 25px auto;
   border-radius: 10px;
-  /* float: right; */
   border: 2px solid #ccc;
   overflow: hidden;
+  margin: 40px auto 0 auto;
+  width: 292px;
+display: block;
 }
 
 .signup-inputs label {
