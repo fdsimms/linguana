@@ -17,6 +17,9 @@ var NewSessionForm = React.createClass({
     return (
       <div className="splash-login-form splash-form">
         <div className="splash-login-inputs box-shadowed">
+            <button className="facebook-login">Log in with Facebook</button>
+            <button className="google-login">Log in with Google</button>
+            <h3>or</h3>
           <form onSubmit={this.submit}>
               <input name="session[username]"
                      placeholder="Username" />
@@ -27,7 +30,6 @@ var NewSessionForm = React.createClass({
 
               <button id="modal-login-button">Log in</button>
           </form>
-
           <form onSubmit={this.submit}>
             <div className="guest-inputs">
 

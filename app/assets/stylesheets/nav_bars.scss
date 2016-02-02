@@ -54,6 +54,32 @@
   background-color: #fff;
 }
 
+.splash-login-inputs .facebook-login {
+  margin-bottom: 5px;
+  background-color: rgb(59, 87, 157);
+  padding-right: 13px;
+  padding-left: 13px;
+}
+
+.splash-login-inputs .facebook-login:hover {
+  background-color: rgb(77, 106, 176);
+}
+
+.splash-login-inputs .google-login {
+  background-color: #dd381d;
+  padding-right: 23px;
+  padding-left: 23px;
+}
+
+.splash-login-inputs .google-login:hover {
+background-color: rgb(242, 42, 0);
+}
+
+.splash-login-inputs .google-login,
+.splash-login-inputs .facebook-login {
+
+}
+
 .splash-header-buttons .splash-header-languages-button {
   float: left;
   color: #fff;
@@ -79,4 +105,10 @@
   border-radius: 20px;
   margin: 17px;
   color: rgb(101, 171, 204);
+}
+
+.splash-login-inputs > h3 {
+  color: #aaa;
+  text-align: center;
+  padding-top: 10px;
 }

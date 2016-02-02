@@ -31987,6 +31987,21 @@
 	        'div',
 	        { className: 'splash-login-inputs box-shadowed' },
 	        React.createElement(
+	          'button',
+	          { className: 'facebook-login' },
+	          'Log in with Facebook'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'google-login' },
+	          'Log in with Google'
+	        ),
+	        React.createElement(
+	          'h3',
+	          null,
+	          'or'
+	        ),
+	        React.createElement(
 	          'form',
 	          { onSubmit: this.submit },
 	          React.createElement('input', { name: 'session[username]',
