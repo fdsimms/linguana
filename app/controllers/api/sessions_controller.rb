@@ -15,13 +15,19 @@ class Api::SessionsController < ApplicationController
   end
 
   def show
-  if current_user
-    @user = current_user
-    render "api/users/show"
-  else
-    render json: {}
+    if current_user
+      @user = current_user
+      render "api/users/show"
+    else
+      render json: {}
+    end
   end
-end
+
+  def omniauth_facebook
+    @user = User.find_or_create_by_auth_hash(auth_hash)
+    log_in!(@user)
+    redirect_to root_url + '#/'
+  end
 
   def destroy
     log_out!
@@ -29,6 +35,10 @@ end
   end
 
   private
+
+  def auth_hash
+    request.env['omniauth.auth']
+  end
 
   def session_params
     params.require(:session).permit(:username, :password)

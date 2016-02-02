@@ -17,7 +17,11 @@ var NewSessionForm = React.createClass({
     return (
       <div className="splash-login-form splash-form">
         <div className="splash-login-inputs box-shadowed">
-            <button className="facebook-login">Log in with Facebook</button>
+            <button className="facebook-login">
+              <a href="/auth/facebook">
+                Log in with Facebook
+              </a>
+            </button>
             <button className="google-login">Log in with Google</button>
             <h3>or</h3>
           <form onSubmit={this.submit}>

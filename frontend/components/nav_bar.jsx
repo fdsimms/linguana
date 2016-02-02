@@ -58,7 +58,7 @@ var NavBar = React.createClass({
 
     return(
       <nav className="splash-header group">
-        <h1 onClick={this.props.handleHeaderClick} 
+        <h1 onClick={this.props.handleHeaderClick}
             className="splash-header-logo">
           Linguana
         </h1>
@@ -101,6 +101,7 @@ var NavBar = React.createClass({
           <button className="user-info-button"
                   onMouseEnter={this._handleUserInfoEnter}
                   onMouseLeave={this._handleUserInfoLeave}>
+            <i className="fa fa-chevron-down" />
            {CurrentUserStore.currentUser().username}
            <UserInfoDropdown />
           </button>

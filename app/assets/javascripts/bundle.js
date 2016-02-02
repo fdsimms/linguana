@@ -24726,6 +24726,7 @@
 	          { className: 'user-info-button',
 	            onMouseEnter: this._handleUserInfoEnter,
 	            onMouseLeave: this._handleUserInfoLeave },
+	          React.createElement('i', { className: 'fa fa-chevron-down' }),
 	          CurrentUserStore.currentUser().username,
 	          React.createElement(UserInfoDropdown, null)
 	        ),
@@ -31989,7 +31990,11 @@
 	        React.createElement(
 	          'button',
 	          { className: 'facebook-login' },
-	          'Log in with Facebook'
+	          React.createElement(
+	            'a',
+	            { href: '/auth/facebook' },
+	            'Log in with Facebook'
+	          )
 	        ),
 	        React.createElement(
 	          'button',

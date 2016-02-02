@@ -1,7 +1,7 @@
 .header-nav,
 .splash-header {
   min-width: 502px;
-  width: calc(100% - 300px);
+  width: 1250px;
   display: block;
   margin: auto;
 }
@@ -95,6 +95,7 @@ background-color: rgb(242, 42, 0);
   color: #ddd;
 }
 
+
 .splash-header-bar {
 }
 
@@ -111,4 +112,10 @@ background-color: rgb(242, 42, 0);
   color: #aaa;
   text-align: center;
   padding-top: 10px;
+}
+
+.user-info-button .fa-chevron-down {
+  position: absolute;
+  top: 2px;
+  left: 48px;
 }

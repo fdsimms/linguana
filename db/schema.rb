@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201221313) do
+ActiveRecord::Schema.define(version: 20160202220603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,10 +105,13 @@ ActiveRecord::Schema.define(version: 20160201221313) do
     t.integer  "current_course_id"
     t.string   "fname",                           null: false
     t.string   "lname"
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["password_digest"], name: "index_users_on_password_digest", using: :btree
   add_index "users", ["session_token"], name: "index_users_on_session_token", using: :btree
+  add_index "users", ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", using: :btree
 
   create_table "word_debuts", force: :cascade do |t|
