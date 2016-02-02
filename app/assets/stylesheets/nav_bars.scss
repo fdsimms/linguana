@@ -1,7 +1,7 @@
 .header-nav,
 .splash-header {
   min-width: 502px;
-  width: 1250px;
+  width: calc(100% - 500px);
   display: block;
   margin: auto;
 }
@@ -117,5 +117,5 @@ background-color: rgb(242, 42, 0);
 .user-info-button .fa-chevron-down {
   position: absolute;
   top: 2px;
-  left: 48px;
+  left: 64px;
 }

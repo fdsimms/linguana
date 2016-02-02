@@ -102,7 +102,7 @@ var NavBar = React.createClass({
                   onMouseEnter={this._handleUserInfoEnter}
                   onMouseLeave={this._handleUserInfoLeave}>
             <i className="fa fa-chevron-down" />
-           {CurrentUserStore.currentUser().username}
+           {CurrentUserStore.currentUser().fname}
            <UserInfoDropdown />
           </button>
           {this.normalNavBarButtons()}

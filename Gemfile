@@ -12,6 +12,7 @@ gem 'bcrypt'
 gem 'rails_12factor'
 gem 'figaro'
 gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
 
 group :development, :test do
   gem 'byebug'

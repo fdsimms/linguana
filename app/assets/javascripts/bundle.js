@@ -24727,7 +24727,7 @@
 	            onMouseEnter: this._handleUserInfoEnter,
 	            onMouseLeave: this._handleUserInfoLeave },
 	          React.createElement('i', { className: 'fa fa-chevron-down' }),
-	          CurrentUserStore.currentUser().username,
+	          CurrentUserStore.currentUser().fname,
 	          React.createElement(UserInfoDropdown, null)
 	        ),
 	        this.normalNavBarButtons()
@@ -31999,7 +31999,11 @@
 	        React.createElement(
 	          'button',
 	          { className: 'google-login' },
-	          'Log in with Google'
+	          React.createElement(
+	            'a',
+	            { href: '/auth/google_oauth2' },
+	            'Log in with Google'
+	          )
 	        ),
 	        React.createElement(
 	          'h3',

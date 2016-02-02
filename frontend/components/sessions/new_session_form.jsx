@@ -22,7 +22,12 @@ var NewSessionForm = React.createClass({
                 Log in with Facebook
               </a>
             </button>
-            <button className="google-login">Log in with Google</button>
+            <button className="google-login">
+              <a href="/auth/google_oauth2">
+                Log in with Google
+              </a>
+            </button>
+
             <h3>or</h3>
           <form onSubmit={this.submit}>
               <input name="session[username]"
