@@ -24236,10 +24236,12 @@
 	  },
 	
 	  removeModal: function (modalName) {
-	    AppDispatcher.dispatch({
-	      actionType: ModalConstants.REMOVE_MODAL,
-	      modalName: modalName
-	    });
+	    setTimeout(function () {
+	      AppDispatcher.dispatch({
+	        actionType: ModalConstants.REMOVE_MODAL,
+	        modalName: modalName
+	      });
+	    }, 0);
 	  },
 	
 	  hideModals: function () {
@@ -31914,6 +31916,7 @@
 	
 	  componentWillUnmount: function () {
 	    this.modalListener.remove();
+	    ModalActions.removeModal(this.state.modalName);
 	  },
 	
 	  visibleRender: function () {
@@ -32028,6 +32031,7 @@
 	
 	  componentWillUnmount: function () {
 	    this.modalListener.remove();
+	    ModalActions.removeModal(this.state.modalName);
 	  },
 	
 	  visibleRender: function () {
@@ -32065,7 +32069,7 @@
 	  submit: function (e) {
 	    e.preventDefault();
 	    var credentials = e.currentTarget;
-	    UsersApiUtil.createUser(credentials);
+	    UsersApiUtil.createUser(credentials, this._closeModal);
 	  },
 	
 	  _closeModal: function () {

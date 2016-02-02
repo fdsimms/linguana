@@ -25,10 +25,11 @@ var ModalActions = {
   },
 
   removeModal: function (modalName) {
-    AppDispatcher.dispatch({
+    setTimeout(function () {
+      AppDispatcher.dispatch({
       actionType: ModalConstants.REMOVE_MODAL,
       modalName: modalName
-    });
+    });}, 0);
   },
 
   hideModals: function () {

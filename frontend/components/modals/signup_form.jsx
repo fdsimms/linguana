@@ -9,7 +9,7 @@ var SignupForm = React.createClass({
   submit: function (e) {
     e.preventDefault();
     var credentials = e.currentTarget;
-    UsersApiUtil.createUser(credentials);
+    UsersApiUtil.createUser(credentials, this._closeModal);
   },
 
   _closeModal: function () {
