@@ -25,6 +25,7 @@ end
 
   def destroy
     log_out!
+    render json: {}
   end
 
   private

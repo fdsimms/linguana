@@ -24595,6 +24595,7 @@
 	    CookieStore = __webpack_require__(234),
 	    LanguageStore = __webpack_require__(235),
 	    CookieActions = __webpack_require__(240),
+	    SessionsApiUtil = __webpack_require__(248),
 	    LanguageIndexDropdown = __webpack_require__(241),
 	    UserInfoDropdown = __webpack_require__(285),
 	    LoginDropdown = __webpack_require__(246);
@@ -31863,7 +31864,6 @@
 	      dataType: 'json',
 	      data: sessionParams,
 	      success: function (currentUser) {
-	        console.log('yay');
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success();
 	      }
@@ -31876,7 +31876,7 @@
 	      type: 'DELETE',
 	      dataType: 'json',
 	      success: function () {
-	        console.log("logged out!");
+	        CurrentUserActions.receiveCurrentUser({});
 	      }
 	    });
 	  },
@@ -33159,7 +33159,6 @@
 	
 	  componentWillUnmount: function () {
 	    this.modalListener.remove();
-	    ModalActions.removeModal(this.state.modalName);
 	  },
 	
 	  visibleRender: function () {

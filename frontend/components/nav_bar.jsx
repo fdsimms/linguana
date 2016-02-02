@@ -5,6 +5,7 @@ var React = require('react'),
     CookieStore = require("../stores/cookie_store"),
     LanguageStore = require("../stores/language_store"),
     CookieActions = require("../actions/cookie_actions"),
+    SessionsApiUtil = require("../util/sessions_api_util"),
     LanguageIndexDropdown = require("./modals/language_index_dropdown"),
     UserInfoDropdown = require("./modals/user_info_dropdown"),
     LoginDropdown = require("./modals/login_dropdown");
