@@ -1,7 +1,16 @@
 var React = require('react'),
+    UsersApiUtil = require('./../../util/users_api_util'),
     LessonBottomBar = require('./lesson_bottom_bar');
 
 module.exports = React.createClass({
+  componentDidMount: function () {
+    if (CurrentUserStore.isLoggedIn()) {
+      var points = ExerciseStore.all().length;
+      setTimeout(function () {
+        UsersApiUtil.awardPoints(points);
+      }, 2500);
+    }
+  },
 
   render: function () {
     return(

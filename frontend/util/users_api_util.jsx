@@ -27,7 +27,21 @@ var UsersApiUtil = {
         success && success();
       }
     });
+  },
+
+  awardPoints: function (points, success) {
+    $.ajax({
+      url: '/api/users/' + CurrentUserStore.currentUser().id,
+      type: 'PATCH',
+      dataType: 'json',
+      data: {user: {points: points}},
+      success: function (currentUser) {
+        CurrentUserActions.awardPoints(currentUser, points);
+        success && success();
+      }
+    });
   }
+
 };
 
 module.exports = UsersApiUtil;

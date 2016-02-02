@@ -34,12 +34,10 @@ var React = require('react'),
     </Route>
   );
 
-
   function _ensureLoggedInOrCurrentCourse(nextState, replace, callback) {
     if (CurrentUserStore.userHasBeenFetched()) {
       _redirectIfNotLoggedInOrNoCurrentCourse();
     } else {
-
       SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedInOrNoCurrentCourse);
     }
 

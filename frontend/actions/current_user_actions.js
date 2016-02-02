@@ -7,7 +7,17 @@ var CurrentUserActions = {
       actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
       currentUser: currentUser
     });
-  }
+  },
+
+  awardPoints: function (currentUser, points) {
+    AppDispatcher.dispatch({
+      actionType: CurrentUserConstants.POINTS_AWARDED,
+      points: points,
+      currentUser: currentUser
+    });
+  },
+
+
 };
 
 module.exports = CurrentUserActions;

@@ -87,7 +87,6 @@
 	  if (CurrentUserStore.userHasBeenFetched()) {
 	    _redirectIfNotLoggedInOrNoCurrentCourse();
 	  } else {
-	
 	    SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedInOrNoCurrentCourse);
 	  }
 	
@@ -24088,6 +24087,11 @@
 	    History = __webpack_require__(159).History,
 	    SessionsApiUtil = __webpack_require__(241);
 	
+	var not_in_lessons_or_skills = function () {
+	  var loc = window.location.hash;
+	  return !/.*(lessons).*/.test(loc) && !/.*(skill).*/.test(loc);
+	};
+	
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
@@ -24095,8 +24099,9 @@
 	
 	  componentDidMount: function () {
 	    this.currentUserListener = CurrentUserStore.addListener(function () {
-	      if (CurrentUserStore.isLoggedIn()) {
-	        var path = "/course/" + CurrentUserStore.currentUser().current_course_id;
+	      if (CurrentUserStore.isLoggedIn() && not_in_lessons_or_skills()) {
+	        var courseId = CurrentUserStore.currentUser().current_course_id;
+	        var path = "/course/" + courseId;
 	        this.history.pushState(null, path);
 	      }
 	    }.bind(this));
@@ -31281,6 +31286,10 @@
 	var _userHasBeenFetched = false;
 	var CurrentUserStore = new Store(AppDispatcher);
 	
+	var awardPoints = function (points) {
+	  _currentUser.points += points;
+	};
+	
 	CurrentUserStore.currentUser = function () {
 	  return Object.assign({}, _currentUser);
 	};
@@ -31298,6 +31307,12 @@
 	    _userHasBeenFetched = true;
 	    _currentUser = payload.currentUser;
 	    CurrentUserStore.__emitChange();
+	  } else if (payload.actionType === CurrentUserConstants.POINTS_AWARDED) {
+	    debugger;
+	    awardPoints(payload.points);
+	    _currentUser = payload.currentUser;
+	    _userHasBeenFetched = true;
+	    CurrentUserStore.__emitChange();
 	  }
 	};
 	
@@ -31310,7 +31325,8 @@
 /***/ function(module, exports) {
 
 	var CurrentUserConstants = {
-	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER"
+	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER",
+	  POINTS_AWARDED: "POINTS_AWARDED"
 	};
 	
 	module.exports = CurrentUserConstants;
@@ -31646,7 +31662,16 @@
 	      actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
 	      currentUser: currentUser
 	    });
+	  },
+	
+	  awardPoints: function (currentUser, points) {
+	    AppDispatcher.dispatch({
+	      actionType: CurrentUserConstants.POINTS_AWARDED,
+	      points: points,
+	      currentUser: currentUser
+	    });
 	  }
+	
 	};
 	
 	module.exports = CurrentUserActions;
@@ -32195,7 +32220,21 @@
 	        success && success();
 	      }
 	    });
+	  },
+	
+	  awardPoints: function (points, success) {
+	    $.ajax({
+	      url: '/api/users/' + CurrentUserStore.currentUser().id,
+	      type: 'PATCH',
+	      dataType: 'json',
+	      data: { user: { points: points } },
+	      success: function (currentUser) {
+	        CurrentUserActions.awardPoints(currentUser, points);
+	        success && success();
+	      }
+	    });
 	  }
+	
 	};
 	
 	module.exports = UsersApiUtil;
@@ -32991,10 +33030,20 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
+	    UsersApiUtil = __webpack_require__(253),
 	    LessonBottomBar = __webpack_require__(274);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
+	
+	  componentDidMount: function () {
+	    if (CurrentUserStore.isLoggedIn()) {
+	      var points = ExerciseStore.all().length;
+	      setTimeout(function () {
+	        UsersApiUtil.awardPoints(points);
+	      }, 2500);
+	    }
+	  },
 	
 	  render: function () {
 	    return React.createElement(
