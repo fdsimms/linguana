@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
     user = User.find_by(provider: provider, uid: uid)
 
     return user if user
-    debugger
+
     User.create(
       email: SecureRandom::urlsafe_base64(12),
       lname: auth_hash[:info][:last_name],
