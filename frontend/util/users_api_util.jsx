@@ -41,6 +41,19 @@ var UsersApiUtil = {
         success && success();
       }
     });
+  },
+
+  createCompletionForUser: function (completionParams, success) {
+    $.ajax({
+      url: '/api/completions/',
+      type: 'post',
+      dataType: 'json',
+      data: {completion: completionParams},
+      success: function (currentUser) {
+        CurrentUserActions.receiveCurrentUser(currentUser);
+        success && success();
+      }
+    });
   }
 
 };

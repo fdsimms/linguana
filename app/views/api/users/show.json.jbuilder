@@ -10,4 +10,5 @@ json.extract! @user,
               :streak_length,
               :points,
               :hometown,
-              :enrolled_courses
+              :enrolled_courses,
+              :completions

@@ -27,7 +27,9 @@ class Api::UsersController < ApplicationController
   end
 
   def show
-    @user = User.include(:enrolled_courses).find(params[:id])
+    @user = User.include(:enrolled_courses)
+                .include(:completions)
+                .find(params[:id])
   end
 
   def index

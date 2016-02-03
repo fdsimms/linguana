@@ -185,7 +185,7 @@ var Lesson = React.createClass({
   finalPage: function () {
     return(
     <div className="lesson-page-content box-shadowed">
-      <LessonFinalPage />
+      <LessonFinalPage lesson={this.state.lesson} />
       {this.bottomBar()}
     </div>
   );

@@ -6,9 +6,17 @@ module.exports = React.createClass({
   componentDidMount: function () {
     if (CurrentUserStore.isLoggedIn()) {
       var points = ExerciseStore.all().length;
-      setTimeout(function () {
+      var completionParams = {};
+      completionParams.user_id = CurrentUserStore.currentUser().id;
+      completionParams.completable_id = this.props.lesson.id;
+      completionParams.completable_type = "lesson";
+      if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
+        UsersApiUtil.createCompletionForUser(completionParams, function () {
+          UsersApiUtil.awardPoints(points);
+        }.bind(this));
+      } else {
         UsersApiUtil.awardPoints(points);
-      }, 2500);
+      }
     }
   },
 

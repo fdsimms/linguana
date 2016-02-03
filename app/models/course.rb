@@ -15,7 +15,7 @@ class Course < ActiveRecord::Base
     foreign_key: :known_language_id
   )
 
-  has_many :completions, as :completable
+  has_many :completions, as: :completable
   has_many :skills, dependent: :destroy
   has_many :course_enrollments
   has_many :lessons, through: :skills

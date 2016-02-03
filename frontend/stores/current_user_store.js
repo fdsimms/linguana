@@ -10,6 +10,20 @@ var awardPoints = function (points) {
   _currentUser.points += points;
 };
 
+CurrentUserStore.findCompletion = function (completableId, completableType) {
+  var result;
+  if (_currentUser.completions) {
+    _currentUser.completions.forEach(function (completion) {
+      if (completion.completable_id === completableId &&
+          completion.completable_type === completableType ) {
+        result = completion;
+      }
+    });
+  }
+  debugger
+  return result;
+};
+
 CurrentUserStore.currentUser = function () {
   return Object.assign({}, _currentUser);
 };

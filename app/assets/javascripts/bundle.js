@@ -31325,6 +31325,19 @@
 	  _currentUser.points += points;
 	};
 	
+	CurrentUserStore.findCompletion = function (completableId, completableType) {
+	  var result;
+	  if (_currentUser.completions) {
+	    _currentUser.completions.forEach(function (completion) {
+	      if (completion.completable_id === completableId && completion.completable_type === completableType) {
+	        result = completion;
+	      }
+	    });
+	  }
+	  debugger;
+	  return result;
+	};
+	
 	CurrentUserStore.currentUser = function () {
 	  return Object.assign({}, _currentUser);
 	};
@@ -32415,6 +32428,19 @@
 	        success && success();
 	      }
 	    });
+	  },
+	
+	  createCompletionForUser: function (completionParams, success) {
+	    $.ajax({
+	      url: '/api/completions/',
+	      type: 'post',
+	      dataType: 'json',
+	      data: { completion: completionParams },
+	      success: function (currentUser) {
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        success && success();
+	      }
+	    });
 	  }
 	
 	};
@@ -33113,31 +33139,65 @@
 /* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
+	var React = __webpack_require__(1),
+	    CurrentUserStore = __webpack_require__(232);
 	
 	var LessonIndexItem = React.createClass({
-	  displayName: "LessonIndexItem",
+	  displayName: 'LessonIndexItem',
 	
-	  render: function () {
+	  uncompletedRender: function () {
 	    return React.createElement(
-	      "div",
-	      { className: "lesson-list-item-wrapper" },
+	      'div',
+	      { className: 'lesson-list-item-wrapper' },
 	      React.createElement(
-	        "h2",
-	        { className: "lesson-list-item" },
+	        'h2',
+	        { className: 'lesson-list-item' },
 	        this.props.lesson.name
 	      ),
 	      React.createElement(
-	        "div",
-	        { className: "lesson-list-contents" },
+	        'div',
+	        { className: 'lesson-list-contents' },
 	        React.createElement(
-	          "a",
-	          { className: "lesson-begin-button",
+	          'a',
+	          { className: 'lesson-begin-button',
 	            href: "#/lessons/" + this.props.lesson.id },
-	          "Begin"
+	          'Begin'
 	        )
 	      )
 	    );
+	  },
+	
+	  completedRender: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-list-item-wrapper' },
+	      React.createElement(
+	        'h2',
+	        { className: 'lesson-list-item completed' },
+	        this.props.lesson.name
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'lesson-list-contents' },
+	        React.createElement(
+	          'a',
+	          { className: 'lesson-begin-button',
+	            href: "#/lessons/" + this.props.lesson.id },
+	          'Redo'
+	        )
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var toRender;
+	    if (CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
+	      toRender = this.completedRender();
+	    } else {
+	      toRender = this.uncompletedRender();
+	    }
+	
+	    return toRender;
 	  }
 	});
 	
@@ -33493,7 +33553,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'lesson-page-content box-shadowed' },
-	      React.createElement(LessonFinalPage, null),
+	      React.createElement(LessonFinalPage, { lesson: this.state.lesson }),
 	      this.bottomBar()
 	    );
 	  },
@@ -34127,9 +34187,17 @@
 	  componentDidMount: function () {
 	    if (CurrentUserStore.isLoggedIn()) {
 	      var points = ExerciseStore.all().length;
-	      setTimeout(function () {
+	      var completionParams = {};
+	      completionParams.user_id = CurrentUserStore.currentUser().id;
+	      completionParams.completable_id = this.props.lesson.id;
+	      completionParams.completable_type = "lesson";
+	      if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
+	        UsersApiUtil.createCompletionForUser(completionParams, function () {
+	          UsersApiUtil.awardPoints(points);
+	        }.bind(this));
+	      } else {
 	        UsersApiUtil.awardPoints(points);
-	      }, 2500);
+	      }
 	    }
 	  },
 	

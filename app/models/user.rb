@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   attr_reader :password
 
   has_many :course_enrollments
+  has_many :completions
 
   has_many(
     :enrolled_courses,
@@ -38,7 +39,7 @@ class User < ActiveRecord::Base
     if user.save
       CourseEnrollment.create!(user_id: user.id, course_id: Course.first.id)
     end
-    
+
     user
   end
 
