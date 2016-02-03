@@ -81,7 +81,15 @@ var NavBar = React.createClass({
 
   normalNavBarButtons: function () {
     if (CurrentUserStore.isLoggedIn()) {
-      return(<div />);
+      return(
+        <button className="user-info-button"
+                onMouseEnter={this._handleUserInfoEnter}
+                onMouseLeave={this._handleUserInfoLeave}>
+          <i className="fa fa-chevron-down" />
+          {CurrentUserStore.currentUser().fname}
+          <UserInfoDropdown />
+        </button>
+      );
     } else {
       return(
         <a className="create-profile-button"
@@ -98,13 +106,6 @@ var NavBar = React.createClass({
           <a href="/">Linguana</a>
         </h1>
         <div className="header-buttons group">
-          <button className="user-info-button"
-                  onMouseEnter={this._handleUserInfoEnter}
-                  onMouseLeave={this._handleUserInfoLeave}>
-            <i className="fa fa-chevron-down" />
-           {CurrentUserStore.currentUser().fname}
-           <UserInfoDropdown />
-          </button>
           {this.normalNavBarButtons()}
         </div>
       </nav>

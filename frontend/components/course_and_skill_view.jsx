@@ -6,7 +6,7 @@ var React = require('react'),
 module.exports = React.createClass({
   render: function () {
     return(
-      <div className="main-content group">
+      <div className="main-content box-shadowed group">
         {this.props.children}
       </div>
     );

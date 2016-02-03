@@ -24693,7 +24693,15 @@
 	
 	  normalNavBarButtons: function () {
 	    if (CurrentUserStore.isLoggedIn()) {
-	      return React.createElement('div', null);
+	      return React.createElement(
+	        'button',
+	        { className: 'user-info-button',
+	          onMouseEnter: this._handleUserInfoEnter,
+	          onMouseLeave: this._handleUserInfoLeave },
+	        React.createElement('i', { className: 'fa fa-chevron-down' }),
+	        CurrentUserStore.currentUser().fname,
+	        React.createElement(UserInfoDropdown, null)
+	      );
 	    } else {
 	      return React.createElement(
 	        'a',
@@ -24721,15 +24729,6 @@
 	      React.createElement(
 	        'div',
 	        { className: 'header-buttons group' },
-	        React.createElement(
-	          'button',
-	          { className: 'user-info-button',
-	            onMouseEnter: this._handleUserInfoEnter,
-	            onMouseLeave: this._handleUserInfoLeave },
-	          React.createElement('i', { className: 'fa fa-chevron-down' }),
-	          CurrentUserStore.currentUser().fname,
-	          React.createElement(UserInfoDropdown, null)
-	        ),
 	        this.normalNavBarButtons()
 	      )
 	    );
@@ -33064,7 +33063,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'main-content group' },
+	      { className: 'main-content box-shadowed group' },
 	      this.props.children
 	    );
 	  }
