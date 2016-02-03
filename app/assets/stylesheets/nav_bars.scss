@@ -54,24 +54,28 @@
   background-color: #fff;
 }
 
-.splash-login-inputs .facebook-login {
+.splash-login-inputs .facebook-login,
+.signup-inputs .facebook-login {
   margin-bottom: 5px;
   background-color: rgb(59, 87, 157);
   padding-right: 13px;
   padding-left: 13px;
 }
 
-.splash-login-inputs .facebook-login:hover {
+.splash-login-inputs .facebook-login:hover,
+.signup-inputs .facebook-login:hover {
   background-color: rgb(77, 106, 176);
 }
 
-.splash-login-inputs .google-login {
+.splash-login-inputs .google-login,
+.signup-inputs .google-login {
   background-color: #dd381d;
   padding-right: 23px;
   padding-left: 23px;
 }
 
-.splash-login-inputs .google-login:hover {
+.splash-login-inputs .google-login:hover,
+.signup-inputs .google-login:hover {
 background-color: rgb(242, 42, 0);
 }
 

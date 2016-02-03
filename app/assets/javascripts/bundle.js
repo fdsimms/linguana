@@ -32201,6 +32201,28 @@
 	            { className: 'signup-button' },
 	            'Create Account'
 	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'oauth-buttons group' },
+	          React.createElement(
+	            'button',
+	            { className: 'facebook-login' },
+	            React.createElement(
+	              'a',
+	              { href: '/auth/facebook' },
+	              'Log in with Facebook'
+	            )
+	          ),
+	          React.createElement(
+	            'button',
+	            { className: 'google-login' },
+	            React.createElement(
+	              'a',
+	              { href: '/auth/google_oauth2' },
+	              'Log in with Google'
+	            )
+	          )
 	        )
 	      )
 	    );

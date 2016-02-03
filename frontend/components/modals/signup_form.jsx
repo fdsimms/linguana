@@ -50,6 +50,18 @@ var SignupForm = React.createClass({
               </div>
               <button className="signup-button">Create Account</button>
             </form>
+            <div className="oauth-buttons group">
+              <button className="facebook-login">
+                <a href="/auth/facebook">
+                  Log in with Facebook
+                </a>
+              </button>
+              <button className="google-login">
+                <a href="/auth/google_oauth2">
+                  Log in with Google
+                </a>
+              </button>
+            </div>
           </div>
         </div>
     );

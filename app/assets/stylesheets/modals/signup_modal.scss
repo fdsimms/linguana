@@ -6,7 +6,7 @@
   margin-left: -216px;
   margin-top: 68px;
   width: 424px;
-  height: 550px;
+  height: 535px;
   top: 122px;
   right: 566px;
   color: #000;
@@ -99,4 +99,28 @@ display: block;
   width: 100%;
   top: 0px;
   margin: 0;
+}
+
+.signup-inputs .google-login,
+.signup-inputs .facebook-login {
+  padding: 5px 2px;
+  margin: auto;
+  font-size: 14px;
+  border-radius: 20px;
+  color: #fff;
+}
+
+.oauth-buttons {
+  width: 361px;
+  display: block;
+  margin: auto;
+  padding-top: 10px;
+}
+
+.signup-inputs .facebook-login {
+  float: left;
+}
+
+.signup-inputs .google-login {
+  float: right;
 }
