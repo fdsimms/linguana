@@ -112,11 +112,11 @@ spanish_basic_1_1 = Lesson.create!(
 )
 spanish_basic_1_2 = Lesson.create!(
   name: "Lesson 2",
-  skill_id: spanish_for_english.id
+  skill_id: spanish_basic_1.id
 )
 spanish_basic_1_3 = Lesson.create!(
   name: "Lesson 3",
-  skill_id: spanish_for_english.id
+  skill_id: spanish_basic_1.id
 
 )
 
@@ -288,6 +288,170 @@ choice_8_3 = AnswerChoice.create!(
 choice_8_4 = AnswerChoice.create!(
   body: "El jefe",
   exercise_id: mcq8.id
+)
+mcq1_1 = Exercise.create!(
+  lesson_id: spanish_basic_1_1.id,
+  thing_to_translate: "The boy",
+  exercise_type: "multiple_choice"
+)
+
+choice_1_1 = AnswerChoice.create!(
+  body: "El niño",
+  exercise_id: mcq1_1.id,
+  is_correct: true
+
+)
+choice_1_3 = AnswerChoice.create!(
+  body: "El hombre",
+  exercise_id: mcq1_1.id
+)
+choice_1_4 = AnswerChoice.create!(
+  body: "La mujer",
+  exercise_id: mcq1_1.id
+)
+
+
+mcq1_2 = Exercise.create!(
+  lesson_id: spanish_basic_1_2.id,
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The girl"
+)
+choice_2_1 = AnswerChoice.create!(
+  body: "El oso",
+  exercise_id: mcq1_2.id,
+)
+choice_2_2 = AnswerChoice.create!(
+  body: "La niña",
+  is_correct: true,
+  exercise_id: mcq1_2.id
+)
+choice_2_3 = AnswerChoice.create!(
+  body: "La cuchara",
+  exercise_id: mcq1_2.id
+)
+
+
+mcq1_3 = Exercise.create!(
+  lesson_id: spanish_basic_1_2.id,
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The dog"
+)
+choice_3_1 = AnswerChoice.create!(
+  body: "El niño",
+  exercise_id: mcq1_3.id,
+)
+choice_3_2 = AnswerChoice.create!(
+  body: "El gato",
+  exercise_id: mcq1_3.id
+)
+
+choice_3_4 = AnswerChoice.create!(
+  body: "El perro",
+  is_correct: true,
+  exercise_id: mcq1_3.id
+)
+
+
+mcq1_4 = Exercise.create!(
+  lesson_id: spanish_basic_1_2.id,
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The mother"
+)
+choice_4_2 = AnswerChoice.create!(
+  body: "La madre",
+  is_correct: true,
+  exercise_id: mcq1_4.id
+)
+choice_4_3 = AnswerChoice.create!(
+  body: "El chico",
+  exercise_id: mcq1_4.id
+)
+choice_4_4 = AnswerChoice.create!(
+  body: "El gato",
+  exercise_id: mcq1_4.id
+)
+
+
+mcq1_5 = Exercise.create!(
+  lesson_id: spanish_basic_1_2.id,
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The man"
+)
+
+choice_5_1 = AnswerChoice.create!(
+  body: "El niño",
+  exercise_id: mcq1_5.id,
+)
+
+choice_5_3 = AnswerChoice.create!(
+  body: "El hombre",
+  is_correct: true,
+  exercise_id: mcq1_5.id
+)
+choice_5_4 = AnswerChoice.create!(
+  body: "La niña",
+  exercise_id: mcq1_5.id
+)
+
+mcq1_6 = Exercise.create!(
+  lesson_id: spanish_basic_1_2.id,
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The baby"
+)
+
+choice_6_1 = AnswerChoice.create!(
+  body: "El bebé",
+  is_correct: true,
+  exercise_id: mcq1_6.id,
+)
+choice_6_3 = AnswerChoice.create!(
+  body: "El niño",
+  exercise_id: mcq1_6.id
+)
+choice_6_4 = AnswerChoice.create!(
+  body: "El oso",
+  exercise_id: mcq1_6.id
+)
+
+mcq1_7 = Exercise.create!(
+  lesson_id: spanish_basic_1_2.id,
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The bear"
+)
+
+choice_7_1 = AnswerChoice.create!(
+  body: "El niño",
+  exercise_id: mcq1_7.id,
+)
+choice_7_2 = AnswerChoice.create!(
+  body: "El oso",
+  is_correct: true,
+  exercise_id: mcq1_7.id
+)
+choice_7_3 = AnswerChoice.create!(
+  body: "La mano",
+  exercise_id: mcq1_7.id
+)
+
+
+mcq1_8 = Exercise.create!(
+  lesson_id: spanish_basic_1_2.id,
+  exercise_type: "multiple_choice",
+  thing_to_translate: "The cat"
+)
+
+choice_8_1 = AnswerChoice.create!(
+  body: "El gato",
+  is_correct: true,
+  exercise_id: mcq1_8.id,
+)
+choice_8_3 = AnswerChoice.create!(
+  body: "La mujer",
+  exercise_id: mcq1_8.id
+)
+choice_8_4 = AnswerChoice.create!(
+  body: "El jefe",
+  exercise_id: mcq1_8.id
 )
 
 # users

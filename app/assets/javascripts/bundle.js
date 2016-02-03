@@ -33072,7 +33072,7 @@
 	        prevLesson = lessons[Object.keys(this.state.lessons)[idx - 1]];
 	      }
 	      return React.createElement(LessonIndexItem, { key: idx, lesson: lesson, prevLesson: prevLesson });
-	    });
+	    }.bind(this));
 	
 	    return React.createElement(
 	      'div',
@@ -33203,7 +33203,7 @@
 	        { className: 'lesson-list-contents' },
 	        React.createElement(
 	          'h3',
-	          null,
+	          { className: 'lesson-begin-button' },
 	          'Locked'
 	        )
 	      )

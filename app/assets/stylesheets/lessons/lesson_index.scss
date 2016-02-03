@@ -64,6 +64,29 @@
   position: absolute;
 }
 
+
+.locked {
+  border: none;
+  background-color: #eee;
+  color: #bbb;
+}
+
+
+.locked .lesson-begin-button {
+  cursor: default;
+}
+
+.locked .lesson-begin-button:hover {
+  background: transparent;
+  color: #bbb;
+}
+
+.locked .lesson-list-item {
+  color: #bbb;
+}
+
+
+.locked .lesson-begin-button,
 .completed .lesson-begin-button {
   background: transparent;
   color: #bbb;
