@@ -31334,7 +31334,6 @@
 	      }
 	    });
 	  }
-	  debugger;
 	  return result;
 	};
 	
@@ -33170,12 +33169,13 @@
 	  completedRender: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'lesson-list-item-wrapper' },
+	      { className: 'lesson-list-item-wrapper completed' },
 	      React.createElement(
 	        'h2',
-	        { className: 'lesson-list-item completed' },
+	        { className: 'lesson-list-item' },
 	        this.props.lesson.name
 	      ),
+	      React.createElement('i', { className: 'fa fa-check-circle fa-2x' }),
 	      React.createElement(
 	        'div',
 	        { className: 'lesson-list-contents' },

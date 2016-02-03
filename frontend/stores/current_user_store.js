@@ -20,7 +20,6 @@ CurrentUserStore.findCompletion = function (completableId, completableType) {
       }
     });
   }
-  debugger
   return result;
 };
 

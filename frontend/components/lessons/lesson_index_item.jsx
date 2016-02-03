@@ -20,10 +20,11 @@ var LessonIndexItem = React.createClass({
 
   completedRender: function () {
     return(
-      <div className="lesson-list-item-wrapper">
-        <h2 className="lesson-list-item completed">
+      <div className="lesson-list-item-wrapper completed">
+        <h2 className="lesson-list-item">
           {this.props.lesson.name}
         </h2>
+        <i className="fa fa-check-circle fa-2x" />
         <div className="lesson-list-contents">
           <a className="lesson-begin-button"
              href={"#/lessons/" + this.props.lesson.id }>
