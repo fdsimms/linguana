@@ -32223,6 +32223,20 @@
 	              'Log in with Google'
 	            )
 	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'signup-bottom-bar' },
+	          React.createElement(
+	            'h3',
+	            { className: 'signup-bottom-bar-text' },
+	            'Have an account?'
+	          ),
+	          React.createElement(
+	            'button',
+	            { onClick: this._switchModal },
+	            ' Sign in.'
+	          )
 	        )
 	      )
 	    );

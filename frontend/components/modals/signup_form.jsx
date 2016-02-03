@@ -62,6 +62,12 @@ var SignupForm = React.createClass({
                 </a>
               </button>
             </div>
+            <div className="signup-bottom-bar">
+              <h3 className="signup-bottom-bar-text">
+                Have an account?
+              </h3>
+              <button onClick={this._switchModal}> Sign in.</button>
+            </div>
           </div>
         </div>
     );

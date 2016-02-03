@@ -17,8 +17,10 @@
 
 .signup-inputs {
   display: block;
-  margin: 10px auto;
-  width: calc(100% - 20px);
+  margin: auto;
+  margin-top: 15px;
+  overflow: hidden;
+  width: 100%;
   border-radius: inherit;
 }
 
@@ -68,8 +70,8 @@ display: block;
   display: block;
 }
 
-.signup-inputs input {
-  padding: 10px;
+.signup-inputs .signup-input input {
+  padding: 5px 0;
   background-color: #eee;
   width: 189px;
   border: none;
@@ -111,7 +113,7 @@ display: block;
 }
 
 .oauth-buttons {
-  width: 361px;
+  width: 375px;
   display: block;
   margin: auto;
   padding-top: 10px;
@@ -123,4 +125,22 @@ display: block;
 
 .signup-inputs .google-login {
   float: right;
+}
+
+.signup-bottom-bar {
+  background-color: #eee;
+  color: #aaa;
+  height: 100px;
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+  display: block;
+}
+
+.signup-bottom-bar button {
+  color: rgb(39, 177, 248);
+}
+
+.signup-bottom-bar-text {
+  padding-top: 30px;
 }
