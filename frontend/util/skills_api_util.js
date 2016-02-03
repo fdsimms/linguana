@@ -17,13 +17,14 @@ var SkillsApiUtil = {
 		});
 	},
 
-  fetchSkill: function (skillId) {
+  fetchSkill: function (skillId, success) {
     $.ajax({
       type: "GET",
       url: "api/skills/" + skillId,
       dataType: "json",
       success: function (skill) {
         SkillActions.receiveSkill(skill);
+        success && success();
       },
     });
   }

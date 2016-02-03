@@ -1,6 +1,8 @@
 var React = require('react'),
     SkillStore = require('../../stores/skill_store'),
     LessonIndex = require('../lessons/lesson_index'),
+    CurrentUserStore = require('../../stores/current_user_store'),
+    UsersApiUtil = require('../../util/users_api_util'),
     SkillsApiUtil = require('../../util/skills_api_util');
 
 var Skill = React.createClass({
@@ -17,6 +19,23 @@ var Skill = React.createClass({
   componentWillUnmount: function () {
     this.skillListener.remove();
   },
+
+  // completionCheck: function () {
+  //   var bool = true;
+  //   this.state.skill.lessons.forEach(function (lesson) {
+  //     if (!CurrentUserStore.findCompletion(lesson.id, "lesson")) {
+  //       bool = false;
+  //     }
+  //   });
+  //
+  //   if (bool) {
+  //     var completionParams;
+  //     completionParams.completion_id = this.state.skill.id;
+  //     completionParams.completion_type = "skill";
+  //     completionParams.user_id = CurrentUserStore.currentUser().id;
+  //     UsersApiUtil.createCompletionForUser(completionParams);
+  //   }
+  // },
 
   _skillsChanged: function () {
     this.setState({ skill: SkillStore.find(this.props.params.skillId) });

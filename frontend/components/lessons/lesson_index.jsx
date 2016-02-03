@@ -30,10 +30,13 @@ var LessonIndex = React.createClass({
     }
 
     var lessonKeys = Object.keys(this.state.lessons);
-
+    var prevLesson;
     lessons = lessonKeys.map(function (key, idx) {
       var lesson = lessons[key];
-      return <LessonIndexItem key={idx} lesson={lesson} />;
+      if (idx > 0) {
+        prevLesson = lessons[Object.keys(this.state.lessons)[idx - 1]];
+      }
+      return <LessonIndexItem key={idx} lesson={lesson} prevLesson={prevLesson}/>;
     });
 
     return(
