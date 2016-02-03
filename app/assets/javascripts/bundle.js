@@ -34134,6 +34134,8 @@
 	  },
 	
 	  render: function () {
+	    var points = ExerciseStore.all().length,
+	        pointsText = "+" + points + " points";
 	    return React.createElement(
 	      'div',
 	      { className: 'lesson-final group' },
@@ -34148,7 +34150,7 @@
 	        React.createElement(
 	          'h2',
 	          { className: 'lesson-final-counter' },
-	          '+10 xp'
+	          pointsText
 	        ),
 	        React.createElement('i', { className: 'fa fa-5x fa-trophy' })
 	      )

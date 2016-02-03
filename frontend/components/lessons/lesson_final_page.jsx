@@ -13,6 +13,8 @@ module.exports = React.createClass({
   },
 
   render: function () {
+    var points = ExerciseStore.all().length,
+        pointsText = "+" + points + " points";
     return(
       <div className="lesson-final group">
         <div className="lesson-final-contents group">
@@ -20,7 +22,7 @@ module.exports = React.createClass({
             Lesson complete!
           </h2>
           <h2 className="lesson-final-counter">
-            +10 xp
+            {pointsText}
           </h2>
           <i className="fa fa-5x fa-trophy" />
         </div>

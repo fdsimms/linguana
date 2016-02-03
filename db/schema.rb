@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160202220603) do
+ActiveRecord::Schema.define(version: 20160203183414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,19 @@ ActiveRecord::Schema.define(version: 20160202220603) do
   add_index "answer_choices", ["exercise_id", "body"], name: "index_answer_choices_on_exercise_id_and_body", unique: true, using: :btree
   add_index "answer_choices", ["exercise_id"], name: "index_answer_choices_on_exercise_id", using: :btree
   add_index "answer_choices", ["updated_at"], name: "index_answer_choices_on_updated_at", using: :btree
+
+  create_table "completions", force: :cascade do |t|
+    t.integer  "user_id",          null: false
+    t.integer  "completable_id",   null: false
+    t.string   "completable_type", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "completions", ["completable_id"], name: "index_completions_on_completable_id", using: :btree
+  add_index "completions", ["completable_type"], name: "index_completions_on_completable_type", using: :btree
+  add_index "completions", ["user_id", "completable_id"], name: "index_completions_on_user_id_and_completable_id", unique: true, using: :btree
+  add_index "completions", ["user_id"], name: "index_completions_on_user_id", using: :btree
 
   create_table "course_enrollments", force: :cascade do |t|
     t.integer  "user_id",    null: false
