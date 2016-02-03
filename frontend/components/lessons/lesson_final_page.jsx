@@ -37,6 +37,20 @@ module.exports = React.createClass({
     completionParams.user_id = CurrentUserStore.currentUser().id;
     completionParams.completable_id = skill.id;
     completionParams.completable_type = "skill";
+    UsersApiUtil.createCompletionForUser(completionParams, function () {
+      if (skill.id == SkillStore.findLastSkillId()) {
+        this.createCourseCompletion();
+      }
+    }.bind(this));
+  },
+
+  createCourseCompletion: function () {
+    var skill = SkillStore.find(this.props.lesson.skill_id);
+    var courseId = skill.course_id;
+    var completionParams = {};
+    completionParams.user_id = CurrentUserStore.currentUser().id;
+    completionParams.completable_id = courseId;
+    completionParams.completable_type = "course";
     UsersApiUtil.createCompletionForUser(completionParams);
   },
 

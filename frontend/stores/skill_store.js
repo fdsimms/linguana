@@ -13,6 +13,10 @@ var addSkill = function (skill) {
 
 };
 
+SkillStore.findLastSkillId = function () {
+  return Object.keys(_skills).slice(-1);
+};
+
 SkillStore.findByCourse = function (courseId) {
   var result = {};
   if (_skills === {}) { return {}; }

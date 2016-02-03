@@ -32526,6 +32526,23 @@
 	    this.skillListener.remove();
 	  },
 	
+	  renderTrophy: function () {
+	    if (CurrentUserStore.findCompletion(this.props.courseId, "course")) {
+	      return React.createElement(
+	        'i',
+	        { className: 'fa completion-trophy fa-trophy fa-5x' },
+	        React.createElement(
+	          'h2',
+	          { className: 'trophy-text' },
+	          '100',
+	          React.createElement('i', { className: 'fa fa-percent' })
+	        )
+	      );
+	    } else {
+	      return React.createElement('div', null);
+	    }
+	  },
+	
 	  render: function () {
 	    if (this.state.skills === {}) {
 	      return React.createElement('div', null);
@@ -32550,7 +32567,8 @@
 	        'ul',
 	        { className: 'skill-list group' },
 	        skills
-	      )
+	      ),
+	      this.renderTrophy()
 	    );
 	  }
 	});
@@ -32573,6 +32591,10 @@
 	
 	var addSkill = function (skill) {
 	  _skills[skill.id] = skill;
+	};
+	
+	SkillStore.findLastSkillId = function () {
+	  return Object.keys(_skills).slice(-1);
 	};
 	
 	SkillStore.findByCourse = function (courseId) {
@@ -32637,12 +32659,16 @@
 	  renderUncompleted: function () {
 	    return React.createElement(
 	      "div",
-	      { className: "skill-list-item-wrapper" },
+	      { className: "skill-list-item-wrapper incomplete" },
 	      React.createElement(
 	        "p",
 	        { className: "skill-list-item" },
-	        React.createElement("a", { className: "skill-list-circle",
-	          href: "#/skill/" + this.props.skill.id }),
+	        React.createElement(
+	          "a",
+	          { className: "skill-list-circle",
+	            href: "#/skill/" + this.props.skill.id },
+	          React.createElement("i", { className: "fa fa-comment fa-3x" })
+	        ),
 	        this.props.skill.name
 	      )
 	    );
@@ -32655,8 +32681,13 @@
 	      React.createElement(
 	        "p",
 	        { className: "skill-list-item" },
-	        React.createElement("a", { className: "skill-list-circle",
-	          href: "#/skill/" + this.props.skill.id }),
+	        React.createElement(
+	          "a",
+	          { className: "skill-list-circle",
+	            href: "#/skill/" + this.props.skill.id },
+	          React.createElement("i", { className: "fa fa-trophy fa-3x" }),
+	          React.createElement("i", { className: "fa fa-comment" })
+	        ),
 	        this.props.skill.name
 	      )
 	    );
@@ -34321,6 +34352,20 @@
 	    completionParams.user_id = CurrentUserStore.currentUser().id;
 	    completionParams.completable_id = skill.id;
 	    completionParams.completable_type = "skill";
+	    UsersApiUtil.createCompletionForUser(completionParams, function () {
+	      if (skill.id == SkillStore.findLastSkillId()) {
+	        this.createCourseCompletion();
+	      }
+	    }.bind(this));
+	  },
+	
+	  createCourseCompletion: function () {
+	    var skill = SkillStore.find(this.props.lesson.skill_id);
+	    var courseId = skill.course_id;
+	    var completionParams = {};
+	    completionParams.user_id = CurrentUserStore.currentUser().id;
+	    completionParams.completable_id = courseId;
+	    completionParams.completable_type = "course";
 	    UsersApiUtil.createCompletionForUser(completionParams);
 	  },
 	

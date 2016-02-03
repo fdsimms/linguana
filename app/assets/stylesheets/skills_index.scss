@@ -65,6 +65,26 @@
   color: #aaa;
 }
 
+.completed .fa-trophy {
+  top: 20px;
+  left: 20px;
+  color: goldenrod;
+  text-shadow: 0 0 8px gold;
+}
+
+.completed .fa-comment {
+  color: darkgoldenrod;
+  top: 27px;
+  left: 35px;
+}
+
+.incomplete .fa-comment {
+  top: 16px;
+  left: 20px;
+  color: #fff;
+  text-shadow: 0 0 1px #000
+}
+
 .completed .skill-list-circle {
   background: #fceabb; /* Old browsers */
   background: -moz-linear-gradient(45deg,  #fceabb 18%, #fccd4d 52%, #f8b500 61%, #fbdf93 80%); /* FF3.6-15 */
@@ -76,4 +96,30 @@
 .skill-list-item-wrapper:before:hover {
   background-color: rgb(47, 99, 149);
   border: 1px solid black;
+}
+
+.skill-index .completion-trophy {
+  color: gold;
+  position: absolute;
+  font-size: 18em;
+  top: 670px;
+  left: 280px;
+  text-shadow: 0 0 1px black;
+}
+
+.completion-trophy .trophy-text {
+  position: absolute;
+  color: darkgoldenrod;
+  font-size: 47px;
+  top: 71px;
+  left: 80px;
+  text-shadow: 0 0 8px yellow;
+  font-weight: bold;
+}
+
+.completion-trophy .fa-percent {
+  position: absolute;
+  font-size: 20px;
+  top: 3px;
+  left: 95px;
 }

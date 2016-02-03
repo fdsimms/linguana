@@ -21,6 +21,22 @@ var SkillIndex = React.createClass({
     this.skillListener.remove();
   },
 
+  renderTrophy: function () {
+    if (CurrentUserStore.findCompletion(this.props.courseId, "course")) {
+      return(
+        <i className="fa completion-trophy fa-trophy fa-5x">
+          <h2 className="trophy-text">
+            100
+            <i className="fa fa-percent"></i>
+          </h2>
+        </i>
+      )
+
+    } else {
+      return <div />;
+    }
+  },
+
   render: function () {
     if (this.state.skills === {}) { return <div />; }
 
@@ -41,6 +57,7 @@ var SkillIndex = React.createClass({
         <ul className="skill-list group">
           {skills}
         </ul>
+        {this.renderTrophy()}
       </div>
     );
   }

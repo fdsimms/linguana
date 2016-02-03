@@ -3,10 +3,11 @@ var React = require('react');
 var SkillIndexItem = React.createClass({
   renderUncompleted: function () {
     return(
-      <div className="skill-list-item-wrapper">
+      <div className="skill-list-item-wrapper incomplete">
         <p className="skill-list-item">
           <a className="skill-list-circle"
              href={"#/skill/" + this.props.skill.id }>
+             <i className="fa fa-comment fa-3x" />
           </a>
           {this.props.skill.name}
         </p>
@@ -20,6 +21,8 @@ var SkillIndexItem = React.createClass({
         <p className="skill-list-item">
           <a className="skill-list-circle"
              href={"#/skill/" + this.props.skill.id }>
+             <i className="fa fa-trophy fa-3x" />
+             <i className="fa fa-comment" />
           </a>
           {this.props.skill.name}
         </p>
