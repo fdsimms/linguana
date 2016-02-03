@@ -1,0 +1,67 @@
+.courses-dropdown a:hover {
+  color: #aaa;
+}
+
+.courses-dropdown a {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  padding: 5px 0;
+  display: block;
+  width: 100%;
+}
+
+.courses-dropdown {
+  position: absolute;
+  left: -85px;
+  top: 35px;
+  display: block;
+  min-height: 115px;
+  width: 200px;
+  cursor: default;
+  padding: 10px 0;
+}
+
+.courses-dropdown-header {
+  width: 100%;
+  border-bottom: 1px solid #aaa;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+.courses-dropdown-header h3 {
+  color: #aaa;
+}
+
+.courses-dropdown li:last-child {
+  border-bottom: 1px solid #aaa;
+}
+.courses-dropdown li:hover {
+  background-color: #ccc;
+}
+.courses-dropdown li {
+  width: 100%;
+  padding: 5px 0;
+  cursor: pointer;
+  text-align: center;
+  background: #bbb;
+}
+
+.course-index-button {
+  display: block;
+  position: relative;
+  top: 25px;
+  left: 10px;
+  float: right;
+  padding-bottom: 20px;
+  padding-right: 10px;
+}
+
+.course-index-button .fa-chevron-down {
+  color: #000;
+  top: 2px;
+  left: -18px;
+  padding-bottom: 20px;
+  padding-right: 10px;
+  position: absolute;
+}

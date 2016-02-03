@@ -123,3 +123,20 @@ background-color: rgb(242, 42, 0);
   top: 2px;
   left: -22px;
 }
+
+.points-counter {
+  float: right;
+  position: relative;
+  display: block;
+  top: 26px;
+  right: -30px;
+}
+
+.points-counter .fa {
+  position: absolute;
+  color: gold;
+  background-color: goldenrod;
+  border-radius: 50%;
+  top: 2px;
+  left: -20px;
+}

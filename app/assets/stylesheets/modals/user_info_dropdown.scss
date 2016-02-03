@@ -1,18 +1,23 @@
-.user-info-dropdown {
+.user-info-dropdown,
+.courses-dropdown {
   display: block;
-  width: 100px;
+  min-width: 100px;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 10px;
   color: #000;
-  padding: 10px;
   z-index: 1;
   position: absolute;
+}
+
+.user-info-dropdown {
   top: 35px;
+  padding: 10px;
+
   left: -20px;
 }
 
-.user-info-button {
+.user-info-button{
   display: block;
   float: right;
   color: #000;
@@ -27,12 +32,21 @@
   color: #aaa;
 }
 
-.user-info-dropdown li:first-child:before {
+.user-info-dropdown:before {
+  right: 52px;
+  top: -16px;
+}
+
+.courses-dropdown:before {
+  right: 96px;
+  top: -18px;
+}
+
+.user-info-dropdown:before,
+.courses-dropdown:before {
   content: "▲";
   position: absolute;
   font-size: 20px;
-  right: 52px;
-  top: -16px;
   text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.2);
   color: #fff;
 }

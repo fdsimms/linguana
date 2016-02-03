@@ -28,9 +28,8 @@ CurrentUserStore.__onDispatch = function (payload) {
     _currentUser = payload.currentUser;
     CurrentUserStore.__emitChange();
   } else if (payload.actionType === CurrentUserConstants.POINTS_AWARDED) {
-    debugger
-    awardPoints(payload.points);
     _currentUser = payload.currentUser;
+    awardPoints(payload.points);
     _userHasBeenFetched = true;
     CurrentUserStore.__emitChange();
   }

@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   validates :streak_length, :password_digest, presence: true
   validates :password, length: { minimum: 6, allow_nil: true }
 
-  after_initialize :ensure_session_token, :ensure_current_course_id
+  after_initialize :ensure_session_token
 
   attr_reader :password
 
@@ -24,15 +24,22 @@ class User < ActiveRecord::Base
 
     return user if user
 
-    User.create(
+    user = User.new(
       email: SecureRandom::urlsafe_base64(12),
       lname: auth_hash[:info][:last_name],
       fname: auth_hash[:info][:first_name],
       provider: provider,
+      current_course_id: Course.first.id,
       uid: uid,
       username: SecureRandom::urlsafe_base64(12),
       password: SecureRandom::urlsafe_base64(12)
     )
+
+    if user.save
+      CourseEnrollment.create!(user_id: user.id, course_id: Course.first.id)
+    end
+    
+    user
   end
 
   def self.find_by_credentials(username, password)
@@ -70,9 +77,5 @@ class User < ActiveRecord::Base
 
   def ensure_session_token
     self.session_token = User.generate_session_token
-  end
-
-  def ensure_current_course_id
-    self.current_course_id = Course.find_by(name: "Spanish").id
   end
 end

@@ -30,13 +30,14 @@ var UsersApiUtil = {
   },
 
   awardPoints: function (points, success) {
+    var newPoints = CurrentUserStore.currentUser().points + points;
     $.ajax({
       url: '/api/users/' + CurrentUserStore.currentUser().id,
       type: 'PATCH',
       dataType: 'json',
-      data: {user: {points: points}},
+      data: {user: {points: newPoints}},
       success: function (currentUser) {
-        CurrentUserActions.awardPoints(currentUser, points);
+        CurrentUserActions.receiveCurrentUser(currentUser);
         success && success();
       }
     });

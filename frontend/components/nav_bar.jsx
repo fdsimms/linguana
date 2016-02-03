@@ -8,15 +8,18 @@ var React = require('react'),
     SessionsApiUtil = require("../util/sessions_api_util"),
     LanguageIndexDropdown = require("./modals/language_index_dropdown"),
     UserInfoDropdown = require("./modals/user_info_dropdown"),
+    CourseIndexDropdown = require("./modals/course_index_dropdown"),
     LoginDropdown = require("./modals/login_dropdown");
 
 var NavBar = React.createClass({
   componentDidMount: function () {
     this.modalListener = ModalStore.addListener(this._modalsChanged);
+    this.currentUserListener = CurrentUserStore.addListener(this._usersChanged);
   },
 
   componentWillUnmount: function () {
     this.modalListener.remove();
+    this.currentUserListener.remove();
   },
 
   componentWillReceiveProps: function () {
@@ -24,6 +27,10 @@ var NavBar = React.createClass({
   },
 
   _modalsChanged: function () {
+    this.forceUpdate();
+  },
+
+  _usersChanged: function () {
     this.forceUpdate();
   },
 
@@ -42,6 +49,14 @@ var NavBar = React.createClass({
 
   _handleUserInfoLeave: function () {
     ModalActions.hideModal("userInfoDropdown");
+  },
+
+  _handleCoursesEnter: function () {
+    ModalActions.displayModal("courseIndexDropdown");
+  },
+
+  _handleCoursesLeave: function () {
+    ModalActions.hideModal("courseIndexDropdown");
   },
 
   _handleLanguagesEnter: function () {
@@ -100,12 +115,31 @@ var NavBar = React.createClass({
   },
 
   normalNavBar: function () {
-    return (
+    var points_counter;
+    if (CurrentUserStore.isLoggedIn()) {
+      points_counter = (
+        <h2 className="points-counter">
+          <i className="fa fa-adjust fa-lg" />
+          {CurrentUserStore.currentUser().points}
+        </h2>
+      );
+    }
+
+      return (
+
       <nav className="header-nav group">
         <h1 className="header-nav-logo">
           <a href="/">Linguana</a>
         </h1>
         <div className="header-buttons group">
+          {points_counter}
+          <button className="course-index-button"
+                  onMouseEnter={this._handleCoursesEnter}
+                  onMouseLeave={this._handleCoursesLeave}>
+                  <i className="fa fa-chevron-down" />
+            {CurrentUserStore.currentUser().current_course_id}
+            <CourseIndexDropdown />
+          </button>
           {this.normalNavBarButtons()}
         </div>
       </nav>

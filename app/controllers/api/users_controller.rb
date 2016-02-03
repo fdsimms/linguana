@@ -11,6 +11,7 @@ class Api::UsersController < ApplicationController
   end
 
   def update
+    debugger
     @user = User.find(params[:id])
     if @user.update(user_params)
       log_in!(@user)
@@ -27,7 +28,7 @@ class Api::UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.include(:enrolled_courses).find(params[:id])
   end
 
   def index

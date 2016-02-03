@@ -24609,6 +24609,7 @@
 	    SessionsApiUtil = __webpack_require__(241),
 	    LanguageIndexDropdown = __webpack_require__(243),
 	    UserInfoDropdown = __webpack_require__(248),
+	    CourseIndexDropdown = __webpack_require__(288),
 	    LoginDropdown = __webpack_require__(249);
 	
 	var NavBar = React.createClass({
@@ -24616,10 +24617,12 @@
 	
 	  componentDidMount: function () {
 	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    this.currentUserListener = CurrentUserStore.addListener(this._usersChanged);
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.modalListener.remove();
+	    this.currentUserListener.remove();
 	  },
 	
 	  componentWillReceiveProps: function () {
@@ -24627,6 +24630,10 @@
 	  },
 	
 	  _modalsChanged: function () {
+	    this.forceUpdate();
+	  },
+	
+	  _usersChanged: function () {
 	    this.forceUpdate();
 	  },
 	
@@ -24645,6 +24652,14 @@
 	
 	  _handleUserInfoLeave: function () {
 	    ModalActions.hideModal("userInfoDropdown");
+	  },
+	
+	  _handleCoursesEnter: function () {
+	    ModalActions.displayModal("courseIndexDropdown");
+	  },
+	
+	  _handleCoursesLeave: function () {
+	    ModalActions.hideModal("courseIndexDropdown");
 	  },
 	
 	  _handleLanguagesEnter: function () {
@@ -24714,6 +24729,16 @@
 	  },
 	
 	  normalNavBar: function () {
+	    var points_counter;
+	    if (CurrentUserStore.isLoggedIn()) {
+	      points_counter = React.createElement(
+	        'h2',
+	        { className: 'points-counter' },
+	        React.createElement('i', { className: 'fa fa-adjust fa-lg' }),
+	        CurrentUserStore.currentUser().points
+	      );
+	    }
+	
 	    return React.createElement(
 	      'nav',
 	      { className: 'header-nav group' },
@@ -24729,6 +24754,16 @@
 	      React.createElement(
 	        'div',
 	        { className: 'header-buttons group' },
+	        points_counter,
+	        React.createElement(
+	          'button',
+	          { className: 'course-index-button',
+	            onMouseEnter: this._handleCoursesEnter,
+	            onMouseLeave: this._handleCoursesLeave },
+	          React.createElement('i', { className: 'fa fa-chevron-down' }),
+	          CurrentUserStore.currentUser().current_course_id,
+	          React.createElement(CourseIndexDropdown, null)
+	        ),
 	        this.normalNavBarButtons()
 	      )
 	    );
@@ -31308,9 +31343,8 @@
 	    _currentUser = payload.currentUser;
 	    CurrentUserStore.__emitChange();
 	  } else if (payload.actionType === CurrentUserConstants.POINTS_AWARDED) {
-	    debugger;
-	    awardPoints(payload.points);
 	    _currentUser = payload.currentUser;
+	    awardPoints(payload.points);
 	    _userHasBeenFetched = true;
 	    CurrentUserStore.__emitChange();
 	  }
@@ -32370,13 +32404,14 @@
 	  },
 	
 	  awardPoints: function (points, success) {
+	    var newPoints = CurrentUserStore.currentUser().points + points;
 	    $.ajax({
 	      url: '/api/users/' + CurrentUserStore.currentUser().id,
 	      type: 'PATCH',
 	      dataType: 'json',
-	      data: { user: { points: points } },
+	      data: { user: { points: newPoints } },
 	      success: function (currentUser) {
-	        CurrentUserActions.awardPoints(currentUser, points);
+	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success();
 	      }
 	    });
@@ -34120,6 +34155,89 @@
 	    );
 	  }
 	});
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    ModalStore = __webpack_require__(214),
+	    CourseIndex = __webpack_require__(264),
+	    CoursesApiUtil = __webpack_require__(261);
+	
+	var CourseIndexDropdown = React.createClass({
+	  displayName: 'CourseIndexDropdown',
+	
+	  getInitialState: function () {
+	    return { modalName: "courseIndexDropdown" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    var modalName = this.state.modalName;
+	    ModalActions.addModal(modalName);
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	  },
+	
+	  visibleRender: function () {
+	    var courses;
+	
+	    if (CurrentUserStore.currentUser()) {
+	      courses = CurrentUserStore.currentUser().enrolled_courses;
+	      if (courses) {
+	        courses = courses.map(function (course, idx) {
+	          return React.createElement(
+	            'li',
+	            { key: idx },
+	            course.name
+	          );
+	        }.bind(this));
+	      }
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'courses-dropdown box-shadowed group' },
+	      React.createElement(
+	        'div',
+	        { className: 'courses-dropdown-header' },
+	        React.createElement(
+	          'h3',
+	          null,
+	          'Learning'
+	        )
+	      ),
+	      React.createElement(
+	        'ul',
+	        { className: 'courses-dropdown-list' },
+	        courses
+	      ),
+	      React.createElement(
+	        'a',
+	        { href: '#' },
+	        'Add a new course'
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = CourseIndexDropdown;
 
 /***/ }
 /******/ ]);
