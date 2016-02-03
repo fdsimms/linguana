@@ -28,7 +28,6 @@
 
 .skill-list-circle {
   content: "";
-  border: 1px solid #bbb;
   margin: 10px;
   position: absolute;
   float: left;
@@ -46,6 +45,32 @@
   float: left;
   width: 140px;
   height: 140px;
+}
+
+.locked .skill-list-item-wrapper {
+  position: relative;
+}
+
+.locked .skill-list-circle {
+  background: #eee;
+  cursor: default;
+  display: block;
+}
+
+.skill-list-circle .fa-lock {
+  position: absolute;
+  display: block;
+  top: 20px;
+  left: 26px;
+  color: #aaa;
+}
+
+.completed .skill-list-circle {
+  background: #fceabb; /* Old browsers */
+  background: -moz-linear-gradient(45deg,  #fceabb 18%, #fccd4d 52%, #f8b500 61%, #fbdf93 80%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(45deg,  #fceabb 18%,#fccd4d 52%,#f8b500 61%,#fbdf93 80%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(45deg,  #fceabb 18%,#fccd4d 52%,#f8b500 61%,#fbdf93 80%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#fbdf93',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 .skill-list-item-wrapper:before:hover {

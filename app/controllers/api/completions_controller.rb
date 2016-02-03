@@ -12,7 +12,8 @@ class Api::CompletionsController < ApplicationController
     @completion = Completion.new(new_params)
 
     if @completion.save
-      render "users/show/" + @completion.user_id
+      @user = User.find(@completion.user_id)
+      render "api/users/show"
     else
       render json: @completion.errors.full_messages, status: 422
     end

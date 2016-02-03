@@ -114,11 +114,11 @@ spanish_basic_1_2 = Lesson.create!(
   name: "Lesson 2",
   skill_id: spanish_basic_1.id
 )
-spanish_basic_1_3 = Lesson.create!(
-  name: "Lesson 3",
-  skill_id: spanish_basic_1.id
+# spanish_basic_1_3 = Lesson.create!(
+#   name: "Lesson 3",
+#   skill_id: spanish_basic_1.id
 
-)
+# )
 
 # exercises
 #   multiple_choice
@@ -289,8 +289,9 @@ choice_8_4 = AnswerChoice.create!(
   body: "El jefe",
   exercise_id: mcq8.id
 )
+
 mcq1_1 = Exercise.create!(
-  lesson_id: spanish_basic_1_1.id,
+  lesson_id: spanish_basic_1_2.id,
   thing_to_translate: "The boy",
   exercise_type: "multiple_choice"
 )

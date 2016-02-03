@@ -32534,9 +32534,14 @@
 	    var skills = this.state.skills;
 	    var skillKeys = Object.keys(this.state.skills);
 	    skills = skillKeys.map(function (key, idx) {
+	      var prevSkill;
 	      var skill = skills[key];
-	      return React.createElement(SkillIndexItem, { key: idx, skill: skill });
-	    });
+	      if (idx > 0) {
+	        prevSkill = skills[Object.keys(this.state.skills)[idx - 1]];
+	      }
+	
+	      return React.createElement(SkillIndexItem, { key: idx, skill: skill, prevSkill: prevSkill });
+	    }.bind(this));
 	
 	    return React.createElement(
 	      'div',
@@ -32629,7 +32634,7 @@
 	var SkillIndexItem = React.createClass({
 	  displayName: "SkillIndexItem",
 	
-	  render: function () {
+	  renderUncompleted: function () {
 	    return React.createElement(
 	      "div",
 	      { className: "skill-list-item-wrapper" },
@@ -32641,6 +32646,51 @@
 	        this.props.skill.name
 	      )
 	    );
+	  },
+	
+	  renderCompleted: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "skill-list-item-wrapper completed" },
+	      React.createElement(
+	        "p",
+	        { className: "skill-list-item" },
+	        React.createElement("a", { className: "skill-list-circle",
+	          href: "#/skill/" + this.props.skill.id }),
+	        this.props.skill.name
+	      )
+	    );
+	  },
+	
+	  renderLocked: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "skill-list-item-wrapper locked" },
+	      React.createElement(
+	        "p",
+	        { className: "skill-list-item" },
+	        React.createElement(
+	          "a",
+	          { className: "skill-list-circle" },
+	          React.createElement("i", { className: "fa fa-lock fa-3x" })
+	        ),
+	        this.props.skill.name
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var toRender;
+	    var findCompletion = CurrentUserStore.findCompletion;
+	    if (CurrentUserStore.findCompletion(this.props.skill.id, "skill")) {
+	      toRender = this.renderCompleted();
+	    } else if (this.props.prevSkill && findCompletion(this.props.prevSkill.id, "skill") || !this.props.prevSkill) {
+	      toRender = this.renderUncompleted();
+	    } else {
+	      toRender = this.renderLocked();
+	    }
+	
+	    return toRender;
 	  }
 	});
 	
@@ -33066,11 +33116,13 @@
 	
 	    var lessonKeys = Object.keys(this.state.lessons);
 	    var prevLesson;
+	
 	    lessons = lessonKeys.map(function (key, idx) {
 	      var lesson = lessons[key];
 	      if (idx > 0) {
 	        prevLesson = lessons[Object.keys(this.state.lessons)[idx - 1]];
 	      }
+	
 	      return React.createElement(LessonIndexItem, { key: idx, lesson: lesson, prevLesson: prevLesson });
 	    }.bind(this));
 	
@@ -33113,6 +33165,10 @@
 	
 	LessonStore.find = function (lessonId) {
 	  return _lessons[lessonId];
+	};
+	
+	LessonStore.findLastLessonId = function () {
+	  return Object.keys(_lessons).slice(-1);
 	};
 	
 	LessonStore.findBySkill = function (skillId) {
@@ -33204,6 +33260,7 @@
 	        React.createElement(
 	          'h3',
 	          { className: 'lesson-begin-button' },
+	          React.createElement('i', { className: 'fa fa-lock fa-lg' }),
 	          'Locked'
 	        )
 	      )
@@ -34226,6 +34283,7 @@
 
 	var React = __webpack_require__(1),
 	    UsersApiUtil = __webpack_require__(253),
+	    SkillStore = __webpack_require__(256),
 	    LessonBottomBar = __webpack_require__(286);
 	
 	module.exports = React.createClass({
@@ -34243,16 +34301,28 @@
 	    completionParams.user_id = CurrentUserStore.currentUser().id;
 	    completionParams.completable_id = this.props.lesson.id;
 	    completionParams.completable_type = "lesson";
+	
 	    if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
 	      UsersApiUtil.createCompletionForUser(completionParams, function () {
-	        UsersApiUtil.awardPoints(points);
+	        UsersApiUtil.awardPoints(points, function () {
+	          if (this.props.lesson.id == LessonStore.findLastLessonId()) {
+	            this.createSkillCompletion();
+	          }
+	        }.bind(this));
 	      }.bind(this));
 	    } else {
 	      UsersApiUtil.awardPoints(points);
 	    }
 	  },
 	
-	  skillCompletionCheck: function () {},
+	  createSkillCompletion: function () {
+	    var skill = SkillStore.find(this.props.lesson.skill_id);
+	    var completionParams = {};
+	    completionParams.user_id = CurrentUserStore.currentUser().id;
+	    completionParams.completable_id = skill.id;
+	    completionParams.completable_type = "skill";
+	    UsersApiUtil.createCompletionForUser(completionParams);
+	  },
 	
 	  render: function () {
 	    var points = ExerciseStore.all().length,

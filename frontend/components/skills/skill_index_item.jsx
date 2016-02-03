@@ -1,7 +1,7 @@
 var React = require('react');
 
 var SkillIndexItem = React.createClass({
-  render: function () {
+  renderUncompleted: function () {
     return(
       <div className="skill-list-item-wrapper">
         <p className="skill-list-item">
@@ -12,6 +12,47 @@ var SkillIndexItem = React.createClass({
         </p>
       </div>
     );
+  },
+
+  renderCompleted: function () {
+    return(
+      <div className="skill-list-item-wrapper completed">
+        <p className="skill-list-item">
+          <a className="skill-list-circle"
+             href={"#/skill/" + this.props.skill.id }>
+          </a>
+          {this.props.skill.name}
+        </p>
+      </div>
+    );
+  },
+
+  renderLocked: function () {
+    return(
+      <div className="skill-list-item-wrapper locked">
+        <p className="skill-list-item">
+          <a className="skill-list-circle">
+            <i className="fa fa-lock fa-3x" />
+          </a>
+          {this.props.skill.name}
+        </p>
+      </div>
+    );
+  },
+
+  render: function () {
+    var toRender;
+    var findCompletion = CurrentUserStore.findCompletion;
+    if (CurrentUserStore.findCompletion(this.props.skill.id, "skill")) {
+      toRender = this.renderCompleted();
+    } else if ((this.props.prevSkill && findCompletion(this.props.prevSkill.id, "skill")) ||
+                !this.props.prevSkill) {
+      toRender = this.renderUncompleted();
+    } else {
+      toRender = this.renderLocked();
+    }
+
+    return toRender;
   }
 });
 

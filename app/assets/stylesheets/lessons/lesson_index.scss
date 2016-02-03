@@ -65,7 +65,7 @@
 }
 
 
-.locked {
+.locked .lesson-list-item-wrapper {
   border: none;
   background-color: #eee;
   color: #bbb;
@@ -96,4 +96,15 @@
 .completed .lesson-begin-button:hover {
   background-color: #ddd;
   color: #000;
+}
+
+.locked .lesson-begin-button {
+  position: relative;
+}
+
+.locked .fa-lock {
+  position: absolute;
+  top: 12px;
+  display: block;
+  left: 18px;
 }

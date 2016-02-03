@@ -21,6 +21,10 @@ LessonStore.find = function (lessonId) {
   return _lessons[lessonId];
 };
 
+LessonStore.findLastLessonId = function () {
+  return Object.keys(_lessons).slice(-1);
+};
+
 LessonStore.findBySkill = function (skillId) {
   var result = {};
   if (_lessons === {}) { return {}; }

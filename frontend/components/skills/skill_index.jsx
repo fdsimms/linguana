@@ -27,9 +27,14 @@ var SkillIndex = React.createClass({
     var skills = this.state.skills;
     var skillKeys = Object.keys(this.state.skills);
     skills = skillKeys.map(function (key, idx) {
+      var prevSkill;
       var skill = skills[key];
-      return <SkillIndexItem key={idx} skill={skill} />;
-    });
+      if (idx > 0) {
+        prevSkill = skills[Object.keys(this.state.skills)[idx - 1]];
+      }
+
+      return <SkillIndexItem key={idx} skill={skill} prevSkill={prevSkill}/>;
+    }.bind(this));
 
     return(
       <div className="skill-index">
