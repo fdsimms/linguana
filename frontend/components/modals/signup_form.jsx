@@ -20,7 +20,7 @@ var SignupForm = React.createClass({
   submitLogin: function (e) {
     e.preventDefault();
     var credentials = e.currentTarget;
-    SessionsApiUtil.logIn(credentials);
+    SessionsApiUtil.logIn(credentials, this._closeModal);
   },
 
   _closeModal: function () {
@@ -102,7 +102,7 @@ var SignupForm = React.createClass({
            </div>
            <button id="signup-button">Log in</button>
           </form>
-          <form onSubmit={this.submit}>
+          <form onSubmit={this.submitLogin}>
             <div className="guest-inputs">
 
               <input type="hidden"

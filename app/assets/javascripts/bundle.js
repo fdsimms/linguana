@@ -32128,7 +32128,7 @@
 	  submitLogin: function (e) {
 	    e.preventDefault();
 	    var credentials = e.currentTarget;
-	    SessionsApiUtil.logIn(credentials);
+	    SessionsApiUtil.logIn(credentials, this._closeModal);
 	  },
 	
 	  _closeModal: function () {
@@ -32283,7 +32283,7 @@
 	      ),
 	      React.createElement(
 	        'form',
-	        { onSubmit: this.submit },
+	        { onSubmit: this.submitLogin },
 	        React.createElement(
 	          'div',
 	          { className: 'guest-inputs' },

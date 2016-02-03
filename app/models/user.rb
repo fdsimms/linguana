@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   validates :streak_length, :password_digest, presence: true
   validates :password, length: { minimum: 6, allow_nil: true }
 
-  after_initialize :ensure_session_token
+  after_initialize :ensure_session_token, :ensure_current_course_id
 
   attr_reader :password
 
@@ -70,5 +70,9 @@ class User < ActiveRecord::Base
 
   def ensure_session_token
     self.session_token = User.generate_session_token
+  end
+
+  def ensure_current_course_id
+    self.current_course_id = Course.find_by(name: "Spanish").id
   end
 end
