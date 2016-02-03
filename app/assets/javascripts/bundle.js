@@ -32107,6 +32107,7 @@
 	var React = __webpack_require__(1),
 	    History = __webpack_require__(159).History,
 	    UsersApiUtil = __webpack_require__(253),
+	    SessionsApiUtil = __webpack_require__(241),
 	    ModalActions = __webpack_require__(207);
 	
 	var SignupForm = React.createClass({
@@ -32114,131 +32115,218 @@
 	
 	  mixins: [History],
 	
-	  submit: function (e) {
+	  getInitialState: function () {
+	    return { toShow: "signup" };
+	  },
+	
+	  submitSignup: function (e) {
 	    e.preventDefault();
 	    var credentials = e.currentTarget;
 	    UsersApiUtil.createUser(credentials, this._closeModal);
+	  },
+	
+	  submitLogin: function (e) {
+	    e.preventDefault();
+	    var credentials = e.currentTarget;
+	    SessionsApiUtil.logIn(credentials);
 	  },
 	
 	  _closeModal: function () {
 	    ModalActions.hideModal("signupModal");
 	  },
 	
-	  render: function () {
+	  _showSignup: function () {
+	    this.setState({ toShow: "signup" });
+	  },
 	
+	  _showLogin: function () {
+	    this.setState({ toShow: "login" });
+	  },
+	
+	  signupView: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'signup-form group box-shadowed' },
-	      React.createElement('i', { className: 'fa fa-2x fa-times-circle-o',
-	        onClick: this._closeModal }),
+	      { className: 'signup-inputs group' },
 	      React.createElement(
-	        'div',
-	        { className: 'signup-inputs group' },
+	        'h2',
+	        { className: 'signup-header' },
+	        'Sign Up'
+	      ),
+	      React.createElement(
+	        'form',
+	        { className: 'group', onSubmit: this.submitSignup },
 	        React.createElement(
-	          'h2',
-	          { className: 'signup-header' },
-	          'Sign Up'
-	        ),
-	        React.createElement(
-	          'form',
-	          { className: 'group', onSubmit: this.submit },
+	          'div',
+	          { className: 'inputs group' },
 	          React.createElement(
 	            'div',
-	            { className: 'inputs group' },
+	            { className: 'signup-input group' },
 	            React.createElement(
-	              'div',
-	              { className: 'signup-input group' },
-	              React.createElement(
-	                'label',
-	                { htmlFor: 'username-signup' },
-	                'Username'
-	              ),
-	              React.createElement('input', { id: 'username-signup', name: 'user[username]' })
+	              'label',
+	              { htmlFor: 'username-signup' },
+	              'Username'
 	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'signup-input group' },
-	              React.createElement(
-	                'label',
-	                { htmlFor: 'email-signup' },
-	                'Email'
-	              ),
-	              React.createElement('input', { id: 'email-signup', name: 'user[email]' })
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'signup-input group' },
-	              React.createElement(
-	                'label',
-	                { htmlFor: 'password-signup' },
-	                'Password'
-	              ),
-	              React.createElement('input', { id: 'password-signup', type: 'password', name: 'user[password]' })
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'signup-input group' },
-	              React.createElement(
-	                'label',
-	                { htmlFor: 'fname-signup' },
-	                'First Name'
-	              ),
-	              React.createElement('input', { id: 'fname-signup', name: 'user[fname]' })
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'signup-input group' },
-	              React.createElement(
-	                'label',
-	                { htmlFor: 'lname-signup' },
-	                'Last Name'
-	              ),
-	              React.createElement('input', { id: 'lname-signup', name: 'user[lname]' })
-	            )
+	            React.createElement('input', { id: 'username-signup', name: 'user[username]' })
 	          ),
 	          React.createElement(
-	            'button',
-	            { className: 'signup-button' },
-	            'Create Account'
+	            'div',
+	            { className: 'signup-input group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'email-signup' },
+	              'Email'
+	            ),
+	            React.createElement('input', { id: 'email-signup', name: 'user[email]' })
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'signup-input group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'password-signup' },
+	              'Password'
+	            ),
+	            React.createElement('input', { id: 'password-signup', type: 'password', name: 'user[password]' })
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'signup-input group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'fname-signup' },
+	              'First Name'
+	            ),
+	            React.createElement('input', { id: 'fname-signup', name: 'user[fname]' })
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'signup-input group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'lname-signup' },
+	              'Last Name'
+	            ),
+	            React.createElement('input', { id: 'lname-signup', name: 'user[lname]' })
 	          )
 	        ),
 	        React.createElement(
-	          'div',
-	          { className: 'oauth-buttons group' },
+	          'button',
+	          { className: 'signup-button' },
+	          'Create Account'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'oauth-buttons group' },
+	        React.createElement(
+	          'button',
+	          { className: 'facebook-login' },
 	          React.createElement(
-	            'button',
-	            { className: 'facebook-login' },
-	            React.createElement(
-	              'a',
-	              { href: '/auth/facebook' },
-	              'Log in with Facebook'
-	            )
-	          ),
-	          React.createElement(
-	            'button',
-	            { className: 'google-login' },
-	            React.createElement(
-	              'a',
-	              { href: '/auth/google_oauth2' },
-	              'Log in with Google'
-	            )
+	            'a',
+	            { href: '/auth/facebook' },
+	            'Log in with Facebook'
 	          )
 	        ),
 	        React.createElement(
-	          'div',
-	          { className: 'signup-bottom-bar' },
+	          'button',
+	          { className: 'google-login' },
 	          React.createElement(
-	            'h3',
-	            { className: 'signup-bottom-bar-text' },
-	            'Have an account?'
-	          ),
-	          React.createElement(
-	            'button',
-	            { onClick: this._switchModal },
-	            ' Sign in.'
+	            'a',
+	            { href: '/auth/google_oauth2' },
+	            'Log in with Google'
 	          )
 	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'signup-bottom-bar' },
+	        React.createElement(
+	          'h3',
+	          { className: 'signup-bottom-bar-text' },
+	          'Have an account?'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this._showLogin },
+	          ' Sign in.'
+	        )
 	      )
+	    );
+	  },
+	
+	  loginView: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'signup-inputs group' },
+	      React.createElement(
+	        'h2',
+	        { className: 'signup-header' },
+	        'Log In'
+	      ),
+	      React.createElement(
+	        'form',
+	        { className: 'login-form-form', onSubmit: this.submitLogin },
+	        React.createElement(
+	          'div',
+	          { className: 'login-form-form-inputs' },
+	          React.createElement('input', { name: 'session[username]',
+	            placeholder: 'Username' }),
+	          React.createElement('input', { type: 'password',
+	            name: 'session[password]',
+	            placeholder: 'Password' })
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'signup-button' },
+	          'Log in'
+	        )
+	      ),
+	      React.createElement(
+	        'form',
+	        { onSubmit: this.submit },
+	        React.createElement(
+	          'div',
+	          { className: 'guest-inputs' },
+	          React.createElement('input', { type: 'hidden',
+	            name: 'session[username]',
+	            value: 'guest' }),
+	          React.createElement('input', { type: 'hidden',
+	            name: 'session[password]',
+	            value: 'password' }),
+	          React.createElement(
+	            'button',
+	            null,
+	            'Log in as guest'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'login-bottom-bar' },
+	        React.createElement(
+	          'button',
+	          { onClick: this._showSignup },
+	          'Create an account.'
+	        )
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var toRender, className;
+	    if (this.state.toShow === "signup") {
+	      toRender = this.signupView();
+	      className = "signup-form group box-shadowed";
+	    } else {
+	      toRender = this.loginView();
+	      className = "login-form group box-shadowed";
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: className },
+	      React.createElement('i', { className: 'fa fa-2x fa-times-circle-o',
+	        onClick: this._closeModal }),
+	      toRender
 	    );
 	  }
 	
