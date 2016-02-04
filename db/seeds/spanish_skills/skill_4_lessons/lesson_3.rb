@@ -1,29 +1,29 @@
 spanish_for_english = Course.find_by_name("Spanish")
-spanish_basic_2 = Skill.find_by(name: "Basics 2", course_id: spanish_for_english.id)
+skill = Skill.find_by(name: "Greetings", course_id: spanish_for_english.id)
 
 lesson = Lesson.create!(
   name: "Lesson 3",
-  skill_id: spanish_basic_2.id
+  skill_id: skill.id
 )
 
   mcq1 = Exercise.create!(
     lesson_id: lesson.id,
-    thing_to_translate: "Los niños",
+    thing_to_translate: "What's your name?",
     exercise_type: "multiple_choice"
   )
 
   choice_1_1 = AnswerChoice.create!(
-    body: "The children",
+    body: "¿Cómo se llama?",
     exercise_id: mcq1.id,
     is_correct: true
 
   )
   choice_1_3 = AnswerChoice.create!(
-    body: "The girls",
+    body: "¿Cómo estás?",
     exercise_id: mcq1.id
   )
   choice_1_4 = AnswerChoice.create!(
-    body: "The women",
+    body: "¿Qué?",
     exercise_id: mcq1.id
   )
 
@@ -31,19 +31,19 @@ lesson = Lesson.create!(
   mcq2 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "The parents"
+    thing_to_translate: "My name is Leopold"
   )
   choice_2_1 = AnswerChoice.create!(
-    body: "Los padres",
+    body: "Me llamo Leopold",
     exercise_id: mcq2.id,
     is_correct: true,
   )
   choice_2_2 = AnswerChoice.create!(
-    body: "Las madres",
+    body: "Me llamas Leopold",
     exercise_id: mcq2.id
   )
   choice_2_3 = AnswerChoice.create!(
-    body: "Las cucharas",
+    body: "Me ama Leopold",
     exercise_id: mcq2.id
   )
 
@@ -51,20 +51,20 @@ lesson = Lesson.create!(
   mcq3 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "The grandparents"
+    thing_to_translate: "How are you?"
   )
   choice_3_1 = AnswerChoice.create!(
-    body: "Los abuelos",
+    body: "¿Cómo estás?",
     is_correct: true,
     exercise_id: mcq3.id,
   )
   choice_3_2 = AnswerChoice.create!(
-    body: "Los gatos",
+    body: "¿Cómo?",
     exercise_id: mcq3.id
   )
 
   choice_3_4 = AnswerChoice.create!(
-    body: "El chocolate",
+    body: "¿Por qué gritas así?",
     exercise_id: mcq3.id
   )
 
@@ -72,81 +72,80 @@ lesson = Lesson.create!(
   mcq4 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "The grandmothers"
+    thing_to_translate: "Take care"
   )
   choice_4_2 = AnswerChoice.create!(
-    body: "Las abuelas",
+    body: "Cuídate",
     is_correct: true,
     exercise_id: mcq4.id
   )
   choice_4_3 = AnswerChoice.create!(
-    body: "Los abuelos",
+    body: "Adiós",
     exercise_id: mcq4.id
   )
   choice_4_4 = AnswerChoice.create!(
-    body: "El abuelo",
+    body: "Hasta luego",
     exercise_id: mcq4.id
   )
-
 
   mcq5 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "Los abuelos"
+    thing_to_translate: "I am Francisco"
   )
 
   choice_5_1 = AnswerChoice.create!(
-    body: "The grandparents",
     exercise_id: mcq5.id,
+    body: "Soy Francisco",
     is_correct: true,
   )
 
   choice_5_3 = AnswerChoice.create!(
-    body: "The humans",
+    body: "San Francisco",
     exercise_id: mcq5.id
   )
   choice_5_4 = AnswerChoice.create!(
-    body: "The cows",
+    body: "Me llamo Helvetica",
     exercise_id: mcq5.id
   )
 
   mcq6 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "Los chicos"
+    thing_to_translate: "Until next we meet"
   )
 
   choice_6_1 = AnswerChoice.create!(
-    body: "The kids",
+    body: "Hasta la próxima vez",
     is_correct: true,
     exercise_id: mcq6.id,
   )
   choice_6_3 = AnswerChoice.create!(
-    body: "The spiders",
+    body: "Hasta temprano",
     exercise_id: mcq6.id
   )
   choice_6_4 = AnswerChoice.create!(
-    body: "The tiny babies",
+    body: "Hasta luego",
     exercise_id: mcq6.id
   )
 
   mcq7 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "Los amigos"
+    thing_to_translate: "Are you okay?"
   )
 
   choice_7_1 = AnswerChoice.create!(
-    body: "The friends",
+    body: "¿Estás bien?",
     is_correct: true,
     exercise_id: mcq7.id,
   )
   choice_7_2 = AnswerChoice.create!(
-    body: "The people",
+    body: "¿Eres Rubén?",
     exercise_id: mcq7.id
   )
   choice_7_3 = AnswerChoice.create!(
-    body: "The female friends",
+    body: "Qué novedades?",
     exercise_id: mcq7.id
   )
 
@@ -154,20 +153,19 @@ lesson = Lesson.create!(
   mcq8 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "Las amigas"
+    thing_to_translate: "What's up?"
   )
 
-
-  choice_8_1 = AnswerChoice.create!(
-    body: "The female friends",
+  choice_8_1= AnswerChoice.create!(
+    body: "¿Qué pasa?",
     is_correct: true,
     exercise_id: mcq8.id,
   )
   choice_8_3 = AnswerChoice.create!(
-    body: "The male friends",
+    body: "¿Porqué me fastidias así?",
     exercise_id: mcq8.id
   )
   choice_8_4 = AnswerChoice.create!(
-    body: "The female tractors",
+    body: "¿Qué dices?",
     exercise_id: mcq8.id
   )

@@ -1,5 +1,5 @@
 spanish_for_english = Course.find_by_name("Spanish")
-spanish_basic_2 = Skill.find_by(name: "Basic 2", course_id: spanish_for_english.id)
+spanish_basic_2 = Skill.find_by(name: "Basics 2", course_id: spanish_for_english.id)
 
 spanish_basic_2_1 = Lesson.create!(
   name: "Lesson 1",

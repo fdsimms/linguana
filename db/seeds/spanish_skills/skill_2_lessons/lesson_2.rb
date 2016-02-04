@@ -1,5 +1,5 @@
 spanish_for_english = Course.find_by_name("Spanish")
-spanish_basic_2 = Skill.find_by(name: "Basic 2", course_id: spanish_for_english.id)
+spanish_basic_2 = Skill.find_by(name: "Basics 2", course_id: spanish_for_english.id)
 
 lesson = Lesson.create!(
   name: "Lesson 2",
@@ -23,7 +23,7 @@ lesson = Lesson.create!(
     exercise_id: mcq1.id
   )
   choice_1_4 = AnswerChoice.create!(
-    body: "The ",
+    body: "The kittens",
     exercise_id: mcq1.id
   )
 
