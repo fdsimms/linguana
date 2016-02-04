@@ -1,11 +1,15 @@
 .course-index {
   margin: auto;
   width: 642px;
+  position: absolute;
   margin-bottom: 100px;
+  top: calc(50% - 0px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }
+
 .course-index-container {
   width: 100%;
-  margin-top: 100px;
 }
 
 .course-index-header {
