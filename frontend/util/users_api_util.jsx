@@ -43,12 +43,38 @@ var UsersApiUtil = {
     });
   },
 
+  updateUser: function (userParams, success) {
+    $.ajax({
+      url: '/api/users/' + CurrentUserStore.currentUser().id,
+      type: 'PATCH',
+      dataType: 'json',
+      data: {user: userParams},
+      success: function (currentUser) {
+        CurrentUserActions.receiveCurrentUser(currentUser);
+        success && success();
+      }
+    });
+  },
+
   createCompletionForUser: function (completionParams, success) {
     $.ajax({
       url: '/api/completions/',
       type: 'post',
       dataType: 'json',
       data: {completion: completionParams},
+      success: function (currentUser) {
+        CurrentUserActions.receiveCurrentUser(currentUser);
+        success && success();
+      }
+    });
+  },
+
+  createCourseEnrollment: function (enrollmentParams, success) {
+    $.ajax({
+      url: '/api/course_enrollments/',
+      type: 'post',
+      dataType: 'json',
+      data: {course_enrollment: enrollmentParams},
       success: function (currentUser) {
         CurrentUserActions.receiveCurrentUser(currentUser);
         success && success();

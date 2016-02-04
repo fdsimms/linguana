@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       resources :exercises, only: [:create, :index, :destroy, :update]
     end
     resources :exercises, only: [:show]
-    resources :completions, only: [:create, :index, :destroy, :update]
+    resources :course_enrollments, only: [:create]
+    resources :completions, only: [:create]
   end
 end

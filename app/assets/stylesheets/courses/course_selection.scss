@@ -37,12 +37,12 @@
   margin: 10px;
   float: left;
   width: 190px;
+  color: #000;
   height: 210px;
-  background: transparent;
   border-radius: 10px;
   cursor: pointer;
 }
 
 .course-selection-wrapper .course-list-item-wrapper:hover {
-  background-color: rgb(47, 99, 149);
+  background: rgb(47, 99, 149);
 }

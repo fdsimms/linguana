@@ -25,6 +25,7 @@ var CourseIndex = React.createClass({
   },
 
   componentWillUnmount: function () {
+    this.cookieListener.remove();
     this.courseListener.remove();
   },
 

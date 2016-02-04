@@ -22,6 +22,17 @@ CurrentUserStore.findCompletion = function (completableId, completableType) {
   }
   return result;
 };
+CurrentUserStore.findEnrollment = function (course_id) {
+  var result;
+  if (_currentUser.enrolled_courses) {
+    _currentUser.enrolled_courses.forEach(function (course) {
+      if (course.id === course_id) {
+        result = course;
+      }
+    });
+  }
+  return result;
+};
 
 CurrentUserStore.currentUser = function () {
   return Object.assign({}, _currentUser);

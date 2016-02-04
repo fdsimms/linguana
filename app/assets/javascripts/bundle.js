@@ -31338,6 +31338,17 @@
 	  }
 	  return result;
 	};
+	CurrentUserStore.findEnrollment = function (course_id) {
+	  var result;
+	  if (_currentUser.enrolled_courses) {
+	    _currentUser.enrolled_courses.forEach(function (course) {
+	      if (course.id === course_id) {
+	        result = course;
+	      }
+	    });
+	  }
+	  return result;
+	};
 	
 	CurrentUserStore.currentUser = function () {
 	  return Object.assign({}, _currentUser);
@@ -32431,12 +32442,38 @@
 	    });
 	  },
 	
+	  updateUser: function (userParams, success) {
+	    $.ajax({
+	      url: '/api/users/' + CurrentUserStore.currentUser().id,
+	      type: 'PATCH',
+	      dataType: 'json',
+	      data: { user: userParams },
+	      success: function (currentUser) {
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        success && success();
+	      }
+	    });
+	  },
+	
 	  createCompletionForUser: function (completionParams, success) {
 	    $.ajax({
 	      url: '/api/completions/',
 	      type: 'post',
 	      dataType: 'json',
 	      data: { completion: completionParams },
+	      success: function (currentUser) {
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        success && success();
+	      }
+	    });
+	  },
+	
+	  createCourseEnrollment: function (enrollmentParams, success) {
+	    $.ajax({
+	      url: '/api/course_enrollments/',
+	      type: 'post',
+	      dataType: 'json',
+	      data: { course_enrollment: enrollmentParams },
 	      success: function (currentUser) {
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success();
@@ -32957,6 +32994,7 @@
 	  },
 	
 	  componentWillUnmount: function () {
+	    this.cookieListener.remove();
 	    this.courseListener.remove();
 	  },
 	
@@ -33007,14 +33045,35 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    CookieActions = __webpack_require__(240);
+	    CookieActions = __webpack_require__(240),
+	    CurrentUserStore = __webpack_require__(232),
+	    UserApiUtil = __webpack_require__(253);
 	
 	var CourseIndexItem = React.createClass({
 	  displayName: 'CourseIndexItem',
 	
 	  setCourseCookie: function () {
-	    CookieActions.receiveCookie({ curCourseId: this.props.course.id });
+	    var courseId = this.props.course.id;
+	
+	    if (CurrentUserStore.isLoggedIn()) {
+	      var userParams = { current_course_id: courseId };
+	      UserApiUtil.updateUser(userParams, function () {
+	        var userId = CurrentUserStore.currentUser().id,
+	            enrollmentParams = { user_id: userId, course_id: courseId };
+	
+	        if (!CurrentUserStore.findEnrollment(courseId)) {
+	          UserApiUtil.createCourseEnrollment(enrollmentParams, function () {
+	            CookieActions.receiveCookie({ curCourseId: courseId });
+	          });
+	        } else {
+	          CookieActions.receiveCookie({ curCourseId: courseId });
+	        }
+	      });
+	    } else {
+	      CookieActions.receiveCookie({ curCourseId: courseId });
+	    }
 	  },
+	
 	  render: function () {
 	    var courseName = this.props.course.name;
 	
