@@ -34,6 +34,11 @@
   float: left;
 }
 
+.tips-and-notes-modal-button:hover,
+.tips-and-notes-quit:hover {
+  color: #ccc;
+}
+
 .tips-and-notes-modal {
   position: absolute;
   width: 400px;
@@ -62,6 +67,7 @@
 
 .tips-and-notes-modal-text {
   color: #000;
+  cursor: default;
 }
 
 .tips-and-notes-modal .triangle {
@@ -118,9 +124,9 @@
   color: red;
 }
 
-
 .bottom-bar-header {
   float: left;
+  cursor: default;
   position: absolute;
   padding: 10px 25px;
   font-size: 20px;

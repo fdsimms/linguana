@@ -10,6 +10,7 @@
   display: block;
   margin: auto;
   height: 1000px;
+  position: relative;
   background: #fff;
   margin-top: 10px;
   border-radius: 10px;
@@ -19,6 +20,7 @@
 .skill-page-header,
 .lesson-page-header {
   color: black;
+  cursor: default;
   padding: 40px;
   font-size: 24px;
 }

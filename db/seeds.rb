@@ -76,16 +76,16 @@ spanish_basic_1 = Skill.create!(
   course_id: spanish_for_english.id,
   tips_and_notes: "Here we'll teach you some of the basics of Spanish! Vamos!"
 )
-# spanish_basic_2 = Skill.create!(
-#   name: "Basic 2",
-#   course_id: spanish_for_english.id,
-#   tips_and_notes: "Here we'll teach you some more of the basics of Spanish! Vamos!"
-# )
-# spanish_basic_3 = Skill.create!(
-#   name: "Basic 3",
-#   course_id: spanish_for_english.id,
-#   tips_and_notes: "So many basics of Spanish!"
-# )
+spanish_basic_2 = Skill.create!(
+  name: "Basic 2",
+  course_id: spanish_for_english.id,
+  tips_and_notes: "Here we'll teach you some more of the basics of Spanish! Vamos!"
+)
+spanish_basic_3 = Skill.create!(
+  name: "Basic 3",
+  course_id: spanish_for_english.id,
+  tips_and_notes: "So many basics of Spanish!"
+)
 portuguese_basic_1 = Skill.create!(
   name: "Basic 1",
   course_id: portuguese_for_english.id,
@@ -114,12 +114,12 @@ spanish_basic_1_2 = Lesson.create!(
   name: "Lesson 2",
   skill_id: spanish_basic_1.id
 )
-# spanish_basic_1_3 = Lesson.create!(
-#   name: "Lesson 3",
-#   skill_id: spanish_basic_1.id
+spanish_basic_1_3 = Lesson.create!(
+  name: "Lesson 3",
+  skill_id: spanish_basic_1.id
 
-# )
-
+)
+# 
 # exercises
 #   multiple_choice
 

@@ -10,6 +10,7 @@
 
 .skill-index-header {
   font-size: 30px;
+  cursor: default;
   text-align: center;
   margin-bottom: 50px;
 }
@@ -19,6 +20,7 @@
 
 .skill-list-item {
   display: block;
+  cursor: default;
   padding: 0 25px 0 25px;
   top: 110px;
   text-align: center;
@@ -103,13 +105,14 @@
   position: absolute;
   font-size: 18em;
   top: 670px;
-  left: 280px;
+  left: 205px;
   text-shadow: 0 0 1px black;
 }
 
 .completion-trophy .trophy-text {
   position: absolute;
   color: darkgoldenrod;
+  cursor: default;
   font-size: 47px;
   top: 71px;
   left: 80px;
