@@ -28,7 +28,7 @@ spanish_adjectives = Skill.create!(
 spanish_pronouns = Skill.create!(
   name: "Pronouns",
   course_id: spanish_for_english.id,
-  tips_and_notes: ""
+  tips_and_notes: "The most important thing to consider when dealing with Spanish pronouns is which version of 'you' to use. 'Tú' is used in familiar conversation, when you're talking with a friend or a family member or someone of a similar age in an informal context. 'Usted' is more formal–it was originally a contraction of the Spanish for 'Your Mercy'–and is used with people to whom you should show respect, especially elders. The rules for using these two pronouns differs from country to country; in some countries, 'tú' is seen as childish no matter whom you use it with, and in others, 'usted' is almost never heard. Note also that 'nosotros' is used for 'we' even if the group you're talking about includes 10,000 men and a single woman. A little unfair, huh?"
 )
 spanish_verbs_1 = Skill.create!(
   name: "Basic Verbs 1",

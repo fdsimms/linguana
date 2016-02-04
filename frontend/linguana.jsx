@@ -12,6 +12,7 @@ var React = require('react'),
     SessionsApiUtil = require('./util/sessions_api_util'),
     Lesson = require('./components/lessons/lesson'),
     CourseSelection = require('./components/courses/course_selection'),
+    UserProfile = require('./components/user_profile'),
     CookieActions = require('./actions/cookie_actions');
 
   var routes = (
@@ -32,6 +33,7 @@ var React = require('react'),
           onEnter={ _ensureLoggedInOrCurrentCourse }
           component={Lesson} />
         <Route path="/add" component={CourseSelection}/>
+        <Route path="/user/:username" component={UserProfile} />
       </Route>
     </Route>
   );

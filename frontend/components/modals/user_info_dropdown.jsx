@@ -35,9 +35,12 @@ var UserInfoDropdown = React.createClass({
     }.bind(this));
   },
 
+
   visibleRender: function () {
+    var user_path = "#/user/" + CurrentUserStore.currentUser().id;
     return(
       <ul className="box-shadowed user-info-dropdown">
+        <li><a href={user_path}>Your Profile</a></li>
         <li onClick={this._onLogoutClick}>Log Out</li>
       </ul>
     );

@@ -9,6 +9,7 @@ json.extract! @user,
               :username,
               :streak_length,
               :points,
+              :uid,
               :hometown,
               :enrolled_courses,
               :completions

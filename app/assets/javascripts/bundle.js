@@ -58,6 +58,7 @@
 	    SessionsApiUtil = __webpack_require__(241),
 	    Lesson = __webpack_require__(276),
 	    CourseSelection = __webpack_require__(289),
+	    UserProfile = __webpack_require__(290),
 	    CookieActions = __webpack_require__(240);
 	
 	var routes = React.createElement(
@@ -81,7 +82,8 @@
 	    React.createElement(Route, { path: '/lessons/:lessonId',
 	      onEnter: _ensureLoggedInOrCurrentCourse,
 	      component: Lesson }),
-	    React.createElement(Route, { path: '/add', component: CourseSelection })
+	    React.createElement(Route, { path: '/add', component: CourseSelection }),
+	    React.createElement(Route, { path: '/user/:username', component: UserProfile })
 	  )
 	);
 	
@@ -24089,9 +24091,9 @@
 	    History = __webpack_require__(159).History,
 	    SessionsApiUtil = __webpack_require__(241);
 	
-	var not_in_lessons_or_skills = function () {
+	var notInLessonsOrSkills = function () {
 	  var loc = window.location.hash;
-	  return !/.*(lessons).*/.test(loc) && !/.*(skill).*/.test(loc) && !/.*(add).*/.test(loc);
+	  return !/.*(lessons).*/.test(loc) && !/.*(skill).*/.test(loc) && !/.*(add).*/.test(loc) && !/.*(user).*/.test(loc);
 	};
 	
 	module.exports = React.createClass({
@@ -24101,7 +24103,7 @@
 	
 	  componentDidMount: function () {
 	    this.currentUserListener = CurrentUserStore.addListener(function () {
-	      if (CurrentUserStore.isLoggedIn() && not_in_lessons_or_skills()) {
+	      if (CurrentUserStore.isLoggedIn() && notInLessonsOrSkills()) {
 	        var courseId = CurrentUserStore.currentUser().current_course_id;
 	        var path = "/course/" + courseId;
 	        this.history.pushState(null, path);
@@ -31946,9 +31948,19 @@
 	  },
 	
 	  visibleRender: function () {
+	    var user_path = "#/user/" + CurrentUserStore.currentUser().id;
 	    return React.createElement(
 	      'ul',
 	      { className: 'box-shadowed user-info-dropdown' },
+	      React.createElement(
+	        'li',
+	        null,
+	        React.createElement(
+	          'a',
+	          { href: user_path },
+	          'Your Profile'
+	        )
+	      ),
 	      React.createElement(
 	        'li',
 	        { onClick: this._onLogoutClick },
@@ -34625,6 +34637,160 @@
 	});
 	
 	module.exports = CourseSelection;
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    CurrentUserStore = __webpack_require__(232),
+	    SessionsApiUtil = __webpack_require__(241),
+	    CookieStore = __webpack_require__(234),
+	    SkillIndex = __webpack_require__(260),
+	    UsersApiUtil = __webpack_require__(253);
+	
+	var UserProfile = React.createClass({
+	  displayName: 'UserProfile',
+	
+	  getInitialState: function () {
+	    return { user: CurrentUserStore.currentUser() };
+	  },
+	
+	  _currentUserChanged: function () {
+	    this.setState({ user: CurrentUserStore.currentUser() });
+	  },
+	
+	  componentDidMount: function () {
+	    this.userListener = CurrentUserStore.addListener(this._currentUserChanged);
+	    if (!CurrentUserStore.userHasBeenFetched()) {
+	      SessionsApiUtil.fetchCurrentUser();
+	    }
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.userListener.remove();
+	  },
+	
+	  renderCourses: function () {
+	    var courses = CurrentUserStore.currentUser().enrolled_courses;
+	    if (courses) {
+	      courses = courses.map(function (course, idx) {
+	        return React.createElement(
+	          'p',
+	          { className: 'profile-course', key: idx },
+	          course.name
+	        );
+	      }.bind(this));
+	    }
+	    return courses;
+	  },
+	
+	  render: function () {
+	    if (this.state.user === "{}") {
+	      return React.createElement('div', null);
+	    }
+	    var fullName = this.state.user.fname + " " + this.state.user.lname;
+	    var userInfo = "",
+	        username = "",
+	        hometown = "";
+	
+	    if (!this.state.user.uid) {
+	      username = React.createElement(
+	        'h2',
+	        null,
+	        this.state.user.username
+	      );
+	    }
+	
+	    if (!this.state.user.hometown) {
+	      userInfo = React.createElement(
+	        'div',
+	        { className: 'group user-profile-info' },
+	        React.createElement(
+	          'h3',
+	          { className: 'name' },
+	          fullName
+	        )
+	      );
+	    } else {
+	
+	      hometown = this.state.user.hometown;
+	      userInfo = React.createElement(
+	        'div',
+	        { className: 'group user-profile-info' },
+	        React.createElement(
+	          'h3',
+	          { className: 'name floated' },
+	          fullName
+	        ),
+	        React.createElement(
+	          'h3',
+	          { className: 'hometown' },
+	          hometown
+	        )
+	      );
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'user-profile group' },
+	      React.createElement(
+	        'div',
+	        { className: 'main-content box-shadowed' },
+	        React.createElement(
+	          'header',
+	          { className: 'user-profile-header' },
+	          React.createElement('div', { className: 'profile-pic' }),
+	          username,
+	          userInfo
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'profile-sidebar' },
+	        React.createElement(
+	          'div',
+	          { className: 'profile-achievements' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Achievements'
+	          ),
+	          React.createElement(
+	            'ul',
+	            { className: 'profile-achievements-list' },
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'h3',
+	                null,
+	                'Total Points'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'points' },
+	                React.createElement('i', { className: 'fa fa-adjust fa-lg' }),
+	                CurrentUserStore.currentUser().points
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'h3',
+	                null,
+	                'Languages'
+	              ),
+	              this.renderCourses()
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = UserProfile;
 
 /***/ }
 /******/ ]);

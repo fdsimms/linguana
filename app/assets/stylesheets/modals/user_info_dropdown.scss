@@ -12,8 +12,14 @@
 
 .user-info-dropdown {
   top: 35px;
-  padding: 10px;
+  padding: 10px 0;
+  width: 150px;
   left: -26px;
+}
+
+.user-info-dropdown li{
+  padding: 5px 0;
+  width: 100%;
 }
 
 .user-info-button{
@@ -29,18 +35,20 @@
 }
 
 .user-info-dropdown li:hover {
-  color: #aaa;
+  color: #fff;
+  background-color: #2BA8E4
 }
 
 .user-info-dropdown:before {
-  right: 52px;
-  top: -16px;
+  left: 10px;
+  top: -18px;
 }
 
 .courses-dropdown:before {
   right: 96px;
   top: -18px;
 }
+
 
 .user-info-dropdown:before,
 .courses-dropdown:before {

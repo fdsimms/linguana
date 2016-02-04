@@ -9,12 +9,13 @@ var React = require('react'),
     History = require('react-router').History,
     SessionsApiUtil = require("../util/sessions_api_util");
 
-var not_in_lessons_or_skills = function () {
+var notInLessonsOrSkills = function () {
   var loc = window.location.hash;
   return(
     !/.*(lessons).*/.test(loc) &&
     !/.*(skill).*/.test(loc) &&
-    !/.*(add).*/.test(loc)
+    !/.*(add).*/.test(loc) &&
+    !/.*(user).*/.test(loc)
   );
 };
 
@@ -24,7 +25,7 @@ module.exports = React.createClass({
   componentDidMount: function () {
     this.currentUserListener =
       CurrentUserStore.addListener(function () {
-        if (CurrentUserStore.isLoggedIn() && not_in_lessons_or_skills()) {
+        if (CurrentUserStore.isLoggedIn() && notInLessonsOrSkills()) {
           var courseId = CurrentUserStore.currentUser().current_course_id;
           var path = "/course/" + courseId;
           this.history.pushState(null, path);
