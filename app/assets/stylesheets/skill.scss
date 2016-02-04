@@ -6,8 +6,25 @@
   margin: auto;
 }
 
+.skill-page-back-button {
+  color: #aaa;
+  margin: 35px 30px;
+  padding: 10px;
+  font-size: 16px;
+  float: right;
+}
+
+.skill-page-header {
+  float: left;
+}
+
+.skill-page-back-button:hover {
+  color: #000;
+}
+
 .tips-and-notes-header {
   color: #000;
+  float: left;
   font-size: 20px;
   cursor: default;
 }

@@ -19,12 +19,20 @@ var LessonIndexItem = React.createClass({
   },
 
   renderLocked: function () {
+    var loggedOutMessage;
+    if (!CurrentUserStore.isLoggedIn()) {
+      loggedOutMessage =
+        <p className="logged-out">
+          Please log in or create a profile!
+        </p>;
+    }
     return(
       <div className="lesson-list-item-wrapper locked">
         <h2 className="lesson-list-item">
           {this.props.lesson.name}
         </h2>
         <div className="lesson-list-contents">
+          {loggedOutMessage}
           <h3 className="lesson-begin-button">
             <i className="fa fa-lock fa-lg" />
             Locked

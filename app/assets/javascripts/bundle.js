@@ -33245,23 +33245,6 @@
 	    this.skillListener.remove();
 	  },
 	
-	  // completionCheck: function () {
-	  //   var bool = true;
-	  //   this.state.skill.lessons.forEach(function (lesson) {
-	  //     if (!CurrentUserStore.findCompletion(lesson.id, "lesson")) {
-	  //       bool = false;
-	  //     }
-	  //   });
-	  //
-	  //   if (bool) {
-	  //     var completionParams;
-	  //     completionParams.completion_id = this.state.skill.id;
-	  //     completionParams.completion_type = "skill";
-	  //     completionParams.user_id = CurrentUserStore.currentUser().id;
-	  //     UsersApiUtil.createCompletionForUser(completionParams);
-	  //   }
-	  // },
-	
 	  _skillsChanged: function () {
 	    this.setState({ skill: SkillStore.find(this.props.params.skillId) });
 	  },
@@ -33270,14 +33253,23 @@
 	    if (typeof this.state.skill === "undefined") {
 	      return React.createElement('div', null);
 	    }
-	
+	    var path = "#/course/" + this.state.skill.course_id;
 	    return React.createElement(
 	      'div',
 	      { className: 'skill-page' },
 	      React.createElement(
-	        'h2',
-	        { className: 'skill-page-header' },
-	        'Lessons'
+	        'div',
+	        { className: 'group' },
+	        React.createElement(
+	          'h2',
+	          { className: 'skill-page-header' },
+	          this.state.skill.name
+	        ),
+	        React.createElement(
+	          'a',
+	          { href: path, className: 'skill-page-back-button' },
+	          'Back to Skills'
+	        )
 	      ),
 	      React.createElement(LessonIndex, { skillId: this.state.skill.id }),
 	      React.createElement(
@@ -33469,6 +33461,14 @@
 	  },
 	
 	  renderLocked: function () {
+	    var loggedOutMessage;
+	    if (!CurrentUserStore.isLoggedIn()) {
+	      loggedOutMessage = React.createElement(
+	        'p',
+	        { className: 'logged-out' },
+	        'Please log in or create a profile!'
+	      );
+	    }
 	    return React.createElement(
 	      'div',
 	      { className: 'lesson-list-item-wrapper locked' },
@@ -33480,6 +33480,7 @@
 	      React.createElement(
 	        'div',
 	        { className: 'lesson-list-contents' },
+	        loggedOutMessage,
 	        React.createElement(
 	          'h3',
 	          { className: 'lesson-begin-button' },

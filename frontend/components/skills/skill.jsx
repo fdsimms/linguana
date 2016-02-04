@@ -20,35 +20,23 @@ var Skill = React.createClass({
     this.skillListener.remove();
   },
 
-  // completionCheck: function () {
-  //   var bool = true;
-  //   this.state.skill.lessons.forEach(function (lesson) {
-  //     if (!CurrentUserStore.findCompletion(lesson.id, "lesson")) {
-  //       bool = false;
-  //     }
-  //   });
-  //
-  //   if (bool) {
-  //     var completionParams;
-  //     completionParams.completion_id = this.state.skill.id;
-  //     completionParams.completion_type = "skill";
-  //     completionParams.user_id = CurrentUserStore.currentUser().id;
-  //     UsersApiUtil.createCompletionForUser(completionParams);
-  //   }
-  // },
-
   _skillsChanged: function () {
     this.setState({ skill: SkillStore.find(this.props.params.skillId) });
   },
 
   render: function () {
     if (typeof this.state.skill === "undefined") { return <div></div>; }
-
+    var path = "#/course/" + this.state.skill.course_id;
     return(
         <div className="skill-page">
-          <h2 className="skill-page-header">
-            Lessons
-          </h2>
+          <div className="group">
+            <h2 className="skill-page-header">
+              {this.state.skill.name}
+            </h2>
+            <a href={path} className="skill-page-back-button">
+              Back to Skills
+            </a>
+          </div>
           <LessonIndex skillId={this.state.skill.id} />
           <div className="tips-and-notes">
             <h2 className="tips-and-notes-header">

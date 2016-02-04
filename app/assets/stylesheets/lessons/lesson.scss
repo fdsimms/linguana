@@ -178,6 +178,17 @@
   background-color: #bbb;
 }
 
+.logged-out {
+  top: 36%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  color: #aaa;
+  text-align: center;
+  position: absolute;
+  display: block;
+  width: 135px;
+}
+
 .check-button:hover {
   background-color: rgb(150, 195, 0);
 }

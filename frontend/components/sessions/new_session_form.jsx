@@ -12,6 +12,7 @@ var NewSessionForm = React.createClass({
     SessionsApiUtil.logIn(credentials);
   },
 
+
   render: function() {
 
     return (
