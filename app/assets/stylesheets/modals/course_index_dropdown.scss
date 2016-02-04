@@ -2,11 +2,9 @@
   color: #aaa;
 }
 
-.courses-dropdown a {
-  position: absolute;
-  bottom: 0;
+.courses-dropdown .add-button {
   text-align: center;
-  padding: 5px 0;
+  padding: 10px 0;
   display: block;
   width: 100%;
 }
@@ -15,6 +13,8 @@
   position: absolute;
   left: -85px;
   top: 62px;
+  min-height: 120px;
+  height: auto;
   display: block;
   min-height: 115px;
   width: 200px;
@@ -33,18 +33,25 @@
   color: #aaa;
 }
 
-.courses-dropdown li:last-child {
+.courses-dropdown .course-button:last-child {
   border-bottom: 1px solid #aaa;
 }
-.courses-dropdown li:hover {
+.courses-dropdown .course-button:hover {
   background-color: #ccc;
+  color: #fff;
 }
-.courses-dropdown li {
+.courses-dropdown .course-button {
   width: 100%;
+  display: block;
   padding: 5px 0;
   cursor: pointer;
+  padding-top: 5px;
   text-align: center;
-  background: #bbb;
+  background: #ddd;
+}
+
+.courses-dropdown .current-course {
+  background-color: #bbb;
 }
 
 .course-index-button {

@@ -30,6 +30,7 @@ CourseStore.all = function () {
 };
 
 CourseStore.find = function (courseId) {
+  courseId = parseInt(courseId);
   return _courses[courseId];
 };
 

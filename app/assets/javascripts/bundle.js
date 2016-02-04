@@ -31574,6 +31574,7 @@
 	};
 	
 	CourseStore.find = function (courseId) {
+	  courseId = parseInt(courseId);
 	  return _courses[courseId];
 	};
 	
@@ -32491,11 +32492,16 @@
 
 	var React = __webpack_require__(1),
 	    CourseStore = __webpack_require__(237),
+	    CookieStore = __webpack_require__(234),
 	    SkillIndex = __webpack_require__(255),
 	    CoursesApiUtil = __webpack_require__(261);
 	
 	var Course = React.createClass({
 	  displayName: 'Course',
+	
+	  _cookiesChanged: function () {
+	    CoursesApiUtil.fetchCourse(this.props.params.courseId);
+	  },
 	
 	  getInitialState: function () {
 	    return { course: CourseStore.find(this.props.params.courseId) };
@@ -32503,12 +32509,14 @@
 	
 	  componentDidMount: function () {
 	    var courseId = this.props.params.courseId;
+	    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
 	    this.courseListener = CourseStore.addListener(this._coursesChanged);
 	    CoursesApiUtil.fetchCourse(courseId);
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.courseListener.remove();
+	    this.cookieListener.remove();
 	  },
 	
 	  _coursesChanged: function () {
@@ -32529,7 +32537,7 @@
 	        this.state.course.name,
 	        ' Skills'
 	      ),
-	      React.createElement(SkillIndex, { courseId: this.state.course.id })
+	      React.createElement(SkillIndex, { courseId: this.props.params.courseId })
 	    );
 	  }
 	});
@@ -32554,6 +32562,10 @@
 	
 	  _onChange: function () {
 	    this.setState({ skills: SkillStore.all() });
+	  },
+	
+	  componentWillReceiveProps: function () {
+	    SkillsApiUtil.fetchSkills(this.props.courseId);
 	  },
 	
 	  componentDidMount: function () {
@@ -33047,7 +33059,7 @@
 	var React = __webpack_require__(1),
 	    CookieActions = __webpack_require__(240),
 	    CurrentUserStore = __webpack_require__(232),
-	    UserApiUtil = __webpack_require__(253);
+	    UsersApiUtil = __webpack_require__(253);
 	
 	var CourseIndexItem = React.createClass({
 	  displayName: 'CourseIndexItem',
@@ -33057,12 +33069,12 @@
 	
 	    if (CurrentUserStore.isLoggedIn()) {
 	      var userParams = { current_course_id: courseId };
-	      UserApiUtil.updateUser(userParams, function () {
+	      UsersApiUtil.updateUser(userParams, function () {
 	        var userId = CurrentUserStore.currentUser().id,
 	            enrollmentParams = { user_id: userId, course_id: courseId };
 	
 	        if (!CurrentUserStore.findEnrollment(courseId)) {
-	          UserApiUtil.createCourseEnrollment(enrollmentParams, function () {
+	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
 	            CookieActions.receiveCookie({ curCourseId: courseId });
 	          });
 	        } else {
@@ -33477,6 +33489,7 @@
 	var React = __webpack_require__(1),
 	    NavBar = __webpack_require__(213),
 	    SignupModal = __webpack_require__(251),
+	    CookieStore = __webpack_require__(234),
 	    CourseIndex = __webpack_require__(264);
 	
 	module.exports = React.createClass({
@@ -34468,6 +34481,9 @@
 
 	var React = __webpack_require__(1),
 	    ModalActions = __webpack_require__(207),
+	    CookieStore = __webpack_require__(234),
+	    CookieActions = __webpack_require__(240),
+	    UsersApiUtil = __webpack_require__(253),
 	    ModalStore = __webpack_require__(214),
 	    CourseIndex = __webpack_require__(264),
 	    CoursesApiUtil = __webpack_require__(261);
@@ -34495,6 +34511,30 @@
 	    this.modalListener.remove();
 	  },
 	
+	  setCourseCookie: function (courseId) {
+	
+	    if (CurrentUserStore.isLoggedIn()) {
+	      var userParams = { current_course_id: courseId };
+	      UsersApiUtil.updateUser(userParams, function () {
+	        var userId = CurrentUserStore.currentUser().id,
+	            enrollmentParams = { user_id: userId, course_id: courseId };
+	
+	        if (!CurrentUserStore.findEnrollment(courseId)) {
+	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
+	            CookieActions.receiveCookie({ curCourseId: courseId });
+	          });
+	        } else {
+	          CookieActions.receiveCookie({ curCourseId: courseId });
+	        }
+	      });
+	    } else {
+	      CookieActions.receiveCookie({ curCourseId: courseId });
+	    }
+	    setTimeout(function () {
+	      ModalActions.hideModal(this.state.modalName);
+	    }.bind(this), 0);
+	  },
+	
 	  visibleRender: function () {
 	    var courses;
 	
@@ -34502,9 +34542,21 @@
 	      courses = CurrentUserStore.currentUser().enrolled_courses;
 	      if (courses) {
 	        courses = courses.map(function (course, idx) {
+	          var classes = "course-button",
+	              onClick = function () {
+	            this.setCourseCookie(course.id);
+	          }.bind(this);
+	
+	          if (CookieStore.curCourse() == course.id) {
+	            classes = "current-course course-button";
+	            onClick = "";
+	          }
 	          return React.createElement(
-	            'li',
-	            { key: idx },
+	            'a',
+	            { className: classes,
+	              onClick: onClick,
+	              href: "#/course/" + course.id,
+	              key: idx },
 	            course.name
 	          );
 	        }.bind(this));
@@ -34519,7 +34571,7 @@
 	        React.createElement(
 	          'h3',
 	          null,
-	          'Learning'
+	          'Your Courses'
 	        )
 	      ),
 	      React.createElement(
@@ -34529,7 +34581,7 @@
 	      ),
 	      React.createElement(
 	        'a',
-	        { href: '#/add' },
+	        { className: 'add-button', href: '#/add' },
 	        'Add a new course'
 	      )
 	    );

@@ -12,6 +12,10 @@ var SkillIndex = React.createClass({
     this.setState({ skills: SkillStore.all() });
   },
 
+  componentWillReceiveProps: function () {
+    SkillsApiUtil.fetchSkills(this.props.courseId);
+  },
+
   componentDidMount: function () {
     this.skillListener = SkillStore.addListener(this._onChange);
     SkillsApiUtil.fetchSkills(this.props.courseId);
@@ -30,7 +34,7 @@ var SkillIndex = React.createClass({
             <i className="fa fa-percent"></i>
           </h2>
         </i>
-      )
+      );
 
     } else {
       return <div />;

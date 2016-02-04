@@ -1,5 +1,8 @@
 var React = require('react'),
     ModalActions = require('../../actions/modal_actions'),
+    CookieStore = require('../../stores/cookie_store'),
+    CookieActions = require('../../actions/cookie_actions'),
+    UsersApiUtil = require('../../util/users_api_util'),
     ModalStore = require('../../stores/modal_store'),
     CourseIndex = require('../courses/course_index'),
     CoursesApiUtil = require('../../util/courses_api_util');
@@ -25,6 +28,30 @@ var CourseIndexDropdown = React.createClass({
     this.modalListener.remove();
   },
 
+  setCourseCookie: function (courseId) {
+
+    if (CurrentUserStore.isLoggedIn()) {
+      var userParams = { current_course_id: courseId };
+      UsersApiUtil.updateUser(userParams, function () {
+        var userId = CurrentUserStore.currentUser().id,
+            enrollmentParams = { user_id: userId, course_id: courseId };
+
+        if (!CurrentUserStore.findEnrollment(courseId)) {
+          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
+            CookieActions.receiveCookie({ curCourseId: courseId });
+          });
+        } else {
+          CookieActions.receiveCookie({ curCourseId: courseId });
+        }
+      });
+    } else {
+      CookieActions.receiveCookie({ curCourseId: courseId});
+    }
+    setTimeout(function () {
+      ModalActions.hideModal(this.state.modalName);
+    }.bind(this), 0);
+  },
+
   visibleRender: function () {
     var courses;
 
@@ -32,19 +59,34 @@ var CourseIndexDropdown = React.createClass({
       courses = CurrentUserStore.currentUser().enrolled_courses;
       if (courses) {
         courses = courses.map(function (course, idx) {
-          return <li key={idx}>{course.name}</li>;
+          var classes = "course-button",
+              onClick = function () {
+                this.setCourseCookie(course.id);
+              }.bind(this);
+
+          if (CookieStore.curCourse() == course.id) {
+            classes = "current-course course-button";
+            onClick = "";
+          }
+          return(
+            <a className={classes}
+               onClick={onClick}
+               href={"#/course/" + course.id}
+               key={idx}>{course.name}
+            </a>
+          );
         }.bind(this));
       }
     }
     return(
       <div className="courses-dropdown box-shadowed group">
         <div className="courses-dropdown-header">
-          <h3>Learning</h3>
+          <h3>Your Courses</h3>
         </div>
         <ul className="courses-dropdown-list">
           {courses}
         </ul>
-        <a href="#/add">Add a new course</a>
+        <a className="add-button" href="#/add">Add a new course</a>
       </div>
     );
   },

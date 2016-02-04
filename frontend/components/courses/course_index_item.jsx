@@ -1,7 +1,7 @@
 var React = require('react'),
     CookieActions = require('./../../actions/cookie_actions'),
     CurrentUserStore = require('./../../stores/current_user_store'),
-    UserApiUtil = require('./../../util/users_api_util');
+    UsersApiUtil = require('./../../util/users_api_util');
 
 var CourseIndexItem = React.createClass({
   setCourseCookie: function () {
@@ -9,12 +9,12 @@ var CourseIndexItem = React.createClass({
 
     if (CurrentUserStore.isLoggedIn()) {
       var userParams = { current_course_id: courseId };
-      UserApiUtil.updateUser(userParams, function () {
+      UsersApiUtil.updateUser(userParams, function () {
         var userId = CurrentUserStore.currentUser().id,
             enrollmentParams = { user_id: userId, course_id: courseId };
 
         if (!CurrentUserStore.findEnrollment(courseId)) {
-          UserApiUtil.createCourseEnrollment(enrollmentParams, function () {
+          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
             CookieActions.receiveCookie({ curCourseId: courseId });
           });
         } else {
