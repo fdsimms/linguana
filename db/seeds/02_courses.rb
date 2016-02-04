@@ -7,14 +7,14 @@ esperanto = Language.find_by_name("Esperanto")
 Course.destroy_all
 Skill.destroy_all
 
+spanish_for_english = Course.create!(
+name: "Spanish",
+target_language_id: spanish.id,
+known_language_id: english.id
+)
 french_for_english = Course.create!(
   name: "French",
   target_language_id: french.id,
-  known_language_id: english.id
-)
-spanish_for_english = Course.create!(
-  name: "Spanish",
-  target_language_id: spanish.id,
   known_language_id: english.id
 )
 Dir[File.join(Rails.root, 'db', 'seeds', 'spanish_skills', '*.rb')].sort.each { |seed| load seed }

@@ -71,6 +71,9 @@ var UserProfile = React.createClass({
           </header>
         </div>
         <div className="profile-sidebar">
+          <div className="iguana-pic">
+            <img src={LinguanaAssets.iguana_book} />
+          </div>
           <div className="profile-achievements">
             <h2>Achievements</h2>
             <ul className="profile-achievements-list">

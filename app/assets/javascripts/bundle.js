@@ -24693,7 +24693,7 @@
 	        React.createElement(
 	          'button',
 	          { onMouseEnter: this._handleLanguagesEnter,
-	            onMouseLeave: this._handleLanguagesLeave,
+	
 	            className: 'splash-header-languages-button' },
 	          'Site language: ',
 	          siteLang,
@@ -32851,6 +32851,11 @@
 	      'div',
 	      { className: 'course-page' },
 	      React.createElement(
+	        'div',
+	        { className: 'iguana-pic' },
+	        React.createElement('img', { src: LinguanaAssets.iguana_book_wave })
+	      ),
+	      React.createElement(
 	        'h2',
 	        { className: 'course-page-header' },
 	        this.state.course.name,
@@ -34747,6 +34752,11 @@
 	      React.createElement(
 	        'div',
 	        { className: 'profile-sidebar' },
+	        React.createElement(
+	          'div',
+	          { className: 'iguana-pic' },
+	          React.createElement('img', { src: LinguanaAssets.iguana_book })
+	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'profile-achievements' },

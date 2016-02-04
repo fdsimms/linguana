@@ -62,6 +62,7 @@
  .profile-sidebar {
    float: right;
    width: 350px;
+   position: relative;
    border-radius: 10px;
    height: 500px;
    border: 2px solid #ccc;
@@ -110,4 +111,12 @@
    top: 2px;
    left: -22px;
    text-shadow: 0 0 1px black;
+ }
+
+ .profile-sidebar .iguana-pic {
+   position: absolute;
+   bottom: 10px;
+   width: 250px;
+   left: 50%;
+   transform: translateX(-50%);
  }
