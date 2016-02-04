@@ -17,17 +17,12 @@ var NewSessionForm = React.createClass({
     return (
       <div className="splash-login-form splash-form">
         <div className="splash-login-inputs box-shadowed">
-            <button className="facebook-login">
-              <a href="/auth/facebook">
+              <a className="facebook-login" href="/auth/facebook">
                 Log in with Facebook
               </a>
-            </button>
-            <button className="google-login">
-              <a href="/auth/google_oauth2">
+              <a href="/auth/google_oauth2" className="google-login">
                 Log in with Google
               </a>
-            </button>
-
             <h3>or</h3>
           <form onSubmit={this.submit}>
               <input name="session[username]"
@@ -37,7 +32,7 @@ var NewSessionForm = React.createClass({
                      name="session[password]"
                      placeholder="Password" />
 
-              <button id="modal-login-button">Log in</button>
+                   <a id="modal-login-button">Log in</a>
           </form>
           <form onSubmit={this.submit}>
             <div className="guest-inputs">
@@ -50,7 +45,7 @@ var NewSessionForm = React.createClass({
                      name="session[password]"
                      value="password" />
 
-              <button>Log in as guest</button>
+                   <a className="guest-login-button">Log in as guest</a>
             </div>
           </form>
 

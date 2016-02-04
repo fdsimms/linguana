@@ -43,6 +43,7 @@
 .splash-header-buttons button {
   padding: 10px;
   display: block;
+  position: relative;;
   cursor: pointer;
 }
 
@@ -82,7 +83,8 @@ background-color: rgb(242, 42, 0);
 
 .splash-login-inputs .google-login,
 .splash-login-inputs .facebook-login {
-
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .splash-header-buttons .splash-header-languages-button {

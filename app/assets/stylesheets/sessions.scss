@@ -54,12 +54,14 @@
 }
 
 .inputs button,
-.splash-login-inputs button,
+.splash-login-inputs a,
 .guest-inputs > button,
 .lesson-begin-button,
-.login-form-form button {
+.login-form-form button,
+.splash-login-inputs .guest-login-button {
   display: block;
   border-radius: 20px;
+  cursor: pointer;
   background-color: rgb(33, 176, 249);
 }
 
@@ -75,14 +77,19 @@
 
 
 #modal-login-button {
-  margin-top: 5px;
+  margin-top: 10px;
   padding: 7px 75px;
+}
+.splash-login-inputs .guest-login-button {
+  margin-top: 5px;
+  padding: 7px 10px;
+  text-align: center;
 }
 
 .inputs button:hover,
-.guest-inputs > button:hover,
+.guest-inputs .guest-login-button:hover,
 .lesson-begin-button:hover,
-.splash-login-inputs button:hover,
+.splash-login-inputs a:hover,
 .login-form-form button:hover {
   background-color: rgb(65, 188, 250);
 }
