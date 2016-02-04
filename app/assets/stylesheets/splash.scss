@@ -35,10 +35,11 @@
 }
 
 .splash-contents {
-  position: relative;
-  margin: 350px auto;
+  position: absolute;
+  top: calc(50% - 72px);
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
   width: 715px;
-
 }
 
 .splash-button-form {
