@@ -1,7 +1,7 @@
 .header-nav,
 .splash-header {
-  min-width: 502px;
-  width: calc(100% - 500px);
+  min-width: 700px;
+  width: calc(100% - 250px);
   display: block;
   margin: auto;
 }
@@ -119,9 +119,10 @@ background-color: rgb(242, 42, 0);
 }
 
 .user-info-button .fa-chevron-down {
-  position: absolute;
+  color: #000;
   top: 2px;
-  left: -22px;
+  left: -18px;
+  position: absolute;
 }
 
 .points-counter {
@@ -129,8 +130,8 @@ background-color: rgb(242, 42, 0);
   position: relative;
   cursor: default;
   display: block;
-  top: 26px;
-  right: -30px;
+
+  padding-top: 25px;
 }
 
 .points-counter .fa {
@@ -138,7 +139,7 @@ background-color: rgb(242, 42, 0);
   color: gold;
   background-color: gold;
   border-radius: 50%;
-  top: 2px;
+  top: 27px;
   left: -22px;
   text-shadow: 0 0 1px black;
 }
