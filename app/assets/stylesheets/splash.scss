@@ -53,11 +53,11 @@
   top: 70px;
 }
 
-.splash-login-form:before {
+.splash-login-inputs:before {
   content: "▲";
   position: absolute;
   font-size: 20px;
-  right: 179px;
+  right: 22px;
   top: -17px;
   color: #fff;
   z-index: 1;
@@ -75,7 +75,7 @@
    border-radius: 10px;
    padding: 20px;
    position: absolute;
-   right: 159px;
+   right: 4px;
  }
 
  .splash-login-inputs input {
