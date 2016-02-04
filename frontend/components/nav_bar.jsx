@@ -108,20 +108,31 @@ var NavBar = React.createClass({
     } else {
       return(
         <a className="create-profile-button"
-          onClick={this._handleCreateProfClick}
-          href="#">Create a profile</a>
+          onClick={this._handleCreateProfClick}>
+          Create a profile
+        </a>
       );
     }
   },
 
   normalNavBar: function () {
-    var points_counter;
+    var points_counter,
+        course_index_button;
     if (CurrentUserStore.isLoggedIn()) {
       points_counter = (
         <h2 className="points-counter">
           <i className="fa fa-adjust fa-lg" />
           {CurrentUserStore.currentUser().points}
         </h2>
+      );
+      course_index_button = (
+        <button className="course-index-button"
+                onMouseEnter={this._handleCoursesEnter}
+                onMouseLeave={this._handleCoursesLeave}>
+                <i className="fa fa-chevron-down" />
+          {CurrentUserStore.currentUser().current_course_id}
+          <CourseIndexDropdown />
+        </button>
       );
     }
 
@@ -133,13 +144,7 @@ var NavBar = React.createClass({
         </h1>
         <div className="header-buttons group">
           {points_counter}
-          <button className="course-index-button"
-                  onMouseEnter={this._handleCoursesEnter}
-                  onMouseLeave={this._handleCoursesLeave}>
-                  <i className="fa fa-chevron-down" />
-            {CurrentUserStore.currentUser().current_course_id}
-            <CourseIndexDropdown />
-          </button>
+          {course_index_button}
           {this.normalNavBarButtons()}
         </div>
       </nav>

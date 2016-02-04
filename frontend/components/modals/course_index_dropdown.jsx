@@ -44,7 +44,7 @@ var CourseIndexDropdown = React.createClass({
         <ul className="courses-dropdown-list">
           {courses}
         </ul>
-        <a href="#">Add a new course</a>
+        <a href="#/add">Add a new course</a>
       </div>
     );
   },

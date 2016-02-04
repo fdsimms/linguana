@@ -1,0 +1,48 @@
+// course-selection-wrapper
+.course-selection-header-wrapper {
+  font-size: 24px;
+  color: #000;
+  width: 100%;
+  padding: 25px;
+  margin: auto;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.course-selection-wrapper .course-index {
+  margin: auto;
+  width: 642px;
+  margin-bottom: 100px;
+}
+.course-selection-wrapper .course-index-container {
+  width: 100%;
+  margin-top: 100px;
+}
+
+.course-selection-wrapper .course-index-header {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 50px;
+  cursor: default;
+}
+
+.course-selection-wrapper .course-list-item {
+  display: block;
+  padding: 25px 25px 170px 25px;
+  text-align: center;
+}
+
+.course-selection-wrapper .course-list-item-wrapper {
+  border: 2px solid #ccc;
+  margin: 10px;
+  float: left;
+  width: 190px;
+  height: 210px;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.course-selection-wrapper .course-list-item-wrapper:hover {
+  background-color: rgb(47, 99, 149);
+}

@@ -31,6 +31,13 @@ var CourseIndex = React.createClass({
   render: function () {
     if (this.state.courses === {}) { return <div />; }
 
+    var classes = "course-index-container",
+        header = <h2 className="course-index-header">I want to learn...</h2>;
+    if (this.props.view === "addCourse") {
+      classes = "course-index-container course-selection";
+      header = <div />;
+    }
+
     var courses = this.state.courses;
     var courseKeys = Object.keys(this.state.courses);
     courses = courseKeys.map(function (key, idx) {
@@ -38,10 +45,11 @@ var CourseIndex = React.createClass({
       return <CourseIndexItem key={idx} course={course} />;
     });
 
+
     return(
-      <div className="course-index-container">
+      <div className={classes}>
         <div className="course-index">
-          <h2 className="course-index-header">I want to learn...</h2>
+          {header}
           <ul className="course-list group">
             {courses}
           </ul>

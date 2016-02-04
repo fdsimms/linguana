@@ -12,7 +12,9 @@ var React = require('react'),
 var not_in_lessons_or_skills = function () {
   var loc = window.location.hash;
   return(
-    !/.*(lessons).*/.test(loc) && !/.*(skill).*/.test(loc)
+    !/.*(lessons).*/.test(loc) &&
+    !/.*(skill).*/.test(loc) &&
+    !/.*(add).*/.test(loc)
   );
 };
 

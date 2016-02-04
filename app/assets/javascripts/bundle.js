@@ -57,6 +57,7 @@
 	    MainView = __webpack_require__(274),
 	    SessionsApiUtil = __webpack_require__(241),
 	    Lesson = __webpack_require__(275),
+	    CourseSelection = __webpack_require__(289),
 	    CookieActions = __webpack_require__(240);
 	
 	var routes = React.createElement(
@@ -79,7 +80,8 @@
 	    ),
 	    React.createElement(Route, { path: '/lessons/:lessonId',
 	      onEnter: _ensureLoggedInOrCurrentCourse,
-	      component: Lesson })
+	      component: Lesson }),
+	    React.createElement(Route, { path: '/add', component: CourseSelection })
 	  )
 	);
 	
@@ -24089,7 +24091,7 @@
 	
 	var not_in_lessons_or_skills = function () {
 	  var loc = window.location.hash;
-	  return !/.*(lessons).*/.test(loc) && !/.*(skill).*/.test(loc);
+	  return !/.*(lessons).*/.test(loc) && !/.*(skill).*/.test(loc) && !/.*(add).*/.test(loc);
 	};
 	
 	module.exports = React.createClass({
@@ -24721,21 +24723,29 @@
 	      return React.createElement(
 	        'a',
 	        { className: 'create-profile-button',
-	          onClick: this._handleCreateProfClick,
-	          href: '#' },
+	          onClick: this._handleCreateProfClick },
 	        'Create a profile'
 	      );
 	    }
 	  },
 	
 	  normalNavBar: function () {
-	    var points_counter;
+	    var points_counter, course_index_button;
 	    if (CurrentUserStore.isLoggedIn()) {
 	      points_counter = React.createElement(
 	        'h2',
 	        { className: 'points-counter' },
 	        React.createElement('i', { className: 'fa fa-adjust fa-lg' }),
 	        CurrentUserStore.currentUser().points
+	      );
+	      course_index_button = React.createElement(
+	        'button',
+	        { className: 'course-index-button',
+	          onMouseEnter: this._handleCoursesEnter,
+	          onMouseLeave: this._handleCoursesLeave },
+	        React.createElement('i', { className: 'fa fa-chevron-down' }),
+	        CurrentUserStore.currentUser().current_course_id,
+	        React.createElement(CourseIndexDropdown, null)
 	      );
 	    }
 	
@@ -24755,15 +24765,7 @@
 	        'div',
 	        { className: 'header-buttons group' },
 	        points_counter,
-	        React.createElement(
-	          'button',
-	          { className: 'course-index-button',
-	            onMouseEnter: this._handleCoursesEnter,
-	            onMouseLeave: this._handleCoursesLeave },
-	          React.createElement('i', { className: 'fa fa-chevron-down' }),
-	          CurrentUserStore.currentUser().current_course_id,
-	          React.createElement(CourseIndexDropdown, null)
-	        ),
+	        course_index_button,
 	        this.normalNavBarButtons()
 	      )
 	    );
@@ -32963,6 +32965,17 @@
 	      return React.createElement('div', null);
 	    }
 	
+	    var classes = "course-index-container",
+	        header = React.createElement(
+	      'h2',
+	      { className: 'course-index-header' },
+	      'I want to learn...'
+	    );
+	    if (this.props.view === "addCourse") {
+	      classes = "course-index-container course-selection";
+	      header = React.createElement('div', null);
+	    }
+	
 	    var courses = this.state.courses;
 	    var courseKeys = Object.keys(this.state.courses);
 	    courses = courseKeys.map(function (key, idx) {
@@ -32972,15 +32985,11 @@
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'course-index-container' },
+	      { className: classes },
 	      React.createElement(
 	        'div',
 	        { className: 'course-index' },
-	        React.createElement(
-	          'h2',
-	          { className: 'course-index-header' },
-	          'I want to learn...'
-	        ),
+	        header,
 	        React.createElement(
 	          'ul',
 	          { className: 'course-list group' },
@@ -34461,7 +34470,7 @@
 	      ),
 	      React.createElement(
 	        'a',
-	        { href: '#' },
+	        { href: '#/add' },
 	        'Add a new course'
 	      )
 	    );
@@ -34476,6 +34485,44 @@
 	});
 	
 	module.exports = CourseIndexDropdown;
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    CookieStore = __webpack_require__(234),
+	    CourseIndex = __webpack_require__(264);
+	
+	var CourseSelection = React.createClass({
+	  displayName: 'CourseSelection',
+	
+	  render: function () {
+	    var curLng = CookieStore.curLng();
+	    return React.createElement(
+	      'div',
+	      { className: 'main-content box-shadowed group' },
+	      React.createElement(
+	        'div',
+	        { className: 'course-selection-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'course-selection-header-wrapper group' },
+	          React.createElement(
+	            'h2',
+	            { className: 'course-selection-header' },
+	            'Language Courses for ',
+	            curLng,
+	            ' Speakers'
+	          )
+	        ),
+	        React.createElement(CourseIndex, { view: 'addCourse' })
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = CourseSelection;
 
 /***/ }
 /******/ ]);
