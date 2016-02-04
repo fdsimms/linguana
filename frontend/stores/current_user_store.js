@@ -14,7 +14,7 @@ CurrentUserStore.findCompletion = function (completableId, completableType) {
   var result;
   if (_currentUser.completions) {
     _currentUser.completions.forEach(function (completion) {
-      if (completion.completable_id === completableId &&
+      if (completion.completable_id == completableId &&
           completion.completable_type === completableType ) {
         result = completion;
       }

@@ -31331,7 +31331,7 @@
 	  var result;
 	  if (_currentUser.completions) {
 	    _currentUser.completions.forEach(function (completion) {
-	      if (completion.completable_id === completableId && completion.completable_type === completableType) {
+	      if (completion.completable_id == completableId && completion.completable_type === completableType) {
 	        result = completion;
 	      }
 	    });
@@ -34779,7 +34779,7 @@
 	              React.createElement(
 	                'h3',
 	                null,
-	                'Languages'
+	                'All Courses'
 	              ),
 	              this.renderCourses()
 	            )
