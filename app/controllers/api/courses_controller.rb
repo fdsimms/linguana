@@ -27,12 +27,13 @@ class Api::CoursesController < ApplicationController
   end
 
   def show
-    @course = Course.find(params[:id])
+    @course = Course.includes(:target_language).find(params[:id])
+
   end
 
   def index
     language = Language.find_by_name(params[:lngName])
-    @courses = Course.all.where(known_language_id: language.id)
+    @courses = Course.includes(:target_language).all.where(known_language_id: language.id)
   end
 
   private

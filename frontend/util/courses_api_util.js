@@ -12,9 +12,11 @@ var CoursesApiUtil = {
           coursesPayload[course.id] = course;
         });
 				CourseActions.receiveAll(coursesPayload);
-        success && success();
-			},
-		});
+        setTimeout(function () {
+          success && success();
+			  }.bind(this), 0);
+		  }
+    });
 	},
 
   fetchCourse: function (courseId) {

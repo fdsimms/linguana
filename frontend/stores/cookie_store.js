@@ -2,6 +2,8 @@ var Store = require('flux/utils').Store,
     AppDispatcher = require('../dispatcher/dispatcher'),
     LanguageStore = require('./language_store'),
     CourseStore = require('./course_store'),
+    UsersApiUtil = require('../util/users_api_util'),
+    CoursesApiUtil = require('../util/courses_api_util'),
     CookieConstants = require('../constants/cookie_constants');
 
 
@@ -23,6 +25,13 @@ var addCookie = function (cookie) {
   var key = Object.keys(cookie)[0];
   window.localStorage.setItem(key, cookie[key]);
   _cookies[key] = cookie[key];
+  if (!CurrentUserStore.isLoggedIn()) { return; }
+  if (key === "curCourseId") {
+    UsersApiUtil.updateUser({ current_course_id: cookie[key] });
+  } else if (key === "curLng") {
+    var lang = LanguageStore.findByName(cookie[key]);
+    UsersApiUtil.updateUser({ current_language_id: lang.id });
+  }
 };
 
 var fetchCookiesFromBrowser = function () {
@@ -33,10 +42,21 @@ var fetchCookiesFromBrowser = function () {
   });
 };
 
+
 var receiveCookies = function (cookies) {
-  var key = Object.keys(cookies)[0];
-  _cookies = cookies;
+  var keys = Object.keys(cookie);
+  keys.forEach(function (key, idx) {
+    window.localStorage.setItem(key, cookie[key]);
+    _cookies[key] = cookie[key];
+    if (key === "curCourseId") {
+      UsersApiUtil.updateUser({ current_course_id: cookie[key] });
+    } else if (key === "curLng") {
+      var lang = LanguageStore.findByName(cookie[key]);
+      UsersApiUtil.updateUser({ current_language_id: lang.id });
+    }
+  }.bind(this));
 };
+
 
 var clearCookies = function () {
   _cookies = {curLng: "English", curCourseId: ""};
@@ -46,6 +66,19 @@ var clearCookies = function () {
 
 CookieStore.all = function () {
   return Object.assign({}, _cookies);
+};
+
+CookieStore.getCurCourse = function () {
+  var course = CourseStore.find(_cookies.curCourseId);
+  if (course) {
+    return course;
+  } else if (_cookies.curCourseId) {
+    CoursesApiUtil.fetchCourse(_cookies.curCourseId, function (fetchedCourse) {
+      course = fetchedCourse;
+    }.bind(this));
+  }
+
+  return course;
 };
 
 CookieStore.curLng = function () {

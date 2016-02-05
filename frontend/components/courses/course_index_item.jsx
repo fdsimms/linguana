@@ -58,11 +58,11 @@ var CourseIndexItem = React.createClass({
 
     return(
       <div className="course-list-item-wrapper">
-        {flag}
         <a href={"#/course/" + this.props.course.id }
            className="course-list-item"
            onClick={this.setCourseCookie}>
           {courseName}
+          {flag}
         </a>
       </div>
     );

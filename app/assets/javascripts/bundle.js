@@ -24748,11 +24748,11 @@
 	        React.createElement('i', { className: 'fa fa-adjust fa-lg' }),
 	        CurrentUserStore.currentUser().points
 	      );
-	      var curCourse = CourseStore.find(CurrentUserStore.currentUser().current_course_id),
+	      var curCourse = CookieStore.getCurCourse(),
 	          flagDiv;
 	
 	      if (curCourse) {
-	        flag = LanguageStore.find(curCourse.target_language_id).flag;
+	        flag = curCourse.flag;
 	        flagDiv = React.createElement(
 	          'div',
 	          { className: 'language-nav-flag' },
@@ -24793,6 +24793,10 @@
 	  },
 	
 	  render: function () {
+	    if (!CurrentUserStore.userHasBeenFetched()) {
+	      return React.createElement('div', null);
+	    }
+	
 	    if (this.props.view === "main") {
 	      return this.normalNavBar();
 	    } else {
@@ -31657,6 +31661,8 @@
 	    AppDispatcher = __webpack_require__(208),
 	    LanguageStore = __webpack_require__(236),
 	    CourseStore = __webpack_require__(240),
+	    UsersApiUtil = __webpack_require__(233),
+	    CoursesApiUtil = __webpack_require__(242),
 	    CookieConstants = __webpack_require__(238);
 	
 	var _cookiesHaveBeenFetched = false;
@@ -31677,6 +31683,15 @@
 	  var key = Object.keys(cookie)[0];
 	  window.localStorage.setItem(key, cookie[key]);
 	  _cookies[key] = cookie[key];
+	  if (!CurrentUserStore.isLoggedIn()) {
+	    return;
+	  }
+	  if (key === "curCourseId") {
+	    UsersApiUtil.updateUser({ current_course_id: cookie[key] });
+	  } else if (key === "curLng") {
+	    var lang = LanguageStore.findByName(cookie[key]);
+	    UsersApiUtil.updateUser({ current_language_id: lang.id });
+	  }
 	};
 	
 	var fetchCookiesFromBrowser = function () {
@@ -31688,8 +31703,17 @@
 	};
 	
 	var receiveCookies = function (cookies) {
-	  var key = Object.keys(cookies)[0];
-	  _cookies = cookies;
+	  var keys = Object.keys(cookie);
+	  keys.forEach(function (key, idx) {
+	    window.localStorage.setItem(key, cookie[key]);
+	    _cookies[key] = cookie[key];
+	    if (key === "curCourseId") {
+	      UsersApiUtil.updateUser({ current_course_id: cookie[key] });
+	    } else if (key === "curLng") {
+	      var lang = LanguageStore.findByName(cookie[key]);
+	      UsersApiUtil.updateUser({ current_language_id: lang.id });
+	    }
+	  }.bind(this));
 	};
 	
 	var clearCookies = function () {
@@ -31700,6 +31724,19 @@
 	
 	CookieStore.all = function () {
 	  return Object.assign({}, _cookies);
+	};
+	
+	CookieStore.getCurCourse = function () {
+	  var course = CourseStore.find(_cookies.curCourseId);
+	  if (course) {
+	    return course;
+	  } else if (_cookies.curCourseId) {
+	    CoursesApiUtil.fetchCourse(_cookies.curCourseId, function (fetchedCourse) {
+	      course = fetchedCourse;
+	    }.bind(this));
+	  }
+	
+	  return course;
 	};
 	
 	CookieStore.curLng = function () {
@@ -31824,7 +31861,9 @@
 	          coursesPayload[course.id] = course;
 	        });
 	        CourseActions.receiveAll(coursesPayload);
-	        success && success();
+	        setTimeout(function () {
+	          success && success();
+	        }.bind(this), 0);
 	      }
 	    });
 	  },
@@ -31968,6 +32007,11 @@
 	      dataType: 'json',
 	      data: sessionParams,
 	      success: function (currentUser) {
+	        debugger;
+	        CookieActions.receiveCookie({
+	          cookie: {
+	            curCourseId: currentUser.current_course_id }
+	        });
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success(currentUser.current_course_id);
 	      }
@@ -32350,20 +32394,15 @@
 	  },
 	
 	  _coursesChanged: function () {
-	
 	    this.setState({ courses: CourseStore.all() });
 	  },
 	
 	  _languagesChanged: function () {
-	    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
-	      this.forceUpdate();
-	    }.bind(this));
+	    CoursesApiUtil.fetchCourses(CookieStore.curLng());
 	  },
 	
 	  _cookiesChanged: function () {
-	    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
-	      this.forceUpdate();
-	    }.bind(this));
+	    CoursesApiUtil.fetchCourses(CookieStore.curLng());
 	  },
 	
 	  componentDidMount: function () {
@@ -32401,10 +32440,16 @@
 	    var courses = this.state.courses;
 	    var courseKeys = Object.keys(this.state.courses);
 	    courses = courseKeys.map(function (key, idx) {
-	      var course = courses[key],
-	          flag = LanguageStore.find(course.target_language_id).flag;
 	
-	      return React.createElement(CourseIndexItem, { key: idx, course: course, flag: flag });
+	      var course = courses[key],
+	          flag = course.flag,
+	          knownLng = LanguageStore.find(course.known_language_id);
+	
+	      if (!knownLng || knownLng.name === CookieStore.curLng()) {
+	        return React.createElement(CourseIndexItem, { key: idx, course: course, flag: flag });
+	      } else {
+	        return React.createElement('div', { key: idx });
+	      }
 	    });
 	
 	    return React.createElement(
@@ -32493,13 +32538,13 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'course-list-item-wrapper' },
-	      flag,
 	      React.createElement(
 	        'a',
 	        { href: "#/course/" + this.props.course.id,
 	          className: 'course-list-item',
 	          onClick: this.setCourseCookie },
-	        courseName
+	        courseName,
+	        flag
 	      )
 	    );
 	  }
@@ -34739,6 +34784,9 @@
 	
 	  componentDidMount: function () {
 	    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
+	  },
+	  componentWillUnmount: function () {
+	    this.cookieListener.remove();
 	  },
 	
 	  _cookiesChanged: function () {

@@ -132,12 +132,12 @@ var NavBar = React.createClass({
           {CurrentUserStore.currentUser().points}
         </h2>
       );
-      var curCourse = CourseStore.find(CurrentUserStore.currentUser().current_course_id),
+      var curCourse = CookieStore.getCurCourse(),
           flagDiv;
 
 
       if (curCourse) {
-        flag = LanguageStore.find(curCourse.target_language_id).flag;
+        flag = curCourse.flag;
         flagDiv = (
           <div className="language-nav-flag" >
             <img src={flag} />
@@ -171,6 +171,10 @@ var NavBar = React.createClass({
   },
 
   render: function () {
+    if (!CurrentUserStore.userHasBeenFetched()) {
+      return <div />;
+    }
+
     if (this.props.view === "main") {
       return this.normalNavBar();
     } else {

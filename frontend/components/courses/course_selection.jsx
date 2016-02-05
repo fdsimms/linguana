@@ -8,6 +8,9 @@ var CourseSelection = React.createClass({
   componentDidMount: function () {
     this.cookieListener = CookieStore.addListener(this._cookiesChanged);
   },
+  componentWillUnmount: function () {
+    this.cookieListener.remove();
+  },
 
   _cookiesChanged: function () {
     this.forceUpdate();

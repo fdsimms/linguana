@@ -11,20 +11,15 @@ var CourseIndex = React.createClass({
   },
 
   _coursesChanged: function () {
-
     this.setState({ courses: CourseStore.all() });
   },
 
   _languagesChanged: function () {
-    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
-      this.forceUpdate();
-    }.bind(this));
+    CoursesApiUtil.fetchCourses(CookieStore.curLng());
   },
 
   _cookiesChanged: function () {
-    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
-      this.forceUpdate();
-    }.bind(this));
+    CoursesApiUtil.fetchCourses(CookieStore.curLng());
   },
 
   componentDidMount: function () {
@@ -56,10 +51,16 @@ var CourseIndex = React.createClass({
     var courses = this.state.courses;
     var courseKeys = Object.keys(this.state.courses);
     courses = courseKeys.map(function (key, idx) {
+
       var course = courses[key],
-          flag = LanguageStore.find(course.target_language_id).flag;
-          
-      return <CourseIndexItem key={idx} course={course} flag={flag} />;
+          flag = course.flag,
+          knownLng = LanguageStore.find(course.known_language_id);
+
+          if (!knownLng || knownLng.name === CookieStore.curLng()) {
+            return <CourseIndexItem key={idx} course={course} flag={flag} />;
+          } else {
+            return <div key={idx} />;
+          }
     });
 
 
