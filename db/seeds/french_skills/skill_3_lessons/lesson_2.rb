@@ -1,9 +1,9 @@
-spanish_for_english = Course.find_by_name("Spanish")
-spanish_basic_3 = Skill.find_by(name: "Basics 3", course_id: spanish_for_english.id)
+french_for_english = Course.find_by_name("Spanish")
+french_basic_3 = Skill.find_by(name: "Basics 3", course_id: french_for_english.id)
 
 lesson = Lesson.create!(
   name: "Lesson 2",
-  skill_id: spanish_basic_3.id
+  skill_id: french_basic_3.id
 )
 
   mcq1 = Exercise.create!(

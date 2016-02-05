@@ -68,6 +68,7 @@ var NavBar = React.createClass({
   },
 
   _handleLanguagesLeave: function () {
+    debugger
     ModalActions.hideModal("languageIndexDropdown");
   },
 
@@ -82,7 +83,7 @@ var NavBar = React.createClass({
         </h1>
           <div className="splash-header-buttons group">
           <button onMouseEnter={ this._handleLanguagesEnter }
-
+                  onMouseLeave={ this._handleLanguagesLeave }
                   className="splash-header-languages-button">
             Site language: { siteLang }
             <LanguageIndexDropdown />

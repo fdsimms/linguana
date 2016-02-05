@@ -1,4 +1,4 @@
-french_for_english = Course.find_by_name("Spanish")
+french_for_english = Course.find_by_name("French")
 french_basic_2 = Skill.find_by(name: "Basics 2", course_id: french_for_english.id)
 
 french_basic_2_1 = Lesson.create!(

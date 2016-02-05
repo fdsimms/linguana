@@ -1,5 +1,5 @@
-spanish_for_english = Course.find_by_name("Spanish")
-skill = Skill.find_by(name: "Pronouns", course_id: spanish_for_english.id)
+french_for_english = Course.find_by_name("French")
+skill = Skill.find_by(name: "Pronouns", course_id: french_for_english.id)
 
 lesson = Lesson.create!(
   name: "Lesson 1",
