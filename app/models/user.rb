@@ -3,6 +3,9 @@ class User < ActiveRecord::Base
   validates :fname, :email, :points, presence: true
   validates :streak_length, :password_digest, presence: true
   validates :password, length: { minimum: 6, allow_nil: true }
+  has_attached_file :profile_pic, styles: {nav: "40x40#", prof: "120x120#"}, default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :profile_pic, content_type: /\Aimage\/.*\Z/
+
 
   after_initialize :ensure_session_token
 
@@ -20,15 +23,15 @@ class User < ActiveRecord::Base
   def self.find_or_create_by_auth_hash(auth_hash)
     provider = auth_hash[:provider]
     uid = auth_hash[:uid]
-
     user = User.find_by(provider: provider, uid: uid)
 
     return user if user
-
     user = User.new(
       email: SecureRandom::urlsafe_base64(12),
       lname: auth_hash[:info][:last_name],
+      profile_pic: auth_hash[:info][:image],
       fname: auth_hash[:info][:first_name],
+      profile_pic: auth_hash[:info][:image],
       provider: provider,
       current_course_id: Course.first.id,
       uid: uid,

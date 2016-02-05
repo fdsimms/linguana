@@ -125,17 +125,29 @@ background-color: rgb(242, 42, 0);
 .user-info-button .fa-chevron-down {
   color: #000;
   top: 2px;
-  left: -18px;
+  left: 60px;
   position: absolute;
+  z-index: 1;
 }
 
 .points-counter {
-  float: right;
-  position: relative;
-  cursor: default;
   display: block;
-
+  position: relative;
+  float: right;
+  padding-bottom: 20px;
   padding-top: 25px;
+  left: 20px;
+  z-index: 1;
+}
+
+.profile-pic-nav {
+  width: 40px;
+  display: block;
+  position: absolute;
+  border-radius: 50%;
+  left: -45px;
+  top: -10px;
+  overflow: hidden;
 }
 
 .points-counter .fa {

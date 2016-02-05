@@ -12,12 +12,15 @@ name: "Spanish",
 target_language_id: spanish.id,
 known_language_id: english.id
 )
+
+Dir[File.join(Rails.root, 'db', 'seeds', 'spanish_skills', '*.rb')].sort.each { |seed| load seed }
+
 french_for_english = Course.create!(
   name: "French",
   target_language_id: french.id,
   known_language_id: english.id
 )
-Dir[File.join(Rails.root, 'db', 'seeds', 'spanish_skills', '*.rb')].sort.each { |seed| load seed }
+Dir[File.join(Rails.root, 'db', 'seeds', 'french_skills', '*.rb')].sort.each { |seed| load seed }
 
 
 portuguese_for_english = Course.create!(

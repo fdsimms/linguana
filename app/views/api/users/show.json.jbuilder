@@ -13,3 +13,4 @@ json.extract! @user,
               :hometown,
               :enrolled_courses,
               :completions
+json.profile_pic_url asset_path(@user.profile_pic.url(:original))

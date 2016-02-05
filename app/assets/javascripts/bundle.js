@@ -24718,6 +24718,11 @@
 	          onMouseEnter: this._handleUserInfoEnter,
 	          onMouseLeave: this._handleUserInfoLeave },
 	        React.createElement('i', { className: 'fa fa-chevron-down' }),
+	        React.createElement(
+	          'div',
+	          { className: 'profile-pic-nav' },
+	          React.createElement('img', { src: CurrentUserStore.currentUser().profile_pic_url })
+	        ),
 	        CurrentUserStore.currentUser().fname,
 	        React.createElement(UserInfoDropdown, null)
 	      );
@@ -24766,8 +24771,8 @@
 	      React.createElement(
 	        'div',
 	        { className: 'header-buttons group' },
-	        points_counter,
 	        course_index_button,
+	        points_counter,
 	        this.normalNavBarButtons()
 	      )
 	    );

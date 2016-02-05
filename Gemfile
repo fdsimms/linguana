@@ -13,6 +13,8 @@ gem 'rails_12factor'
 gem 'figaro'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
+gem "paperclip", "~> 4.3"
+gem 'aws-sdk', '~> 1.6'
 
 group :development, :test do
   gem 'byebug'

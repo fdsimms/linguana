@@ -101,6 +101,9 @@ var NavBar = React.createClass({
                 onMouseEnter={this._handleUserInfoEnter}
                 onMouseLeave={this._handleUserInfoLeave}>
           <i className="fa fa-chevron-down" />
+          <div className="profile-pic-nav">
+            <img src={CurrentUserStore.currentUser().profile_pic_url} />
+          </div>
           {CurrentUserStore.currentUser().fname}
           <UserInfoDropdown />
         </button>
@@ -143,8 +146,8 @@ var NavBar = React.createClass({
           <a href="/">Linguana</a>
         </h1>
         <div className="header-buttons group">
-          {points_counter}
           {course_index_button}
+          {points_counter}
           {this.normalNavBarButtons()}
         </div>
       </nav>
