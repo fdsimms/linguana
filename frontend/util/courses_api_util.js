@@ -1,7 +1,7 @@
 var CourseActions = require('../actions/course_actions');
 
 var CoursesApiUtil = {
-	fetchCourses: function (lngName) {
+	fetchCourses: function (lngName, success) {
 		$.ajax({
 			type: "GET",
 			url: "api/courses/?lngName=" + lngName,
@@ -12,6 +12,7 @@ var CoursesApiUtil = {
           coursesPayload[course.id] = course;
         });
 				CourseActions.receiveAll(coursesPayload);
+        success && success();
 			},
 		});
 	},

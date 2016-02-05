@@ -2,35 +2,48 @@ var React = require('react'),
     CourseStore = require('../../stores/course_store'),
     CourseIndexItem = require('./course_index_item'),
     CookieStore = require('../../stores/cookie_store'),
+    LanguageStore = require('../../stores/language_store'),
     CoursesApiUtil = require('../../util/courses_api_util');
 
 var CourseIndex = React.createClass({
   getInitialState: function () {
-    return { courses: CourseStore.all() };
+    return { courses: CourseStore.all(), displayItems: false };
   },
 
   _coursesChanged: function () {
     this.setState({ courses: CourseStore.all() });
   },
 
+  _languagesChanged: function () {
+    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
+      this.forceUpdate();
+    });
+  },
+
   _cookiesChanged: function () {
-    CoursesApiUtil.fetchCourses(CookieStore.curLng());
-    this.forceUpdate();
+    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
+      this.forceUpdate();
+    });
   },
 
   componentDidMount: function () {
-    this.courseListener = CourseStore.addListener(this._coursesChanged);
     this.cookieListener = CookieStore.addListener(this._cookiesChanged);
-    CoursesApiUtil.fetchCourses(CookieStore.curLng());
+    this.languagesListener = LanguageStore.addListener(this._languagesChanged);
+    this.coursesListener = CourseStore.addListener(this._coursesChanged);
+    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
+      this.setState({ displayItems: true });
+    }.bind(this));
   },
 
   componentWillUnmount: function () {
     this.cookieListener.remove();
-    this.courseListener.remove();
+    this.coursesListener.remove();
+    this.languagesListener.remove();
   },
 
   render: function () {
-    if (this.state.courses === {}) { return <div />; }
+
+    if (this.state.courses === {} || !this.state.displayItems) { return <div />; }
 
     var classes = "course-index-container",
         header = <h2 className="course-index-header">I want to learn...</h2>;
@@ -42,8 +55,10 @@ var CourseIndex = React.createClass({
     var courses = this.state.courses;
     var courseKeys = Object.keys(this.state.courses);
     courses = courseKeys.map(function (key, idx) {
-      var course = courses[key];
-      return <CourseIndexItem key={idx} course={course} />;
+
+      var course = courses[key],
+          flag = LanguageStore.find(course.target_language_id).flag;
+      return <CourseIndexItem key={idx} course={course} flag={flag} />;
     });
 
 

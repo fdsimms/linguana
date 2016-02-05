@@ -1,26 +1,24 @@
 var React = require('react'),
     CookieActions = require('./../../actions/cookie_actions'),
+    CookieStore = require('./../../stores/cookie_store'),
+    CourseStore = require('./../../stores/course_store'),
     LanguageStore = require('./../../stores/language_store'),
     LanguagesApiUtil = require('./../../util/languages_api_util'),
     CurrentUserStore = require('./../../stores/current_user_store'),
-    UsersApiUtil = require('./../../util/users_api_util');
+    UsersApiUtil = require('./../../util/users_api_util'),
+    CoursesApiUtil = require('./../../util/courses_api_util');
 
 var CourseIndexItem = React.createClass({
   getInitialState: function () {
-    return { language: LanguageStore.find(this.props.course.target_language_id) };
+    return({ showFlag: false });
   },
 
   componentDidMount: function () {
-    this.languagesListener = LanguageStore.addListener(this._languagesChanged);
-    LanguagesApiUtil.fetchLanguages();
+    this.setState({ showFlag: true });
   },
 
-  componentWillUnmount: function () {
-    this.languagesListener.remove();
-  },
-
-  _languagesChanged: function () {
-    this.setState({ language: LanguageStore.find(this.props.course.target_language_id) });
+  componentWillReceiveProps: function () {
+    this.forceUpdate();
   },
 
   setCourseCookie: function () {
@@ -50,10 +48,10 @@ var CourseIndexItem = React.createClass({
       return <div />;
     }
     var flag;
-    if (this.state.language) {
+    if (this.props.flag && this.state.showFlag) {
       flag = (
         <div className="language-index-flag" >
-          <img src={this.state.language.flag} />
+          <img src={this.props.flag} />
         </div>
       );
     } else {

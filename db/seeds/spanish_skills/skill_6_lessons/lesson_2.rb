@@ -1,29 +1,29 @@
 spanish_for_english = Course.find_by_name("Spanish")
-skill = Skill.find_by(name: "Pronouns", course_id: spanish_for_english.id)
+skill = Skill.find_by(name: "Adjectives", course_id: spanish_for_english.id)
 
 lesson = Lesson.create!(
-  name: "Lesson 1",
+  name: "Lesson 2",
   skill_id: skill.id
 )
 
   mcq1 = Exercise.create!(
     lesson_id: lesson.id,
-    thing_to_translate: "They (female)",
+    thing_to_translate: "Triste",
     exercise_type: "multiple_choice"
   )
 
   choice_1_1 = AnswerChoice.create!(
-    body: "Ellas",
+    body: "Sad",
     exercise_id: mcq1.id,
     is_correct: true
 
   )
   choice_1_3 = AnswerChoice.create!(
-    body: "Ellos",
+    body: "Nice",
     exercise_id: mcq1.id
   )
   choice_1_4 = AnswerChoice.create!(
-    body: "Nosotros",
+    body: "Stupid",
     exercise_id: mcq1.id
   )
 
@@ -31,19 +31,19 @@ lesson = Lesson.create!(
   mcq2 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "They (male)"
+    thing_to_translate: "Friendly"
   )
   choice_2_1 = AnswerChoice.create!(
-    body: "Ellos",
+    body: "Amable",
     exercise_id: mcq2.id,
     is_correct: true,
   )
   choice_2_2 = AnswerChoice.create!(
-    body: "Ellas",
+    body: "Feliz",
     exercise_id: mcq2.id
   )
   choice_2_3 = AnswerChoice.create!(
-    body: "Nosotros",
+    body: "Aburrido",
     exercise_id: mcq2.id
   )
 
@@ -51,100 +51,100 @@ lesson = Lesson.create!(
   mcq3 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "Él"
+    thing_to_translate: "Rápido"
   )
   choice_3_1 = AnswerChoice.create!(
-    body: "He",
+    body: "Fast",
     is_correct: true,
     exercise_id: mcq3.id,
   )
   choice_3_2 = AnswerChoice.create!(
-    body: "She",
+    body: "Young",
     exercise_id: mcq3.id
   )
 
   choice_3_4 = AnswerChoice.create!(
-    body: "They",
+    body: "Smart",
     exercise_id: mcq3.id
   )
 
   mcq4 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "Ella"
+    thing_to_translate: "Simpático"
   )
   choice_4_2 = AnswerChoice.create!(
-    body: "She",
+    body: "Friendly",
     is_correct: true,
     exercise_id: mcq4.id
   )
   choice_4_3 = AnswerChoice.create!(
-    body: "He",
+    body: "Mean",
     exercise_id: mcq4.id
   )
   choice_4_4 = AnswerChoice.create!(
-    body: "They",
+    body: "Dumb",
     exercise_id: mcq4.id
   )
 
   mcq5 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "We (male)"
+    thing_to_translate: "Aburrido"
   )
 
   choice_5_1 = AnswerChoice.create!(
     exercise_id: mcq5.id,
-    body: "Nosotros",
+    body: "Bored/boring",
     is_correct: true,
   )
 
   choice_5_3 = AnswerChoice.create!(
-  body: "Ellos",
+  body: "Frustrated",
     exercise_id: mcq5.id
   )
   choice_5_4 = AnswerChoice.create!(
-    body: "Mis",
+    body: "Stubborn",
     exercise_id: mcq5.id
   )
 
   mcq6 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "You (plural)"
+    thing_to_translate: "Fast"
   )
 
   choice_6_1 = AnswerChoice.create!(
-    body: "Ustedes",
+    body: "Rápido",
     is_correct: true,
     exercise_id: mcq6.id,
   )
   choice_6_3 = AnswerChoice.create!(
-    body: "Nosotros",
+    body: "Popular",
     exercise_id: mcq6.id
   )
   choice_6_4 = AnswerChoice.create!(
-    body: "Tú",
+    body: "Lente",
     exercise_id: mcq6.id
   )
 
   mcq7 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "We (female)"
+    thing_to_translate: "Slow"
   )
 
   choice_7_1 = AnswerChoice.create!(
-    body: "Nosotras",
+    body: "Lente",
     is_correct: true,
     exercise_id: mcq7.id,
   )
   choice_7_2 = AnswerChoice.create!(
-    body: "Nosotros",
+    body: "Desconocido",
     exercise_id: mcq7.id
   )
   choice_7_3 = AnswerChoice.create!(
-    body: "Nos",
+    body: "Malo",
     exercise_id: mcq7.id
   )
 
@@ -152,19 +152,19 @@ lesson = Lesson.create!(
   mcq8 = Exercise.create!(
     lesson_id: lesson.id,
     exercise_type: "multiple_choice",
-    thing_to_translate: "You all"
+    thing_to_translate: "Popular"
   )
 
   choice_8_1= AnswerChoice.create!(
-    body: "Ustedes",
+    body: "Popular",
     is_correct: true,
     exercise_id: mcq8.id,
   )
   choice_8_3 = AnswerChoice.create!(
-    body: "Usted",
+    body: "Silencioso",
     exercise_id: mcq8.id
   )
   choice_8_4 = AnswerChoice.create!(
-    body: "Yo",
+    body: "Lente",
     exercise_id: mcq8.id
   )

@@ -68,7 +68,6 @@ var NavBar = React.createClass({
   },
 
   _handleLanguagesLeave: function () {
-    debugger
     ModalActions.hideModal("languageIndexDropdown");
   },
 
