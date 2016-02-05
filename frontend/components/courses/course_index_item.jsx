@@ -46,6 +46,9 @@ var CourseIndexItem = React.createClass({
   },
 
   render: function () {
+    if (!this.props.course.id) {
+      return <div />;
+    }
     var flag;
     if (this.state.language) {
       flag = (
@@ -56,7 +59,7 @@ var CourseIndexItem = React.createClass({
     } else {
       return <div />;
     }
-    
+
     var courseName = this.props.course.name;
 
     return(

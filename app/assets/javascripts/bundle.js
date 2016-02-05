@@ -32364,6 +32364,9 @@
 	  },
 	
 	  render: function () {
+	    if (!this.props.course.id) {
+	      return React.createElement('div', null);
+	    }
 	    var flag;
 	    if (this.state.language) {
 	      flag = React.createElement(

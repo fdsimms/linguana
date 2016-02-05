@@ -142,10 +142,20 @@ background-color: rgb(242, 42, 0);
 
 .language-nav-flag {
   display: block;
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
+  left: 3px;
   position: absolute;
-  
+  border-radius: 50%;
+  overflow: hidden;
+  top: 22px;
+}
+
+.language-nav-flag img {
+  position: absolute;
+  height: 30px;
+  left: -3px;
+  width: 40px;
 }
 
 .profile-pic-nav {
