@@ -17,13 +17,13 @@ var CourseIndex = React.createClass({
   _languagesChanged: function () {
     CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
       this.forceUpdate();
-    });
+    }.bind(this));
   },
 
   _cookiesChanged: function () {
     CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
       this.forceUpdate();
-    });
+    }.bind(this));
   },
 
   componentDidMount: function () {

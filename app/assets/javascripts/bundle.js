@@ -32122,6 +32122,11 @@
 	    return React.createElement(
 	      'li',
 	      { onClick: this.setLanguageCookie },
+	      React.createElement(
+	        'div',
+	        { className: 'language-dropdown-flag' },
+	        React.createElement('img', { src: this.props.language.flag })
+	      ),
 	      this.props.language.name
 	    );
 	  }
@@ -32351,13 +32356,13 @@
 	  _languagesChanged: function () {
 	    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
 	      this.forceUpdate();
-	    });
+	    }.bind(this));
 	  },
 	
 	  _cookiesChanged: function () {
 	    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
 	      this.forceUpdate();
-	    });
+	    }.bind(this));
 	  },
 	
 	  componentDidMount: function () {

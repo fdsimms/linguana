@@ -18,8 +18,18 @@
   position: absolute;
   left: calc(50% - 47px);
   top: 50%;
+  border: 2px solid #ccc;
   transform: translateX(-50%);
   transform: translateY(-50%);
+}
+
+.language-dropdown-flag {
+  display: block;
+  border-radius: 5px;
+  width: 30px;
+  left: 10px;
+  position: absolute;
+  overflow: hidden;
 }
 
 .language-index-flag img {
@@ -48,6 +58,7 @@
   color: #000;
   border-bottom: 2px solid #eee;
   padding: 12px;
+  padding-left: 50px;
   position: relative;
   cursor: pointer;
 }

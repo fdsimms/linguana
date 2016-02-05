@@ -12,6 +12,9 @@ var LanguageIndexItem = React.createClass({
   render: function () {
     return(
       <li onClick={this.setLanguageCookie}>
+        <div className="language-dropdown-flag">
+          <img src={this.props.language.flag} />
+        </div>
         {this.props.language.name}
       </li>
     );
