@@ -143,6 +143,7 @@ var NavBar = React.createClass({
       );
       var curCourse = CourseStore.find(CookieStore.curCourse()),
           flagDiv;
+          debugger
       if (curCourse) {
         flag = LanguageStore.find(curCourse.target_language_id).flag;
         flagDiv = (

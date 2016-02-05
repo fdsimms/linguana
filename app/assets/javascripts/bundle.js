@@ -24759,6 +24759,7 @@
 	      );
 	      var curCourse = CourseStore.find(CookieStore.curCourse()),
 	          flagDiv;
+	      debugger;
 	      if (curCourse) {
 	        flag = LanguageStore.find(curCourse.target_language_id).flag;
 	        flagDiv = React.createElement(
@@ -34721,7 +34722,10 @@
 
 	var React = __webpack_require__(1),
 	    CurrentUserStore = __webpack_require__(232),
+	    CourseStore = __webpack_require__(237),
+	    LanguageStore = __webpack_require__(235),
 	    SessionsApiUtil = __webpack_require__(241),
+	    LanguagesApiUtil = __webpack_require__(246),
 	    CookieStore = __webpack_require__(234),
 	    SkillIndex = __webpack_require__(260),
 	    UsersApiUtil = __webpack_require__(253);
@@ -34736,16 +34740,22 @@
 	  _currentUserChanged: function () {
 	    this.setState({ user: CurrentUserStore.currentUser() });
 	  },
+	  _coursesChanged: function () {
+	    this.forceUpdate();
+	  },
 	
 	  componentDidMount: function () {
 	    this.userListener = CurrentUserStore.addListener(this._currentUserChanged);
-	    if (!CurrentUserStore.userHasBeenFetched()) {
-	      SessionsApiUtil.fetchCurrentUser();
-	    }
+	    this.coursesListener = CourseStore.addListener(this._coursesChanged);
+	    var curLng = CookieStore.curLng();
+	    SessionsApiUtil.fetchCurrentUser(function () {
+	      CoursesApiUtil.fetchCourses(CookieStore.curLng());
+	    }.bind(this));
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.userListener.remove();
+	    this.coursesListener.remove();
 	  },
 	
 	  renderCourses: function () {

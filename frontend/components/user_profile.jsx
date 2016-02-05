@@ -1,6 +1,9 @@
 var React = require('react'),
     CurrentUserStore = require('../stores/current_user_store'),
+    CourseStore = require('../stores/course_store'),
+    LanguageStore = require('../stores/language_store'),
     SessionsApiUtil = require('../util/sessions_api_util'),
+    LanguagesApiUtil = require('../util/languages_api_util'),
     CookieStore = require('../stores/cookie_store'),
     SkillIndex = require('./skills/skill_index'),
     UsersApiUtil = require('../util/courses_api_util');
@@ -13,16 +16,23 @@ var UserProfile = React.createClass({
   _currentUserChanged: function () {
     this.setState({ user: CurrentUserStore.currentUser() });
   },
+  _coursesChanged: function () {
+    this.forceUpdate();
+  },
 
   componentDidMount: function () {
     this.userListener = CurrentUserStore.addListener(this._currentUserChanged);
-    if (!CurrentUserStore.userHasBeenFetched()) {
-      SessionsApiUtil.fetchCurrentUser();
-    }
+    this.coursesListener = CourseStore.addListener(this._coursesChanged);
+    var curLng = CookieStore.curLng();
+    SessionsApiUtil.fetchCurrentUser(function () {
+      CoursesApiUtil.fetchCourses(CookieStore.curLng());
+    }.bind(this));
+
   },
 
   componentWillUnmount: function () {
     this.userListener.remove();
+    this.coursesListener.remove();
   },
 
   renderCourses: function () {
