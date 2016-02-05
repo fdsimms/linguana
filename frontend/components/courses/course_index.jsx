@@ -11,6 +11,7 @@ var CourseIndex = React.createClass({
   },
 
   _coursesChanged: function () {
+
     this.setState({ courses: CourseStore.all() });
   },
 
@@ -55,9 +56,9 @@ var CourseIndex = React.createClass({
     var courses = this.state.courses;
     var courseKeys = Object.keys(this.state.courses);
     courses = courseKeys.map(function (key, idx) {
-
       var course = courses[key],
           flag = LanguageStore.find(course.target_language_id).flag;
+          
       return <CourseIndexItem key={idx} course={course} flag={flag} />;
     });
 

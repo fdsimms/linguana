@@ -11,6 +11,25 @@
   width: 100%;
 }
 
+.add-courses-languages-button {
+  padding: 0px 5px 15px 5px;
+  color: #3787D4;
+  position: relative;
+}
+
+.add-courses-languages-button li {
+  font-size: 16px;
+}
+.add-courses-languages-button .language-index {
+  right: -140px;
+  top: -60px;
+  width: 235px;
+}
+
+.course-selection .course-index {
+  top: calc(50% - 25px);
+}
+
 .course-index-header {
   font-size: 30px;
   text-align: center;

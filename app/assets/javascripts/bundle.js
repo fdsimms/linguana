@@ -32350,6 +32350,7 @@
 	  },
 	
 	  _coursesChanged: function () {
+	
 	    this.setState({ courses: CourseStore.all() });
 	  },
 	
@@ -32400,9 +32401,9 @@
 	    var courses = this.state.courses;
 	    var courseKeys = Object.keys(this.state.courses);
 	    courses = courseKeys.map(function (key, idx) {
-	
 	      var course = courses[key],
 	          flag = LanguageStore.find(course.target_language_id).flag;
+	
 	      return React.createElement(CourseIndexItem, { key: idx, course: course, flag: flag });
 	    });
 	
@@ -32448,10 +32449,6 @@
 	
 	  componentDidMount: function () {
 	    this.setState({ showFlag: true });
-	  },
-	
-	  componentWillReceiveProps: function () {
-	    this.forceUpdate();
 	  },
 	
 	  setCourseCookie: function () {
@@ -34733,13 +34730,33 @@
 
 	var React = __webpack_require__(1),
 	    CookieStore = __webpack_require__(239),
-	    CourseIndex = __webpack_require__(253);
+	    CourseIndex = __webpack_require__(253),
+	    LanguageIndexDropdown = __webpack_require__(248),
+	    ModalActions = __webpack_require__(207);
 	
 	var CourseSelection = React.createClass({
 	  displayName: 'CourseSelection',
 	
+	  componentDidMount: function () {
+	    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
+	  },
+	
+	  _cookiesChanged: function () {
+	    this.forceUpdate();
+	  },
+	
+	  _handleLanguagesEnter: function () {
+	    ModalActions.displayModal("languageIndexDropdown");
+	    ModalActions.hideModal("loginDropdown");
+	  },
+	
+	  _handleLanguagesLeave: function () {
+	    ModalActions.hideModal("languageIndexDropdown");
+	  },
+	
 	  render: function () {
 	    var curLng = CookieStore.curLng();
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'main-content box-shadowed group' },
@@ -34752,9 +34769,16 @@
 	          React.createElement(
 	            'h2',
 	            { className: 'course-selection-header' },
-	            'Language Courses for ',
-	            curLng,
-	            ' Speakers'
+	            'Language Courses for',
+	            React.createElement(
+	              'button',
+	              { onMouseEnter: this._handleLanguagesEnter,
+	                onMouseLeave: this._handleLanguagesLeave,
+	                className: 'add-courses-languages-button' },
+	              curLng,
+	              React.createElement(LanguageIndexDropdown, null)
+	            ),
+	            'Speakers'
 	          )
 	        ),
 	        React.createElement(CourseIndex, { view: 'addCourse' })

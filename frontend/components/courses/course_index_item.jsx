@@ -17,10 +17,6 @@ var CourseIndexItem = React.createClass({
     this.setState({ showFlag: true });
   },
 
-  componentWillReceiveProps: function () {
-    this.forceUpdate();
-  },
-
   setCourseCookie: function () {
     var courseId = this.props.course.id;
 
