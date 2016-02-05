@@ -4,6 +4,8 @@ var React = require('react'),
     CurrentUserStore = require("../stores/current_user_store"),
     CookieStore = require("../stores/cookie_store"),
     LanguageStore = require("../stores/language_store"),
+    CoursesApiUtil = require('../util/courses_api_util'),
+    LanguagesApiUtil = require('../util/languages_api_util'),
     CookieActions = require("../actions/cookie_actions"),
     SessionsApiUtil = require("../util/sessions_api_util"),
     LanguageIndexDropdown = require("./modals/language_index_dropdown"),
@@ -14,11 +16,17 @@ var React = require('react'),
 var NavBar = React.createClass({
   componentDidMount: function () {
     this.modalListener = ModalStore.addListener(this._modalsChanged);
+    this.coursesListener = CourseStore.addListener(this._coursesChanged);
     this.currentUserListener = CurrentUserStore.addListener(this._usersChanged);
+    LanguagesApiUtil.fetchLanguages(function () {
+      curLng = LanguageStore.findByName(CookieStore.curLng());
+      CourseStore.fetchCourses(curLng.id);
+    });
   },
 
   componentWillUnmount: function () {
     this.modalListener.remove();
+    this.coursesListener.remove();
     this.currentUserListener.remove();
   },
 
@@ -27,6 +35,10 @@ var NavBar = React.createClass({
   },
 
   _modalsChanged: function () {
+    this.forceUpdate();
+  },
+
+  _coursesChanged: function () {
     this.forceUpdate();
   },
 
@@ -120,7 +132,8 @@ var NavBar = React.createClass({
 
   normalNavBar: function () {
     var points_counter,
-        course_index_button;
+        course_index_button,
+        flag;
     if (CurrentUserStore.isLoggedIn()) {
       points_counter = (
         <h2 className="points-counter">
@@ -128,12 +141,22 @@ var NavBar = React.createClass({
           {CurrentUserStore.currentUser().points}
         </h2>
       );
+      var curCourse = CourseStore.find(CookieStore.curCourse()),
+          flagDiv;
+      if (curCourse) {
+        flag = LanguageStore.find(curCourse.target_language_id).flag;
+        flagDiv = (
+          <div className="language-nav-flag" >
+            <img src={flag} />
+          </div>
+        );
+      }
       course_index_button = (
         <button className="course-index-button"
                 onMouseEnter={this._handleCoursesEnter}
                 onMouseLeave={this._handleCoursesLeave}>
                 <i className="fa fa-chevron-down" />
-          {CurrentUserStore.currentUser().current_course_id}
+          {flagDiv}
           <CourseIndexDropdown />
         </button>
       );

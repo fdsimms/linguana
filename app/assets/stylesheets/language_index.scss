@@ -12,11 +12,11 @@
 .language-index-flag {
   display: block;
   overflow: hidden;
-  border-radius: 50%;
-  width: 75px;
+  border-radius: 10px;
+  width: 93px;
   height: 75px;
   position: absolute;
-  left: calc(50% - 39px);
+  left: calc(50% - 47px);
   top: 50%;
   transform: translateX(-50%);
   transform: translateY(-50%);
@@ -27,7 +27,7 @@
   height: 80px;
   position: absolute;
   top: -3px;
-  left: -11px;
+  left: -2px;
 }
 
 .language-list {

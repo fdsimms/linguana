@@ -24609,6 +24609,8 @@
 	    CurrentUserStore = __webpack_require__(232),
 	    CookieStore = __webpack_require__(234),
 	    LanguageStore = __webpack_require__(235),
+	    CoursesApiUtil = __webpack_require__(253),
+	    LanguagesApiUtil = __webpack_require__(246),
 	    CookieActions = __webpack_require__(240),
 	    SessionsApiUtil = __webpack_require__(241),
 	    LanguageIndexDropdown = __webpack_require__(243),
@@ -24621,11 +24623,17 @@
 	
 	  componentDidMount: function () {
 	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    this.coursesListener = CourseStore.addListener(this._coursesChanged);
 	    this.currentUserListener = CurrentUserStore.addListener(this._usersChanged);
+	    LanguagesApiUtil.fetchLanguages(function () {
+	      curLng = LanguageStore.findByName(CookieStore.curLng());
+	      CourseStore.fetchCourses(curLng.id);
+	    });
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.modalListener.remove();
+	    this.coursesListener.remove();
 	    this.currentUserListener.remove();
 	  },
 	
@@ -24634,6 +24642,10 @@
 	  },
 	
 	  _modalsChanged: function () {
+	    this.forceUpdate();
+	  },
+	
+	  _coursesChanged: function () {
 	    this.forceUpdate();
 	  },
 	
@@ -24737,7 +24749,7 @@
 	  },
 	
 	  normalNavBar: function () {
-	    var points_counter, course_index_button;
+	    var points_counter, course_index_button, flag;
 	    if (CurrentUserStore.isLoggedIn()) {
 	      points_counter = React.createElement(
 	        'h2',
@@ -24745,13 +24757,23 @@
 	        React.createElement('i', { className: 'fa fa-adjust fa-lg' }),
 	        CurrentUserStore.currentUser().points
 	      );
+	      var curCourse = CourseStore.find(CookieStore.curCourse()),
+	          flagDiv;
+	      if (curCourse) {
+	        flag = LanguageStore.find(curCourse.target_language_id).flag;
+	        flagDiv = React.createElement(
+	          'div',
+	          { className: 'language-nav-flag' },
+	          React.createElement('img', { src: flag })
+	        );
+	      }
 	      course_index_button = React.createElement(
 	        'button',
 	        { className: 'course-index-button',
 	          onMouseEnter: this._handleCoursesEnter,
 	          onMouseLeave: this._handleCoursesLeave },
 	        React.createElement('i', { className: 'fa fa-chevron-down' }),
-	        CurrentUserStore.currentUser().current_course_id,
+	        flagDiv,
 	        React.createElement(CourseIndexDropdown, null)
 	      );
 	    }
@@ -32349,7 +32371,10 @@
 	        { className: 'language-index-flag' },
 	        React.createElement('img', { src: this.state.language.flag })
 	      );
+	    } else {
+	      return React.createElement('div', null);
 	    }
+	
 	    var courseName = this.props.course.name;
 	
 	    return React.createElement(

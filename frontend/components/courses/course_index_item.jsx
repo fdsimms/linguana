@@ -53,7 +53,10 @@ var CourseIndexItem = React.createClass({
           <img src={this.state.language.flag} />
         </div>
       );
+    } else {
+      return <div />;
     }
+    
     var courseName = this.props.course.name;
 
     return(
