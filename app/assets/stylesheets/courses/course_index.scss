@@ -35,9 +35,21 @@
   text-align: center;
   margin-bottom: 50px;
   cursor: default;
+  position: absolute;
+  top: -150px;
+  left: calc(50%);
+  transform: translateX(-50%);
+}
+
+.course-selection .course-index {
+  position: relative;
 }
 
 .course-list {
+  height: auto;
+  position: absolute;
+  top: -95px;
+  left: -27px;
 }
 
 .course-list-item {
