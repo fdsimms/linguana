@@ -1,4 +1,6 @@
-var CurrentUserActions = require("./../actions/current_user_actions");
+var CurrentUserActions = require("./../actions/current_user_actions"),
+    LanguageStore = require('./../stores/language_store');
+
 var UsersApiUtil = {
   createUser: function (credentials, success) {
     var username = credentials.elements[0].value,
@@ -44,6 +46,31 @@ var UsersApiUtil = {
   },
 
   updateUser: function (userParams, success) {
+    $.ajax({
+      url: '/api/users/' + CurrentUserStore.currentUser().id,
+      type: 'PATCH',
+      dataType: 'json',
+      data: {user: userParams},
+      success: function (currentUser) {
+        CurrentUserActions.receiveCurrentUser(currentUser);
+        success && success();
+      }
+    });
+  },
+
+  updateUserFromCookie: function (cookie, success) {
+
+    if (!CurrentUserStore.isLoggedIn()) { return; }
+    userParams = {};
+
+    if (cookie.curLng) {
+      var curLngId = LanguageStore.findByName(cookie.curLng).id;
+      userParams.current_language_id = curLngId;
+    }
+    if (cookie.curCourseId) {
+      userParams.current_course_id = cookie.curCourseId;
+    }
+
     $.ajax({
       url: '/api/users/' + CurrentUserStore.currentUser().id,
       type: 'PATCH',

@@ -45,6 +45,7 @@ class Api::UsersController < ApplicationController
       :session_token,
       :bio,
       :current_course_id,
+      :current_language_id,
       :fname,
       :lname,
       :hometown,

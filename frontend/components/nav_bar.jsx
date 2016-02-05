@@ -15,12 +15,11 @@ var React = require('react'),
 
 var NavBar = React.createClass({
   componentDidMount: function () {
-    this.modalListener = ModalStore.addListener(this._modalsChanged);
-    this.coursesListener = CourseStore.addListener(this._coursesChanged);
-    this.currentUserListener = CurrentUserStore.addListener(this._usersChanged);
+    this.modalListener = ModalStore.addListener(this._onChange);
+    this.coursesListener = CourseStore.addListener(this._onChange);
+    this.currentUserListener = CurrentUserStore.addListener(this._onChange);
     LanguagesApiUtil.fetchLanguages(function () {
-      curLng = LanguageStore.findByName(CookieStore.curLng());
-      CourseStore.fetchCourses(curLng.id);
+      CoursesApiUtil.fetchCourses(CookieStore.curLng());
     });
   },
 
@@ -34,15 +33,7 @@ var NavBar = React.createClass({
     this.forceUpdate();
   },
 
-  _modalsChanged: function () {
-    this.forceUpdate();
-  },
-
-  _coursesChanged: function () {
-    this.forceUpdate();
-  },
-
-  _usersChanged: function () {
+  _onChange: function () {
     this.forceUpdate();
   },
 
@@ -141,9 +132,10 @@ var NavBar = React.createClass({
           {CurrentUserStore.currentUser().points}
         </h2>
       );
-      var curCourse = CourseStore.find(CookieStore.curCourse()),
+      var curCourse = CourseStore.find(CurrentUserStore.currentUser().current_course_id),
           flagDiv;
-          debugger
+
+
       if (curCourse) {
         flag = LanguageStore.find(curCourse.target_language_id).flag;
         flagDiv = (

@@ -1,6 +1,8 @@
 var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
+var UsersApiUtil = require('../util/users_api_util');
 var CurrentUserConstants = require('../constants/current_user_constants');
+var CookieConstants = require('../constants/cookie_constants');
 
 var _currentUser = {};
 var _userHasBeenFetched = false;
@@ -8,6 +10,10 @@ var CurrentUserStore = new Store(AppDispatcher);
 
 var awardPoints = function (points) {
   _currentUser.points += points;
+};
+
+var updateUserFromCookie = function (cookie) {
+  UsersApiUtil.updateUserFromCookie(cookie);
 };
 
 CurrentUserStore.findCompletion = function (completableId, completableType) {
@@ -56,6 +62,9 @@ CurrentUserStore.__onDispatch = function (payload) {
     awardPoints(payload.points);
     _userHasBeenFetched = true;
     CurrentUserStore.__emitChange();
+  } else if (payload.actionType === CookieConstants.COOKIE_RECEIVED) {
+    updateUserFromCookie(payload.cookie);
+    CookieStore.__emitChange();
   }
 };
 

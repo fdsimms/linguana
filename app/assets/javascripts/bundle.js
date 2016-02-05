@@ -24622,12 +24622,11 @@
 	  displayName: 'NavBar',
 	
 	  componentDidMount: function () {
-	    this.modalListener = ModalStore.addListener(this._modalsChanged);
-	    this.coursesListener = CourseStore.addListener(this._coursesChanged);
-	    this.currentUserListener = CurrentUserStore.addListener(this._usersChanged);
+	    this.modalListener = ModalStore.addListener(this._onChange);
+	    this.coursesListener = CourseStore.addListener(this._onChange);
+	    this.currentUserListener = CurrentUserStore.addListener(this._onChange);
 	    LanguagesApiUtil.fetchLanguages(function () {
-	      curLng = LanguageStore.findByName(CookieStore.curLng());
-	      CourseStore.fetchCourses(curLng.id);
+	      CoursesApiUtil.fetchCourses(CookieStore.curLng());
 	    });
 	  },
 	
@@ -24641,15 +24640,7 @@
 	    this.forceUpdate();
 	  },
 	
-	  _modalsChanged: function () {
-	    this.forceUpdate();
-	  },
-	
-	  _coursesChanged: function () {
-	    this.forceUpdate();
-	  },
-	
-	  _usersChanged: function () {
+	  _onChange: function () {
 	    this.forceUpdate();
 	  },
 	
@@ -24757,9 +24748,9 @@
 	        React.createElement('i', { className: 'fa fa-adjust fa-lg' }),
 	        CurrentUserStore.currentUser().points
 	      );
-	      var curCourse = CourseStore.find(CookieStore.curCourse()),
+	      var curCourse = CourseStore.find(CurrentUserStore.currentUser().current_course_id),
 	          flagDiv;
-	      debugger;
+	
 	      if (curCourse) {
 	        flag = LanguageStore.find(curCourse.target_language_id).flag;
 	        flagDiv = React.createElement(
@@ -31345,7 +31336,9 @@
 
 	var Store = __webpack_require__(215).Store;
 	var AppDispatcher = __webpack_require__(208);
+	var UsersApiUtil = __webpack_require__(250);
 	var CurrentUserConstants = __webpack_require__(233);
+	var CookieConstants = __webpack_require__(239);
 	
 	var _currentUser = {};
 	var _userHasBeenFetched = false;
@@ -31353,6 +31346,10 @@
 	
 	var awardPoints = function (points) {
 	  _currentUser.points += points;
+	};
+	
+	var updateUserFromCookie = function (cookie) {
+	  UsersApiUtil.updateUserFromCookie(cookie);
 	};
 	
 	CurrentUserStore.findCompletion = function (completableId, completableType) {
@@ -31400,6 +31397,9 @@
 	    awardPoints(payload.points);
 	    _userHasBeenFetched = true;
 	    CurrentUserStore.__emitChange();
+	  } else if (payload.actionType === CookieConstants.COOKIE_RECEIVED) {
+	    updateUserFromCookie(payload.cookie);
+	    CookieStore.__emitChange();
 	  }
 	};
 	
@@ -31909,13 +31909,14 @@
 	    LanguageStore = __webpack_require__(235);
 	
 	var LanguageApiUtil = {
-		fetchLanguages: function () {
+		fetchLanguages: function (callback) {
 			$.ajax({
 				type: "GET",
 				url: "api/languages/",
 				dataType: "json",
 				success: function (languages) {
 					LanguageActions.receiveAll(languages);
+					callback && callback();
 				}
 			});
 		}
@@ -32144,7 +32145,9 @@
 /* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CurrentUserActions = __webpack_require__(242);
+	var CurrentUserActions = __webpack_require__(242),
+	    LanguageStore = __webpack_require__(235);
+	
 	var UsersApiUtil = {
 	  createUser: function (credentials, success) {
 	    var username = credentials.elements[0].value,
@@ -32190,6 +32193,33 @@
 	  },
 	
 	  updateUser: function (userParams, success) {
+	    $.ajax({
+	      url: '/api/users/' + CurrentUserStore.currentUser().id,
+	      type: 'PATCH',
+	      dataType: 'json',
+	      data: { user: userParams },
+	      success: function (currentUser) {
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        success && success();
+	      }
+	    });
+	  },
+	
+	  updateUserFromCookie: function (cookie, success) {
+	
+	    if (!CurrentUserStore.isLoggedIn()) {
+	      return;
+	    }
+	    userParams = {};
+	
+	    if (cookie.curLng) {
+	      var curLngId = LanguageStore.findByName(cookie.curLng).id;
+	      userParams.current_language_id = curLngId;
+	    }
+	    if (cookie.curCourseId) {
+	      userParams.current_course_id = cookie.curCourseId;
+	    }
+	
 	    $.ajax({
 	      url: '/api/users/' + CurrentUserStore.currentUser().id,
 	      type: 'PATCH',
