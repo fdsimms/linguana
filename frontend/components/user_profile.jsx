@@ -65,6 +65,7 @@ var UserProfile = React.createClass({
         <div className="main-content box-shadowed">
           <header className="user-profile-header">
             <div className="profile-pic">
+              <img src={CurrentUserStore.currentUser().profile_pic_url} />
             </div>
               {username}
             {userInfo}

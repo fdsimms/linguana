@@ -28,13 +28,13 @@
  }
 
  .profile-pic {
-   background-color: goldenrod;
    display: block;
    width: 125px;
    height: 125px;
    position: relative;
    border-radius: 50%;
    left: 50%;
+   overflow: hidden;
    transform: translateX(-50%)
  }
 

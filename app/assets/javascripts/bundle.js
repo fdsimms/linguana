@@ -34749,7 +34749,11 @@
 	        React.createElement(
 	          'header',
 	          { className: 'user-profile-header' },
-	          React.createElement('div', { className: 'profile-pic' }),
+	          React.createElement(
+	            'div',
+	            { className: 'profile-pic' },
+	            React.createElement('img', { src: CurrentUserStore.currentUser().profile_pic_url })
+	          ),
 	          username,
 	          userInfo
 	        )
