@@ -41,7 +41,12 @@ var SessionsApiUtil = {
       type: 'GET',
       dataType: 'json',
       success: function (currentUser) {
-        console.log("fetched current user!");
+        if (currentUser.current_course_id) {
+          CookieActions.receiveCookie({
+          cookie: {
+            curCourseId: currentUser.current_course_id }
+          });
+        }
         CurrentUserActions.receiveCurrentUser(currentUser);
         cb && cb(currentUser);
       }
