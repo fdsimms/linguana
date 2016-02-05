@@ -10,6 +10,17 @@ var resetLanguages = function(languages) {
   _languages = languages.slice();
 };
 
+LanguageStore.find = function (languageId) {
+  var result;
+  _languages.forEach(function (language, idx) {
+    if (language.id == languageId) {
+      result = language;
+    }
+  }.bind(this));
+
+  return result;
+};
+
 LanguageStore.all = function () {
   return _languages.slice();
 };

@@ -31499,6 +31499,17 @@
 	  _languages = languages.slice();
 	};
 	
+	LanguageStore.find = function (languageId) {
+	  var result;
+	  _languages.forEach(function (language, idx) {
+	    if (language.id == languageId) {
+	      result = language;
+	    }
+	  }.bind(this));
+	
+	  return result;
+	};
+	
 	LanguageStore.all = function () {
 	  return _languages.slice();
 	};
@@ -32283,11 +32294,30 @@
 
 	var React = __webpack_require__(1),
 	    CookieActions = __webpack_require__(240),
+	    LanguageStore = __webpack_require__(235),
+	    LanguagesApiUtil = __webpack_require__(246),
 	    CurrentUserStore = __webpack_require__(232),
 	    UsersApiUtil = __webpack_require__(250);
 	
 	var CourseIndexItem = React.createClass({
 	  displayName: 'CourseIndexItem',
+	
+	  getInitialState: function () {
+	    return { language: LanguageStore.find(this.props.course.target_language_id) };
+	  },
+	
+	  componentDidMount: function () {
+	    this.languagesListener = LanguageStore.addListener(this._languagesChanged);
+	    LanguagesApiUtil.fetchLanguages();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.languagesListener.remove();
+	  },
+	
+	  _languagesChanged: function () {
+	    this.setState({ language: LanguageStore.find(this.props.course.target_language_id) });
+	  },
 	
 	  setCourseCookie: function () {
 	    var courseId = this.props.course.id;
@@ -32312,11 +32342,20 @@
 	  },
 	
 	  render: function () {
+	    var flag;
+	    if (this.state.language) {
+	      flag = React.createElement(
+	        'div',
+	        { className: 'language-index-flag' },
+	        React.createElement('img', { src: this.state.language.flag })
+	      );
+	    }
 	    var courseName = this.props.course.name;
 	
 	    return React.createElement(
 	      'div',
 	      { className: 'course-list-item-wrapper' },
+	      flag,
 	      React.createElement(
 	        'a',
 	        { href: "#/course/" + this.props.course.id,

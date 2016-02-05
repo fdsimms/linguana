@@ -1,5 +1,7 @@
 class Language < ActiveRecord::Base
   validates :name, :abbreviation, uniqueness: true, presence: true
+  has_attached_file :flag, default_url: "/images/:style/missing_flag.png"
+  validates_attachment_content_type :flag, content_type: /\Aimage\/.*\Z/
 
   has_many(
     :courses_as_target_language,

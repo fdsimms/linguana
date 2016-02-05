@@ -9,6 +9,27 @@
   z-index: 1;
 }
 
+.language-index-flag {
+  display: block;
+  overflow: hidden;
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  position: absolute;
+  left: calc(50% - 39px);
+  top: 50%;
+  transform: translateX(-50%);
+  transform: translateY(-50%);
+}
+
+.language-index-flag img {
+  width: 105px;
+  height: 80px;
+  position: absolute;
+  top: -3px;
+  left: -11px;
+}
+
 .language-list {
   border-radius: 10px;
 }
