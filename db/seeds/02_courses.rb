@@ -48,3 +48,8 @@ english_for_portuguese = Course.create!(
   target_language_id: english.id,
   known_language_id: portuguese.id
 )
+
+
+User.create!(username: "guest", password: "password", bio: "He was the best of guests.",
+             hometown: "Guestvale", fname: "G.K.", lname: "Guesterton", email: "gk@mailinator.com",
+             current_course_id: spanish_for_english.id)

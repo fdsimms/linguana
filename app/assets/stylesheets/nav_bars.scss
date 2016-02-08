@@ -50,8 +50,12 @@
 .splash-header-login-button {
   color: rgb(10, 68, 121);
   text-align: center;
+  display: block;
   border-radius: 20px;
-  // position: relative;
+  width: 100%;
+  padding: 0;
+  padding: 7px 0;
+  margin-left: 0;
   background-color: #fff;
 }
 

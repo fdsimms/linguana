@@ -113,7 +113,7 @@
 	
 	function _ensureLoggedIn(nextState, replace, callback) {
 	  if (CurrentUserStore.userHasBeenFetched()) {
-	    _redirectIfNotLoggedInOrNoCurrentCourse();
+	    _redirectIfNotLoggedIn();
 	  } else {
 	    SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
 	  }
@@ -32030,16 +32030,16 @@
 	    var username = credentials.elements[0].value,
 	        password = credentials.elements[1].value,
 	        sessionParams = { session: { username: username, password: password } };
-	
 	    $.ajax({
 	      url: '/api/session',
 	      type: 'POST',
 	      dataType: 'json',
 	      data: sessionParams,
 	      success: function (currentUser) {
+	        var curCourseId = currentUser.current_course_id || CookieStore.curCourse();
 	
 	        CookieActions.receiveCookie({
-	          curCourseId: currentUser.current_course_id
+	          curCourseId: curCourseId
 	        });
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success(currentUser.current_course_id);
@@ -32704,7 +32704,7 @@
 	              name: 'session[password]',
 	              value: 'password' }),
 	            React.createElement(
-	              'a',
+	              'button',
 	              { className: 'guest-login-button' },
 	              'Log in as guest'
 	            )

@@ -39,24 +39,24 @@
  }
 
  .user-profile-info {
-   width: 225px;
+   width: 100%;
    margin: auto;
-   padding: 10px;
+   padding: 10px 0;
+   text-align: center;
  }
 
- .user-profile-info .floated {
-   float: left;
- }
  .user-profile-info .name {
    font-size: 20px;
    text-align: center;
  }
 
  .user-profile-info .hometown {
-   float: right;
-   font-size: 18px;
-   color: #aaa;
-   padding-top: 2px;
+
+  display: inline;
+  font-size: 18px;
+  color: #aaa;
+
+  padding: 0 10px;
  }
 
  .profile-sidebar {

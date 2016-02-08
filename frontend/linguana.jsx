@@ -64,7 +64,7 @@ var React = require('react'),
 
   function _ensureLoggedIn(nextState, replace, callback) {
     if (CurrentUserStore.userHasBeenFetched()) {
-      _redirectIfNotLoggedInOrNoCurrentCourse();
+      _redirectIfNotLoggedIn();
     } else {
       SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
     }

@@ -5,16 +5,17 @@ var SessionsApiUtil = {
     var username = credentials.elements[0].value,
         password = credentials.elements[1].value,
         sessionParams = {session: {username: username, password: password}};
-
     $.ajax({
       url: '/api/session',
       type: 'POST',
       dataType: 'json',
       data: sessionParams,
       success: function (currentUser) {
+        var curCourseId =
+          currentUser.current_course_id || CookieStore.curCourse();
 
         CookieActions.receiveCookie({
-            curCourseId: currentUser.current_course_id
+            curCourseId: curCourseId
           });
         CurrentUserActions.receiveCurrentUser(currentUser);
         success && success(currentUser.current_course_id);

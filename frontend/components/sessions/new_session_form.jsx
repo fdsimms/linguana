@@ -46,7 +46,7 @@ var NewSessionForm = React.createClass({
                      name="session[password]"
                      value="password" />
 
-                   <a className="guest-login-button">Log in as guest</a>
+              <button className="guest-login-button">Log in as guest</button>
             </div>
           </form>
 

@@ -65,6 +65,15 @@
   background-color: rgb(33, 176, 249);
 }
 
+.splash-login-inputs .guest-login-button {
+  text-align: center;
+  display: block;
+  border-radius: 20px;
+  width: 100%;
+  padding: 7px 0;
+  margin: 5px 0 0 0;
+}
+
 .inputs button {
   margin: 20px auto 10px auto;
   padding: 12px 115px;
@@ -79,11 +88,6 @@
 #modal-login-button {
   margin-top: 10px;
   padding: 7px 75px;
-}
-.splash-login-inputs .guest-login-button {
-  margin-top: 5px;
-  padding: 7px 10px;
-  text-align: center;
 }
 
 .inputs button:hover,
