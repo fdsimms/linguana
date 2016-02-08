@@ -1,9 +1,16 @@
 .header-nav,
 .splash-header {
   min-width: 700px;
-  width: calc(100% - 250px);
   display: block;
   margin: auto;
+}
+
+.splash-header {
+  width: calc(100% - 250px);
+}
+
+.header-nav {
+  width: calc(100% - 550px);
 }
 
 .header-bar,
