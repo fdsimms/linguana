@@ -46,4 +46,4 @@ french_verbs_3 = Skill.create!(
   tips_and_notes: ""
 )
 
-# Dir[File.join(Rails.root, 'db', 'seeds', 'french_skills', 'skill_*_lessons','*.rb')].sort.each { |seed| load seed }
+Dir[File.join(Rails.root, 'db', 'seeds', 'french_skills', 'skill_*_lessons','*.rb')].sort.each { |seed| load seed }

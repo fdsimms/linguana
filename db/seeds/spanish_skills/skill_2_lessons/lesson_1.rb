@@ -1,13 +1,13 @@
-spanish_for_english = Course.find_by_name("Spanish")
-spanish_basic_2 = Skill.find_by(name: "Basics 2", course_id: spanish_for_english.id)
+course = Course.find_by_name("Spanish")
+skill = Skill.find_by(name: "Basics 2", course_id: course.id)
 
-spanish_basic_2_1 = Lesson.create!(
+lesson = Lesson.create!(
   name: "Lesson 1",
-  skill_id: spanish_basic_2.id
+  skill_id: skill.id
 )
 
   mcq1 = Exercise.create!(
-    lesson_id: spanish_basic_2_1.id,
+    lesson_id: lesson.id,
     thing_to_translate: "Los niños",
     exercise_type: "multiple_choice"
   )
@@ -29,7 +29,7 @@ spanish_basic_2_1 = Lesson.create!(
 
 
   mcq2 = Exercise.create!(
-    lesson_id: spanish_basic_2_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "Los muchachos"
   )
@@ -49,7 +49,7 @@ spanish_basic_2_1 = Lesson.create!(
 
 
   mcq3 = Exercise.create!(
-    lesson_id: spanish_basic_2_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The dogs"
   )
@@ -70,7 +70,7 @@ spanish_basic_2_1 = Lesson.create!(
 
 
   mcq4 = Exercise.create!(
-    lesson_id: spanish_basic_2_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The roosters"
   )
@@ -89,7 +89,7 @@ spanish_basic_2_1 = Lesson.create!(
   )
 
   mcq5 = Exercise.create!(
-    lesson_id: spanish_basic_2_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The men"
   )
@@ -110,7 +110,7 @@ spanish_basic_2_1 = Lesson.create!(
   )
 
   mcq6 = Exercise.create!(
-    lesson_id: spanish_basic_2_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The babies"
   )
@@ -130,7 +130,7 @@ spanish_basic_2_1 = Lesson.create!(
   )
 
   mcq7 = Exercise.create!(
-    lesson_id: spanish_basic_2_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The bears"
   )
@@ -151,7 +151,7 @@ spanish_basic_2_1 = Lesson.create!(
 
 
   mcq8 = Exercise.create!(
-    lesson_id: spanish_basic_2_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The cats"
   )

@@ -28,26 +28,42 @@ portuguese_for_english = Course.create!(
   target_language_id: portuguese.id,
   known_language_id: english.id
 )
+
+Dir[File.join(Rails.root, 'db', 'seeds', 'portuguese_skills', '*.rb')].sort.each { |seed| load seed }
+
+
 esperanto_for_english = Course.create!(
   name: "Esperanto",
   target_language_id: esperanto.id,
   known_language_id: english.id
 )
+
+Dir[File.join(Rails.root, 'db', 'seeds', 'esperanto_skills', '*.rb')].sort.each { |seed| load seed }
+
+
 english_for_spanish = Course.create!(
   name: "Inglés",
   target_language_id: english.id,
   known_language_id: spanish.id
 )
+
+Dir[File.join(Rails.root, 'db', 'seeds', 'ingles_es_skills', '*.rb')].sort.each { |seed| load seed }
+
 english_for_french = Course.create!(
   name: "Anglais",
   target_language_id: english.id,
   known_language_id: french.id
 )
+Dir[File.join(Rails.root, 'db', 'seeds', 'anglais_skills', '*.rb')].sort.each { |seed| load seed }
+
 english_for_portuguese = Course.create!(
   name: "Inglês",
   target_language_id: english.id,
   known_language_id: portuguese.id
 )
+
+Dir[File.join(Rails.root, 'db', 'seeds', 'ingles_pt_skills', '*.rb')].sort.each { |seed| load seed }
+
 
 
 User.create!(username: "guest", password: "password", bio: "He was the best of guests.",

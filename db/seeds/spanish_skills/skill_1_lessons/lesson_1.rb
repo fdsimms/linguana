@@ -1,13 +1,13 @@
-spanish_for_english = Course.find_by_name("Spanish")
-spanish_basic_1 = Skill.find_by(name: "Basics 1", course_id: spanish_for_english.id)
+course = Course.find_by_name("Spanish")
+skill = Skill.find_by(name: "Basics 1", course_id: course.id)
 
-spanish_basic_1_1 = Lesson.create!(
+lesson = Lesson.create!(
   name: "Lesson 1",
-  skill_id: spanish_basic_1.id
+  skill_id: skill.id
 )
 
   mcq1 = Exercise.create!(
-    lesson_id: spanish_basic_1_1.id,
+    lesson_id: lesson.id,
     thing_to_translate: "The boy",
     exercise_type: "multiple_choice"
   )
@@ -29,7 +29,7 @@ spanish_basic_1_1 = Lesson.create!(
 
 
   mcq2 = Exercise.create!(
-    lesson_id: spanish_basic_1_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The girl"
   )
@@ -49,7 +49,7 @@ spanish_basic_1_1 = Lesson.create!(
 
 
   mcq3 = Exercise.create!(
-    lesson_id: spanish_basic_1_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The dog"
   )
@@ -70,7 +70,7 @@ spanish_basic_1_1 = Lesson.create!(
 
 
   mcq4 = Exercise.create!(
-    lesson_id: spanish_basic_1_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The mother"
   )
@@ -90,7 +90,7 @@ spanish_basic_1_1 = Lesson.create!(
 
 
   mcq5 = Exercise.create!(
-    lesson_id: spanish_basic_1_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The man"
   )
@@ -111,7 +111,7 @@ spanish_basic_1_1 = Lesson.create!(
   )
 
   mcq6 = Exercise.create!(
-    lesson_id: spanish_basic_1_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The baby"
   )
@@ -131,7 +131,7 @@ spanish_basic_1_1 = Lesson.create!(
   )
 
   mcq7 = Exercise.create!(
-    lesson_id: spanish_basic_1_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The bear"
   )
@@ -152,7 +152,7 @@ spanish_basic_1_1 = Lesson.create!(
 
 
   mcq8 = Exercise.create!(
-    lesson_id: spanish_basic_1_1.id,
+    lesson_id: lesson.id,
     exercise_type: "multiple_choice",
     thing_to_translate: "The cat"
   )

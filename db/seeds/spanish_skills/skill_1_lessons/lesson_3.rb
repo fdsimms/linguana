@@ -1,13 +1,13 @@
-spanish_for_english = Course.find_by_name("Spanish")
-spanish_basic_1 = Skill.find_by(name: "Basics 1", course_id: spanish_for_english.id)
+course = Course.find_by_name("Spanish")
+skill = Skill.find_by(name: "Basics 1", course_id: course.id)
 
-spanish_basic_1_3 = Lesson.create!(
+lesson = Lesson.create!(
   name: "Lesson 3",
-  skill_id: spanish_basic_1.id
+  skill_id: skill.id
 )
 
 mcq1 = Exercise.create!(
-  lesson_id: spanish_basic_1_3.id,
+  lesson_id: lesson.id,
   thing_to_translate: "El carro",
   exercise_type: "multiple_choice"
 )
@@ -29,7 +29,7 @@ choice_1_4 = AnswerChoice.create!(
 
 
 mcq2 = Exercise.create!(
-  lesson_id: spanish_basic_1_3.id,
+  lesson_id: lesson.id,
   exercise_type: "multiple_choice",
   thing_to_translate: "La chica"
 )
@@ -49,7 +49,7 @@ choice_2_3 = AnswerChoice.create!(
 
 
 mcq3 = Exercise.create!(
-  lesson_id: spanish_basic_1_3.id,
+  lesson_id: lesson.id,
   exercise_type: "multiple_choice",
   thing_to_translate: "El perro"
 )
@@ -70,7 +70,7 @@ choice_3_4 = AnswerChoice.create!(
 
 
 mcq4 = Exercise.create!(
-  lesson_id: spanish_basic_1_3.id,
+  lesson_id: lesson.id,
   exercise_type: "multiple_choice",
   thing_to_translate: "La madre"
 )
@@ -90,7 +90,7 @@ choice_4_4 = AnswerChoice.create!(
 
 
 mcq5 = Exercise.create!(
-  lesson_id: spanish_basic_1_3.id,
+  lesson_id: lesson.id,
   exercise_type: "multiple_choice",
   thing_to_translate: "The mom"
 )
@@ -111,7 +111,7 @@ choice_5_4 = AnswerChoice.create!(
 )
 
 mcq6 = Exercise.create!(
-  lesson_id: spanish_basic_1_3.id,
+  lesson_id: lesson.id,
   exercise_type: "multiple_choice",
   thing_to_translate: "The horse"
 )
@@ -131,7 +131,7 @@ choice_6_4 = AnswerChoice.create!(
 )
 
 mcq7 = Exercise.create!(
-  lesson_id: spanish_basic_1_3.id,
+  lesson_id: lesson.id,
   exercise_type: "multiple_choice",
   thing_to_translate: "El oso"
 )
@@ -152,7 +152,7 @@ choice_7_3 = AnswerChoice.create!(
 
 
 mcq8 = Exercise.create!(
-  lesson_id: spanish_basic_1_3.id,
+  lesson_id: lesson.id,
   exercise_type: "multiple_choice",
   thing_to_translate: "The chicken"
 )
