@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160205020818) do
+ActiveRecord::Schema.define(version: 20160208150355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20160205020818) do
 
   add_index "completions", ["completable_id"], name: "index_completions_on_completable_id", using: :btree
   add_index "completions", ["completable_type"], name: "index_completions_on_completable_type", using: :btree
-  add_index "completions", ["user_id", "completable_id"], name: "index_completions_on_user_id_and_completable_id", unique: true, using: :btree
+  add_index "completions", ["user_id", "completable_id", "completable_type"], name: "completions_index", unique: true, using: :btree
   add_index "completions", ["user_id"], name: "index_completions_on_user_id", using: :btree
 
   create_table "course_enrollments", force: :cascade do |t|

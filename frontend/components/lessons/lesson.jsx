@@ -170,7 +170,7 @@ var Lesson = React.createClass({
           </h3>
           {modal}
           <a className="tips-and-notes-quit"
-            href={"#/skills/" + this.state.lesson.skill_id }>
+            href={"#/skill/" + this.state.lesson.skill_id }>
             Quit
           </a>
         </div>

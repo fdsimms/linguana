@@ -26112,6 +26112,7 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
+	 * @providesModule invariant
 	 */
 	
 	'use strict';
@@ -26167,6 +26168,7 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
+	 * @providesModule emptyFunction
 	 */
 	
 	"use strict";
@@ -34054,7 +34056,7 @@
 	        React.createElement(
 	          'a',
 	          { className: 'tips-and-notes-quit',
-	            href: "#/skills/" + this.state.lesson.skill_id },
+	            href: "#/skill/" + this.state.lesson.skill_id },
 	          'Quit'
 	        )
 	      ),
@@ -34716,6 +34718,7 @@
 	    if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
 	      UsersApiUtil.createCompletionForUser(completionParams, function () {
 	        UsersApiUtil.awardPoints(points, function () {
+	          debugger;
 	          if (this.props.lesson.id == LessonStore.findLastLessonId()) {
 	            this.createSkillCompletion();
 	          }
@@ -34727,6 +34730,7 @@
 	  },
 	
 	  createSkillCompletion: function () {
+	    debugger;
 	    var skill = SkillStore.find(this.props.lesson.skill_id);
 	    var completionParams = {};
 	    completionParams.user_id = CurrentUserStore.currentUser().id;
