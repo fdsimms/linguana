@@ -34,7 +34,7 @@ var SessionsApiUtil = {
     });
   },
 
-  fetchCurrentUser: function (cb) {
+  fetchCurrentUser: function (callback) {
     $.ajax({
       url: '/api/session',
       type: 'GET',
@@ -42,12 +42,11 @@ var SessionsApiUtil = {
       success: function (currentUser) {
         if (currentUser.current_course_id) {
           CookieActions.receiveCookie({
-          cookie: {
-            curCourseId: currentUser.current_course_id }
+            curCourseId: currentUser.current_course_id
           });
         }
         CurrentUserActions.receiveCurrentUser(currentUser);
-        cb && cb(currentUser);
+        callback && callback(currentUser);
       }
     });
   }
