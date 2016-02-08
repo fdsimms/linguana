@@ -102,13 +102,13 @@ var NavBar = React.createClass({
   normalNavBarButtons: function () {
     if (CurrentUserStore.isLoggedIn()) {
       return(
-        <button className="user-info-button"
+        <button className="user-info-button group"
                 onMouseEnter={this._handleUserInfoEnter}
                 onMouseLeave={this._handleUserInfoLeave}>
-          <i className="fa fa-chevron-down" />
           <div className="profile-pic-nav">
             <img src={CurrentUserStore.currentUser().profile_pic_url} />
           </div>
+          <i className="fa fa-chevron-down" />
           {CurrentUserStore.currentUser().fname}
           <UserInfoDropdown />
         </button>
@@ -147,11 +147,11 @@ var NavBar = React.createClass({
         );
       }
       course_index_button = (
-        <button className="course-index-button"
+        <button className="course-index-button group"
                 onMouseEnter={this._handleCoursesEnter}
                 onMouseLeave={this._handleCoursesLeave}>
-                <i className="fa fa-chevron-down" />
-          {flagDiv}
+            {flagDiv}
+            <i className="fa fa-chevron-down" />
           <CourseIndexDropdown />
         </button>
       );
@@ -163,10 +163,10 @@ var NavBar = React.createClass({
         <h1 className="header-nav-logo">
           <a href="/">Linguana</a>
         </h1>
-        <div className="header-buttons group">
-          {course_index_button}
+        <div className="header-buttons">
           {points_counter}
           {this.normalNavBarButtons()}
+          {course_index_button}
         </div>
       </nav>
     );

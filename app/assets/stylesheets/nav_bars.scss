@@ -132,15 +132,15 @@ background-color: rgb(242, 42, 0);
 
 .user-info-button .fa-chevron-down {
   color: #000;
-  top: 2px;
-  left: 60px;
-  position: absolute;
+  position: static;
   z-index: 1;
+  margin-top: 10px;
+  padding-left: 2px;
 }
 
 .points-counter {
   display: block;
-  position: relative;
+  margin-left: 10px;
   float: right;
   padding-bottom: 20px;
   cursor: default;
@@ -154,14 +154,13 @@ background-color: rgb(242, 42, 0);
   width: 30px;
   height: 30px;
   left: 3px;
-  position: absolute;
   border-radius: 50%;
   overflow: hidden;
+  float: right;
   top: 22px;
 }
 
 .language-nav-flag img {
-  position: absolute;
   height: 30px;
   left: -3px;
   width: 40px;
@@ -170,19 +169,21 @@ background-color: rgb(242, 42, 0);
 .profile-pic-nav {
   width: 40px;
   display: block;
-  position: absolute;
   border-radius: 50%;
-  left: -45px;
-  top: -10px;
+  float: left;
   overflow: hidden;
 }
 
 .points-counter .fa {
-  position: absolute;
   color: gold;
   background-color: gold;
   border-radius: 50%;
-  top: 27px;
-  left: -22px;
+  position: static;
+  margin-right: 2px;
   text-shadow: 0 0 1px black;
+}
+
+.header-buttons {
+  float: right;
+  width: 350px;
 }

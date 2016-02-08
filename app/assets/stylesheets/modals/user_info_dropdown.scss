@@ -11,10 +11,9 @@
 }
 
 .user-info-dropdown {
-  top: 35px;
+  top: 62px;
   padding: 10px 0;
   width: 150px;
-  left: -26px;
 }
 
 .user-info-dropdown li{
@@ -25,18 +24,21 @@
 .user-info-button{
   display: block;
   float: right;
+  margin-top: 16px;
   color: #fff;
+  padding-bottom: 12px;
   text-align: center;
-  margin-top: 25px;
-  padding-bottom: 20px;
-  position: relative;
-  /* padding-right: 20px; */
   margin-right: 0;
-  left: -25px;
+}
+
+.user-info-button span {
+  margin-top: 9px;
+  float: left;
+  padding-left: 4px;
 }
 
 .user-info-dropdown li:hover {
-  color: #ccc;
+  color: #fff;
   background-color: #2BA8E4
 }
 
@@ -48,7 +50,7 @@
 
 .courses-dropdown:before {
   right: 96px;
-  top: -18px;
+  top: -15px;
 }
 
 .user-info-dropdown:before,
@@ -59,4 +61,8 @@
   text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.2);
   color: #fff;
   left: 83px;
+}
+
+.courses-dropdown {
+  left: -61px;
 }

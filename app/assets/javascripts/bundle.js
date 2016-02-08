@@ -24742,15 +24742,15 @@
 	    if (CurrentUserStore.isLoggedIn()) {
 	      return React.createElement(
 	        'button',
-	        { className: 'user-info-button',
+	        { className: 'user-info-button group',
 	          onMouseEnter: this._handleUserInfoEnter,
 	          onMouseLeave: this._handleUserInfoLeave },
-	        React.createElement('i', { className: 'fa fa-chevron-down' }),
 	        React.createElement(
 	          'div',
 	          { className: 'profile-pic-nav' },
 	          React.createElement('img', { src: CurrentUserStore.currentUser().profile_pic_url })
 	        ),
+	        React.createElement('i', { className: 'fa fa-chevron-down' }),
 	        CurrentUserStore.currentUser().fname,
 	        React.createElement(UserInfoDropdown, null)
 	      );
@@ -24786,11 +24786,11 @@
 	      }
 	      course_index_button = React.createElement(
 	        'button',
-	        { className: 'course-index-button',
+	        { className: 'course-index-button group',
 	          onMouseEnter: this._handleCoursesEnter,
 	          onMouseLeave: this._handleCoursesLeave },
-	        React.createElement('i', { className: 'fa fa-chevron-down' }),
 	        flagDiv,
+	        React.createElement('i', { className: 'fa fa-chevron-down' }),
 	        React.createElement(CourseIndexDropdown, null)
 	      );
 	    }
@@ -24809,10 +24809,10 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'header-buttons group' },
-	        course_index_button,
+	        { className: 'header-buttons' },
 	        points_counter,
-	        this.normalNavBarButtons()
+	        this.normalNavBarButtons(),
+	        course_index_button
 	      )
 	    );
 	  },

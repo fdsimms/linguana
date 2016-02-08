@@ -11,8 +11,8 @@
 
 .courses-dropdown {
   position: absolute;
-  left: -85px;
-  top: 62px;
+  left: -54px;
+  top: 41px;
   min-height: 120px;
   height: auto;
   display: block;
@@ -56,19 +56,15 @@
 
 .course-index-button {
   display: block;
-  position: relative;
   float: right;
-  padding-bottom: 20px;
-  padding-top: 25px;
-  left: -165px;
+  margin-top: 22px;
+  position: relative;
   z-index: 1;
 }
 
 .course-index-button .fa-chevron-down {
   color: #000;
-  top: 27px;
-  left: -18px;
-  padding-bottom: 20px;
-  padding-right: 10px;
-  position: absolute;
+  float: left;
+  margin-top: 4px;
+  position: static;
 }
