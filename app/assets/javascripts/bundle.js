@@ -31513,16 +31513,18 @@
 	      userParams.current_course_id = cookie.curCourseId;
 	    }
 	
-	    $.ajax({
-	      url: '/api/users/' + CurrentUserStore.currentUser().id,
-	      type: 'PATCH',
-	      dataType: 'json',
-	      data: { user: userParams },
-	      success: function (currentUser) {
-	        CurrentUserActions.receiveCurrentUser(currentUser);
-	        success && success();
-	      }
-	    });
+	    if (!$.isEmptyObject(userParams)) {
+	      $.ajax({
+	        url: '/api/users/' + CurrentUserStore.currentUser().id,
+	        type: 'PATCH',
+	        dataType: 'json',
+	        data: { user: userParams },
+	        success: function (currentUser) {
+	          CurrentUserActions.receiveCurrentUser(currentUser);
+	          success && success();
+	        }
+	      });
+	    }
 	  },
 	
 	  createCompletionForUser: function (completionParams, success) {
