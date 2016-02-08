@@ -74,13 +74,12 @@ display: block;
 
 .signup-inputs label {
   padding: 10px;
-  width: 95px;
+  width: auto;
   clear: both;
   float: left;
 }
 
 .login-inputs input {
-  background: pink;
   display: block;
 }
 
@@ -98,7 +97,9 @@ display: block;
 .signup-inputs .signup-input input {
   padding: 5px 0;
   background-color: #eee;
-  width: 189px;
+  width: 200px;
+  float: left;
+  margin-left: 0;
   border: none;
 }
 
@@ -177,8 +178,13 @@ display: block;
   color: rgb(39, 177, 248);
 }
 
+.signup-bottom-bar button:hover,
+.login-bottom-bar button:hover {
+  color: #207CCA;
+}
+
 .login-bottom-bar button {
-  padding-top: 35px;
+  margin-top: 35px;
 }
 .signup-bottom-bar-text {
   padding-top: 30px;

@@ -94,6 +94,7 @@
 .guest-inputs .guest-login-button:hover,
 .lesson-begin-button:hover,
 .splash-login-inputs a:hover,
+.guest-inputs button:hover,
 .login-form-form button:hover {
   background-color: rgb(65, 188, 250);
 }
@@ -115,9 +116,8 @@
   padding: 5px;
 }
 
-.signup-button > button:hover {
-  color: #bbb;
-  background: transparent;
+.signup-button:hover {
+  background-color: #7DB9E8;
 }
 
 .static-greeting {
