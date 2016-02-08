@@ -14,8 +14,7 @@ var SessionsApiUtil = {
       success: function (currentUser) {
 
         CookieActions.receiveCookie({
-          cookie: {
-            curCourseId: currentUser.current_course_id }
+            curCourseId: currentUser.current_course_id
           });
         CurrentUserActions.receiveCurrentUser(currentUser);
         success && success(currentUser.current_course_id);

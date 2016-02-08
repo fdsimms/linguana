@@ -31705,7 +31705,6 @@
 	};
 	
 	var addCookie = function (cookie) {
-	  cookie = cookie.cookie;
 	  var key = Object.keys(cookie)[0];
 	
 	  window.localStorage.setItem(key, cookie[key]);
@@ -32036,8 +32035,7 @@
 	      success: function (currentUser) {
 	
 	        CookieActions.receiveCookie({
-	          cookie: {
-	            curCourseId: currentUser.current_course_id }
+	          curCourseId: currentUser.current_course_id
 	        });
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success(currentUser.current_course_id);

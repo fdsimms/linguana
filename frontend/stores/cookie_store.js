@@ -22,7 +22,6 @@ var _COOKIE_NAMES = {
 };
 
 var addCookie = function (cookie) {
-  cookie = cookie.cookie;
   var key = Object.keys(cookie)[0];
 
   window.localStorage.setItem(key, cookie[key]);
