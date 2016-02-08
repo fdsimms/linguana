@@ -31705,7 +31705,9 @@
 	};
 	
 	var addCookie = function (cookie) {
+	  cookie = cookie.cookie;
 	  var key = Object.keys(cookie)[0];
+	
 	  window.localStorage.setItem(key, cookie[key]);
 	  _cookies[key] = cookie[key];
 	  if (!CurrentUserStore.isLoggedIn()) {
@@ -32032,7 +32034,7 @@
 	      dataType: 'json',
 	      data: sessionParams,
 	      success: function (currentUser) {
-	        debugger;
+	
 	        CookieActions.receiveCookie({
 	          cookie: {
 	            curCourseId: currentUser.current_course_id }
@@ -34741,7 +34743,6 @@
 	    if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
 	      UsersApiUtil.createCompletionForUser(completionParams, function () {
 	        UsersApiUtil.awardPoints(points, function () {
-	          debugger;
 	          if (this.props.lesson.id == LessonStore.findLastLessonId()) {
 	            this.createSkillCompletion();
 	          }
@@ -34753,7 +34754,6 @@
 	  },
 	
 	  createSkillCompletion: function () {
-	    debugger;
 	    var skill = SkillStore.find(this.props.lesson.skill_id);
 	    var completionParams = {};
 	    completionParams.user_id = CurrentUserStore.currentUser().id;

@@ -20,7 +20,6 @@ module.exports = React.createClass({
     if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
       UsersApiUtil.createCompletionForUser(completionParams, function () {
         UsersApiUtil.awardPoints(points, function () {
-          debugger
           if (this.props.lesson.id == LessonStore.findLastLessonId()) {
             this.createSkillCompletion();
           }
@@ -33,7 +32,6 @@ module.exports = React.createClass({
 
 
   createSkillCompletion: function () {
-    debugger
     var skill = SkillStore.find(this.props.lesson.skill_id);
     var completionParams = {};
     completionParams.user_id = CurrentUserStore.currentUser().id;

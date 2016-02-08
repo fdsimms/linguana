@@ -12,7 +12,7 @@ var SessionsApiUtil = {
       dataType: 'json',
       data: sessionParams,
       success: function (currentUser) {
-        debugger
+
         CookieActions.receiveCookie({
           cookie: {
             curCourseId: currentUser.current_course_id }
