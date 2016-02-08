@@ -33,7 +33,9 @@ var React = require('react'),
           onEnter={ _ensureLoggedInOrCurrentCourse }
           component={Lesson} />
         <Route path="/add" component={CourseSelection}/>
-        <Route path="/user/:username" component={UserProfile} />
+        <Route path="/user/:username"
+               component={UserProfile}
+               onEnter={_ensureLoggedIn}/>
       </Route>
     </Route>
   );
@@ -52,6 +54,26 @@ var React = require('react'),
 
       var path;
       if (!CurrentUserStore.isLoggedIn() && !CookieStore.curCourse()) {
+        path = "/"; //+ user.course.name
+        replace({}, path);
+      }
+
+      callback();
+    }
+  }
+
+  function _ensureLoggedIn(nextState, replace, callback) {
+    if (CurrentUserStore.userHasBeenFetched()) {
+      _redirectIfNotLoggedInOrNoCurrentCourse();
+    } else {
+      SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
+    }
+
+    function _redirectIfNotLoggedIn() {
+
+
+      var path;
+      if (!CurrentUserStore.isLoggedIn()) {
         path = "/"; //+ user.course.name
         replace({}, path);
       }

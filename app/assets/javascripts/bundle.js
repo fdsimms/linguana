@@ -83,7 +83,9 @@
 	      onEnter: _ensureLoggedInOrCurrentCourse,
 	      component: Lesson }),
 	    React.createElement(Route, { path: '/add', component: CourseSelection }),
-	    React.createElement(Route, { path: '/user/:username', component: UserProfile })
+	    React.createElement(Route, { path: '/user/:username',
+	      component: UserProfile,
+	      onEnter: _ensureLoggedIn })
 	  )
 	);
 	
@@ -101,6 +103,25 @@
 	
 	    var path;
 	    if (!CurrentUserStore.isLoggedIn() && !CookieStore.curCourse()) {
+	      path = "/"; //+ user.course.name
+	      replace({}, path);
+	    }
+	
+	    callback();
+	  }
+	}
+	
+	function _ensureLoggedIn(nextState, replace, callback) {
+	  if (CurrentUserStore.userHasBeenFetched()) {
+	    _redirectIfNotLoggedInOrNoCurrentCourse();
+	  } else {
+	    SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
+	  }
+	
+	  function _redirectIfNotLoggedIn() {
+	
+	    var path;
+	    if (!CurrentUserStore.isLoggedIn()) {
 	      path = "/"; //+ user.course.name
 	      replace({}, path);
 	    }
