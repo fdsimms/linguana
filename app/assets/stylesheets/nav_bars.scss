@@ -160,14 +160,13 @@ background-color: rgb(242, 42, 0);
   display: block;
   width: 30px;
   height: 30px;
-  left: 3px;
   border-radius: 50%;
   overflow: hidden;
   float: right;
-  top: 22px;
 }
 
 .language-nav-flag img {
+  position: relative;
   height: 30px;
   left: -3px;
   width: 40px;
