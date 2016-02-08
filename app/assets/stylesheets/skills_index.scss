@@ -49,6 +49,7 @@
   cursor: pointer;
 }
 
+
 .skill-list-item-wrapper {
   margin: 10px;
   float: left;
@@ -74,6 +75,7 @@
   color: #aaa;
 }
 
+
 .completed .fa-trophy {
   top: 20px;
   left: 20px;
@@ -81,10 +83,21 @@
   text-shadow: 0 0 8px gold;
 }
 
+.completed .skill-list-circle:hover .fa-trophy {
+  color: #F3B10C;
+}
+.completed .skill-list-circle:hover .fa-comment {
+  // color: goldenrod;
+}
+
 .completed .fa-comment {
   color: darkgoldenrod;
   top: 27px;
   left: 35px;
+}
+
+.incomplete .skill-list-circle:hover {
+  background: #2F6395;
 }
 
 .incomplete .fa-comment {
