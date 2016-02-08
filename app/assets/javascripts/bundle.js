@@ -24724,10 +24724,14 @@
 	          React.createElement(LanguageIndexDropdown, null)
 	        ),
 	        React.createElement(
-	          'button',
-	          { onClick: this._handleLoginClick,
-	            className: 'splash-header-login-button' },
-	          'Login',
+	          'div',
+	          { className: 'login-button-wrapper' },
+	          React.createElement(
+	            'button',
+	            { onClick: this._handleLoginClick,
+	              className: 'splash-header-login-button' },
+	            'Login'
+	          ),
 	          React.createElement(LoginDropdown, null)
 	        )
 	      )

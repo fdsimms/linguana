@@ -51,9 +51,13 @@
   color: rgb(10, 68, 121);
   text-align: center;
   border-radius: 20px;
-  position: relative;
-  float: right;
+  // position: relative;
   background-color: #fff;
+}
+
+.login-button-wrapper {
+  float: right;
+  position: relative;
 }
 
 .splash-login-inputs .facebook-login,

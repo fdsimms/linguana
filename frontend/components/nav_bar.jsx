@@ -87,11 +87,13 @@ var NavBar = React.createClass({
             Site language: { siteLang }
             <LanguageIndexDropdown />
           </button>
-          <button onClick={ this._handleLoginClick }
-              className="splash-header-login-button">
-            Login
+          <div className="login-button-wrapper">
+            <button onClick={ this._handleLoginClick }
+                className="splash-header-login-button">
+              Login
+            </button>
             <LoginDropdown />
-          </button>
+          </div>
         </div>
       </nav>
     );
