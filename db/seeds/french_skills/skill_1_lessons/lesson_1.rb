@@ -150,7 +150,6 @@ french_basic_1_1 = Lesson.create!(
     exercise_id: mcq7.id
   )
 
-
   mcq8 = Exercise.create!(
     lesson_id: french_basic_1_1.id,
     exercise_type: "multiple_choice",

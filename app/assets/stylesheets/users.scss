@@ -24,6 +24,7 @@
  }
  .user-profile-header h2 {
    text-align: center;
+   cursor: default;
    margin-top: 15px;
  }
 
@@ -47,15 +48,15 @@
 
  .user-profile-info .name {
    font-size: 20px;
+   cursor: default;
    text-align: center;
  }
 
  .user-profile-info .hometown {
-
+  cursor: default;
   display: inline;
   font-size: 18px;
   color: #aaa;
-
   padding: 0 10px;
  }
 
@@ -72,7 +73,9 @@
    padding: 15px ;
    color: #aaa;
  }
+
  .profile-achievements > h2{
+   cursor: default;
    font-size: 22px;
    color: #3c3c3c;
    margin-bottom: 10px;
@@ -84,11 +87,13 @@
 
  .profile-achievements-list li > h3 {
     text-transform: uppercase;
+    cursor: default;
     color: #aaa;
  }
 
  .profile-achievements-list > li {
    padding: 15px 0;
+   cursor: default;
  }
 
  .profile-achievements-list .points {
@@ -96,6 +101,7 @@
    position: relative;
    right: -25px;
    color: #000;
+   cursor: default;
  }
 
  .profile-achievements-list .profile-course {
