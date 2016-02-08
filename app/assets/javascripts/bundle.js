@@ -32555,30 +32555,28 @@
 	    if (!this.props.course.id) {
 	      return React.createElement('div', null);
 	    }
-	    var flag;
+	    var flag, toRender;
 	    if (this.props.flag && this.state.showFlag) {
 	      flag = React.createElement(
 	        'div',
 	        { className: 'language-index-flag' },
 	        React.createElement('img', { src: this.props.flag })
 	      );
-	    } else {
-	      return React.createElement('div', null);
-	    }
-	
-	    var courseName = this.props.course.name;
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'course-list-item-wrapper' },
-	      React.createElement(
+	      toRender = React.createElement(
 	        'a',
 	        { href: "#/course/" + this.props.course.id,
 	          className: 'course-list-item',
 	          onClick: this.setCourseCookie },
 	        courseName,
 	        flag
-	      )
+	      );
+	    }
+	    var courseName = this.props.course.name;
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'course-list-item-wrapper' },
+	      toRender
 	    );
 	  }
 	});

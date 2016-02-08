@@ -43,27 +43,26 @@ var CourseIndexItem = React.createClass({
     if (!this.props.course.id) {
       return <div />;
     }
-    var flag;
+    var flag,
+        toRender;
     if (this.props.flag && this.state.showFlag) {
-      flag = (
+      flag =
         <div className="language-index-flag" >
           <img src={this.props.flag} />
-        </div>
-      );
-    } else {
-      return <div />;
-    }
-
-    var courseName = this.props.course.name;
-
-    return(
-      <div className="course-list-item-wrapper">
+        </div>;
+      toRender =
         <a href={"#/course/" + this.props.course.id }
            className="course-list-item"
            onClick={this.setCourseCookie}>
           {courseName}
           {flag}
-        </a>
+        </a>;
+      }
+    var courseName = this.props.course.name;
+
+    return(
+      <div className="course-list-item-wrapper">
+        {toRender}
       </div>
     );
   }
