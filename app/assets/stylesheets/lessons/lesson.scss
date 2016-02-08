@@ -49,7 +49,12 @@
   left: 15px;
   height: 310px;
   width: 450px;
+}
+
+.tips-and-notes-text-wrapper {
   overflow: scroll;
+  height: inherit;
+  width: 100%;
 }
 
 .tips-and-notes-modal:before {

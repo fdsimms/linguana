@@ -34248,9 +34248,13 @@
 	      'div',
 	      { className: 'tips-and-notes-modal box-shadowed' },
 	      React.createElement(
-	        'p',
-	        { className: 'tips-and-notes-modal-text' },
-	        tipsAndNotes
+	        'div',
+	        { className: 'tips-and-notes-text-wrapper' },
+	        React.createElement(
+	          'p',
+	          { className: 'tips-and-notes-modal-text' },
+	          tipsAndNotes
+	        )
 	      )
 	    );
 	  },

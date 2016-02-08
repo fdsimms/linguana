@@ -33,9 +33,11 @@ var TipsAndNotesModal = React.createClass({
 
     return(
       <div className="tips-and-notes-modal box-shadowed">
-        <p className="tips-and-notes-modal-text">
-        {tipsAndNotes}
-        </p>
+        <div className="tips-and-notes-text-wrapper">
+          <p className="tips-and-notes-modal-text">
+          {tipsAndNotes}
+          </p>
+        </div>
       </div>
     );
   },
