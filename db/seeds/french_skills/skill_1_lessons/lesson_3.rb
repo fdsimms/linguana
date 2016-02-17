@@ -154,11 +154,11 @@ choice_7_3 = AnswerChoice.create!(
 mcq8 = Exercise.create!(
   lesson_id: french_basic_1_3.id,
   exercise_type: "multiple_choice",
-  thing_to_translate: "The chicken"
+  thing_to_translate: "The cow"
 )
 
 choice_8_1 = AnswerChoice.create!(
-  body: "El pollo",
+  body: "La vache",
   is_correct: true,
   exercise_id: mcq8.id,
 )

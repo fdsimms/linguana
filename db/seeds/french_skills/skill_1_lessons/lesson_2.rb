@@ -113,7 +113,7 @@ choice_5_4 = AnswerChoice.create!(
 mcq6 = Exercise.create!(
   lesson_id: french_basic_1_2.id,
   exercise_type: "multiple_choice",
-  thing_to_translate: "El bebé"
+  thing_to_translate: "Le bêbê"
 )
 
 choice_6_1 = AnswerChoice.create!(
@@ -137,16 +137,16 @@ mcq7 = Exercise.create!(
 )
 
 choice_7_1 = AnswerChoice.create!(
-  body: "La flor",
+  body: "La fleur",
   exercise_id: mcq7.id,
   is_correct: true,
 )
 choice_7_2 = AnswerChoice.create!(
-  body: "El tenedor",
+  body: "La fourchette",
   exercise_id: mcq7.id
 )
 choice_7_3 = AnswerChoice.create!(
-  body: "La mariposa",
+  body: "Le papillon",
   exercise_id: mcq7.id
 )
 
@@ -154,7 +154,7 @@ choice_7_3 = AnswerChoice.create!(
 mcq8 = Exercise.create!(
   lesson_id: french_basic_1_2.id,
   exercise_type: "multiple_choice",
-  thing_to_translate: "El chico"
+  thing_to_translate: "Le garçon"
 )
 
 choice_8_1 = AnswerChoice.create!(
