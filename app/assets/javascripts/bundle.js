@@ -31698,7 +31698,8 @@
 	
 	var _cookies = {
 	  curLng: "English",
-	  curCourseId: ""
+	  curCourseId: "",
+	  curCompletions: []
 	};
 	
 	var CookieStore = new Store(AppDispatcher);
@@ -31711,17 +31712,21 @@
 	
 	var addCookie = function (cookie) {
 	  var key = Object.keys(cookie)[0];
+	  if (key !== "curCompletions") {
+	    _cookies[key] = cookie[key];
+	  }
 	
-	  _cookies[key] = cookie[key];
 	  if (!CurrentUserStore.isLoggedIn()) {
 	    if (key === "curCompletions") {
 	      var json_value = JSON.stringify(cookie[key]);
-	      _cookies.curCompletions = json_value;
-	      window.localStorage.setItem(key, json_value);
+	      _cookies.curCompletions.push(json_value);
+	      json_cookie = JSON.stringify(_cookies.curCompletions);
+	      window.localStorage.setItem(key, json_cookie);
 	    } else {
 	      return;
 	    }
 	  }
+	
 	  if (key === "curCourseId") {
 	    UsersApiUtil.updateUser({ current_course_id: cookie[key] });
 	    window.localStorage.setItem(key, cookie[key]);
@@ -31755,10 +31760,10 @@
 	};
 	
 	var clearCookies = function () {
-	  _cookies = { curLng: "English", curCourseId: "" };
+	  _cookies = { curLng: "English", curCourseId: "", curCompletions: [] };
 	  localStorage.setItem("curLng", "English");
 	  localStorage.setItem("curCourseId", "");
-	  localStorage.setItem("curCompletions", "");
+	  localStorage.setItem("curCompletions", []);
 	};
 	
 	CookieStore.all = function () {
@@ -31791,9 +31796,28 @@
 	};
 	
 	CookieStore.curCompletions = function () {
-	  if (_cookies.curCompletions) {
-	    var parsed_completions = JSON.parse(_cookies.curCompletions);
+	  var parsedCompletions = [];
+	  if (_cookies.curCompletions[0]) {
+	    parsedArray = JSON.parse(_cookies.curCompletions);
+	    parsedArray.forEach(function (obj) {
+	      parsedCompletions.push(JSON.parse(obj));
+	    }.bind(this));
 	  }
+	  return parsedCompletions;
+	};
+	
+	CookieStore.findCompletionByTypeAndID = function (type, id) {
+	  var completions = CookieStore.curCompletions(),
+	      result;
+	  completions.forEach(function (completion) {
+	    var completionType = completion.completionType,
+	        completionId = completion.completionId;
+	    if (completionType === type && completionId === id) {
+	      result = completion;
+	    }
+	  }.bind(this));
+	
+	  return result;
 	};
 	
 	CookieStore.__onDispatch = function (payload) {
