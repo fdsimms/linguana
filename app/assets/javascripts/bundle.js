@@ -33712,14 +33712,6 @@
 	  },
 	
 	  renderLocked: function () {
-	    var loggedOutMessage;
-	    if (!CurrentUserStore.isLoggedIn()) {
-	      loggedOutMessage = React.createElement(
-	        'p',
-	        { className: 'logged-out' },
-	        'Please log in or create a profile!'
-	      );
-	    }
 	    return React.createElement(
 	      'div',
 	      { className: 'lesson-list-item-wrapper locked' },
@@ -33731,7 +33723,6 @@
 	      React.createElement(
 	        'div',
 	        { className: 'lesson-list-contents' },
-	        loggedOutMessage,
 	        React.createElement(
 	          'h3',
 	          { className: 'lesson-begin-button' },
@@ -33765,12 +33756,18 @@
 	    );
 	  },
 	
+	  completionExists: function (id, type) {
+	    return CurrentUserStore.findCompletion(id, type) || CookieStore.findCompletionByTypeAndID(type, id);
+	  },
+	
 	  render: function () {
-	    var toRender;
-	    var findCompletion = CurrentUserStore.findCompletion;
-	    if (CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
+	    var toRender,
+	        findCompletion = CurrentUserStore.findCompletion,
+	        prevLesson = this.props.prevLesson;
+	
+	    if (this.completionExists(this.props.lesson.id, "lesson")) {
 	      toRender = this.renderCompleted();
-	    } else if (this.props.prevLesson && findCompletion(this.props.prevLesson.id, "lesson") || !this.props.prevLesson) {
+	    } else if (prevLesson && this.completionExists(prevLesson.id, "lesson") || !prevLesson) {
 	      toRender = this.renderPlayable();
 	    } else {
 	      toRender = this.renderLocked();
