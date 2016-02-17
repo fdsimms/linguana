@@ -2,7 +2,8 @@ var React = require('react'),
     History = require('react-router').History,
     UsersApiUtil = require('./../../util/users_api_util'),
     SessionsApiUtil = require('./../../util/sessions_api_util'),
-    ModalActions = require('./../../actions/modal_actions');
+    ModalActions = require('./../../actions/modal_actions'),
+    CookieStore = require('./../../stores/cookie_store');
 
 var SignupForm = React.createClass({
   mixins: [History],
@@ -14,7 +15,24 @@ var SignupForm = React.createClass({
   submitSignup: function (e) {
     e.preventDefault();
     var credentials = e.currentTarget;
-    UsersApiUtil.createUser(credentials, this._closeModal);
+    UsersApiUtil.createUser(credentials, this.signupCallback);
+  },
+
+  signupCallback: function (userId) {
+    if (CookieStore.curCompletions()[0]) {
+      CookieStore.curCompletions().forEach(function (completion) {
+        var completionParams = {},
+            id = completion.completionId,
+            type = completion.completionType;
+        completionParams.completable_id = id;
+        completionParams.user_id = userId;
+        completionParams.completable_type = type;
+        if (!CurrentUserStore.findCompletion(id, type)) {
+          UsersApiUtil.createCompletionForUser(completionParams);
+        }
+      }.bind(this));
+    }
+    this._closeModal();
   },
 
   submitLogin: function (e) {

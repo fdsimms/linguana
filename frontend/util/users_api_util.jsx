@@ -24,9 +24,9 @@ var UsersApiUtil = {
       dataType: 'json',
       data: userParams,
       success: function (currentUser) {
-        console.log('yay');
+        debugger
         CurrentUserActions.receiveCurrentUser(currentUser);
-        success && success();
+        success && success(currentUser.id);
       }
     });
   },

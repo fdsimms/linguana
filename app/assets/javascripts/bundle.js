@@ -24105,7 +24105,7 @@
 	    ModalActions = __webpack_require__(207),
 	    NavBar = __webpack_require__(213),
 	    CurrentUserStore = __webpack_require__(232),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(238),
 	    LanguagesApiUtil = __webpack_require__(244),
 	    CookieActions = __webpack_require__(246),
 	    SignupModal = __webpack_require__(257),
@@ -24628,9 +24628,9 @@
 	    ModalActions = __webpack_require__(207),
 	    ModalStore = __webpack_require__(214),
 	    CurrentUserStore = __webpack_require__(232),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(238),
 	    LanguageStore = __webpack_require__(236),
-	    CoursesApiUtil = __webpack_require__(242),
+	    CoursesApiUtil = __webpack_require__(241),
 	    LanguagesApiUtil = __webpack_require__(244),
 	    CookieActions = __webpack_require__(246),
 	    SessionsApiUtil = __webpack_require__(247),
@@ -31367,7 +31367,7 @@
 	var AppDispatcher = __webpack_require__(208);
 	var UsersApiUtil = __webpack_require__(233);
 	var CurrentUserConstants = __webpack_require__(235);
-	var CookieConstants = __webpack_require__(238);
+	var CookieConstants = __webpack_require__(243);
 	
 	var _currentUser = {};
 	var _userHasBeenFetched = false;
@@ -31466,9 +31466,9 @@
 	      dataType: 'json',
 	      data: userParams,
 	      success: function (currentUser) {
-	        console.log('yay');
+	        debugger;
 	        CurrentUserActions.receiveCurrentUser(currentUser);
-	        success && success();
+	        success && success(currentUser.id);
 	      }
 	    });
 	  },
@@ -31669,28 +31669,15 @@
 
 /***/ },
 /* 238 */
-/***/ function(module, exports) {
-
-	var CookieConstants = {
-	  COOKIES_RECEIVED: "COOKIES_RECEIVED",
-	  COOKIE_RECEIVED: "COOKIE_RECEIVED",
-	  FETCH_COOKIES: "FETCH_COOKIES",
-	  CLEAR_COOKIES: "CLEAR_COOKIES"
-	};
-	
-	module.exports = CookieConstants;
-
-/***/ },
-/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(215).Store,
 	    AppDispatcher = __webpack_require__(208),
 	    LanguageStore = __webpack_require__(236),
-	    CourseStore = __webpack_require__(240),
+	    CourseStore = __webpack_require__(239),
 	    UsersApiUtil = __webpack_require__(233),
-	    CoursesApiUtil = __webpack_require__(242),
-	    CookieConstants = __webpack_require__(238);
+	    CoursesApiUtil = __webpack_require__(241),
+	    CookieConstants = __webpack_require__(243);
 	
 	var _cookiesHaveBeenFetched = false;
 	
@@ -31848,11 +31835,11 @@
 	module.exports = CookieStore;
 
 /***/ },
-/* 240 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(215).Store;
-	var CourseConstants = __webpack_require__(241);
+	var CourseConstants = __webpack_require__(240);
 	var AppDispatcher = __webpack_require__(208);
 	var _courses = {};
 	var CourseStore = new Store(AppDispatcher);
@@ -31906,7 +31893,7 @@
 	module.exports = CourseStore;
 
 /***/ },
-/* 241 */
+/* 240 */
 /***/ function(module, exports) {
 
 	var CourseConstants = {
@@ -31917,10 +31904,10 @@
 	module.exports = CourseConstants;
 
 /***/ },
-/* 242 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CourseActions = __webpack_require__(243);
+	var CourseActions = __webpack_require__(242);
 	
 	var CoursesApiUtil = {
 	  fetchCourses: function (lngName, success) {
@@ -31958,11 +31945,11 @@
 	module.exports = CoursesApiUtil;
 
 /***/ },
-/* 243 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(208),
-	    CourseConstants = __webpack_require__(241);
+	    CourseConstants = __webpack_require__(240);
 	
 	var CourseActions = {
 	  receiveAll: function (courses) {
@@ -31981,6 +31968,19 @@
 	};
 	
 	module.exports = CourseActions;
+
+/***/ },
+/* 243 */
+/***/ function(module, exports) {
+
+	var CookieConstants = {
+	  COOKIES_RECEIVED: "COOKIES_RECEIVED",
+	  COOKIE_RECEIVED: "COOKIE_RECEIVED",
+	  FETCH_COOKIES: "FETCH_COOKIES",
+	  CLEAR_COOKIES: "CLEAR_COOKIES"
+	};
+	
+	module.exports = CookieConstants;
 
 /***/ },
 /* 244 */
@@ -32030,7 +32030,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(208),
-	    CookieConstants = __webpack_require__(238);
+	    CookieConstants = __webpack_require__(243);
 	
 	var CookieActions = {
 	  receiveAll: function (cookies) {
@@ -32335,12 +32335,12 @@
 
 	var React = __webpack_require__(1),
 	    ModalActions = __webpack_require__(207),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(238),
 	    CookieActions = __webpack_require__(246),
 	    UsersApiUtil = __webpack_require__(233),
 	    ModalStore = __webpack_require__(214),
 	    CourseIndex = __webpack_require__(253),
-	    CoursesApiUtil = __webpack_require__(242);
+	    CoursesApiUtil = __webpack_require__(241);
 	
 	var CourseIndexDropdown = React.createClass({
 	  displayName: 'CourseIndexDropdown',
@@ -32456,11 +32456,11 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    CourseStore = __webpack_require__(240),
+	    CourseStore = __webpack_require__(239),
 	    CourseIndexItem = __webpack_require__(254),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(238),
 	    LanguageStore = __webpack_require__(236),
-	    CoursesApiUtil = __webpack_require__(242);
+	    CoursesApiUtil = __webpack_require__(241);
 	
 	var CourseIndex = React.createClass({
 	  displayName: 'CourseIndex',
@@ -32553,13 +32553,13 @@
 
 	var React = __webpack_require__(1),
 	    CookieActions = __webpack_require__(246),
-	    CookieStore = __webpack_require__(239),
-	    CourseStore = __webpack_require__(240),
+	    CookieStore = __webpack_require__(238),
+	    CourseStore = __webpack_require__(239),
 	    LanguageStore = __webpack_require__(236),
 	    LanguagesApiUtil = __webpack_require__(244),
 	    CurrentUserStore = __webpack_require__(232),
 	    UsersApiUtil = __webpack_require__(233),
-	    CoursesApiUtil = __webpack_require__(242);
+	    CoursesApiUtil = __webpack_require__(241);
 	
 	var CourseIndexItem = React.createClass({
 	  displayName: 'CourseIndexItem',
@@ -32817,7 +32817,8 @@
 	    History = __webpack_require__(159).History,
 	    UsersApiUtil = __webpack_require__(233),
 	    SessionsApiUtil = __webpack_require__(247),
-	    ModalActions = __webpack_require__(207);
+	    ModalActions = __webpack_require__(207),
+	    CookieStore = __webpack_require__(238);
 	
 	var SignupForm = React.createClass({
 	  displayName: 'SignupForm',
@@ -32831,7 +32832,24 @@
 	  submitSignup: function (e) {
 	    e.preventDefault();
 	    var credentials = e.currentTarget;
-	    UsersApiUtil.createUser(credentials, this._closeModal);
+	    UsersApiUtil.createUser(credentials, this.signupCallback);
+	  },
+	
+	  signupCallback: function (userId) {
+	    if (CookieStore.curCompletions()[0]) {
+	      CookieStore.curCompletions().forEach(function (completion) {
+	        var completionParams = {},
+	            id = completion.completionId,
+	            type = completion.completionType;
+	        completionParams.completable_id = id;
+	        completionParams.user_id = userId;
+	        completionParams.completable_type = type;
+	        if (!CurrentUserStore.findCompletion(id, type)) {
+	          UsersApiUtil.createCompletionForUser(completionParams);
+	        }
+	      }.bind(this));
+	    }
+	    this._closeModal();
 	  },
 	
 	  submitLogin: function (e) {
@@ -33048,10 +33066,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    CourseStore = __webpack_require__(240),
-	    CookieStore = __webpack_require__(239),
+	    CourseStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(238),
 	    SkillIndex = __webpack_require__(260),
-	    CoursesApiUtil = __webpack_require__(242);
+	    CoursesApiUtil = __webpack_require__(241);
 	
 	var Course = React.createClass({
 	  displayName: 'Course',
@@ -33860,7 +33878,7 @@
 	var React = __webpack_require__(1),
 	    NavBar = __webpack_require__(213),
 	    SignupModal = __webpack_require__(257),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(238),
 	    CourseIndex = __webpack_require__(253);
 	
 	module.exports = React.createClass({
@@ -34882,7 +34900,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(238),
 	    CourseIndex = __webpack_require__(253),
 	    LanguageIndexDropdown = __webpack_require__(248),
 	    ModalActions = __webpack_require__(207);
@@ -34951,13 +34969,13 @@
 
 	var React = __webpack_require__(1),
 	    CurrentUserStore = __webpack_require__(232),
-	    CourseStore = __webpack_require__(240),
+	    CourseStore = __webpack_require__(239),
 	    LanguageStore = __webpack_require__(236),
 	    SessionsApiUtil = __webpack_require__(247),
 	    LanguagesApiUtil = __webpack_require__(244),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(238),
 	    SkillIndex = __webpack_require__(260),
-	    UsersApiUtil = __webpack_require__(242);
+	    UsersApiUtil = __webpack_require__(241);
 	
 	var UserProfile = React.createClass({
 	  displayName: 'UserProfile',
