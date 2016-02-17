@@ -6,14 +6,12 @@ class User < ActiveRecord::Base
   has_attached_file :profile_pic, styles: {nav: "40x40#", prof: "120x120#"}, default_url: "/assets/missing.png"
   validates_attachment_content_type :profile_pic, content_type: /\Aimage\/.*\Z/
 
-
   after_initialize :ensure_session_token
 
   attr_reader :password
 
   has_many :course_enrollments
   has_many :completions
-
   has_many(
     :enrolled_courses,
     through: :course_enrollments,
@@ -29,7 +27,6 @@ class User < ActiveRecord::Base
     user = User.new(
       email: SecureRandom::urlsafe_base64(12),
       lname: auth_hash[:info][:last_name],
-      profile_pic: auth_hash[:info][:image],
       fname: auth_hash[:info][:first_name],
       profile_pic: auth_hash[:info][:image],
       provider: provider,
