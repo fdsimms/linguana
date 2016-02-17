@@ -3,6 +3,7 @@ var React = require('react'),
     UsersApiUtil = require('./../../util/users_api_util'),
     SessionsApiUtil = require('./../../util/sessions_api_util'),
     ModalActions = require('./../../actions/modal_actions'),
+    CurrentUserStore = require('./../../stores/current_user_store'),
     CookieStore = require('./../../stores/cookie_store');
 
 var SignupForm = React.createClass({
@@ -15,17 +16,21 @@ var SignupForm = React.createClass({
   submitSignup: function (e) {
     e.preventDefault();
     var credentials = e.currentTarget;
-    UsersApiUtil.createUser(credentials, this.signupCallback);
+    UsersApiUtil.createUser(credentials, this.callback);
   },
 
-  signupCallback: function (userId) {
+  callback: function (userId) {
     if (CookieStore.curCompletions()[0]) {
       CookieStore.curCompletions().forEach(function (completion) {
         var completionParams = {},
             id = completion.completionId,
             type = completion.completionType;
         completionParams.completable_id = id;
-        completionParams.user_id = userId;
+        if (CurrentUserStore.isLoggedIn()) {
+          completionParams.user_id = CurrentUserStore.currentUser().id;
+        } else {
+          completionParams.user_id = userId;
+        }
         completionParams.completable_type = type;
         if (!CurrentUserStore.findCompletion(id, type)) {
           UsersApiUtil.createCompletionForUser(completionParams);
@@ -38,7 +43,7 @@ var SignupForm = React.createClass({
   submitLogin: function (e) {
     e.preventDefault();
     var credentials = e.currentTarget;
-    SessionsApiUtil.logIn(credentials, this._closeModal);
+    SessionsApiUtil.logIn(credentials, this.callback);
   },
 
   _closeModal: function () {

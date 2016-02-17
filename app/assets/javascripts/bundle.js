@@ -32818,6 +32818,7 @@
 	    UsersApiUtil = __webpack_require__(233),
 	    SessionsApiUtil = __webpack_require__(247),
 	    ModalActions = __webpack_require__(207),
+	    CurrentUserStore = __webpack_require__(232),
 	    CookieStore = __webpack_require__(238);
 	
 	var SignupForm = React.createClass({
@@ -32832,17 +32833,21 @@
 	  submitSignup: function (e) {
 	    e.preventDefault();
 	    var credentials = e.currentTarget;
-	    UsersApiUtil.createUser(credentials, this.signupCallback);
+	    UsersApiUtil.createUser(credentials, this.callback);
 	  },
 	
-	  signupCallback: function (userId) {
+	  callback: function (userId) {
 	    if (CookieStore.curCompletions()[0]) {
 	      CookieStore.curCompletions().forEach(function (completion) {
 	        var completionParams = {},
 	            id = completion.completionId,
 	            type = completion.completionType;
 	        completionParams.completable_id = id;
-	        completionParams.user_id = userId;
+	        if (CurrentUserStore.isLoggedIn()) {
+	          completionParams.user_id = CurrentUserStore.currentUser().id;
+	        } else {
+	          completionParams.user_id = userId;
+	        }
 	        completionParams.completable_type = type;
 	        if (!CurrentUserStore.findCompletion(id, type)) {
 	          UsersApiUtil.createCompletionForUser(completionParams);
@@ -32855,7 +32860,7 @@
 	  submitLogin: function (e) {
 	    e.preventDefault();
 	    var credentials = e.currentTarget;
-	    SessionsApiUtil.logIn(credentials, this._closeModal);
+	    SessionsApiUtil.logIn(credentials, this.callback);
 	  },
 	
 	  _closeModal: function () {
