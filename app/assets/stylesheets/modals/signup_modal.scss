@@ -3,12 +3,9 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  margin-left: -216px;
-  margin-top: 68px;
+  transform: translateY(-50%) translateX(-50%);
   width: 424px;
   height: 535px;
-  top: 122px;
-  right: 566px;
   color: #000;
   background-color: #fff;
   z-index: 2;
