@@ -31726,7 +31726,9 @@
 	  Object.keys(localStorage).forEach(function (key) {
 	    if (Object.keys(_COOKIE_NAMES).includes(key)) {
 	      if (key === "curCompletions") {
-	        _cookies.curCompletions = JSON.parse(localStorage.curCompletions);
+	        if (localStorage.curCompletions) {
+	          _cookies.curCompletions = JSON.parse(localStorage.curCompletions);
+	        }
 	      } else {
 	        _cookies[key] = localStorage[key];
 	      }
