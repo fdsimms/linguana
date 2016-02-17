@@ -32557,6 +32557,7 @@
 	    }
 	    var flag, toRender;
 	    if (this.props.flag && this.state.showFlag) {
+	      var courseName = this.props.course.name;
 	      flag = React.createElement(
 	        'div',
 	        { className: 'language-index-flag' },
@@ -32571,7 +32572,6 @@
 	        flag
 	      );
 	    }
-	    var courseName = this.props.course.name;
 	
 	    return React.createElement(
 	      'div',

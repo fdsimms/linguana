@@ -46,6 +46,7 @@ var CourseIndexItem = React.createClass({
     var flag,
         toRender;
     if (this.props.flag && this.state.showFlag) {
+      var courseName = this.props.course.name;
       flag =
         <div className="language-index-flag" >
           <img src={this.props.flag} />
@@ -58,7 +59,6 @@ var CourseIndexItem = React.createClass({
           {flag}
         </a>;
       }
-    var courseName = this.props.course.name;
 
     return(
       <div className="course-list-item-wrapper">
