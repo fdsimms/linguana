@@ -31,8 +31,8 @@ var addCookie = function (cookie) {
 
   if (!CurrentUserStore.isLoggedIn()) {
     if (key === "curCompletions") {
-      var json_value = JSON.stringify(cookie[key]);
-      _cookies.curCompletions.push(json_value);
+      var value = cookie[key];
+      _cookies.curCompletions.push(value);
       json_cookie = JSON.stringify(_cookies.curCompletions);
       window.localStorage.setItem(key, json_cookie);
     } else {
@@ -53,7 +53,11 @@ var addCookie = function (cookie) {
 var fetchCookiesFromBrowser = function () {
   Object.keys(localStorage).forEach(function (key) {
     if (Object.keys(_COOKIE_NAMES).includes(key)) {
-      _cookies[key] = localStorage[key];
+      if (key === "curCompletions") {
+        _cookies.curCompletions = JSON.parse(localStorage.curCompletions);
+      } else {
+        _cookies[key] = localStorage[key];
+      }
     }
   });
 };
@@ -61,11 +65,13 @@ var fetchCookiesFromBrowser = function () {
 var receiveCookies = function (cookies) {
   var keys = Object.keys(cookie);
   keys.forEach(function (key, idx) {
-    window.localStorage.setItem(key, cookie[key]);
-    _cookies[key] = cookie[key];
     if (key === "curCourseId") {
+      _cookies[key] = cookie[key];
+      window.localStorage.setItem(key, cookie[key]);
       UsersApiUtil.updateUser({ current_course_id: cookie[key] });
     } else if (key === "curLng") {
+      _cookies[key] = cookie[key];
+      window.localStorage.setItem(key, cookie[key]);
       var lang = LanguageStore.findByName(cookie[key]);
       UsersApiUtil.updateUser({ current_language_id: lang.id });
     }
@@ -109,14 +115,14 @@ CookieStore.cookiesHaveBeenFetched = function () {
 };
 
 CookieStore.curCompletions = function () {
-  var parsedCompletions = [];
-  if (_cookies.curCompletions[0]) {
-    parsedArray = JSON.parse(_cookies.curCompletions);
-    parsedArray.forEach(function (obj) {
-      parsedCompletions.push(JSON.parse(obj));
-    }.bind(this));
-  }
-  return parsedCompletions;
+  // var parsedCompletions = [];
+  // if (_cookies.curCompletions[0]) {
+  //   _cookies.curCompletions.forEach(function (obj) {
+  //     parsedCompletions.push(obj);
+  //   }.bind(this));
+  // }
+  // return parsedCompletions;
+  return _cookies.curCompletions;
 };
 
 CookieStore.findCompletionByTypeAndID = function (type, id) {

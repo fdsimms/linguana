@@ -22,6 +22,9 @@ module.exports = React.createClass({
          }
       };
       CookieActions.receiveCookie(cookie);
+      if (this.props.lesson.id == LessonStore.findLastLessonId()) {
+        this.createSkillCompletion();
+      }
     } else if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
       UsersApiUtil.createCompletionForUser(completionParams, function () {
         UsersApiUtil.awardPoints(points, function () {
@@ -41,11 +44,23 @@ module.exports = React.createClass({
     completionParams.user_id = CurrentUserStore.currentUser().id;
     completionParams.completable_id = skill.id;
     completionParams.completable_type = "skill";
-    UsersApiUtil.createCompletionForUser(completionParams, function () {
+    if (CurrentUserStore.isLoggedIn()) {
+      UsersApiUtil.createCompletionForUser(completionParams, function () {
+        if (skill.id == SkillStore.findLastSkillId()) {
+          this.createCourseCompletion();
+        }
+      }.bind(this));
+    } else {
+      var cookie = { curCompletions:
+        { completionType: "skill",
+          completionId: completionParams.completable_id
+         }
+       };
+      CookieActions.receiveCookie(cookie);
       if (skill.id == SkillStore.findLastSkillId()) {
         this.createCourseCompletion();
       }
-    }.bind(this));
+    }
   },
 
   createCourseCompletion: function () {
@@ -55,7 +70,16 @@ module.exports = React.createClass({
     completionParams.user_id = CurrentUserStore.currentUser().id;
     completionParams.completable_id = courseId;
     completionParams.completable_type = "course";
-    UsersApiUtil.createCompletionForUser(completionParams);
+    if (CurrentUserStore.isLoggedIn()) {
+      UsersApiUtil.createCompletionForUser(completionParams);
+    } else {
+      var cookie = { curCompletions:
+        { completionType: "course",
+          completionId: completionParams.completable_id
+         }
+       };
+      CookieActions.receiveCookie(cookie);
+    }
   },
 
   render: function () {

@@ -43,13 +43,22 @@ var SkillIndexItem = React.createClass({
     );
   },
 
+  completionExists: function (id) {
+    return(
+      CurrentUserStore.findCompletion(id, "skill") ||
+      CookieStore.findCompletionByTypeAndID("skill", id)
+    );
+  },
+
   render: function () {
-    var toRender;
-    var findCompletion = CurrentUserStore.findCompletion;
-    if (CurrentUserStore.findCompletion(this.props.skill.id, "skill")) {
+    var toRender,
+        findCompletion = CurrentUserStore.findCompletion,
+        prevSkill = this.props.prevSkill;
+
+    if (this.completionExists(this.props.skill.id)) {
       toRender = this.renderCompleted();
-    } else if ((this.props.prevSkill && findCompletion(this.props.prevSkill.id, "skill")) ||
-                !this.props.prevSkill) {
+    } else if ((prevSkill && this.completionExists(prevSkill.id)) ||
+                !prevSkill) {
       toRender = this.renderUncompleted();
     } else {
       toRender = this.renderLocked();

@@ -26137,7 +26137,6 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule invariant
 	 */
 	
 	'use strict';
@@ -26193,7 +26192,6 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule emptyFunction
 	 */
 	
 	"use strict";
@@ -31718,8 +31716,8 @@
 	
 	  if (!CurrentUserStore.isLoggedIn()) {
 	    if (key === "curCompletions") {
-	      var json_value = JSON.stringify(cookie[key]);
-	      _cookies.curCompletions.push(json_value);
+	      var value = cookie[key];
+	      _cookies.curCompletions.push(value);
 	      json_cookie = JSON.stringify(_cookies.curCompletions);
 	      window.localStorage.setItem(key, json_cookie);
 	    } else {
@@ -31740,7 +31738,11 @@
 	var fetchCookiesFromBrowser = function () {
 	  Object.keys(localStorage).forEach(function (key) {
 	    if (Object.keys(_COOKIE_NAMES).includes(key)) {
-	      _cookies[key] = localStorage[key];
+	      if (key === "curCompletions") {
+	        _cookies.curCompletions = JSON.parse(localStorage.curCompletions);
+	      } else {
+	        _cookies[key] = localStorage[key];
+	      }
 	    }
 	  });
 	};
@@ -31748,11 +31750,13 @@
 	var receiveCookies = function (cookies) {
 	  var keys = Object.keys(cookie);
 	  keys.forEach(function (key, idx) {
-	    window.localStorage.setItem(key, cookie[key]);
-	    _cookies[key] = cookie[key];
 	    if (key === "curCourseId") {
+	      _cookies[key] = cookie[key];
+	      window.localStorage.setItem(key, cookie[key]);
 	      UsersApiUtil.updateUser({ current_course_id: cookie[key] });
 	    } else if (key === "curLng") {
+	      _cookies[key] = cookie[key];
+	      window.localStorage.setItem(key, cookie[key]);
 	      var lang = LanguageStore.findByName(cookie[key]);
 	      UsersApiUtil.updateUser({ current_language_id: lang.id });
 	    }
@@ -31796,14 +31800,14 @@
 	};
 	
 	CookieStore.curCompletions = function () {
-	  var parsedCompletions = [];
-	  if (_cookies.curCompletions[0]) {
-	    parsedArray = JSON.parse(_cookies.curCompletions);
-	    parsedArray.forEach(function (obj) {
-	      parsedCompletions.push(JSON.parse(obj));
-	    }.bind(this));
-	  }
-	  return parsedCompletions;
+	  // var parsedCompletions = [];
+	  // if (_cookies.curCompletions[0]) {
+	  //   _cookies.curCompletions.forEach(function (obj) {
+	  //     parsedCompletions.push(obj);
+	  //   }.bind(this));
+	  // }
+	  // return parsedCompletions;
+	  return _cookies.curCompletions;
 	};
 	
 	CookieStore.findCompletionByTypeAndID = function (type, id) {
@@ -33319,12 +33323,18 @@
 	    );
 	  },
 	
+	  completionExists: function (id) {
+	    return CurrentUserStore.findCompletion(id, "skill") || CookieStore.findCompletionByTypeAndID("skill", id);
+	  },
+	
 	  render: function () {
-	    var toRender;
-	    var findCompletion = CurrentUserStore.findCompletion;
-	    if (CurrentUserStore.findCompletion(this.props.skill.id, "skill")) {
+	    var toRender,
+	        findCompletion = CurrentUserStore.findCompletion,
+	        prevSkill = this.props.prevSkill;
+	
+	    if (this.completionExists(this.props.skill.id)) {
 	      toRender = this.renderCompleted();
-	    } else if (this.props.prevSkill && findCompletion(this.props.prevSkill.id, "skill") || !this.props.prevSkill) {
+	    } else if (prevSkill && this.completionExists(prevSkill.id) || !prevSkill) {
 	      toRender = this.renderUncompleted();
 	    } else {
 	      toRender = this.renderLocked();
@@ -33756,8 +33766,8 @@
 	    );
 	  },
 	
-	  completionExists: function (id, type) {
-	    return CurrentUserStore.findCompletion(id, type) || CookieStore.findCompletionByTypeAndID(type, id);
+	  completionExists: function (id) {
+	    return CurrentUserStore.findCompletion(id, "lesson") || CookieStore.findCompletionByTypeAndID("lesson", id);
 	  },
 	
 	  render: function () {
@@ -33765,9 +33775,9 @@
 	        findCompletion = CurrentUserStore.findCompletion,
 	        prevLesson = this.props.prevLesson;
 	
-	    if (this.completionExists(this.props.lesson.id, "lesson")) {
+	    if (this.completionExists(this.props.lesson.id)) {
 	      toRender = this.renderCompleted();
-	    } else if (prevLesson && this.completionExists(prevLesson.id, "lesson") || !prevLesson) {
+	    } else if (prevLesson && this.completionExists(prevLesson.id) || !prevLesson) {
 	      toRender = this.renderPlayable();
 	    } else {
 	      toRender = this.renderLocked();
@@ -33855,6 +33865,7 @@
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
+	
 	
 	  render: function () {
 	    return React.createElement(
@@ -34783,6 +34794,9 @@
 	        }
 	      };
 	      CookieActions.receiveCookie(cookie);
+	      if (this.props.lesson.id == LessonStore.findLastLessonId()) {
+	        this.createSkillCompletion();
+	      }
 	    } else if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
 	      UsersApiUtil.createCompletionForUser(completionParams, function () {
 	        UsersApiUtil.awardPoints(points, function () {
@@ -34802,11 +34816,22 @@
 	    completionParams.user_id = CurrentUserStore.currentUser().id;
 	    completionParams.completable_id = skill.id;
 	    completionParams.completable_type = "skill";
-	    UsersApiUtil.createCompletionForUser(completionParams, function () {
+	    if (CurrentUserStore.isLoggedIn()) {
+	      UsersApiUtil.createCompletionForUser(completionParams, function () {
+	        if (skill.id == SkillStore.findLastSkillId()) {
+	          this.createCourseCompletion();
+	        }
+	      }.bind(this));
+	    } else {
+	      var cookie = { curCompletions: { completionType: "skill",
+	          completionId: completionParams.completable_id
+	        }
+	      };
+	      CookieActions.receiveCookie(cookie);
 	      if (skill.id == SkillStore.findLastSkillId()) {
 	        this.createCourseCompletion();
 	      }
-	    }.bind(this));
+	    }
 	  },
 	
 	  createCourseCompletion: function () {
@@ -34816,7 +34841,15 @@
 	    completionParams.user_id = CurrentUserStore.currentUser().id;
 	    completionParams.completable_id = courseId;
 	    completionParams.completable_type = "course";
-	    UsersApiUtil.createCompletionForUser(completionParams);
+	    if (CurrentUserStore.isLoggedIn()) {
+	      UsersApiUtil.createCompletionForUser(completionParams);
+	    } else {
+	      var cookie = { curCompletions: { completionType: "course",
+	          completionId: completionParams.completable_id
+	        }
+	      };
+	      CookieActions.receiveCookie(cookie);
+	    }
 	  },
 	
 	  render: function () {

@@ -51,10 +51,10 @@ var LessonIndexItem = React.createClass({
     );
   },
 
-  completionExists: function (id, type) {
+  completionExists: function (id) {
     return(
-      CurrentUserStore.findCompletion(id, type) ||
-      CookieStore.findCompletionByTypeAndID(type, id)
+      CurrentUserStore.findCompletion(id, "lesson") ||
+      CookieStore.findCompletionByTypeAndID("lesson", id)
     );
   },
 
@@ -63,10 +63,10 @@ var LessonIndexItem = React.createClass({
         findCompletion = CurrentUserStore.findCompletion,
         prevLesson = this.props.prevLesson;
 
-    if (this.completionExists(this.props.lesson.id, "lesson")) {
+    if (this.completionExists(this.props.lesson.id)) {
       toRender = this.renderCompleted();
     } else if ((prevLesson &&
-                this.completionExists(prevLesson.id, "lesson")) ||
+                this.completionExists(prevLesson.id)) ||
                 !prevLesson) {
       toRender = this.renderPlayable();
     } else {
