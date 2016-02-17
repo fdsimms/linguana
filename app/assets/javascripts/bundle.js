@@ -31705,22 +31705,30 @@
 	
 	var _COOKIE_NAMES = {
 	  curLng: "curLng",
-	  curCourseId: "curCourseId"
+	  curCourseId: "curCourseId",
+	  curCompletions: "curCompletions"
 	};
 	
 	var addCookie = function (cookie) {
 	  var key = Object.keys(cookie)[0];
 	
-	  window.localStorage.setItem(key, cookie[key]);
 	  _cookies[key] = cookie[key];
 	  if (!CurrentUserStore.isLoggedIn()) {
-	    return;
+	    if (key === "curCompletions") {
+	      var json_value = JSON.stringify(cookie[key]);
+	      _cookies.curCompletions = json_value;
+	      window.localStorage.setItem(key, json_value);
+	    } else {
+	      return;
+	    }
 	  }
 	  if (key === "curCourseId") {
 	    UsersApiUtil.updateUser({ current_course_id: cookie[key] });
+	    window.localStorage.setItem(key, cookie[key]);
 	  } else if (key === "curLng") {
 	    var lang = LanguageStore.findByName(cookie[key]);
 	    UsersApiUtil.updateUser({ current_language_id: lang.id });
+	    window.localStorage.setItem(key, cookie[key]);
 	  }
 	};
 	
@@ -31750,6 +31758,7 @@
 	  _cookies = { curLng: "English", curCourseId: "" };
 	  localStorage.setItem("curLng", "English");
 	  localStorage.setItem("curCourseId", "");
+	  localStorage.setItem("curCompletions", "");
 	};
 	
 	CookieStore.all = function () {
@@ -31779,6 +31788,12 @@
 	
 	CookieStore.cookiesHaveBeenFetched = function () {
 	  return _cookiesHaveBeenFetched;
+	};
+	
+	CookieStore.curCompletions = function () {
+	  if (_cookies.curCompletions) {
+	    var parsed_completions = JSON.parse(_cookies.curCompletions);
+	  }
 	};
 	
 	CookieStore.__onDispatch = function (payload) {
@@ -34725,15 +34740,14 @@
 	var React = __webpack_require__(1),
 	    UsersApiUtil = __webpack_require__(233),
 	    SkillStore = __webpack_require__(261),
+	    CookieActions = __webpack_require__(246),
 	    LessonBottomBar = __webpack_require__(287);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
 	  componentDidMount: function () {
-	    if (CurrentUserStore.isLoggedIn()) {
-	      this.lessonCompletionCheck();
-	    }
+	    this.lessonCompletionCheck();
 	  },
 	
 	  lessonCompletionCheck: function () {
@@ -34742,8 +34756,13 @@
 	    completionParams.user_id = CurrentUserStore.currentUser().id;
 	    completionParams.completable_id = this.props.lesson.id;
 	    completionParams.completable_type = "lesson";
-	
-	    if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
+	    if (!CurrentUserStore.isLoggedIn()) {
+	      var cookie = { curCompletions: { completionType: completionParams.completable_type,
+	          completionId: completionParams.completable_id
+	        }
+	      };
+	      CookieActions.receiveCookie(cookie);
+	    } else if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
 	      UsersApiUtil.createCompletionForUser(completionParams, function () {
 	        UsersApiUtil.awardPoints(points, function () {
 	          if (this.props.lesson.id == LessonStore.findLastLessonId()) {

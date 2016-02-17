@@ -18,20 +18,30 @@ var CookieStore = new Store(AppDispatcher);
 
 var _COOKIE_NAMES = {
   curLng: "curLng",
-  curCourseId: "curCourseId"
+  curCourseId: "curCourseId",
+  curCompletions: "curCompletions"
 };
 
 var addCookie = function (cookie) {
   var key = Object.keys(cookie)[0];
 
-  window.localStorage.setItem(key, cookie[key]);
   _cookies[key] = cookie[key];
-  if (!CurrentUserStore.isLoggedIn()) { return; }
+  if (!CurrentUserStore.isLoggedIn()) {
+    if (key === "curCompletions") {
+      var json_value = JSON.stringify(cookie[key]);
+      _cookies.curCompletions = json_value;
+      window.localStorage.setItem(key, json_value);
+    } else {
+      return;
+    }
+  }
   if (key === "curCourseId") {
     UsersApiUtil.updateUser({ current_course_id: cookie[key] });
+    window.localStorage.setItem(key, cookie[key]);
   } else if (key === "curLng") {
     var lang = LanguageStore.findByName(cookie[key]);
     UsersApiUtil.updateUser({ current_language_id: lang.id });
+    window.localStorage.setItem(key, cookie[key]);
   }
 };
 
@@ -42,7 +52,6 @@ var fetchCookiesFromBrowser = function () {
     }
   });
 };
-
 
 var receiveCookies = function (cookies) {
   var keys = Object.keys(cookie);
@@ -58,11 +67,11 @@ var receiveCookies = function (cookies) {
   }.bind(this));
 };
 
-
 var clearCookies = function () {
   _cookies = {curLng: "English", curCourseId: ""};
   localStorage.setItem("curLng", "English");
   localStorage.setItem("curCourseId", "");
+  localStorage.setItem("curCompletions", "");
 };
 
 CookieStore.all = function () {
@@ -92,6 +101,12 @@ CookieStore.curCourse = function () {
 
 CookieStore.cookiesHaveBeenFetched = function () {
   return _cookiesHaveBeenFetched;
+};
+
+CookieStore.curCompletions = function () {
+  if (_cookies.curCompletions) {
+    var parsed_completions = JSON.parse(_cookies.curCompletions);
+  }
 };
 
 CookieStore.__onDispatch = function (payload) {

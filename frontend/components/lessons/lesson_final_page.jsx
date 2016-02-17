@@ -1,13 +1,12 @@
 var React = require('react'),
     UsersApiUtil = require('./../../util/users_api_util'),
     SkillStore = require('./../../stores/skill_store'),
+    CookieActions = require('./../../actions/cookie_actions'),
     LessonBottomBar = require('./lesson_bottom_bar');
 
 module.exports = React.createClass({
   componentDidMount: function () {
-    if (CurrentUserStore.isLoggedIn()) {
-      this.lessonCompletionCheck();
-    }
+    this.lessonCompletionCheck();
   },
 
   lessonCompletionCheck: function () {
@@ -16,8 +15,14 @@ module.exports = React.createClass({
     completionParams.user_id = CurrentUserStore.currentUser().id;
     completionParams.completable_id = this.props.lesson.id;
     completionParams.completable_type = "lesson";
-
-    if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
+    if(!CurrentUserStore.isLoggedIn()) {
+      var cookie = { curCompletions:
+        { completionType: completionParams.completable_type,
+          completionId: completionParams.completable_id
+         }
+      };
+      CookieActions.receiveCookie(cookie);
+    } else if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
       UsersApiUtil.createCompletionForUser(completionParams, function () {
         UsersApiUtil.awardPoints(points, function () {
           if (this.props.lesson.id == LessonStore.findLastLessonId()) {
@@ -29,7 +34,6 @@ module.exports = React.createClass({
       UsersApiUtil.awardPoints(points);
     }
   },
-
 
   createSkillCompletion: function () {
     var skill = SkillStore.find(this.props.lesson.skill_id);
