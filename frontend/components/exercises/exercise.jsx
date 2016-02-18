@@ -50,15 +50,15 @@ var Exercise = React.createClass({
           currentAnswerChoiceIdx={this.props.currentAnswerChoiceIdx}
           answerChoices={this.state.exercise.answer_choices}
           getAnswerChoiceStatus={this.props.getAnswerChoiceStatus }
-          checkClicked = {this.props.checkClicked} />
+          checkClicked = {this.props.checkClicked} />;
     }
 
-    var thing_to_translate = this.state.exercise.thing_to_translate
+    var thing_to_translate = this.state.exercise.thing_to_translate;
     return(
       <div className="exercise">
         <div className="exercise-contents">
           <h2 className="exercise-header">
-            Choose the right translation for "{thing_to_translate}."
+            {thing_to_translate}
           </h2>
           {answerChoices}
         </div>
