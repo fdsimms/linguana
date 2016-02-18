@@ -32,7 +32,8 @@ var React = require('react'),
         <Route path="/lessons/:lessonId"
           onEnter={ _ensureLoggedInOrCurrentCourse }
           component={Lesson} />
-        <Route path="/add" component={CourseSelection}/>
+        <Route path="/add"
+               component={CourseSelection}/>
         <Route path="/user/:username"
                component={UserProfile}
                onEnter={_ensureLoggedIn}/>
@@ -97,7 +98,8 @@ var React = require('react'),
 
       var path;
       if (CurrentUserStore.isLoggedIn()) {
-        if (!CurrentUserStore.currentUser.current_course_id) {
+        if (!CurrentUserStore.currentUser().current_course_id) {
+          debugger
           path = "/add";
           replace({}, path);
         } else {

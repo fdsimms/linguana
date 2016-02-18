@@ -82,7 +82,8 @@
 	    React.createElement(Route, { path: '/lessons/:lessonId',
 	      onEnter: _ensureLoggedInOrCurrentCourse,
 	      component: Lesson }),
-	    React.createElement(Route, { path: '/add', component: CourseSelection }),
+	    React.createElement(Route, { path: '/add',
+	      component: CourseSelection }),
 	    React.createElement(Route, { path: '/user/:username',
 	      component: UserProfile,
 	      onEnter: _ensureLoggedIn })
@@ -145,7 +146,8 @@
 	
 	    var path;
 	    if (CurrentUserStore.isLoggedIn()) {
-	      if (!CurrentUserStore.currentUser.current_course_id) {
+	      if (!CurrentUserStore.currentUser().current_course_id) {
+	        debugger;
 	        path = "/add";
 	        replace({}, path);
 	      } else {
