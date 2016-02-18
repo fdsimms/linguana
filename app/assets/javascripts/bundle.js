@@ -147,7 +147,6 @@
 	    var path;
 	    if (CurrentUserStore.isLoggedIn()) {
 	      if (!CurrentUserStore.currentUser().current_course_id) {
-	        debugger;
 	        path = "/add";
 	        replace({}, path);
 	      } else {
