@@ -32136,6 +32136,8 @@
 	        enrollmentParams.user_id = userId;
 	        if (idx === CookieStore.enrolledCourses().length - 1) {
 	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
+	            var userParams = { current_course_id: courseId };
+	            UsersApiUtil.updateUser(userParams);
 	            CookieActions.clearCookie("enrolledCourses");
 	          }.bind(this));
 	        } else {
