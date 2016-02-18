@@ -32129,13 +32129,18 @@
 	  },
 	
 	  createEnrollments: function (userId) {
-	    debugger;
 	    if (CookieStore.enrolledCourses()[0]) {
-	      CookieStore.enrolledCourses().forEach(function (courseId) {
+	      CookieStore.enrolledCourses().forEach(function (courseId, idx) {
 	        var enrollmentParams = {};
 	        enrollmentParams.course_id = courseId;
 	        enrollmentParams.user_id = userId;
-	        UsersApiUtil.createCourseEnrollment(enrollmentParams);
+	        if (idx === CookieStore.enrolledCourses().length - 1) {
+	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
+	            CookieActions.clearCookie("enrolledCourses");
+	          }.bind(this));
+	        } else {
+	          UsersApiUtil.createCourseEnrollment(enrollmentParams);
+	        }
 	      }.bind(this));
 	    }
 	  },
@@ -32165,7 +32170,6 @@
 	        }
 	        if (Object.keys(currentUser)[0]) {
 	          this.createEnrollments(currentUser.id);
-	          CookieActions.clearCookie("enrolledCourses");
 	        }
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        callback && callback(currentUser);
