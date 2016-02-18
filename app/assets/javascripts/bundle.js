@@ -31472,7 +31472,6 @@
 	      dataType: 'json',
 	      data: userParams,
 	      success: function (currentUser) {
-	        debugger;
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success(currentUser.id);
 	      }
@@ -31687,12 +31686,14 @@
 	
 	var _cookiesHaveBeenFetched = false;
 	
-	var _cookies = {
+	var _COOKIE_DEFAULTS = {
 	  curLng: "English",
 	  curCourseId: "",
 	  enrolledCourses: [],
 	  curCompletions: []
 	};
+	
+	var _cookies = _COOKIE_DEFAULTS;
 	
 	var CookieStore = new Store(AppDispatcher);
 	
@@ -31719,12 +31720,12 @@
 	      _cookies.enrolledCourses.push(value);
 	      json_cookie = JSON.stringify(_cookies.enrolledCourses);
 	      window.localStorage.setItem(key, json_cookie);
-	    } else {
-	      return;
+	    } else if (key === "curCourseId") {
+	      window.localStorage.setItem(key, cookie[key]);
 	    }
 	  }
 	
-	  if (key === "curCourseId") {
+	  if (key === "curCourseId" && CurrentUserStore.isLoggedIn()) {
 	    UsersApiUtil.updateUser({ current_course_id: cookie[key] });
 	    window.localStorage.setItem(key, cookie[key]);
 	  } else if (key === "curLng") {
@@ -31774,6 +31775,11 @@
 	  localStorage.setItem("curCourseId", "");
 	  localStorage.setItem("curCompletions", []);
 	  localStorage.setItem("enrolledCourses", []);
+	};
+	
+	var clearCookie = function (cookieName) {
+	  _cookies[cookieName] = _COOKIE_DEFAULTS[cookieName];
+	  localStorage.setItem(cookieName, _COOKIE_DEFAULTS[cookieName]);
 	};
 	
 	CookieStore.all = function () {
@@ -31842,6 +31848,9 @@
 	    CookieStore.__emitChange();
 	  } else if (payload.actionType === CookieConstants.CLEAR_COOKIES) {
 	    clearCookies();
+	    CookieStore.__emitChange();
+	  } else if (payload.actionType === CookieConstants.CLEAR_COOKIE) {
+	    clearCookie(payload.cookieName);
 	    CookieStore.__emitChange();
 	  }
 	};
@@ -31993,7 +32002,8 @@
 	  COOKIES_RECEIVED: "COOKIES_RECEIVED",
 	  COOKIE_RECEIVED: "COOKIE_RECEIVED",
 	  FETCH_COOKIES: "FETCH_COOKIES",
-	  CLEAR_COOKIES: "CLEAR_COOKIES"
+	  CLEAR_COOKIES: "CLEAR_COOKIES",
+	  CLEAR_COOKIE: "CLEAR_COOKIE"
 	};
 	
 	module.exports = CookieConstants;
@@ -32073,6 +32083,13 @@
 	    AppDispatcher.dispatch({
 	      actionType: CookieConstants.CLEAR_COOKIES
 	    });
+	  },
+	
+	  clearCookie: function (cookieName) {
+	    AppDispatcher.dispatch({
+	      actionType: CookieConstants.CLEAR_COOKIE,
+	      cookieName: cookieName
+	    });
 	  }
 	};
 	
@@ -32103,10 +32120,24 @@
 	        CookieActions.receiveCookie({
 	          curCourseId: curCourseId
 	        });
+	        debugger;
+	
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success(currentUser.current_course_id);
-	      }
+	      }.bind(this)
 	    });
+	  },
+	
+	  createEnrollments: function (userId) {
+	    debugger;
+	    if (CookieStore.enrolledCourses()[0]) {
+	      CookieStore.enrolledCourses().forEach(function (courseId) {
+	        var enrollmentParams = {};
+	        enrollmentParams.course_id = courseId;
+	        enrollmentParams.user_id = userId;
+	        UsersApiUtil.createCourseEnrollment(enrollmentParams);
+	      }.bind(this));
+	    }
 	  },
 	
 	  logOut: function (callback) {
@@ -32132,9 +32163,13 @@
 	            curCourseId: currentUser.current_course_id
 	          });
 	        }
+	        if (Object.keys(currentUser)[0]) {
+	          this.createEnrollments(currentUser.id);
+	          CookieActions.clearCookie("enrolledCourses");
+	        }
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        callback && callback(currentUser);
-	      }
+	      }.bind(this)
 	    });
 	  }
 	
@@ -32603,16 +32638,14 @@
 	        if (!CurrentUserStore.findEnrollment(courseId)) {
 	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
 	            CookieActions.receiveCookie({ curCourseId: courseId });
-	            CookieActions.receiveCookie({ enrolledCourses: courseId });
 	          });
 	        } else {
 	          CookieActions.receiveCookie({ curCourseId: courseId });
-	          CookieActions.receiveCookie({ enrolledCourses: courseId });
 	        }
 	      });
 	    } else {
-	      CookieActions.receiveCookie({ curCourseId: courseId });
 	      CookieActions.receiveCookie({ enrolledCourses: courseId });
+	      CookieActions.receiveCookie({ curCourseId: courseId });
 	    }
 	  },
 	

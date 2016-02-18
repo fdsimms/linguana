@@ -9,12 +9,14 @@ var Store = require('flux/utils').Store,
 
 var _cookiesHaveBeenFetched = false;
 
-var _cookies = {
+var _COOKIE_DEFAULTS = {
   curLng: "English",
   curCourseId: "",
   enrolledCourses: [],
   curCompletions: []
 };
+
+var _cookies = _COOKIE_DEFAULTS;
 
 var CookieStore = new Store(AppDispatcher);
 
@@ -41,12 +43,12 @@ var addCookie = function (cookie) {
       _cookies.enrolledCourses.push(value);
       json_cookie = JSON.stringify(_cookies.enrolledCourses);
       window.localStorage.setItem(key, json_cookie);
-    } else {
-      return;
+    } else if (key === "curCourseId"){
+      window.localStorage.setItem(key, cookie[key]);
     }
   }
 
-  if (key === "curCourseId") {
+  if (key === "curCourseId" && CurrentUserStore.isLoggedIn())  {
     UsersApiUtil.updateUser({ current_course_id: cookie[key] });
     window.localStorage.setItem(key, cookie[key]);
   } else if (key === "curLng") {
@@ -96,6 +98,11 @@ var clearCookies = function () {
   localStorage.setItem("curCourseId", "");
   localStorage.setItem("curCompletions", []);
   localStorage.setItem("enrolledCourses", []);
+};
+
+var clearCookie = function (cookieName) {
+  _cookies[cookieName] = _COOKIE_DEFAULTS[cookieName];
+  localStorage.setItem(cookieName, _COOKIE_DEFAULTS[cookieName]);
 };
 
 CookieStore.all = function () {
@@ -164,6 +171,9 @@ CookieStore.__onDispatch = function (payload) {
     CookieStore.__emitChange();
   } else if (payload.actionType === CookieConstants.CLEAR_COOKIES) {
     clearCookies();
+    CookieStore.__emitChange();
+  } else if (payload.actionType === CookieConstants.CLEAR_COOKIE) {
+    clearCookie(payload.cookieName);
     CookieStore.__emitChange();
   }
 };

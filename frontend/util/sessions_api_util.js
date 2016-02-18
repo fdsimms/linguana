@@ -20,10 +20,24 @@ var SessionsApiUtil = {
         CookieActions.receiveCookie({
             curCourseId: curCourseId
           });
+          debugger
+
         CurrentUserActions.receiveCurrentUser(currentUser);
         success && success(currentUser.current_course_id);
-      }
+      }.bind(this)
     });
+  },
+
+  createEnrollments: function (userId) {
+    debugger
+    if (CookieStore.enrolledCourses()[0]) {
+      CookieStore.enrolledCourses().forEach(function (courseId) {
+        var enrollmentParams = {};
+        enrollmentParams.course_id = courseId;
+        enrollmentParams.user_id = userId;
+        UsersApiUtil.createCourseEnrollment(enrollmentParams);
+      }.bind(this));
+    }
   },
 
   logOut: function (callback) {
@@ -49,9 +63,13 @@ var SessionsApiUtil = {
             curCourseId: currentUser.current_course_id
           });
         }
+        if (Object.keys(currentUser)[0]) {
+          this.createEnrollments(currentUser.id);
+          CookieActions.clearCookie("enrolledCourses");
+        }
         CurrentUserActions.receiveCurrentUser(currentUser);
         callback && callback(currentUser);
-      }
+      }.bind(this)
     });
   }
 

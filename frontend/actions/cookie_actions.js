@@ -26,6 +26,13 @@ var CookieActions = {
     AppDispatcher.dispatch({
       actionType: CookieConstants.CLEAR_COOKIES
     });
+  },
+
+  clearCookie: function (cookieName) {
+    AppDispatcher.dispatch({
+      actionType: CookieConstants.CLEAR_COOKIE,
+      cookieName: cookieName
+    });
   }
 };
 
