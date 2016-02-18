@@ -1,5 +1,8 @@
 var CurrentUserActions = require("./../actions/current_user_actions");
 var CookieActions = require("./../actions/cookie_actions");
+var UsersApiUtil = require('./users_api_util');
+var CoursesApiUtil = require('./courses_api_util');
+
 var SessionsApiUtil = {
   logIn: function (credentials, success) {
     var username = credentials.elements[0].value,

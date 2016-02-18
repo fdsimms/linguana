@@ -30,15 +30,10 @@ class User < ActiveRecord::Base
       fname: auth_hash[:info][:first_name],
       profile_pic: auth_hash[:info][:image],
       provider: provider,
-      current_course_id: Course.first.id,
       uid: uid,
       username: SecureRandom::urlsafe_base64(12),
       password: SecureRandom::urlsafe_base64(12)
     )
-
-    if user.save
-      CourseEnrollment.create!(user_id: user.id, course_id: Course.first.id)
-    end
 
     user
   end

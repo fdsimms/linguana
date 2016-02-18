@@ -97,9 +97,15 @@ var React = require('react'),
 
       var path;
       if (CurrentUserStore.isLoggedIn()) {
-        path = "/course/" + CurrentUserStore.currentUser().current_course_id;
-        replace({}, path);
+        if (!CurrentUserStore.currentUser.current_course_id) {
+          path = "/add";
+          replace({}, path);
+        } else {
+          path = "/course/" + CurrentUserStore.currentUser().current_course_id;
+          replace({}, path);
+        }
       } else if (CookieStore.curCourse()) {
+
         path = "/course/" + CookieStore.curCourse();
         replace({}, path);
       }

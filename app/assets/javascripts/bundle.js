@@ -145,9 +145,15 @@
 	
 	    var path;
 	    if (CurrentUserStore.isLoggedIn()) {
-	      path = "/course/" + CurrentUserStore.currentUser().current_course_id;
-	      replace({}, path);
+	      if (!CurrentUserStore.currentUser.current_course_id) {
+	        path = "/add";
+	        replace({}, path);
+	      } else {
+	        path = "/course/" + CurrentUserStore.currentUser().current_course_id;
+	        replace({}, path);
+	      }
 	    } else if (CookieStore.curCourse()) {
+	
 	      path = "/course/" + CookieStore.curCourse();
 	      replace({}, path);
 	    }
@@ -32078,6 +32084,9 @@
 
 	var CurrentUserActions = __webpack_require__(234);
 	var CookieActions = __webpack_require__(246);
+	var UsersApiUtil = __webpack_require__(233);
+	var CoursesApiUtil = __webpack_require__(241);
+	
 	var SessionsApiUtil = {
 	  logIn: function (credentials, success) {
 	    var username = credentials.elements[0].value,
