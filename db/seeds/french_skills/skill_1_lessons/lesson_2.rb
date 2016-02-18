@@ -113,7 +113,7 @@ choice_5_4 = AnswerChoice.create!(
 mcq6 = Exercise.create!(
   lesson_id: french_basic_1_2.id,
   exercise_type: "multiple_choice",
-  thing_to_translate: "Le bêbê"
+  thing_to_translate: "Le bébé"
 )
 
 choice_6_1 = AnswerChoice.create!(
