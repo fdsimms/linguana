@@ -32160,6 +32160,26 @@
 	    });
 	  },
 	
+	  addCompletions: function () {
+	    if (CookieStore.curCompletions()[0]) {
+	      CookieStore.curCompletions().forEach(function (completion) {
+	        var completionParams = {},
+	            id = completion.completionId,
+	            type = completion.completionType;
+	        completionParams.completable_id = id;
+	        if (CurrentUserStore.isLoggedIn()) {
+	          completionParams.user_id = CurrentUserStore.currentUser().id;
+	        } else {
+	          completionParams.user_id = userId;
+	        }
+	        completionParams.completable_type = type;
+	        if (!CurrentUserStore.findCompletion(id, type)) {
+	          UsersApiUtil.createCompletionForUser(completionParams);
+	        }
+	      }.bind(this));
+	    }
+	  },
+	
 	  fetchCurrentUser: function (callback) {
 	    $.ajax({
 	      url: '/api/session',
@@ -32173,6 +32193,7 @@
 	        }
 	        if (Object.keys(currentUser)[0]) {
 	          this.createEnrollments(currentUser.id);
+	          this.addCompletions();
 	        }
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        callback && callback(currentUser);
