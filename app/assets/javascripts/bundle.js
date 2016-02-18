@@ -31684,6 +31684,7 @@
 	var _cookies = {
 	  curLng: "English",
 	  curCourseId: "",
+	  enrolledCourses: [],
 	  curCompletions: []
 	};
 	
@@ -31692,20 +31693,25 @@
 	var _COOKIE_NAMES = {
 	  curLng: "curLng",
 	  curCourseId: "curCourseId",
+	  enrolledCourses: "enrolledCourses",
 	  curCompletions: "curCompletions"
 	};
 	
 	var addCookie = function (cookie) {
 	  var key = Object.keys(cookie)[0];
-	  if (key !== "curCompletions") {
+	  if (key !== "curCompletions" && key !== "enrolledCourses") {
 	    _cookies[key] = cookie[key];
 	  }
 	
 	  if (!CurrentUserStore.isLoggedIn()) {
+	    var value = cookie[key];
 	    if (key === "curCompletions") {
-	      var value = cookie[key];
 	      _cookies.curCompletions.push(value);
 	      json_cookie = JSON.stringify(_cookies.curCompletions);
+	      window.localStorage.setItem(key, json_cookie);
+	    } else if (key === "enrolledCourses") {
+	      _cookies.enrolledCourses.push(value);
+	      json_cookie = JSON.stringify(_cookies.enrolledCourses);
 	      window.localStorage.setItem(key, json_cookie);
 	    } else {
 	      return;
@@ -31728,6 +31734,10 @@
 	      if (key === "curCompletions") {
 	        if (localStorage.curCompletions) {
 	          _cookies.curCompletions = JSON.parse(localStorage.curCompletions);
+	        }
+	      } else if (key === "enrolledCourses") {
+	        if (localStorage.enrolledCourses) {
+	          _cookies.enrolledCourses = JSON.parse(localStorage.enrolledCourses);
 	        }
 	      } else {
 	        _cookies[key] = localStorage[key];
@@ -31753,10 +31763,11 @@
 	};
 	
 	var clearCookies = function () {
-	  _cookies = { curLng: "English", curCourseId: "", curCompletions: [] };
+	  _cookies = { curLng: "English", curCourseId: "", curCompletions: [], enrolledCourses: [] };
 	  localStorage.setItem("curLng", "English");
 	  localStorage.setItem("curCourseId", "");
 	  localStorage.setItem("curCompletions", []);
+	  localStorage.setItem("enrolledCourses", []);
 	};
 	
 	CookieStore.all = function () {
@@ -31789,14 +31800,11 @@
 	};
 	
 	CookieStore.curCompletions = function () {
-	  // var parsedCompletions = [];
-	  // if (_cookies.curCompletions[0]) {
-	  //   _cookies.curCompletions.forEach(function (obj) {
-	  //     parsedCompletions.push(obj);
-	  //   }.bind(this));
-	  // }
-	  // return parsedCompletions;
 	  return _cookies.curCompletions;
+	};
+	
+	CookieStore.enrolledCourses = function () {
+	  return _cookies.enrolledCourses;
 	};
 	
 	CookieStore.findCompletionByTypeAndID = function (type, id) {
@@ -32586,13 +32594,16 @@
 	        if (!CurrentUserStore.findEnrollment(courseId)) {
 	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
 	            CookieActions.receiveCookie({ curCourseId: courseId });
+	            CookieActions.receiveCookie({ enrolledCourses: courseId });
 	          });
 	        } else {
 	          CookieActions.receiveCookie({ curCourseId: courseId });
+	          CookieActions.receiveCookie({ enrolledCourses: courseId });
 	        }
 	      });
 	    } else {
 	      CookieActions.receiveCookie({ curCourseId: courseId });
+	      CookieActions.receiveCookie({ enrolledCourses: courseId });
 	    }
 	  },
 	
@@ -32856,7 +32867,30 @@
 	        }
 	      }.bind(this));
 	    }
+	    this.addEnrollments(userId);
 	    this._closeModal();
+	  },
+	
+	  addEnrollments: function (userId) {
+	    if (CookieStore.enrolledCourses()[0]) {
+	      CookieStore.enrolledCourses().forEach(function (courseId) {
+	        var enrollmentParams = {};
+	        enrollmentParams.course_id = courseId;
+	        if (CurrentUserStore.isLoggedIn()) {
+	          enrollmentParams.user_id = CurrentUserStore.currentUser().id;
+	        } else {
+	          enrollmentParams.user_id = userId;
+	        }
+	
+	        this.addNewEnrollment(enrollmentParams);
+	      }.bind(this));
+	    }
+	  },
+	
+	  addNewEnrollment: function (enrollmentParams) {
+	    if (!CurrentUserStore.findEnrollment(enrollmentParams)) {
+	      UsersApiUtil.createCourseEnrollment(enrollmentParams);
+	    }
 	  },
 	
 	  submitLogin: function (e) {

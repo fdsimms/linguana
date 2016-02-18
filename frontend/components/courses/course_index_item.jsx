@@ -29,13 +29,16 @@ var CourseIndexItem = React.createClass({
         if (!CurrentUserStore.findEnrollment(courseId)) {
           UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
             CookieActions.receiveCookie({ curCourseId: courseId });
+            CookieActions.receiveCookie({ enrolledCourses: courseId});
           });
         } else {
           CookieActions.receiveCookie({ curCourseId: courseId });
+          CookieActions.receiveCookie({ enrolledCourses: courseId});
         }
       });
     } else {
       CookieActions.receiveCookie({ curCourseId: courseId});
+      CookieActions.receiveCookie({ enrolledCourses: courseId});
     }
   },
 

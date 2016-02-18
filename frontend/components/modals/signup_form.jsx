@@ -37,7 +37,30 @@ var SignupForm = React.createClass({
         }
       }.bind(this));
     }
+    this.addEnrollments(userId);
     this._closeModal();
+  },
+
+  addEnrollments: function (userId) {
+    if (CookieStore.enrolledCourses()[0]) {
+      CookieStore.enrolledCourses().forEach(function (courseId) {
+        var enrollmentParams = {};
+        enrollmentParams.course_id = courseId;
+        if (CurrentUserStore.isLoggedIn()) {
+          enrollmentParams.user_id = CurrentUserStore.currentUser().id;
+        } else {
+          enrollmentParams.user_id = userId;
+        }
+
+      this.addNewEnrollment(enrollmentParams);
+      }.bind(this));
+    }
+  },
+
+  addNewEnrollment: function (enrollmentParams) {
+    if (!CurrentUserStore.findEnrollment(enrollmentParams)) {
+      UsersApiUtil.createCourseEnrollment(enrollmentParams);
+    }
   },
 
   submitLogin: function (e) {
