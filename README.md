@@ -70,6 +70,6 @@ URLs and important data about images such as users' profile pictures are stored 
 
 ## Acknowledgements
 
-My extremely talented sister created the Linguana mascot—check out her [portfolio][kristen] to check out the rest of her work!
+My extremely talented sister created the Linguana mascot—check out her [portfolio][kristen] to see more of her work!
 
 [kristen]: http://www.kristensimms.com/portfolio.html
