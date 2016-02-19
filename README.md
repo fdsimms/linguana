@@ -1,5 +1,10 @@
 # Linguana
 
+![Image of Linguana Skills Page](screenshots/screenshot1.png)
+![Image of Linguana Lesson](screenshots/screenshot2.png)
+
+## Summary
+
 Linguana is a gamified language-learning app that draws inspiration from Duolingo and was built using an array of technologies including Ruby on Rails, React.js and PostgreSQL.
 
 ## Features
