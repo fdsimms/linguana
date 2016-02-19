@@ -188,7 +188,7 @@ var Lesson = React.createClass({
       <LessonFinalPage lesson={this.state.lesson} />
       {this.bottomBar()}
     </div>
-  );
+    );
   },
 
   render: function () {

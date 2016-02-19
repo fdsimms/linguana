@@ -143,10 +143,17 @@
 .lesson-bottom-bar-correct a,
 .lesson-bottom-bar-incorrect a {
   padding: 10px 25px;
-  margin: 25px 50px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   width: 75px;
   text-align: center;
   border-radius: 20px;
+  right: 50px;
+}
+
+.lesson-bottom-bar .skip-button {
+  left: 50px;
 }
 
 .final-page-bar {
