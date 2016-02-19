@@ -13,7 +13,7 @@ Linguana is a gamified full-stack language-learning app that draws inspiration f
 
 ### Cookie Store
 
-A Flux-enabled cookie store sets and gets information from cookies in localStorage. Thanks to this, users are able to enjoy much of the same functionality when logged out as they can when logged in. If a logged-out user completes an entire course, she can save her progress to the database by simply logging in or creating an account. The cookie store sets browser cookies for everything from the current course to an array of completed completables, and AJAX requests are sent out on login to persist any relevant information from the cookies.
+A Flux-enabled cookie store sets and gets information from cookies in localStorage. Thanks to this, users are able to enjoy much of the same functionality when logged out as they can when logged in. If a logged-out user completes an entire course, she can save her progress to the database by simply logging in or creating an account. The cookie store sets browser cookies for everything from the current course to an array of completions, and AJAX requests are sent out on login to persist any relevant information from the cookies.
 
 ### Completables
 
