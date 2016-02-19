@@ -1,6 +1,8 @@
 # Linguana
 
 ![Image of Linguana Skills Page](screenshots/screenshot1.png)
+
+
 ![Image of Linguana Lesson](screenshots/screenshot2.png)
 
 ## Summary
