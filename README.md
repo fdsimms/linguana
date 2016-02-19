@@ -62,9 +62,14 @@ URLs and important data about images such as users' profile pictures are stored 
 [paperclip]: https://github.com/thoughtbot/paperclip
 [aws]: https://github.com/aws/aws-sdk-ruby
 [figaro-link]: https://github.com/laserlemon/figaro
-
 [flux]: https://github.com/facebook/flux
 [webpack]: https://webpack.github.io/
 [react-router]: https://github.com/reactjs/react-router
 [react]: https://facebook.github.io/react/docs/getting-started.html
 [babel]: https://github.com/babel/babel
+
+## Acknowledgements
+
+My extremely talented sister created the Linguana mascot—check out her [portfolio][kristen] to check out the rest of her work!
+
+[kristen]: http://www.kristensimms.com/portfolio.html
