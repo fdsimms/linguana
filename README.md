@@ -7,7 +7,7 @@
 
 ## Summary
 
-Linguana is a gamified language-learning app that draws inspiration from Duolingo and was built using an array of technologies including Ruby on Rails, React.js and PostgreSQL.
+Linguana is a gamified full-stack language-learning app that draws inspiration from Duolingo and was built from scratch using an array of technologies that includes Ruby on Rails, React.js and PostgreSQL.
 
 ## Features
 
