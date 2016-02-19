@@ -27,7 +27,7 @@ URLs and important data about images such as users' profile pictures are stored 
 ## Languages and Technologies
 
 * Ruby on Rails
-* React
+* React.js
 * Flux architecture
 * PostgreSQL
 * HTML/CSS
