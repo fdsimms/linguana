@@ -48,7 +48,7 @@ URLs and important data about images such as users' profile pictures are stored 
 * [paperclip][paperclip]
 * [aws-sdk][aws]
 
-## Some Important NPM Packages
+## Some Important Node Packages
 
 * [babel][babel]
 * [react][react]
