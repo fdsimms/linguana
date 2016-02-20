@@ -4,38 +4,20 @@ var React = require('react'),
     LessonsApiUtil = require('../../util/lessons_api_util');
 
 var LessonIndex = React.createClass({
-  getInitialState: function () {
-    var lessons = LessonStore.findBySkill(this.props.skillId);
-
-    return { lessons: lessons };
-  },
-
-  _onChange: function () {
-    this.setState({ lessons: LessonStore.all() });
-  },
-
-  componentDidMount: function () {
-    this.lessonListener = LessonStore.addListener(this._onChange);
-    LessonsApiUtil.fetchLessons(this.props.skillId);
-  },
-
-  componentWillUnmount: function () {
-    this.lessonListener.remove();
-  },
 
   render: function () {
-    var lessons = this.state.lessons;
+    var lessons = this.props.lessons;
     if (typeof lessons === "undefined") {
       return <div />;
     }
 
-    var lessonKeys = Object.keys(this.state.lessons);
+    var lessonKeys = Object.keys(this.props.lessons);
     var prevLesson;
 
     lessons = lessonKeys.map(function (key, idx) {
       var lesson = lessons[key];
       if (idx > 0) {
-        prevLesson = lessons[Object.keys(this.state.lessons)[idx - 1]];
+        prevLesson = lessons[Object.keys(this.props.lessons)[idx - 1]];
       }
 
       return <LessonIndexItem key={idx} lesson={lesson} prevLesson={prevLesson}/>;

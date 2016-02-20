@@ -20,8 +20,6 @@ var SessionsApiUtil = {
         CookieActions.receiveCookie({
             curCourseId: curCourseId
           });
-          debugger
-
         CurrentUserActions.receiveCurrentUser(currentUser);
         success && success(currentUser.current_course_id);
       }.bind(this)

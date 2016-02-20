@@ -32121,8 +32121,6 @@
 	        CookieActions.receiveCookie({
 	          curCourseId: curCourseId
 	        });
-	        debugger;
-	
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success(currentUser.current_course_id);
 	      }.bind(this)
@@ -33614,6 +33612,7 @@
 	var React = __webpack_require__(1),
 	    SkillStore = __webpack_require__(261),
 	    LessonIndex = __webpack_require__(268),
+	    LessonStore = __webpack_require__(269),
 	    CurrentUserStore = __webpack_require__(232),
 	    UsersApiUtil = __webpack_require__(233),
 	    SkillsApiUtil = __webpack_require__(264);
@@ -33622,16 +33621,22 @@
 	  displayName: 'Skill',
 	
 	  getInitialState: function () {
-	    return { skill: SkillStore.find(this.props.params.skillId) };
+	    return {
+	      skill: SkillStore.find(this.props.params.skillId),
+	      lessons: LessonStore.findBySkill(this.props.params.skillId)
+	    };
 	  },
 	
 	  componentDidMount: function () {
 	    var skillId = this.props.params.skillId;
 	    this.skillListener = SkillStore.addListener(this._skillsChanged);
 	    SkillsApiUtil.fetchSkill(skillId);
+	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+	    LessonsApiUtil.fetchLessons(skillId);
 	  },
 	
 	  componentWillUnmount: function () {
+	    this.lessonListener.remove();
 	    this.skillListener.remove();
 	  },
 	
@@ -33639,8 +33644,14 @@
 	    this.setState({ skill: SkillStore.find(this.props.params.skillId) });
 	  },
 	
+	  _lessonsChanged: function () {
+	    this.setState({
+	      lessons: LessonStore.findBySkill(this.props.params.skillId)
+	    });
+	  },
+	
 	  render: function () {
-	    if (typeof this.state.skill === "undefined") {
+	    if (typeof this.state.skill === "undefined" || !Object.keys(this.state.lessons)[0]) {
 	      return React.createElement('div', null);
 	    }
 	    var path = "#/course/" + this.state.skill.course_id;
@@ -33661,7 +33672,8 @@
 	          'Back to Skills'
 	        )
 	      ),
-	      React.createElement(LessonIndex, { skillId: this.state.skill.id }),
+	      React.createElement(LessonIndex, { skillId: this.state.skill.id,
+	        lessons: this.state.lessons }),
 	      React.createElement(
 	        'div',
 	        { className: 'tips-and-notes' },
@@ -33694,38 +33706,20 @@
 	var LessonIndex = React.createClass({
 	  displayName: 'LessonIndex',
 	
-	  getInitialState: function () {
-	    var lessons = LessonStore.findBySkill(this.props.skillId);
-	
-	    return { lessons: lessons };
-	  },
-	
-	  _onChange: function () {
-	    this.setState({ lessons: LessonStore.all() });
-	  },
-	
-	  componentDidMount: function () {
-	    this.lessonListener = LessonStore.addListener(this._onChange);
-	    LessonsApiUtil.fetchLessons(this.props.skillId);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.lessonListener.remove();
-	  },
 	
 	  render: function () {
-	    var lessons = this.state.lessons;
+	    var lessons = this.props.lessons;
 	    if (typeof lessons === "undefined") {
 	      return React.createElement('div', null);
 	    }
 	
-	    var lessonKeys = Object.keys(this.state.lessons);
+	    var lessonKeys = Object.keys(this.props.lessons);
 	    var prevLesson;
 	
 	    lessons = lessonKeys.map(function (key, idx) {
 	      var lesson = lessons[key];
 	      if (idx > 0) {
-	        prevLesson = lessons[Object.keys(this.state.lessons)[idx - 1]];
+	        prevLesson = lessons[Object.keys(this.props.lessons)[idx - 1]];
 	      }
 	
 	      return React.createElement(LessonIndexItem, { key: idx, lesson: lesson, prevLesson: prevLesson });
@@ -33783,7 +33777,7 @@
 	  }
 	  Object.keys(_lessons).forEach(function (key) {
 	    var lesson = _lessons[key];
-	    if (lesson.skill_id === skillId) {
+	    if (lesson.skill_id === parseInt(skillId)) {
 	      result[lesson.id] = lesson;
 	    }
 	  });
@@ -33925,10 +33919,10 @@
 	var LessonActions = __webpack_require__(273);
 	
 	var LessonsApiUtil = {
-	  fetchLessons: function (lessonId) {
+	  fetchLessons: function (skillId) {
 	    $.ajax({
 	      type: "GET",
-	      url: "api/skills/" + lessonId + "/lessons",
+	      url: "api/skills/" + skillId + "/lessons",
 	      dataType: "json",
 	      success: function (lessons) {
 	        var lessonsPayload = {};

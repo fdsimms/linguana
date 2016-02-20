@@ -1,10 +1,10 @@
 var LessonActions = require('../actions/lesson_actions');
 
 var LessonsApiUtil = {
-	fetchLessons: function (lessonId) {
+	fetchLessons: function (skillId) {
 		$.ajax({
 			type: "GET",
-			url: "api/skills/" + lessonId + "/lessons",
+			url: "api/skills/" + skillId + "/lessons",
 			dataType: "json",
 			success: function (lessons) {
         var lessonsPayload = {};

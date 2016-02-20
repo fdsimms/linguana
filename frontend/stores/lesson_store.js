@@ -30,7 +30,7 @@ LessonStore.findBySkill = function (skillId) {
   if (_lessons === {}) { return {}; }
   Object.keys(_lessons).forEach(function (key) {
     var lesson = _lessons[key];
-    if (lesson.skill_id === skillId) {
+    if (lesson.skill_id === parseInt(skillId)) {
       result[lesson.id] = lesson;
     }
   });
