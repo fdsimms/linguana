@@ -157,6 +157,15 @@ var NavBar = React.createClass({
       );
     }
 
+    var points =
+      CurrentUserStore.currentUser().points || localStorage.curPoints;
+    points_counter = (
+      <h2 className="points-counter">
+        <i className="fa fa-adjust fa-lg" />
+        {points}
+      </h2>
+    );
+
       return (
 
       <nav className="header-nav group">

@@ -24802,6 +24802,14 @@
 	      );
 	    }
 	
+	    var points = CurrentUserStore.currentUser().points || localStorage.curPoints;
+	    points_counter = React.createElement(
+	      'h2',
+	      { className: 'points-counter' },
+	      React.createElement('i', { className: 'fa fa-adjust fa-lg' }),
+	      points
+	    );
+	
 	    return React.createElement(
 	      'nav',
 	      { className: 'header-nav group' },
