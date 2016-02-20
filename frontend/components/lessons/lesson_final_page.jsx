@@ -22,6 +22,7 @@ module.exports = React.createClass({
          }
       };
       CookieActions.receiveCookie(cookie);
+      CookieActions.receiveCookie({ curPoints: points });
       if (this.props.lesson.id == LessonStore.findLastLessonId()) {
         this.createSkillCompletion();
       }

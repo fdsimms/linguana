@@ -12,15 +12,22 @@ var LessonIndex = React.createClass({
     }
 
     var lessonKeys = Object.keys(this.props.lessons);
-    var prevLesson;
-
+    var prevLesson,
+        isLastLesson;
     lessons = lessonKeys.map(function (key, idx) {
       var lesson = lessons[key];
       if (idx > 0) {
         prevLesson = lessons[Object.keys(this.props.lessons)[idx - 1]];
       }
+      if (idx === lessonKeys.length - 1) {
+        isLastLesson = true;
+      }
 
-      return <LessonIndexItem key={idx} lesson={lesson} prevLesson={prevLesson}/>;
+      return <LessonIndexItem
+                key={idx}
+                lesson={lesson}
+                prevLesson={prevLesson}
+                isLastLesson={isLastLesson}/>;
     }.bind(this));
 
     return(

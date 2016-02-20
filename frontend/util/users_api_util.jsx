@@ -30,10 +30,11 @@ var UsersApiUtil = {
     });
   },
 
-  awardPoints: function (points, success) {
-    var newPoints = CurrentUserStore.currentUser().points + points;
+  awardPoints: function (user, points, success) {
+    user = user || CurrentUserStore.currentUser();
+    var newPoints = user.points + points;
     $.ajax({
-      url: '/api/users/' + CurrentUserStore.currentUser().id,
+      url: '/api/users/' + user.id,
       type: 'PATCH',
       dataType: 'json',
       data: {user: {points: newPoints}},

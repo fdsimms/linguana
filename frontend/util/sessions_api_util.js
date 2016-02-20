@@ -2,6 +2,7 @@ var CurrentUserActions = require("./../actions/current_user_actions");
 var CookieActions = require("./../actions/cookie_actions");
 var UsersApiUtil = require('./users_api_util');
 var CoursesApiUtil = require('./courses_api_util');
+var CookieStore = require('./../stores/cookie_store');
 
 var SessionsApiUtil = {
   logIn: function (credentials, success) {
@@ -96,6 +97,11 @@ var SessionsApiUtil = {
         if (Object.keys(currentUser)[0]) {
           this.createEnrollments(currentUser.id);
           this.addCompletions();
+          if (localStorage.curPoints) {
+            var curPoints = parseInt(localStorage.curPoints);
+            UsersApiUtil.awardPoints(currentUser, curPoints);
+          }
+          CookieActions.clearCookie("curPoints");
         }
         CurrentUserActions.receiveCurrentUser(currentUser);
         callback && callback(currentUser);

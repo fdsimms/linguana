@@ -14,12 +14,8 @@ var _COOKIE_DEFAULTS = {
   curCourseId: "",
   enrolledCourses: [],
   curCompletions: [],
-  curPoints: 0;
+  curPoints: 0
 };
-
-var _cookies = _COOKIE_DEFAULTS;
-
-var CookieStore = new Store(AppDispatcher);
 
 var _COOKIE_NAMES = {
   curLng: "curLng",
@@ -28,6 +24,11 @@ var _COOKIE_NAMES = {
   curCompletions: "curCompletions",
   curPoints: "curPoints"
 };
+
+var _cookies = _COOKIE_DEFAULTS;
+
+var CookieStore = new Store(AppDispatcher);
+
 
 var addCookie = function (cookie) {
   var key = Object.keys(cookie)[0];
@@ -47,7 +48,7 @@ var addCookie = function (cookie) {
       window.localStorage.setItem(key, cookie[key]);
     } else if (key === "curPoints") {
       _cookies[key] += parseInt(cookie[key]);
-      _window.localStorage.setItem(key, _cookies[key]);
+      window.localStorage.setItem(key, _cookies[key]);
     }
   }
 
@@ -64,7 +65,7 @@ var addCookie = function (cookie) {
 
 var fetchCookiesFromBrowser = function () {
   Object.keys(localStorage).forEach(function (key) {
-    if (Object.keys(_COOKIE_NAMES).includes(key)) {
+    if (_COOKIE_NAMES[key]) {
       if (key === "curCompletions") {
         if (localStorage.curCompletions) {
           _cookies.curCompletions = JSON.parse(localStorage.curCompletions);
@@ -104,6 +105,7 @@ var clearCookies = function () {
   localStorage.setItem("curCourseId", "");
   localStorage.setItem("curCompletions", []);
   localStorage.setItem("enrolledCourses", []);
+  localStorage.setItem("curPoints", 0);
 };
 
 var clearCookie = function (cookieName) {
@@ -134,6 +136,7 @@ CookieStore.curLng = function () {
 
 CookieStore.curCourse = function () {
   return _cookies.curCourseId;
+};
 
 CookieStore.curPoints = function () {
   return _cookies.curPoints;
