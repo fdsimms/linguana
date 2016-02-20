@@ -122,11 +122,12 @@
 
 .skill-index .completion-trophy {
   color: gold;
-  position: absolute;
   font-size: 18em;
-  top: 670px;
-  left: 205px;
   text-shadow: 0 0 1px black;
+  position: static;
+  margin-top: 55px;
+  display: block;
+  text-align: center;
 }
 
 .completion-trophy .trophy-text {
@@ -134,10 +135,15 @@
   color: darkgoldenrod;
   cursor: default;
   font-size: 47px;
-  top: 71px;
-  left: 80px;
+  left: 50%;
   text-shadow: 0 0 8px yellow;
   font-weight: bold;
+  transform: translateX(-55%);
+  bottom: 255px;
+}
+
+.fa-trophy:before {
+  position: relative;
 }
 
 .completion-trophy .fa-percent {

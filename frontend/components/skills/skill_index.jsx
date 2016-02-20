@@ -1,6 +1,7 @@
 var React = require('react'),
     SkillStore = require('./../../stores/skill_store'),
     SkillIndexItem = require('./skill_index_item'),
+    CookieStore = require('./../../stores/cookie_store'),
     SkillsApiUtil = require('./../../util/skills_api_util');
 
 var SkillIndex = React.createClass({
@@ -26,14 +27,18 @@ var SkillIndex = React.createClass({
   },
 
   renderTrophy: function () {
-    if (CurrentUserStore.findCompletion(this.props.courseId, "course")) {
+    var courseId = this.props.courseId;
+    if (CurrentUserStore.findCompletion(this.props.courseId, "course") ||
+        CookieStore.findCompletionByTypeAndID("course", parseInt(courseId))) {
       return(
-        <i className="fa completion-trophy fa-trophy fa-5x">
-          <h2 className="trophy-text">
-            100
-            <i className="fa fa-percent"></i>
-          </h2>
-        </i>
+        <div className="trophy-container">
+          <i className="fa completion-trophy fa-trophy fa-5x">
+            <h2 className="trophy-text">
+              100
+              <i className="fa fa-percent"></i>
+            </h2>
+          </i>
+        </div>
       );
 
     } else {

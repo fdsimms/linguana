@@ -33263,6 +33263,7 @@
 	var React = __webpack_require__(1),
 	    SkillStore = __webpack_require__(261),
 	    SkillIndexItem = __webpack_require__(263),
+	    CookieStore = __webpack_require__(239),
 	    SkillsApiUtil = __webpack_require__(264);
 	
 	var SkillIndex = React.createClass({
@@ -33290,15 +33291,20 @@
 	  },
 	
 	  renderTrophy: function () {
-	    if (CurrentUserStore.findCompletion(this.props.courseId, "course")) {
+	    var courseId = this.props.courseId;
+	    if (CurrentUserStore.findCompletion(this.props.courseId, "course") || CookieStore.findCompletionByTypeAndID("course", parseInt(courseId))) {
 	      return React.createElement(
-	        'i',
-	        { className: 'fa completion-trophy fa-trophy fa-5x' },
+	        'div',
+	        { className: 'trophy-container' },
 	        React.createElement(
-	          'h2',
-	          { className: 'trophy-text' },
-	          '100',
-	          React.createElement('i', { className: 'fa fa-percent' })
+	          'i',
+	          { className: 'fa completion-trophy fa-trophy fa-5x' },
+	          React.createElement(
+	            'h2',
+	            { className: 'trophy-text' },
+	            '100',
+	            React.createElement('i', { className: 'fa fa-percent' })
+	          )
 	        )
 	      );
 	    } else {
