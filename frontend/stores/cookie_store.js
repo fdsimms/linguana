@@ -13,7 +13,8 @@ var _COOKIE_DEFAULTS = {
   curLng: "English",
   curCourseId: "",
   enrolledCourses: [],
-  curCompletions: []
+  curCompletions: [],
+  curPoints: 0;
 };
 
 var _cookies = _COOKIE_DEFAULTS;
@@ -24,14 +25,12 @@ var _COOKIE_NAMES = {
   curLng: "curLng",
   curCourseId: "curCourseId",
   enrolledCourses: "enrolledCourses",
-  curCompletions: "curCompletions"
+  curCompletions: "curCompletions",
+  curPoints: "curPoints"
 };
 
 var addCookie = function (cookie) {
   var key = Object.keys(cookie)[0];
-  if (key !== "curCompletions" && key !== "enrolledCourses") {
-    _cookies[key] = cookie[key];
-  }
 
   if (!CurrentUserStore.isLoggedIn()) {
     var value = cookie[key];
@@ -44,7 +43,11 @@ var addCookie = function (cookie) {
       json_cookie = JSON.stringify(_cookies.enrolledCourses);
       window.localStorage.setItem(key, json_cookie);
     } else if (key === "curCourseId"){
+      _cookies[key] = cookie[key];
       window.localStorage.setItem(key, cookie[key]);
+    } else if (key === "curPoints") {
+      _cookies[key] += parseInt(cookie[key]);
+      _window.localStorage.setItem(key, _cookies[key]);
     }
   }
 
@@ -52,6 +55,7 @@ var addCookie = function (cookie) {
     UsersApiUtil.updateUser({ current_course_id: cookie[key] });
     window.localStorage.setItem(key, cookie[key]);
   } else if (key === "curLng") {
+    _cookies[key] = cookie[key];
     var lang = LanguageStore.findByName(cookie[key]);
     UsersApiUtil.updateUser({ current_language_id: lang.id });
     window.localStorage.setItem(key, cookie[key]);
@@ -69,6 +73,8 @@ var fetchCookiesFromBrowser = function () {
           if(localStorage.enrolledCourses) {
             _cookies.enrolledCourses = JSON.parse(localStorage.enrolledCourses);
           }
+      } else if (key === "curPoints") {
+        _cookies[key] = parseInt(localStorage[key]);
       } else {
         _cookies[key] = localStorage[key];
       }
@@ -128,6 +134,9 @@ CookieStore.curLng = function () {
 
 CookieStore.curCourse = function () {
   return _cookies.curCourseId;
+
+CookieStore.curPoints = function () {
+  return _cookies.curPoints;
 };
 
 CookieStore.cookiesHaveBeenFetched = function () {

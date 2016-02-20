@@ -24112,7 +24112,7 @@
 	    ModalActions = __webpack_require__(207),
 	    NavBar = __webpack_require__(213),
 	    CurrentUserStore = __webpack_require__(232),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../stores/cookie_store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
 	    LanguagesApiUtil = __webpack_require__(244),
 	    CookieActions = __webpack_require__(246),
 	    SignupModal = __webpack_require__(257),
@@ -24635,7 +24635,7 @@
 	    ModalActions = __webpack_require__(207),
 	    ModalStore = __webpack_require__(214),
 	    CurrentUserStore = __webpack_require__(232),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../stores/cookie_store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
 	    LanguageStore = __webpack_require__(236),
 	    CoursesApiUtil = __webpack_require__(242),
 	    LanguagesApiUtil = __webpack_require__(244),
@@ -31688,193 +31688,7 @@
 	module.exports = CookieConstants;
 
 /***/ },
-/* 239 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(215).Store,
-	    AppDispatcher = __webpack_require__(208),
-	    LanguageStore = __webpack_require__(236),
-	    CourseStore = __webpack_require__(240),
-	    UsersApiUtil = __webpack_require__(233),
-	    CoursesApiUtil = __webpack_require__(242),
-	    CookieConstants = __webpack_require__(238);
-	
-	var _cookiesHaveBeenFetched = false;
-	
-	var _COOKIE_DEFAULTS = {
-	  curLng: "English",
-	  curCourseId: "",
-	  enrolledCourses: [],
-	  curCompletions: []
-	};
-	
-	var _cookies = _COOKIE_DEFAULTS;
-	
-	var CookieStore = new Store(AppDispatcher);
-	
-	var _COOKIE_NAMES = {
-	  curLng: "curLng",
-	  curCourseId: "curCourseId",
-	  enrolledCourses: "enrolledCourses",
-	  curCompletions: "curCompletions"
-	};
-	
-	var addCookie = function (cookie) {
-	  var key = Object.keys(cookie)[0];
-	  if (key !== "curCompletions" && key !== "enrolledCourses") {
-	    _cookies[key] = cookie[key];
-	  }
-	
-	  if (!CurrentUserStore.isLoggedIn()) {
-	    var value = cookie[key];
-	    if (key === "curCompletions") {
-	      _cookies.curCompletions.push(value);
-	      json_cookie = JSON.stringify(_cookies.curCompletions);
-	      window.localStorage.setItem(key, json_cookie);
-	    } else if (key === "enrolledCourses") {
-	      _cookies.enrolledCourses.push(value);
-	      json_cookie = JSON.stringify(_cookies.enrolledCourses);
-	      window.localStorage.setItem(key, json_cookie);
-	    } else if (key === "curCourseId") {
-	      window.localStorage.setItem(key, cookie[key]);
-	    }
-	  }
-	
-	  if (key === "curCourseId" && CurrentUserStore.isLoggedIn()) {
-	    UsersApiUtil.updateUser({ current_course_id: cookie[key] });
-	    window.localStorage.setItem(key, cookie[key]);
-	  } else if (key === "curLng") {
-	    var lang = LanguageStore.findByName(cookie[key]);
-	    UsersApiUtil.updateUser({ current_language_id: lang.id });
-	    window.localStorage.setItem(key, cookie[key]);
-	  }
-	};
-	
-	var fetchCookiesFromBrowser = function () {
-	  Object.keys(localStorage).forEach(function (key) {
-	    if (Object.keys(_COOKIE_NAMES).includes(key)) {
-	      if (key === "curCompletions") {
-	        if (localStorage.curCompletions) {
-	          _cookies.curCompletions = JSON.parse(localStorage.curCompletions);
-	        }
-	      } else if (key === "enrolledCourses") {
-	        if (localStorage.enrolledCourses) {
-	          _cookies.enrolledCourses = JSON.parse(localStorage.enrolledCourses);
-	        }
-	      } else {
-	        _cookies[key] = localStorage[key];
-	      }
-	    }
-	  });
-	};
-	
-	var receiveCookies = function (cookies) {
-	  var keys = Object.keys(cookie);
-	  keys.forEach(function (key, idx) {
-	    if (key === "curCourseId") {
-	      _cookies[key] = cookie[key];
-	      window.localStorage.setItem(key, cookie[key]);
-	      UsersApiUtil.updateUser({ current_course_id: cookie[key] });
-	    } else if (key === "curLng") {
-	      _cookies[key] = cookie[key];
-	      window.localStorage.setItem(key, cookie[key]);
-	      var lang = LanguageStore.findByName(cookie[key]);
-	      UsersApiUtil.updateUser({ current_language_id: lang.id });
-	    }
-	  }.bind(this));
-	};
-	
-	var clearCookies = function () {
-	  _cookies = { curLng: "English", curCourseId: "", curCompletions: [], enrolledCourses: [] };
-	  localStorage.setItem("curLng", "English");
-	  localStorage.setItem("curCourseId", "");
-	  localStorage.setItem("curCompletions", []);
-	  localStorage.setItem("enrolledCourses", []);
-	};
-	
-	var clearCookie = function (cookieName) {
-	  _cookies[cookieName] = _COOKIE_DEFAULTS[cookieName];
-	  localStorage.setItem(cookieName, _COOKIE_DEFAULTS[cookieName]);
-	};
-	
-	CookieStore.all = function () {
-	  return Object.assign({}, _cookies);
-	};
-	
-	CookieStore.getCurCourse = function () {
-	  var course = CourseStore.find(_cookies.curCourseId);
-	  if (course) {
-	    return course;
-	  } else if (_cookies.curCourseId) {
-	    CoursesApiUtil.fetchCourse(_cookies.curCourseId, function (fetchedCourse) {
-	      course = fetchedCourse;
-	    }.bind(this));
-	  }
-	
-	  return course;
-	};
-	
-	CookieStore.curLng = function () {
-	  return _cookies.curLng;
-	};
-	
-	CookieStore.curCourse = function () {
-	  return _cookies.curCourseId;
-	};
-	
-	CookieStore.cookiesHaveBeenFetched = function () {
-	  return _cookiesHaveBeenFetched;
-	};
-	
-	CookieStore.curCompletions = function () {
-	  return _cookies.curCompletions;
-	};
-	
-	CookieStore.enrolledCourses = function () {
-	  return _cookies.enrolledCourses;
-	};
-	
-	CookieStore.findCompletionByTypeAndID = function (type, id) {
-	  var completions = CookieStore.curCompletions(),
-	      result;
-	  completions.forEach(function (completion) {
-	    var completionType = completion.completionType,
-	        completionId = completion.completionId;
-	    if (completionType === type && completionId === id) {
-	      result = completion;
-	    }
-	  }.bind(this));
-	
-	  return result;
-	};
-	
-	CookieStore.__onDispatch = function (payload) {
-	  if (payload.actionType === CookieConstants.COOKIES_RECEIVED) {
-	    var cookies = payload.cookies;
-	    receiveCookies(cookies);
-	    CookieStore.__emitChange();
-	  } else if (payload.actionType === CookieConstants.COOKIE_RECEIVED) {
-	    var cookie = payload.cookie;
-	    addCookie(cookie);
-	    CookieStore.__emitChange();
-	  } else if (payload.actionType === CookieConstants.FETCH_COOKIES) {
-	    _cookiesHaveBeenFetched = true;
-	    fetchCookiesFromBrowser();
-	    CookieStore.__emitChange();
-	  } else if (payload.actionType === CookieConstants.CLEAR_COOKIES) {
-	    clearCookies();
-	    CookieStore.__emitChange();
-	  } else if (payload.actionType === CookieConstants.CLEAR_COOKIE) {
-	    clearCookie(payload.cookieName);
-	    CookieStore.__emitChange();
-	  }
-	};
-	
-	window.CookieStore = CookieStore;
-	
-	module.exports = CookieStore;
-
-/***/ },
+/* 239 */,
 /* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32420,7 +32234,7 @@
 
 	var React = __webpack_require__(1),
 	    ModalActions = __webpack_require__(207),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../stores/cookie_store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
 	    CookieActions = __webpack_require__(246),
 	    UsersApiUtil = __webpack_require__(233),
 	    ModalStore = __webpack_require__(214),
@@ -32543,7 +32357,7 @@
 	var React = __webpack_require__(1),
 	    CourseStore = __webpack_require__(240),
 	    CourseIndexItem = __webpack_require__(254),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../stores/cookie_store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
 	    LanguageStore = __webpack_require__(236),
 	    CoursesApiUtil = __webpack_require__(242);
 	
@@ -32638,7 +32452,7 @@
 
 	var React = __webpack_require__(1),
 	    CookieActions = __webpack_require__(246),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./../../stores/cookie_store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
 	    CourseStore = __webpack_require__(240),
 	    LanguageStore = __webpack_require__(236),
 	    LanguagesApiUtil = __webpack_require__(244),
@@ -32905,7 +32719,7 @@
 	    SessionsApiUtil = __webpack_require__(247),
 	    ModalActions = __webpack_require__(207),
 	    CurrentUserStore = __webpack_require__(232),
-	    CookieStore = __webpack_require__(239);
+	    CookieStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./../../stores/cookie_store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var SignupForm = React.createClass({
 	  displayName: 'SignupForm',
@@ -33181,7 +32995,7 @@
 
 	var React = __webpack_require__(1),
 	    CourseStore = __webpack_require__(240),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../stores/cookie_store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
 	    SkillIndex = __webpack_require__(260),
 	    CoursesApiUtil = __webpack_require__(242);
 	
@@ -33988,7 +33802,7 @@
 	var React = __webpack_require__(1),
 	    NavBar = __webpack_require__(213),
 	    SignupModal = __webpack_require__(257),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../stores/cookie_store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
 	    CourseIndex = __webpack_require__(253);
 	
 	module.exports = React.createClass({
@@ -35008,7 +34822,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../stores/cookie_store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
 	    CourseIndex = __webpack_require__(253),
 	    LanguageIndexDropdown = __webpack_require__(248),
 	    ModalActions = __webpack_require__(207);
@@ -35081,7 +34895,7 @@
 	    LanguageStore = __webpack_require__(236),
 	    SessionsApiUtil = __webpack_require__(247),
 	    LanguagesApiUtil = __webpack_require__(244),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../stores/cookie_store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
 	    SkillIndex = __webpack_require__(260),
 	    UsersApiUtil = __webpack_require__(242);
 	
