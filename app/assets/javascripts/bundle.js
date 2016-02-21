@@ -31785,7 +31785,7 @@
 	};
 	
 	var ensureCurPoints = function () {
-	  if (!_cookies.curPoints && !CurrentUserStore.isLoggedIn()) {
+	  if (!localStorage.curPoints && !CurrentUserStore.isLoggedIn()) {
 	    addCookie({ curPoints: 0 });
 	  }
 	};
