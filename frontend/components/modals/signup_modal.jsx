@@ -15,8 +15,7 @@ var SignupModal = React.createClass({
   },
 
   _modalsChanged: function () {
-    var modalName = this.state.modalName;
-    this.setState({ modalName: modalName});
+    this.forceUpdate();
   },
 
   componentWillUnmount: function () {
@@ -27,7 +26,7 @@ var SignupModal = React.createClass({
   visibleRender: function () {
     return(
       <div className="screen-cover">
-        <SignupForm />
+        <SignupForm toShow="signup"/>
       </div>
     );
   },

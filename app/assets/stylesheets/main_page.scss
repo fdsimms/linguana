@@ -3,26 +3,19 @@
   display: block;
   position: relative;
   padding: 30px 0 200px 0;
+  float: left;
 }
 
 .main-content {
-  // width: 700px;
-  // display: block;
-  // margin: auto;
-  // height: 1000px;
-  // position: relative;
-  // background: #fff;
-  // margin-top: 10px;
-  // border-radius: 10px;
   width: 700px;
-display: block;
-margin: auto;
-min-height: 700px;
-position: relative;
-background: #fff;
-margin-top: 10px;
-border-radius: 10px;
-height: auto;
+  display: block;
+  margin: auto;
+  min-height: 700px;
+  position: relative;
+  background: #fff;
+  margin-top: 10px;
+  border-radius: 10px;
+  height: auto;
 }
 
 .course-page-header,
@@ -37,4 +30,9 @@ height: auto;
 .main-wrapper {
   background-color: #eee;
   position: relative;
+}
+
+.sidebar {
+  display: block;
+  float: right;
 }

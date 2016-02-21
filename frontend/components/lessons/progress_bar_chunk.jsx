@@ -5,7 +5,9 @@ var ProgressBarChunk = React.createClass({
   render: function () {
 
     return(
-      <div className={"chunk " + this.props.className}></div>
+      <div style={{"width": this.props.width}}
+           className={"chunk " + this.props.className}>
+      </div>
     );
   }
 });

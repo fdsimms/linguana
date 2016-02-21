@@ -32894,8 +32894,7 @@
 	  },
 	
 	  _modalsChanged: function () {
-	    var modalName = this.state.modalName;
-	    this.setState({ modalName: modalName });
+	    this.forceUpdate();
 	  },
 	
 	  componentWillUnmount: function () {
@@ -32907,7 +32906,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'screen-cover' },
-	      React.createElement(SignupForm, null)
+	      React.createElement(SignupForm, { toShow: 'signup' })
 	    );
 	  },
 	
@@ -32939,7 +32938,7 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return { toShow: "signup" };
+	    return { toShow: this.props.toShow };
 	  },
 	
 	  submitSignup: function (e) {
@@ -34049,6 +34048,7 @@
 	var React = __webpack_require__(1),
 	    NavBar = __webpack_require__(213),
 	    SignupModal = __webpack_require__(257),
+	    Sidebar = __webpack_require__(291),
 	    CourseIndex = __webpack_require__(252);
 	
 	module.exports = React.createClass({
@@ -34073,7 +34073,8 @@
 	          'main',
 	          { className: 'main-content box-shadowed' },
 	          this.props.children
-	        )
+	        ),
+	        React.createElement(Sidebar, null)
 	      )
 	    );
 	  },
@@ -34099,7 +34100,7 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      { className: 'main-wrapper' },
+	      { className: 'main-wrapper group' },
 	      React.createElement(SignupModal, null),
 	      React.createElement(
 	        'header',
@@ -34753,16 +34754,19 @@
 	      if (i > currentChunkIdx) {
 	
 	        bar.push(React.createElement(ProgressBarChunk, {
+	          width: 600 / totalChunks,
 	          className: 'unfilled-chunk',
 	          key: i }));
 	      } else if (i === currentChunkIdx) {
 	
 	        bar.push(React.createElement(ProgressBarChunk, {
+	          width: Math.floor(550 / totalChunks),
 	          className: 'current-chunk',
 	          key: i }));
 	      } else {
 	
 	        bar.push(React.createElement(ProgressBarChunk, {
+	          width: 600 / totalChunks,
 	          className: 'filled-chunk',
 	          key: i }));
 	      }
@@ -34800,7 +34804,8 @@
 	
 	  render: function () {
 	
-	    return React.createElement('div', { className: "chunk " + this.props.className });
+	    return React.createElement('div', { style: { "width": this.props.width },
+	      className: "chunk " + this.props.className });
 	  }
 	});
 	
@@ -35281,6 +35286,58 @@
 	});
 	
 	module.exports = UserProfile;
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    NavBar = __webpack_require__(213),
+	    SignupModal = __webpack_require__(257),
+	    ModalActions = __webpack_require__(207),
+	    CurrentUserStore = __webpack_require__(232),
+	    CourseIndex = __webpack_require__(252);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	
+	  createProfileBox: function () {
+	    var contents;
+	    if (CurrentUserStore.isLoggedIn()) {
+	      contents = React.createElement('div', null);
+	    } else {
+	      contents = React.createElement(
+	        'div',
+	        { className: 'createProfile' },
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Log in to save your progress!'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'sideBarLoginButton' },
+	          'Log in'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'sideBarSignupButton' },
+	          'Sign up'
+	        )
+	      );
+	    }
+	    return contents;
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'sidebar group' },
+	      this.createProfileBox()
+	    );
+	  }
+	});
 
 /***/ }
 /******/ ]);

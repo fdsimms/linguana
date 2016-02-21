@@ -10,7 +10,7 @@ var SignupForm = React.createClass({
   mixins: [History],
 
   getInitialState: function () {
-    return({ toShow: "signup" });
+    return({ toShow: this.props.toShow });
   },
 
   submitSignup: function (e) {

@@ -1,6 +1,7 @@
 var React = require('react'),
     NavBar = require('./nav_bar'),
     SignupModal = require('./modals/signup_modal'),
+    Sidebar = require('./sidebar'),
     CourseIndex = require("./courses/course_index");
 
 module.exports = React.createClass({
@@ -20,6 +21,7 @@ module.exports = React.createClass({
           <main className="main-content box-shadowed">
             {this.props.children}
           </main>
+          <Sidebar />
         </div>
       </div>
     );
@@ -43,7 +45,7 @@ module.exports = React.createClass({
       toRender = this.lessonView();
     }
     return(
-      <div className="main-wrapper">
+      <div className="main-wrapper group">
         <SignupModal />
         <header className="header-bar">
           <NavBar view="main" />
