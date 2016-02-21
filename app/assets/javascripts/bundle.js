@@ -31780,7 +31780,14 @@
 	        _cookies[key] = localStorage[key];
 	      }
 	    }
+	    ensureCurPoints();
 	  });
+	};
+	
+	var ensureCurPoints = function () {
+	  if (!_cookies.curPoints && !CurrentUserStore.isLoggedIn()) {
+	    addCookie({ curPoints: 0 });
+	  }
 	};
 	
 	var receiveCookies = function (cookies) {
