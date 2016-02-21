@@ -34754,7 +34754,7 @@
 	      if (i > currentChunkIdx) {
 	
 	        bar.push(React.createElement(ProgressBarChunk, {
-	          width: 600 / totalChunks,
+	          width: 550 / totalChunks,
 	          className: 'unfilled-chunk',
 	          key: i }));
 	      } else if (i === currentChunkIdx) {
@@ -34766,7 +34766,7 @@
 	      } else {
 	
 	        bar.push(React.createElement(ProgressBarChunk, {
-	          width: 600 / totalChunks,
+	          width: 550 / totalChunks,
 	          className: 'filled-chunk',
 	          key: i }));
 	      }

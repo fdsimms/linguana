@@ -17,7 +17,7 @@ var ProgressBar = React.createClass({
 
         bar.push(
           <ProgressBarChunk
-            width={600 / totalChunks}
+            width={550 / totalChunks}
             className="unfilled-chunk"
             key={i} />);
 
@@ -33,7 +33,7 @@ var ProgressBar = React.createClass({
 
         bar.push(
           <ProgressBarChunk
-            width={600 / totalChunks}
+            width={550 / totalChunks}
             className="filled-chunk"
             key={i} />);
       }
