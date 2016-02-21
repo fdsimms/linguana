@@ -11,14 +11,24 @@ var ProgressBar = React.createClass({
     var totalChunks = ExerciseStore.all().length;
     var currentChunkIdx = this.props.currentIdx;
     var bar = [];
-    for (var i = 0; i < totalChunks; i++) {
+    for (var i = 0; i <= totalChunks; i++) {
 
-      if (i > currentChunkIdx) {
+      if (i === currentChunkIdx + 1) {
+
+      bar.push(
+        <ProgressBarChunk
+          width={0}
+          background="white"
+          className="current-chunk empty-chunk"
+          key={i} />);
+
+      } else if (i > currentChunkIdx) {
 
         bar.push(
           <ProgressBarChunk
-            width={550 / totalChunks}
+            width={Math.floor(550 / totalChunks)}
             className="unfilled-chunk"
+            background="white"
             key={i} />);
 
       } else if (i === currentChunkIdx) {
@@ -26,6 +36,7 @@ var ProgressBar = React.createClass({
         bar.push(
           <ProgressBarChunk
             width={Math.floor(550 / totalChunks)}
+            background="red"
             className="current-chunk"
             key={i} />);
 
@@ -33,8 +44,9 @@ var ProgressBar = React.createClass({
 
         bar.push(
           <ProgressBarChunk
-            width={550 / totalChunks}
+            width={Math.floor(550 / totalChunks)}
             className="filled-chunk"
+            background="red"
             key={i} />);
       }
     }

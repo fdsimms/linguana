@@ -34749,25 +34749,35 @@
 	    var totalChunks = ExerciseStore.all().length;
 	    var currentChunkIdx = this.props.currentIdx;
 	    var bar = [];
-	    for (var i = 0; i < totalChunks; i++) {
+	    for (var i = 0; i <= totalChunks; i++) {
 	
-	      if (i > currentChunkIdx) {
+	      if (i === currentChunkIdx + 1) {
 	
 	        bar.push(React.createElement(ProgressBarChunk, {
-	          width: 550 / totalChunks,
+	          width: 0,
+	          background: 'white',
+	          className: 'current-chunk empty-chunk',
+	          key: i }));
+	      } else if (i > currentChunkIdx) {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          width: Math.floor(550 / totalChunks),
 	          className: 'unfilled-chunk',
+	          background: 'white',
 	          key: i }));
 	      } else if (i === currentChunkIdx) {
 	
 	        bar.push(React.createElement(ProgressBarChunk, {
 	          width: Math.floor(550 / totalChunks),
+	          background: 'red',
 	          className: 'current-chunk',
 	          key: i }));
 	      } else {
 	
 	        bar.push(React.createElement(ProgressBarChunk, {
-	          width: 550 / totalChunks,
+	          width: Math.floor(550 / totalChunks),
 	          className: 'filled-chunk',
+	          background: 'red',
 	          key: i }));
 	      }
 	    }
@@ -34804,7 +34814,7 @@
 	
 	  render: function () {
 	
-	    return React.createElement('div', { style: { "width": this.props.width },
+	    return React.createElement('div', { style: { "width": this.props.width, "background": this.props.background },
 	      className: "chunk " + this.props.className });
 	  }
 	});
