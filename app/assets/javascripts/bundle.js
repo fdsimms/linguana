@@ -34124,6 +34124,8 @@
 	    LessonStore = __webpack_require__(269),
 	    LessonsApiUtil = __webpack_require__(272),
 	    ExercisesApiUtil = __webpack_require__(277),
+	    SkillsApiUtil = __webpack_require__(264),
+	    SkillStore = __webpack_require__(261),
 	    TipsAndNotesModal = __webpack_require__(280),
 	    ModalActions = __webpack_require__(207),
 	    ExerciseActions = __webpack_require__(278),
@@ -34146,7 +34148,6 @@
 	      showFinalPage: false,
 	      checkButtonClicked: false,
 	      lessonOver: false,
-	
 	      currentExerciseIdx: 0,
 	      answerChoiceStatus: "",
 	      currentAnswerChoiceIdx: -1
@@ -34155,6 +34156,9 @@
 	
 	  componentDidMount: function () {
 	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+	    this.skillListener = SkillStore.addListener(function () {
+	      this.forceUpdate();
+	    }.bind(this));
 	
 	    var lessonId = this.props.params.lessonId;
 	
@@ -34169,10 +34173,12 @@
 	        this.setState({ showExercise: true });
 	      }.bind(this));
 	    }.bind(this));
+	    SkillsApiUtil.fetchSkills(localStorage.curCourseId);
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.lessonListener.remove();
+	    this.skillListener.remove();
 	  },
 	
 	  _lessonsChanged: function () {

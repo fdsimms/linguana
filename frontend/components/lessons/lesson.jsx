@@ -2,6 +2,8 @@ var React = require('react'),
     LessonStore = require('../../stores/lesson_store'),
     LessonsApiUtil = require('../../util/lessons_api_util'),
     ExercisesApiUtil = require('../../util/exercises_api_util'),
+    SkillsApiUtil = require('../../util/skills_api_util'),
+    SkillStore = require('../../stores/skill_store'),
     TipsAndNotesModal = require("../modals/tips_and_notes_modal"),
     ModalActions = require("../../actions/modal_actions"),
     ExerciseActions = require("../../actions/exercise_actions"),
@@ -22,7 +24,6 @@ var Lesson = React.createClass({
       showFinalPage: false,
       checkButtonClicked: false,
       lessonOver: false,
-
       currentExerciseIdx: 0,
       answerChoiceStatus: "",
       currentAnswerChoiceIdx: -1,
@@ -31,6 +32,9 @@ var Lesson = React.createClass({
 
   componentDidMount: function () {
     this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+    this.skillListener = SkillStore.addListener(function () {
+      this.forceUpdate();
+    }.bind(this));
 
     var lessonId = this.props.params.lessonId;
 
@@ -45,11 +49,12 @@ var Lesson = React.createClass({
         this.setState({ showExercise: true });
       }.bind(this));
     }.bind(this));
-
+    SkillsApiUtil.fetchSkills(localStorage.curCourseId);
   },
 
   componentWillUnmount: function () {
     this.lessonListener.remove();
+    this.skillListener.remove();
   },
 
   _lessonsChanged: function () {
