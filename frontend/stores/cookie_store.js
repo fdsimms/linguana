@@ -29,6 +29,7 @@ var _cookies = _COOKIE_DEFAULTS;
 
 var CookieStore = new Store(AppDispatcher);
 
+ensureLinguanaCookie();
 
 encode = function (key) {
   return SJCL.codec.utf8String.toBits(key);
@@ -198,7 +199,7 @@ CookieStore.enrolledCourses = function () {
 CookieStore.findCompletionByTypeAndID = function (type, id) {
   var completions = this.curCompletions(),
       result;
-      
+
   completions.forEach(function (completion) {
     var completionType = completion.completionType,
         completionId = completion.completionId;

@@ -31730,6 +31730,8 @@
 	
 	var CookieStore = new Store(AppDispatcher);
 	
+	ensureLinguanaCookie();
+	
 	encode = function (key) {
 	  return SJCL.codec.utf8String.toBits(key);
 	};
