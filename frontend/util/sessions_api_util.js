@@ -16,7 +16,7 @@ var SessionsApiUtil = {
       data: sessionParams,
       success: function (currentUser) {
         var curCourseId =
-          currentUser.current_course_id || CookieStore.curCourse();
+          currentUser.current_course_id || CookieStore.curCourseId();
 
         CookieActions.receiveCookie({
             curCourseId: curCourseId

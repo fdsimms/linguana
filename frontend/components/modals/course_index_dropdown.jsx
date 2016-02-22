@@ -64,7 +64,7 @@ var CourseIndexDropdown = React.createClass({
                 this.setCourseCookie(course.id);
               }.bind(this);
 
-          if (CookieStore.curCourse() == course.id) {
+          if (CookieStore.curCourseId() == course.id) {
             classes = "current-course course-button";
             onClick = "";
           }

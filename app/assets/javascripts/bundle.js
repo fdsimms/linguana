@@ -31464,7 +31464,7 @@
 	        password = credentials.elements[2].value,
 	        fname = credentials.elements[3].value,
 	        lname = credentials.elements[4].value,
-	        current_course_id = CookieStore.curCourse() || "",
+	        current_course_id = CookieStore.curCourseId() || "",
 	        userParams = { user: {
 	        username: username,
 	        password: password,
@@ -32129,7 +32129,7 @@
 	      dataType: 'json',
 	      data: sessionParams,
 	      success: function (currentUser) {
-	        var curCourseId = currentUser.current_course_id || CookieStore.curCourse();
+	        var curCourseId = currentUser.current_course_id || CookieStore.curCourseId();
 	
 	        CookieActions.receiveCookie({
 	          curCourseId: curCourseId
@@ -32507,7 +32507,7 @@
 	            this.setCourseCookie(course.id);
 	          }.bind(this);
 	
-	          if (CookieStore.curCourse() == course.id) {
+	          if (CookieStore.curCourseId() == course.id) {
 	            classes = "current-course course-button";
 	            onClick = "";
 	          }

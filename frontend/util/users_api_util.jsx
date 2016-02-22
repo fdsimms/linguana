@@ -8,7 +8,7 @@ var UsersApiUtil = {
         password = credentials.elements[2].value,
         fname = credentials.elements[3].value,
         lname = credentials.elements[4].value,
-        current_course_id = (CookieStore.curCourse() || ""),
+        current_course_id = (CookieStore.curCourseId() || ""),
         userParams = { user: {
           username: username,
           password: password,
