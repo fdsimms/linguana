@@ -54,7 +54,7 @@ var React = require('react'),
       }
 
       var path;
-      if (!CurrentUserStore.isLoggedIn() && !CookieStore.curCourse()) {
+      if (!CurrentUserStore.isLoggedIn() && !CookieStore.curCourseId()) {
         path = "/"; //+ user.course.name
         replace({}, path);
       }
@@ -84,7 +84,7 @@ var React = require('react'),
   }
 
   function _ensureLoggedOutAndNoCurrentCourse(nextState, replace, callback) {
-    if (CurrentUserStore.userHasBeenFetched() || CookieStore.curCourse()) {
+    if (CurrentUserStore.userHasBeenFetched() || CookieStore.curCourseId()) {
       _redirectIfLoggedInOrCurrentCourseExists();
     } else {
 
@@ -105,9 +105,8 @@ var React = require('react'),
           path = "/course/" + CurrentUserStore.currentUser().current_course_id;
           replace({}, path);
         }
-      } else if (CookieStore.curCourse()) {
-
-        path = "/course/" + CookieStore.curCourse();
+      } else if (CookieStore.curCourseId()) {
+        path = "/course/" + CookieStore.curCourseId();
         replace({}, path);
       }
       callback();

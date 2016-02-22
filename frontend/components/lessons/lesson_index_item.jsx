@@ -62,7 +62,6 @@ var LessonIndexItem = React.createClass({
     var toRender,
         findCompletion = CurrentUserStore.findCompletion,
         prevLesson = this.props.prevLesson;
-
     if (this.completionExists(this.props.lesson.id)) {
       toRender = this.renderCompleted();
     } else if ((prevLesson &&

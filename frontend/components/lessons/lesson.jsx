@@ -49,7 +49,7 @@ var Lesson = React.createClass({
         this.setState({ showExercise: true });
       }.bind(this));
     }.bind(this));
-    SkillsApiUtil.fetchSkills(localStorage.curCourseId);
+    SkillsApiUtil.fetchSkills(CookieStore.getLocalStorage("curCourseId"));
   },
 
   componentWillUnmount: function () {

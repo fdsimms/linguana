@@ -95,15 +95,18 @@ var SessionsApiUtil = {
           });
         }
         if (Object.keys(currentUser)[0]) {
+          CurrentUserActions.receiveCurrentUser(currentUser);
           this.createEnrollments(currentUser.id);
           this.addCompletions();
-          if (localStorage.curPoints) {
-            var curPoints = parseInt(localStorage.curPoints);
+          if (CookieStore.getLocalStorage("curPoints")) {
+            var curPoints = parseInt(CookieStore.getLocalStorage("curPoints"));
             UsersApiUtil.awardPoints(currentUser, curPoints);
+            CookieActions.clearCookie("curPoints");
           }
-          CookieActions.clearCookie("curPoints");
         }
-        CurrentUserActions.receiveCurrentUser(currentUser);
+        if (!CurrentUserStore.userHasBeenFetched()) {
+          CurrentUserActions.receiveCurrentUser(currentUser);
+        }
         callback && callback(currentUser);
       }.bind(this)
     });
