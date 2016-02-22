@@ -31718,6 +31718,14 @@
 	  curPoints: 0
 	};
 	
+	var encode = function (key) {
+	  return SJCL.codec.utf8String.toBits(key);
+	};
+	
+	var decode = function (bits) {
+	  return SJCL.codec.utf8String.fromBits(bits);
+	};
+	
 	var ensureLinguanaCookie = function () {
 	  if (!localStorage.Linguana) {
 	    localStorage.Linguana = JSON.stringify(encode(JSON.stringify(_COOKIE_DEFAULTS)));
@@ -31737,14 +31745,6 @@
 	var CookieStore = new Store(AppDispatcher);
 	
 	ensureLinguanaCookie();
-	
-	var encode = function (key) {
-	  return SJCL.codec.utf8String.toBits(key);
-	};
-	
-	var decode = function (bits) {
-	  return SJCL.codec.utf8String.fromBits(bits);
-	};
 	
 	var linguanaCookie = function () {
 	  return JSON.parse(decode(JSON.parse(localStorage.Linguana)));
