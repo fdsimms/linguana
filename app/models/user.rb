@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
     user = User.find_by(provider: provider, uid: uid)
 
     return user if user
-    user = User.new(
+    user = User.create!(
       email: SecureRandom::urlsafe_base64(12),
       lname: auth_hash[:info][:last_name],
       fname: auth_hash[:info][:first_name],
