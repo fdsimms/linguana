@@ -17,6 +17,12 @@ var _COOKIE_DEFAULTS = {
   curPoints: 0
 };
 
+var ensureLinguanaCookie = function () {
+  if (!localStorage.Linguana) {
+    localStorage.Linguana = JSON.stringify(encode(JSON.stringify(_COOKIE_DEFAULTS)));
+  }
+};
+
 var _COOKIE_NAMES = {
   curLng: "curLng",
   curCourseId: "curCourseId",
@@ -31,22 +37,23 @@ var CookieStore = new Store(AppDispatcher);
 
 ensureLinguanaCookie();
 
-encode = function (key) {
+var encode = function (key) {
   return SJCL.codec.utf8String.toBits(key);
 };
-decode = function (bits) {
+
+var decode = function (bits) {
   return SJCL.codec.utf8String.fromBits(bits);
 };
 
-linguanaCookie = function () {
+var linguanaCookie = function () {
   return JSON.parse(decode(JSON.parse(localStorage.Linguana)));
 };
 
-encodeTopLevelCookie = function (cookie) {
+var encodeTopLevelCookie = function (cookie) {
   return JSON.stringify(encode(JSON.stringify(cookie)));
 };
 
-setLocalStorage = function (cookieObject) {
+var setLocalStorage = function (cookieObject) {
   var cookieKey = Object.keys(cookieObject)[0];
   var linguana = linguanaCookie();
   linguana[cookieKey] = cookieObject[cookieKey];
@@ -107,12 +114,6 @@ var fetchCookiesFromBrowser = function () {
       }
     }
   }.bind(this));
-};
-
-var ensureLinguanaCookie = function () {
-  if (!localStorage.Linguana) {
-    localStorage.Linguana = JSON.stringify(encode(JSON.stringify(_COOKIE_DEFAULTS)));
-  }
 };
 
 var receiveCookies = function (cookies) {
