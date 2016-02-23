@@ -39,7 +39,7 @@ var NavBar = React.createClass({
 
   _handleLoginClick: function () {
     ModalActions.toggleModalDisplay("loginDropdown");
-    ModalActions.hideModal("languageIndexDropdown");
+    // ModalActions.hideModal("languageIndexDropdown");
   },
 
   _handleCreateProfClick: function () {
@@ -62,10 +62,10 @@ var NavBar = React.createClass({
     ModalActions.hideModal("courseIndexDropdown");
   },
 
-  _handleLanguagesEnter: function () {
-    ModalActions.displayModal("languageIndexDropdown");
-    ModalActions.hideModal("loginDropdown");
-  },
+  // _handleLanguagesEnter: function () {
+  //   ModalActions.displayModal("languageIndexDropdown");
+  //   ModalActions.hideModal("loginDropdown");
+  // },
 
   _handleLanguagesLeave: function () {
     ModalActions.hideModal("languageIndexDropdown");
@@ -74,6 +74,15 @@ var NavBar = React.createClass({
   splashNavBar: function () {
     var siteLang = CookieStore.curLng();
 
+    // var languageIndexButton = (
+    //   <button onMouseEnter={ this._handleLanguagesEnter }
+    //   onMouseLeave={ this._handleLanguagesLeave }
+    //   className="splash-header-languages-button">
+    //     Site language: { siteLang }
+    //     <LanguageIndexDropdown />
+    //   </button>
+    // );
+
     return(
       <nav className="splash-header group">
         <h1 onClick={this.props.handleHeaderClick}
@@ -81,12 +90,7 @@ var NavBar = React.createClass({
           Linguana
         </h1>
           <div className="splash-header-buttons group">
-          <button onMouseEnter={ this._handleLanguagesEnter }
-                  onMouseLeave={ this._handleLanguagesLeave }
-                  className="splash-header-languages-button">
-            Site language: { siteLang }
-            <LanguageIndexDropdown />
-          </button>
+
           <div className="login-button-wrapper">
             <button onClick={ this._handleLoginClick }
                 className="splash-header-login-button">

@@ -24673,7 +24673,7 @@
 	
 	  _handleLoginClick: function () {
 	    ModalActions.toggleModalDisplay("loginDropdown");
-	    ModalActions.hideModal("languageIndexDropdown");
+	    // ModalActions.hideModal("languageIndexDropdown");
 	  },
 	
 	  _handleCreateProfClick: function () {
@@ -24696,10 +24696,10 @@
 	    ModalActions.hideModal("courseIndexDropdown");
 	  },
 	
-	  _handleLanguagesEnter: function () {
-	    ModalActions.displayModal("languageIndexDropdown");
-	    ModalActions.hideModal("loginDropdown");
-	  },
+	  // _handleLanguagesEnter: function () {
+	  //   ModalActions.displayModal("languageIndexDropdown");
+	  //   ModalActions.hideModal("loginDropdown");
+	  // },
 	
 	  _handleLanguagesLeave: function () {
 	    ModalActions.hideModal("languageIndexDropdown");
@@ -24707,6 +24707,15 @@
 	
 	  splashNavBar: function () {
 	    var siteLang = CookieStore.curLng();
+	
+	    // var languageIndexButton = (
+	    //   <button onMouseEnter={ this._handleLanguagesEnter }
+	    //   onMouseLeave={ this._handleLanguagesLeave }
+	    //   className="splash-header-languages-button">
+	    //     Site language: { siteLang }
+	    //     <LanguageIndexDropdown />
+	    //   </button>
+	    // );
 	
 	    return React.createElement(
 	      'nav',
@@ -24720,15 +24729,6 @@
 	      React.createElement(
 	        'div',
 	        { className: 'splash-header-buttons group' },
-	        React.createElement(
-	          'button',
-	          { onMouseEnter: this._handleLanguagesEnter,
-	            onMouseLeave: this._handleLanguagesLeave,
-	            className: 'splash-header-languages-button' },
-	          'Site language: ',
-	          siteLang,
-	          React.createElement(LanguageIndexDropdown, null)
-	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'login-button-wrapper' },
