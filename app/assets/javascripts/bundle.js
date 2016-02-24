@@ -33962,10 +33962,10 @@
 	      React.createElement(
 	        'div',
 	        { className: 'lesson-list-contents' },
+	        React.createElement('i', { className: 'fa fa-lock fa-lg' }),
 	        React.createElement(
 	          'h3',
 	          { className: 'lesson-begin-button' },
-	          React.createElement('i', { className: 'fa fa-lock fa-lg' }),
 	          'Locked'
 	        )
 	      )

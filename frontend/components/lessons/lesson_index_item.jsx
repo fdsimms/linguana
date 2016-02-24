@@ -25,8 +25,8 @@ var LessonIndexItem = React.createClass({
           {this.props.lesson.name}
         </h2>
         <div className="lesson-list-contents">
+        <i className="fa fa-lock fa-lg" />
           <h3 className="lesson-begin-button">
-            <i className="fa fa-lock fa-lg" />
             Locked
           </h3>
         </div>

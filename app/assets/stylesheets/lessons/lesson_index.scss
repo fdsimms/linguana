@@ -97,6 +97,7 @@
 .completed .lesson-begin-button {
   border: 2px solid #bbb;
   color: #bbb;
+  padding: 8px;
 }
 
 .completed .lesson-begin-button:hover {
@@ -108,12 +109,15 @@
   position: relative;
   border: 2px solid #ccc;
   color: #ccc;
+  padding: 8px;
 }
 
 .locked .fa-lock {
   position: absolute;
-  top: 12px;
+  top: 45%;
   color: #ccc;
   display: block;
-  left: 9px;
+  left: 50%;
+  transform: translate(-50%, -45%);
+  font-size: 4em;
 }
