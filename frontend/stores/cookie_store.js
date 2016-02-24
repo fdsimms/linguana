@@ -103,19 +103,19 @@ var fetchCookiesFromBrowser = function () {
     if (_COOKIE_NAMES[key]) {
       if (key === "curCompletions") {
         if (localStorage.curCompletions) {
-          _cookies.curCompletions = this.getLocalStorage(key);
+          _cookies.curCompletions = CookieStore.getLocalStorage(key);
         }
       } else if (key === "enrolledCourses") {
           if(localStorage.enrolledCourses) {
-            _cookies.enrolledCourses = this.getLocalStorage(key);
+            _cookies.enrolledCourses = CookieStore.getLocalStorage(key);
           }
       } else if (key === "curPoints") {
         _cookies[key] = parseInt(localStorage[key]);
       } else {
-        _cookies[key] = parseInt(this.getLocalStorage(key));
+        _cookies[key] = parseInt(CookieStore.getLocalStorage(key));
       }
     }
-  }.bind(this));
+  });
 };
 
 var receiveCookies = function (cookies) {
