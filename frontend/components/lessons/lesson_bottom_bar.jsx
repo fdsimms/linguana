@@ -12,7 +12,6 @@ var LessonBottomBar = React.createClass({
         key.unbind('enter');
         setTimeout(function () {
             key('enter', function () {
-            debugger
             this.props.onClickContinue();
           }.bind(this));
         }.bind(this), 0);
