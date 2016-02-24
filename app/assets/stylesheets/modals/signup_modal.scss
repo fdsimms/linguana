@@ -135,12 +135,12 @@ display: block;
   margin: 0;
 }
 
-.signup-inputs .google-login,
-.signup-inputs .facebook-login {
+.signup-inputs .google-login a,
+.signup-inputs .facebook-login a{
   padding: 5px 2px;
   margin: auto;
+  display: block;
   font-size: 14px;
-  border-radius: 20px;
   color: #fff;
 }
 
@@ -153,10 +153,12 @@ display: block;
 
 .signup-inputs .facebook-login {
   float: left;
+  border-radius: 20px;
 }
 
 .signup-inputs .google-login {
   float: right;
+  border-radius: 20px;
 }
 
 .signup-bottom-bar {
