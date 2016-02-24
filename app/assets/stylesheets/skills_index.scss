@@ -70,8 +70,9 @@
 .skill-list-circle .fa-lock {
   position: absolute;
   display: block;
-  top: 40px;
-  left: 42px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: #bbb;
   font-size: 3em;
 }
