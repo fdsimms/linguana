@@ -36,7 +36,6 @@ module.exports = React.createClass({
     this.languageListener =
       LanguageStore.addListener(this.forceUpdate.bind(this));
     CookieActions.fetchCookiesFromBrowser();
-    SessionsApiUtil.fetchCurrentUser();
     LanguagesApiUtil.fetchLanguages();
   },
 

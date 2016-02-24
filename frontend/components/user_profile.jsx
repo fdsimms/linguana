@@ -16,6 +16,7 @@ var UserProfile = React.createClass({
   _currentUserChanged: function () {
     this.setState({ user: CurrentUserStore.currentUser() });
   },
+  
   _coursesChanged: function () {
     this.forceUpdate();
   },

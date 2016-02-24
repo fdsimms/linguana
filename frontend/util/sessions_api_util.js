@@ -103,8 +103,7 @@ var SessionsApiUtil = {
             UsersApiUtil.awardPoints(currentUser, curPoints);
             CookieActions.clearCookie("curPoints");
           }
-        }
-        if (!CurrentUserStore.userHasBeenFetched()) {
+        } else if (!CurrentUserStore.userHasBeenFetched()) {
           CurrentUserActions.receiveCurrentUser(currentUser);
         }
         callback && callback(currentUser);

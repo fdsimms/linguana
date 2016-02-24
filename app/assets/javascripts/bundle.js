@@ -24139,7 +24139,6 @@
 	    this.cookieListener = CookieStore.addListener(this.forceUpdate.bind(this));
 	    this.languageListener = LanguageStore.addListener(this.forceUpdate.bind(this));
 	    CookieActions.fetchCookiesFromBrowser();
-	    SessionsApiUtil.fetchCurrentUser();
 	    LanguagesApiUtil.fetchLanguages();
 	  },
 	
@@ -32211,8 +32210,7 @@
 	            UsersApiUtil.awardPoints(currentUser, curPoints);
 	            CookieActions.clearCookie("curPoints");
 	          }
-	        }
-	        if (!CurrentUserStore.userHasBeenFetched()) {
+	        } else if (!CurrentUserStore.userHasBeenFetched()) {
 	          CurrentUserActions.receiveCurrentUser(currentUser);
 	        }
 	        callback && callback(currentUser);
@@ -35276,6 +35274,7 @@
 	  _currentUserChanged: function () {
 	    this.setState({ user: CurrentUserStore.currentUser() });
 	  },
+	
 	  _coursesChanged: function () {
 	    this.forceUpdate();
 	  },
