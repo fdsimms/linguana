@@ -71,11 +71,17 @@ var CourseIndexDropdown = React.createClass({
             classes = "current-course course-button";
             onClick = "";
           }
+
           return(
             <a className={classes}
                onClick={onClick}
                href={"#/course/" + course.id}
-               key={idx}>{course.name}
+               key={idx}>
+               <div className="courses-dropdown-flag-container">
+                 <img className="courses-dropdown-flag"
+                      src={course.flag} />
+              </div>
+              {course.name}
             </a>
           );
         }.bind(this));

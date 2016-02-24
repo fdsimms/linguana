@@ -24787,8 +24787,8 @@
 	    course_index_button = React.createElement(
 	      'button',
 	      { className: 'course-index-button group',
-	        onMouseEnter: this._handleCoursesEnter
-	      },
+	        onMouseEnter: this._handleCoursesEnter,
+	        onMouseLeave: this._handleCoursesLeave },
 	      flagDiv,
 	      React.createElement('i', { className: 'fa fa-chevron-down' }),
 	      React.createElement(CourseIndexDropdown, null)
@@ -32507,12 +32507,19 @@
 	          classes = "current-course course-button";
 	          onClick = "";
 	        }
+	
 	        return React.createElement(
 	          'a',
 	          { className: classes,
 	            onClick: onClick,
 	            href: "#/course/" + course.id,
 	            key: idx },
+	          React.createElement(
+	            'div',
+	            { className: 'courses-dropdown-flag-container' },
+	            React.createElement('img', { className: 'courses-dropdown-flag',
+	              src: course.flag })
+	          ),
 	          course.name
 	        );
 	      }.bind(this));

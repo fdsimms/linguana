@@ -7,6 +7,25 @@
   transform: translateX(-50%) translateY(-50%);
 }
 
+.courses-dropdown-flag {
+  position: absolute;
+  height: 25px;
+  left: -4px;
+  width: 35px;
+}
+
+.courses-dropdown-flag-container {
+  display: block;
+  width: 25px;
+  position: relative;
+  float: left;
+  overflow: hidden;
+  border-radius: 50%;
+  height: 25px;
+  margin-right: 10px;
+  top: -3px;
+}
+
 .course-index-container {
   width: 100%;
 }
