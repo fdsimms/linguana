@@ -71,7 +71,8 @@ var addCookie = function (cookie) {
       setLocalStorage({ curCompletions: _cookies.curCompletions });
     } else if (key === "enrolledCourses") {
       var courses = CookieStore.getLocalStorage(key);
-      setLocalStorage({ enrolledCourses: courses.push(value) });
+      courses.push(value);
+      setLocalStorage({ enrolledCourses: courses });
     } else if (key === "curCourseId"){
       _cookies[key] = cookie[key];
       setLocalStorage({ curCourseId: _cookies[key]});
