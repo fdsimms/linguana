@@ -70,7 +70,7 @@ var addCookie = function (cookie) {
       _cookies.curCompletions.push(value);
       setLocalStorage({ curCompletions: _cookies.curCompletions });
     } else if (key === "enrolledCourses") {
-      var courses = getLocalStorage(key);
+      var courses = CookieStore.getLocalStorage(key);
       setLocalStorage({ enrolledCourses: courses.push(value) });
     } else if (key === "curCourseId"){
       _cookies[key] = cookie[key];
