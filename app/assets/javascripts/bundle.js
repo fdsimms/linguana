@@ -34811,6 +34811,11 @@
 	        'li',
 	        { className: 'answer-choice-list-item' },
 	        this.props.answerChoice.body
+	      ),
+	      React.createElement(
+	        'li',
+	        { className: 'answer-choice-item-idx' },
+	        this.props.idx + 1
 	      )
 	    );
 	  }

@@ -40,6 +40,9 @@ var AnswerChoiceIndexItem = React.createClass({
         <li className="answer-choice-list-item">
           {this.props.answerChoice.body}
         </li>
+        <li className="answer-choice-item-idx">
+          {this.props.idx + 1}
+        </li>
       </div>
     );
   }
