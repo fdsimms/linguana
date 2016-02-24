@@ -24,6 +24,10 @@ var TipsAndNotesModal = React.createClass({
     this.modalListener.remove();
   },
 
+  _closeDropdown: function () {
+    ModalActions.hideModal("tipsAndNotesModal");
+  },
+
   visibleRender: function () {
     var tipsAndNotes;
 
@@ -34,6 +38,9 @@ var TipsAndNotesModal = React.createClass({
     return(
       <div className="tips-and-notes-modal box-shadowed">
         <div className="tips-and-notes-text-wrapper">
+          <i className="fa fa-2x fa-times-circle-o"
+             onClick={this._closeDropdown}>
+          </i>
           <p className="tips-and-notes-modal-text">
           {tipsAndNotes}
           </p>

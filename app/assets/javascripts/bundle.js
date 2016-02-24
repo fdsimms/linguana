@@ -34513,6 +34513,10 @@
 	    this.modalListener.remove();
 	  },
 	
+	  _closeDropdown: function () {
+	    ModalActions.hideModal("tipsAndNotesModal");
+	  },
+	
 	  visibleRender: function () {
 	    var tipsAndNotes;
 	
@@ -34526,6 +34530,8 @@
 	      React.createElement(
 	        'div',
 	        { className: 'tips-and-notes-text-wrapper' },
+	        React.createElement('i', { className: 'fa fa-2x fa-times-circle-o',
+	          onClick: this._closeDropdown }),
 	        React.createElement(
 	          'p',
 	          { className: 'tips-and-notes-modal-text' },
