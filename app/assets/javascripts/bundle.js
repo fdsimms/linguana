@@ -33095,7 +33095,7 @@
 	            React.createElement(
 	              'label',
 	              { htmlFor: 'username-signup' },
-	              'Username'
+	              'Username:'
 	            ),
 	            React.createElement('input', { id: 'username-signup', name: 'user[username]' })
 	          ),
@@ -33105,7 +33105,7 @@
 	            React.createElement(
 	              'label',
 	              { htmlFor: 'email-signup' },
-	              'Email'
+	              'Email:'
 	            ),
 	            React.createElement('input', { id: 'email-signup', name: 'user[email]' })
 	          ),
@@ -33115,7 +33115,7 @@
 	            React.createElement(
 	              'label',
 	              { htmlFor: 'password-signup' },
-	              'Password'
+	              'Password:'
 	            ),
 	            React.createElement('input', { id: 'password-signup', type: 'password', name: 'user[password]' })
 	          ),
@@ -33125,7 +33125,7 @@
 	            React.createElement(
 	              'label',
 	              { htmlFor: 'fname-signup' },
-	              'First Name'
+	              'First name:'
 	            ),
 	            React.createElement('input', { id: 'fname-signup', name: 'user[fname]' })
 	          ),
@@ -33135,7 +33135,7 @@
 	            React.createElement(
 	              'label',
 	              { htmlFor: 'lname-signup' },
-	              'Last Name'
+	              'Last name:'
 	            ),
 	            React.createElement('input', { id: 'lname-signup', name: 'user[lname]' })
 	          )
@@ -33143,7 +33143,7 @@
 	        React.createElement(
 	          'button',
 	          { className: 'signup-button' },
-	          'Create Account'
+	          'Create account'
 	        )
 	      ),
 	      React.createElement(

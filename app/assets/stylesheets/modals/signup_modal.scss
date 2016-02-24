@@ -15,12 +15,11 @@
 .login-form {
   display: block;
   position: fixed;
-  top: 50%;
   left: 50%;
   margin-left: -216px;
   margin-top: 68px;
   width: 424px;
-  height: 400px;
+  height: 350px;
   top: 122px;
   right: 566px;
   color: #000;
@@ -103,7 +102,7 @@ display: block;
 .signup-inputs .signup-input input {
   padding: 5px 0;
   background-color: #eee;
-  width: 200px;
+  width: 199px;
   float: left;
   margin-left: 0;
   border: none;
@@ -173,7 +172,7 @@ display: block;
 .login-bottom-bar {
   background-color: #eee;
   color: #aaa;
-  height: 100px;
+  height: 90px;
   width: 100%;
   text-align: center;
   display: block;
@@ -205,11 +204,18 @@ display: block;
 }
 
 .login-form-form button {
-  margin: auto;
   color: #fff;
   padding: 8px 75px;
-  margin-top: 22px;
+  margin: 22px auto;
+  width: 56px;
+  background-color: #65abf4;
+  color: #fff;
+  text-align: center;
+  display: block;
+  border-radius: 20px;
+  cursor: pointer;
 }
+
 .login-form-form-inputs input:first-child {
   border-bottom: 1px solid #ccc;
 }

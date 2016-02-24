@@ -57,7 +57,6 @@
 .splash-login-inputs a,
 .guest-inputs > button,
 .lesson-begin-button,
-.login-form-form button,
 .splash-login-inputs .guest-login-button {
   display: block;
   border-radius: 20px;
@@ -94,8 +93,7 @@
 .guest-inputs .guest-login-button:hover,
 .lesson-begin-button:hover,
 .splash-login-inputs a:hover,
-.guest-inputs button:hover,
-.login-form-form button:hover {
+.guest-inputs button:hover {
   background-color: rgb(65, 188, 250);
 }
 
@@ -117,7 +115,8 @@
 }
 
 .signup-button:hover,
-.guest-inputs > .guest-signup-button:hover {
+.guest-inputs > .guest-signup-button:hover,
+.login-form-form button:hover {
   background-color: #7DB9E8;
 }
 

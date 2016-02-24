@@ -88,27 +88,27 @@ var SignupForm = React.createClass({
         <form className="group" onSubmit={this.submitSignup}>
           <div className="inputs group">
             <div className="signup-input group">
-                <label htmlFor="username-signup">Username</label>
+                <label htmlFor="username-signup">Username:</label>
                 <input id="username-signup"name="user[username]" />
             </div>
             <div className="signup-input group">
-                <label htmlFor="email-signup">Email</label>
+                <label htmlFor="email-signup">Email:</label>
                 <input id="email-signup"name="user[email]" />
             </div>
             <div className="signup-input group">
-                <label htmlFor="password-signup">Password</label>
+                <label htmlFor="password-signup">Password:</label>
                 <input id="password-signup"type="password" name="user[password]" />
             </div>
             <div className="signup-input group">
-                <label htmlFor="fname-signup">First Name</label>
+                <label htmlFor="fname-signup">First name:</label>
                 <input id="fname-signup"name="user[fname]" />
             </div>
             <div className="signup-input group">
-                <label htmlFor="lname-signup">Last Name</label>
+                <label htmlFor="lname-signup">Last name:</label>
                 <input id="lname-signup"name="user[lname]" />
             </div>
           </div>
-          <button className="signup-button">Create Account</button>
+          <button className="signup-button">Create account</button>
         </form>
         <form onSubmit={this.submitLogin}>
           <div className="guest-inputs">
