@@ -34936,17 +34936,17 @@
 	
 	  bindKeyHandlers: function () {
 	    key('enter', function () {
-	      if (this.props.checkClicked) {
-	        this.props.onClickContinue();
-	      } else if (this.props.selected) {
-	        this.props.onClickCheck();
-	      } else if (this.props.showFinalPageBar) {
+	      if (this.props.showFinalPageBar) {
 	        key.unbind('enter');
 	        setTimeout(function () {
 	          key('enter', function () {
 	            this.props.onClickContinue();
 	          }.bind(this));
 	        }.bind(this), 0);
+	      } else if (this.props.checkClicked) {
+	        this.props.onClickContinue();
+	      } else if (this.props.selected) {
+	        this.props.onClickCheck();
 	      }
 	    }.bind(this));
 	  },
@@ -35103,15 +35103,17 @@
 	        this.createSkillCompletion();
 	      }
 	    } else if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
+	      var curUser = CurrentUserStore.currentUser();
 	      UsersApiUtil.createCompletionForUser(completionParams, function () {
-	        UsersApiUtil.awardPoints(points, function () {
+	        UsersApiUtil.awardPoints(curUser, function () {
 	          if (this.props.lesson.id == LessonStore.findLastLessonId()) {
 	            this.createSkillCompletion();
 	          }
 	        }.bind(this));
 	      }.bind(this));
 	    } else {
-	      UsersApiUtil.awardPoints(points);
+	      var curUser = CurrentUserStore.currentUser();
+	      UsersApiUtil.awardPoints(curUser, points);
 	    }
 	  },
 	

@@ -4,17 +4,19 @@ var React = require('react'),
 var LessonBottomBar = React.createClass({
   bindKeyHandlers: function () {
     key('enter', function () {
-      if (this.props.checkClicked) {
-        this.props.onClickContinue();
-      } else if (this.props.selected){
-        this.props.onClickCheck();
-      } else if (this.props.showFinalPageBar) {
+      if (this.props.showFinalPageBar) {
         key.unbind('enter');
         setTimeout(function () {
-            key('enter', function () {
+          key('enter', function () {
             this.props.onClickContinue();
           }.bind(this));
         }.bind(this), 0);
+
+      } else if (this.props.checkClicked) {
+        this.props.onClickContinue();
+
+      } else if (this.props.selected){
+        this.props.onClickCheck();
       }
     }.bind(this))
   },

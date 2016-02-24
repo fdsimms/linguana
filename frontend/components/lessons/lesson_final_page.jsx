@@ -27,15 +27,17 @@ module.exports = React.createClass({
         this.createSkillCompletion();
       }
     } else if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
+      var curUser = CurrentUserStore.currentUser();
       UsersApiUtil.createCompletionForUser(completionParams, function () {
-        UsersApiUtil.awardPoints(points, function () {
+        UsersApiUtil.awardPoints(curUser, function () {
           if (this.props.lesson.id == LessonStore.findLastLessonId()) {
             this.createSkillCompletion();
           }
         }.bind(this));
       }.bind(this));
     } else {
-      UsersApiUtil.awardPoints(points);
+      var curUser = CurrentUserStore.currentUser();
+      UsersApiUtil.awardPoints(curUser, points);
     }
   },
 
