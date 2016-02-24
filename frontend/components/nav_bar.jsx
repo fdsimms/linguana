@@ -128,16 +128,9 @@ var NavBar = React.createClass({
   },
 
   normalNavBar: function () {
-    var points_counter,
-        course_index_button,
+    var course_index_button,
         flag;
-    if (CurrentUserStore.isLoggedIn()) {
-      points_counter = (
-        <h2 className="points-counter">
-          <i className="fa fa-adjust fa-lg" />
-          {CurrentUserStore.currentUser().points}
-        </h2>
-      );
+
       var curCourse = CookieStore.getCurCourse(),
           flagDiv;
 
@@ -159,7 +152,7 @@ var NavBar = React.createClass({
           <CourseIndexDropdown />
         </button>
       );
-    }
+
 
     var points =
       CurrentUserStore.currentUser().points ||

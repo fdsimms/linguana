@@ -24771,35 +24771,28 @@
 	  },
 	
 	  normalNavBar: function () {
-	    var points_counter, course_index_button, flag;
-	    if (CurrentUserStore.isLoggedIn()) {
-	      points_counter = React.createElement(
-	        'h2',
-	        { className: 'points-counter' },
-	        React.createElement('i', { className: 'fa fa-adjust fa-lg' }),
-	        CurrentUserStore.currentUser().points
-	      );
-	      var curCourse = CookieStore.getCurCourse(),
-	          flagDiv;
+	    var course_index_button, flag;
 	
-	      if (curCourse) {
-	        flag = curCourse.flag;
-	        flagDiv = React.createElement(
-	          'div',
-	          { className: 'language-nav-flag' },
-	          React.createElement('img', { src: flag })
-	        );
-	      }
-	      course_index_button = React.createElement(
-	        'button',
-	        { className: 'course-index-button group',
-	          onMouseEnter: this._handleCoursesEnter,
-	          onMouseLeave: this._handleCoursesLeave },
-	        flagDiv,
-	        React.createElement('i', { className: 'fa fa-chevron-down' }),
-	        React.createElement(CourseIndexDropdown, null)
+	    var curCourse = CookieStore.getCurCourse(),
+	        flagDiv;
+	
+	    if (curCourse) {
+	      flag = curCourse.flag;
+	      flagDiv = React.createElement(
+	        'div',
+	        { className: 'language-nav-flag' },
+	        React.createElement('img', { src: flag })
 	      );
 	    }
+	    course_index_button = React.createElement(
+	      'button',
+	      { className: 'course-index-button group',
+	        onMouseEnter: this._handleCoursesEnter,
+	        onMouseLeave: this._handleCoursesLeave },
+	      flagDiv,
+	      React.createElement('i', { className: 'fa fa-chevron-down' }),
+	      React.createElement(CourseIndexDropdown, null)
+	    );
 	
 	    var points = CurrentUserStore.currentUser().points || CookieStore.getLocalStorage("curPoints");
 	    points_counter = React.createElement(
@@ -31771,8 +31764,8 @@
 	      _cookies.curCompletions.push(value);
 	      setLocalStorage({ curCompletions: _cookies.curCompletions });
 	    } else if (key === "enrolledCourses") {
-	      _cookies.enrolledCourses.push(value);
-	      setLocalStorage({ enrolledCourses: _cookies.enrolledCourses });
+	      var courses = getLocalStorage(key);
+	      setLocalStorage({ enrolledCourses: courses.push(value) });
 	    } else if (key === "curCourseId") {
 	      _cookies[key] = cookie[key];
 	      setLocalStorage({ curCourseId: _cookies[key] });
@@ -32444,6 +32437,7 @@
 	    CookieStore = __webpack_require__(239),
 	    CookieActions = __webpack_require__(245),
 	    UsersApiUtil = __webpack_require__(233),
+	    CourseStore = __webpack_require__(253),
 	    ModalStore = __webpack_require__(214),
 	    CourseIndex = __webpack_require__(252),
 	    CoursesApiUtil = __webpack_require__(240);
@@ -32498,30 +32492,30 @@
 	  visibleRender: function () {
 	    var courses;
 	
-	    if (CurrentUserStore.currentUser()) {
-	      courses = CurrentUserStore.currentUser().enrolled_courses;
-	      if (courses) {
-	        courses = courses.map(function (course, idx) {
-	          var classes = "course-button",
-	              onClick = function () {
-	            this.setCourseCookie(course.id);
-	          }.bind(this);
+	    courses = CurrentUserStore.currentUser().enrolled_courses || CourseStore.findEnrolledCoursesFromCookies();
 	
-	          if (CookieStore.curCourseId() == course.id) {
-	            classes = "current-course course-button";
-	            onClick = "";
-	          }
-	          return React.createElement(
-	            'a',
-	            { className: classes,
-	              onClick: onClick,
-	              href: "#/course/" + course.id,
-	              key: idx },
-	            course.name
-	          );
-	        }.bind(this));
-	      }
+	    if (courses) {
+	      courses = courses.map(function (course, idx) {
+	        var classes = "course-button",
+	            onClick = function () {
+	          this.setCourseCookie(course.id);
+	        }.bind(this);
+	
+	        if (CookieStore.curCourseId() == course.id) {
+	          classes = "current-course course-button";
+	          onClick = "";
+	        }
+	        return React.createElement(
+	          'a',
+	          { className: classes,
+	            onClick: onClick,
+	            href: "#/course/" + course.id,
+	            key: idx },
+	          course.name
+	        );
+	      }.bind(this));
 	    }
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'courses-dropdown box-shadowed group' },
@@ -32660,6 +32654,8 @@
 	var Store = __webpack_require__(215).Store;
 	var CourseConstants = __webpack_require__(242);
 	var AppDispatcher = __webpack_require__(208);
+	// var CookieStore = require('./cookie_store');
+	
 	var _courses = {};
 	var CourseStore = new Store(AppDispatcher);
 	
@@ -32682,6 +32678,20 @@
 	      result = course;
 	    }
 	  });
+	  return result;
+	};
+	
+	CourseStore.findEnrolledCoursesFromCookies = function () {
+	  var cookieCourses = CookieStore.enrolledCourses();
+	  var result = [],
+	      course;
+	  cookieCourses.forEach(function (courseId) {
+	    course = this.find(courseId);
+	    if (course) {
+	      result.push(course);
+	    }
+	  }.bind(this));
+	
 	  return result;
 	};
 	

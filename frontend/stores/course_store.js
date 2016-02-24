@@ -1,6 +1,8 @@
 var Store = require('flux/utils').Store;
 var CourseConstants = require('../constants/course_constants');
 var AppDispatcher = require('../dispatcher/dispatcher');
+// var CookieStore = require('./cookie_store');
+
 var _courses = {};
 var CourseStore = new Store(AppDispatcher);
 
@@ -22,6 +24,20 @@ CourseStore.findByName = function (name) {
       result = course;
     }
   });
+  return result;
+};
+
+CourseStore.findEnrolledCoursesFromCookies = function () {
+  var cookieCourses = CookieStore.enrolledCourses();
+  var result = [],
+      course;
+  cookieCourses.forEach(function (courseId) {
+    course = this.find(courseId);
+    if (course) {
+      result.push(course);
+    }
+  }.bind(this));
+
   return result;
 };
 

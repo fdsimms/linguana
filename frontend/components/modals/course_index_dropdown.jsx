@@ -3,6 +3,7 @@ var React = require('react'),
     CookieStore = require('../../stores/cookie_store'),
     CookieActions = require('../../actions/cookie_actions'),
     UsersApiUtil = require('../../util/users_api_util'),
+    CourseStore = require('../../stores/course_store'),
     ModalStore = require('../../stores/modal_store'),
     CourseIndex = require('../courses/course_index'),
     CoursesApiUtil = require('../../util/courses_api_util');
@@ -55,8 +56,10 @@ var CourseIndexDropdown = React.createClass({
   visibleRender: function () {
     var courses;
 
-    if (CurrentUserStore.currentUser()) {
-      courses = CurrentUserStore.currentUser().enrolled_courses;
+      courses =
+        CurrentUserStore.currentUser().enrolled_courses ||
+        CourseStore.findEnrolledCoursesFromCookies();
+
       if (courses) {
         courses = courses.map(function (course, idx) {
           var classes = "course-button",
@@ -77,7 +80,7 @@ var CourseIndexDropdown = React.createClass({
           );
         }.bind(this));
       }
-    }
+
     return(
       <div className="courses-dropdown box-shadowed group">
         <div className="courses-dropdown-header">
