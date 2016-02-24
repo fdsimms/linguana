@@ -10,10 +10,6 @@ var AnswerChoiceIndex = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function () {
-    this.forceUpdate();
-  },
-
   answerChoices: function () {
     var answerChoices = this.props.answerChoices;
     answerChoices = answerChoices.map(function (choice, idx) {

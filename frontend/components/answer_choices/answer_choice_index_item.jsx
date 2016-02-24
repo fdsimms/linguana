@@ -1,6 +1,23 @@
-var React = require('react');
+var React = require('react'),
+    key = require('../../keymaster');
 
 var AnswerChoiceIndexItem = React.createClass({
+  bindKeyHandlers: function () {
+    var idx = this.props.idx
+
+    key((idx + 1).toString(), function () {
+      this.props._handleClick(idx);
+    }.bind(this));
+  },
+
+  componentDidMount: function () {
+    this.bindKeyHandlers();
+  },
+
+  componentWillUnmount: function () {
+    key.unbind(this.props.idx);
+  },
+
   _handleClick: function () {
     if (this.props._handleClick) {
       var idx = this.props.idx;

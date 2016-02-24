@@ -1,8 +1,23 @@
-var React = require('react');
+var React = require('react'),
+    key = require('../../keymaster');
 
 var LessonBottomBar = React.createClass({
-  componentWillReceiveProps: function () {
-    this.forceUpdate();
+  bindKeyHandlers: function () {
+    key('enter', function () {
+      if (this.props.checkClicked) {
+        this.props.onClickContinue();
+      } else if (this.props.selected){
+        this.props.onClickCheck();
+      }
+    }.bind(this))
+  },
+
+  componentDidMount: function () {
+    this.bindKeyHandlers();
+  },
+
+  componentWillUnmount: function () {
+    key.unbind('enter');
   },
 
   _correctAnswerBar: function () {
