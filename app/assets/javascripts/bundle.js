@@ -31772,8 +31772,8 @@
 	      _cookies[key] = cookie[key];
 	      setLocalStorage({ curCourseId: _cookies[key] });
 	    } else if (key === "curPoints") {
-	      _cookies[key] += parseInt(cookie[key]);
-	      setLocalStorage({ curPoints: _cookies.curPoints });
+	      var points = CookieStore.getLocalStorage("curPoints") + value;
+	      setLocalStorage({ curPoints: points });
 	    }
 	  }
 	
