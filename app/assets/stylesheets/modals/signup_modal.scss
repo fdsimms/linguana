@@ -47,16 +47,25 @@
   text-align: center;
 }
 
-.signup-button {
+.signup-button,
+.guest-inputs > .guest-signup-button {
   display: block;
   margin: auto;
-  width: calc(100% - 75px);
-  margin: auto;
+  width: 280px;
+  margin: 5px auto;
   padding: 15px;
   background: #65abf4;
   color: #fff;
   border-radius: 25px;
   text-align: center;
+}
+
+.signup-button {
+
+}
+
+.guest-inputs > .guest-signup-button {
+
 }
 
 .inputs {

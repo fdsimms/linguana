@@ -116,7 +116,8 @@
   padding: 5px;
 }
 
-.signup-button:hover {
+.signup-button:hover,
+.guest-inputs > .guest-signup-button:hover {
   background-color: #7DB9E8;
 }
 

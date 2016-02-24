@@ -110,6 +110,23 @@ var SignupForm = React.createClass({
           </div>
           <button className="signup-button">Create Account</button>
         </form>
+        <form onSubmit={this.submitLogin}>
+          <div className="guest-inputs">
+
+            <input type="hidden"
+                   name="session[username]"
+                   value="guest" />
+
+            <input type="hidden"
+                   name="session[password]"
+                   value="password" />
+
+            <button className="guest-signup-button">
+              Log in as guest
+            </button>
+          </div>
+        </form>
+
         <div className="oauth-buttons group">
           <button className="facebook-login">
             <a href="/auth/facebook">
@@ -126,7 +143,7 @@ var SignupForm = React.createClass({
           <h3 className="signup-bottom-bar-text">
             Have an account?
           </h3>
-          <button onClick={this._showLogin}> Sign in.</button>
+          <button onClick={this._showLogin}> Log in.</button>
         </div>
       </div>
     );
@@ -147,20 +164,6 @@ var SignupForm = React.createClass({
 
            </div>
            <button id="signup-button">Log in</button>
-          </form>
-          <form onSubmit={this.submitLogin}>
-            <div className="guest-inputs">
-
-              <input type="hidden"
-                     name="session[username]"
-                     value="guest" />
-
-              <input type="hidden"
-                     name="session[password]"
-                     value="password" />
-
-              <button>Log in as guest</button>
-            </div>
           </form>
         <div className="login-bottom-bar">
           <button onClick={this._showSignup}>Create an account.</button>

@@ -33147,6 +33147,25 @@
 	        )
 	      ),
 	      React.createElement(
+	        'form',
+	        { onSubmit: this.submitLogin },
+	        React.createElement(
+	          'div',
+	          { className: 'guest-inputs' },
+	          React.createElement('input', { type: 'hidden',
+	            name: 'session[username]',
+	            value: 'guest' }),
+	          React.createElement('input', { type: 'hidden',
+	            name: 'session[password]',
+	            value: 'password' }),
+	          React.createElement(
+	            'button',
+	            { className: 'guest-signup-button' },
+	            'Log in as guest'
+	          )
+	        )
+	      ),
+	      React.createElement(
 	        'div',
 	        { className: 'oauth-buttons group' },
 	        React.createElement(
@@ -33179,7 +33198,7 @@
 	        React.createElement(
 	          'button',
 	          { onClick: this._showLogin },
-	          ' Sign in.'
+	          ' Log in.'
 	        )
 	      )
 	    );
@@ -33210,25 +33229,6 @@
 	          'button',
 	          { id: 'signup-button' },
 	          'Log in'
-	        )
-	      ),
-	      React.createElement(
-	        'form',
-	        { onSubmit: this.submitLogin },
-	        React.createElement(
-	          'div',
-	          { className: 'guest-inputs' },
-	          React.createElement('input', { type: 'hidden',
-	            name: 'session[username]',
-	            value: 'guest' }),
-	          React.createElement('input', { type: 'hidden',
-	            name: 'session[password]',
-	            value: 'password' }),
-	          React.createElement(
-	            'button',
-	            null,
-	            'Log in as guest'
-	          )
 	        )
 	      ),
 	      React.createElement(
