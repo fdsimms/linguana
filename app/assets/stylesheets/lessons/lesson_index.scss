@@ -121,3 +121,12 @@
   transform: translate(-50%, -45%);
   font-size: 4em;
 }
+
+.skill-list > .locked {
+  background-color: #fff;
+}
+
+.skill-list .fa-lock {
+  top: 40px;
+  left: 42px;
+}
