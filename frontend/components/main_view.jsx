@@ -18,7 +18,7 @@ module.exports = React.createClass({
       <div className="main-wrapper">
         <div className="main group">
           {this.props.children}
-          <Sidebar />
+
         </div>
       </div>
     );

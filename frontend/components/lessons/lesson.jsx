@@ -167,7 +167,7 @@ var Lesson = React.createClass({
     }
 
     return(
-      <div className="lesson-page-content box-shadowed">
+      <div className="lesson-page-content">
         <div className="tips-and-notes-wrapper group">
           <h3 onClick={this._handleTipsAndNotesClick}
               className="tips-and-notes-modal-button">
@@ -189,7 +189,7 @@ var Lesson = React.createClass({
 
   finalPage: function () {
     return(
-    <div className="lesson-page-content box-shadowed">
+    <div className="lesson-page-content">
       <LessonFinalPage lesson={this.state.lesson} />
       {this.bottomBar()}
     </div>

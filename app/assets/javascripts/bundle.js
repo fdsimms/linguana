@@ -34098,7 +34098,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'main-content box-shadowed group' },
+	      { className: 'main-content group' },
 	      this.props.children
 	    );
 	  }
@@ -34132,8 +34132,7 @@
 	      React.createElement(
 	        'div',
 	        { className: 'main group' },
-	        this.props.children,
-	        React.createElement(Sidebar, null)
+	        this.props.children
 	      )
 	    );
 	  },
@@ -34345,7 +34344,7 @@
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'lesson-page-content box-shadowed' },
+	      { className: 'lesson-page-content' },
 	      React.createElement(
 	        'div',
 	        { className: 'tips-and-notes-wrapper group' },
@@ -34372,7 +34371,7 @@
 	  finalPage: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'lesson-page-content box-shadowed' },
+	      { className: 'lesson-page-content' },
 	      React.createElement(LessonFinalPage, { lesson: this.state.lesson }),
 	      this.bottomBar()
 	    );
@@ -34834,7 +34833,7 @@
 	
 	        bar.push(React.createElement(ProgressBarChunk, {
 	          width: Math.floor(550 / totalChunks),
-	          background: 'red',
+	          background: 'rgb(28, 175, 246)',
 	          className: 'current-chunk',
 	          key: i }));
 	      } else {
@@ -34842,7 +34841,7 @@
 	        bar.push(React.createElement(ProgressBarChunk, {
 	          width: Math.floor(550 / totalChunks),
 	          className: 'filled-chunk',
-	          background: 'red',
+	          background: 'rgb(28, 175, 246)',
 	          key: i }));
 	      }
 	    }

@@ -36,7 +36,7 @@ var ProgressBar = React.createClass({
         bar.push(
           <ProgressBarChunk
             width={Math.floor(550 / totalChunks)}
-            background="red"
+            background="rgb(28, 175, 246)"
             className="current-chunk"
             key={i} />);
 
@@ -46,7 +46,7 @@ var ProgressBar = React.createClass({
           <ProgressBarChunk
             width={Math.floor(550 / totalChunks)}
             className="filled-chunk"
-            background="red"
+            background="rgb(28, 175, 246)"
             key={i} />);
       }
     }

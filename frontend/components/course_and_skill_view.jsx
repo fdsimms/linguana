@@ -8,7 +8,7 @@ module.exports = React.createClass({
 
   render: function () {
     return(
-      <div className="main-content box-shadowed group">
+      <div className="main-content group">
         {this.props.children}
       </div>
     );
