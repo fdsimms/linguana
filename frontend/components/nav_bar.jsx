@@ -146,7 +146,7 @@ var NavBar = React.createClass({
       course_index_button = (
         <button className="course-index-button group"
                 onMouseEnter={this._handleCoursesEnter}
-                onMouseLeave={this._handleCoursesLeave}>
+>
             {flagDiv}
             <i className="fa fa-chevron-down" />
           <CourseIndexDropdown />

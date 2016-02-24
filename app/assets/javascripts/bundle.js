@@ -24787,8 +24787,8 @@
 	    course_index_button = React.createElement(
 	      'button',
 	      { className: 'course-index-button group',
-	        onMouseEnter: this._handleCoursesEnter,
-	        onMouseLeave: this._handleCoursesLeave },
+	        onMouseEnter: this._handleCoursesEnter
+	      },
 	      flagDiv,
 	      React.createElement('i', { className: 'fa fa-chevron-down' }),
 	      React.createElement(CourseIndexDropdown, null)

@@ -1,12 +1,11 @@
-.courses-dropdown a:hover {
-  color: #aaa;
-}
 
 .courses-dropdown .add-button {
-  text-align: center;
-  padding: 10px 0;
+  text-align: left;
+  padding: 10px;
   display: block;
-  width: 100%;
+  margin-top: 5px;
+  color: #aaa;
+  width: calc(100% - 20px);
 }
 
 .courses-dropdown {
@@ -23,35 +22,27 @@
 }
 
 .courses-dropdown-header {
-  width: 100%;
-  border-bottom: 1px solid #aaa;
+  width: calc(100% - 10px);
   padding-bottom: 5px;
-  text-align: center;
+  text-align: left;
+  padding-left: 10px;
 }
 
 .courses-dropdown-header h3 {
   color: #aaa;
 }
 
-.courses-dropdown .course-button:last-child {
-  border-bottom: 1px solid #aaa;
-}
-.courses-dropdown .course-button:hover {
-  background-color: #ccc;
-  color: #fff;
-}
 .courses-dropdown .course-button {
-  width: 100%;
+  width: calc(100% - 20px);
   display: block;
-  padding: 5px 0;
+  padding: 5px 10px;
   cursor: pointer;
   padding-top: 5px;
-  text-align: center;
-  background: #ddd;
+  text-align: left;
 }
 
 .courses-dropdown .current-course {
-  background-color: #bbb;
+  background-color: #ddd;
 }
 
 .course-index-button {

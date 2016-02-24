@@ -37,7 +37,9 @@
   padding-left: 4px;
 }
 
-.user-info-dropdown li:hover {
+.user-info-dropdown li:hover,
+.courses-dropdown .course-button:hover,
+.courses-dropdown .add-button:hover {
   color: #fff;
   background-color: #2BA8E4
 }
