@@ -34132,11 +34132,7 @@
 	      React.createElement(
 	        'div',
 	        { className: 'main group' },
-	        React.createElement(
-	          'main',
-	          { className: 'main-content box-shadowed' },
-	          this.props.children
-	        ),
+	        this.props.children,
 	        React.createElement(Sidebar, null)
 	      )
 	    );
@@ -34173,7 +34169,7 @@
 	      React.createElement(
 	        'div',
 	        { className: 'main group' },
-	        this.props.children
+	        toRender
 	      )
 	    );
 	  }

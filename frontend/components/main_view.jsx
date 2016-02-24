@@ -13,14 +13,11 @@ module.exports = React.createClass({
     this.setState({ currentView: "lesson"} );
   },
 
-
   courseAndSkillView: function () {
     return(
       <div className="main-wrapper">
         <div className="main group">
-          <main className="main-content box-shadowed">
-            {this.props.children}
-          </main>
+          {this.props.children}
           <Sidebar />
         </div>
       </div>
@@ -51,7 +48,7 @@ module.exports = React.createClass({
           <NavBar view="main" />
         </header>
         <div className="main group">
-          {this.props.children}
+          {toRender}
         </div>
       </div>
     );
