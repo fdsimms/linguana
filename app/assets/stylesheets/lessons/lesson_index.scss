@@ -2,7 +2,7 @@
   margin: auto;
   width: 591px;
   display: block;
-  margin-bottom: 60px;
+  margin-bottom: 35px;
 }
 .lesson-index-container {
   width: 100%;
@@ -35,19 +35,20 @@
 }
 
 .lesson-list-contents {
-  width: calc(100% - 25px);
+  width: 120px;
   margin: auto;
 }
 
 .lesson-list-item-wrapper {
-  margin: 10px;
+  margin: 10px 18px;
   content: "";
-  border: 1px solid #ddd;
+  // border: 2px solid #ddd;
+  box-shadow: 0 0 6px 1px rgba(0,0,0,0.12);
   border-radius: 10px;
   position: relative;
   background: #fff;
   float: left;
-  width: 175px;
+  width: 161px;
   height: 175px;
 }
 
@@ -61,15 +62,16 @@
   background: transparent;
   border-radius: 50%;
   top: 10px;
-  left: 140px;
+  left: 118px;
   position: absolute;
 }
 
 
-.locked .lesson-list-item-wrapper {
+.locked{
   border: none;
   background-color: #eee;
   color: #bbb;
+  box-shadow: none;
 }
 
 
@@ -79,33 +81,39 @@
 
 .locked .lesson-begin-button:hover {
   background: transparent;
-  color: #bbb;
+  color: #ccc;
 }
 
 .locked .lesson-list-item {
-  color: #bbb;
+  color: #aaa;
 }
 
 
 .locked .lesson-begin-button,
 .completed .lesson-begin-button {
   background: transparent;
-  color: #bbb;
+}
+
+.completed .lesson-begin-button {
   border: 2px solid #bbb;
+  color: #bbb;
 }
 
 .completed .lesson-begin-button:hover {
-  background-color: #ddd;
-  color: #000;
+  background-color: #eee;
+  color: #aaa;
 }
 
 .locked .lesson-begin-button {
   position: relative;
+  border: 2px solid #ccc;
+  color: #ccc;
 }
 
 .locked .fa-lock {
   position: absolute;
   top: 12px;
+  color: #ccc;
   display: block;
-  left: 18px;
+  left: 9px;
 }
