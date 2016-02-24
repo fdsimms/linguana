@@ -34780,15 +34780,18 @@
 	  },
 	
 	  render: function () {
-	    var classes = "answer-choice-list-item-wrapper";
+	    var classes = "answer-choice-list-item-wrapper",
+	        circle = React.createElement("i", { className: "fa fa-lg fa-circle-o" });
 	    if (this.props.selected) {
 	      classes = "answer-choice-list-item-wrapper selected";
+	      circle = React.createElement("i", { className: "fa fa-lg fa-dot-circle-o" });
 	    }
 	
 	    return React.createElement(
 	      "div",
 	      { onClick: this._handleClick,
 	        className: classes },
+	      circle,
 	      React.createElement(
 	        "li",
 	        { className: "answer-choice-list-item" },

@@ -26,10 +26,30 @@
   cursor: default;
 }
 
+.answer-choice-list-item-wrapper .fa-circle-o,
+.answer-choice-list-item-wrapper .fa-dot-circle-o {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.answer-choice-list-item-wrapper .fa-circle-o {
+  color: #ccc;
+}
+
+.answer-choice-list-item-wrapper .fa-dot-circle-o {
+  color: #fff;
+}
+
 .answer-choice-list-item-wrapper:hover {
   border: 2px solid rgb(28, 175, 246);
   color: rgb(28, 175, 246);
 }
+
+.answer-choice-list-item-wrapper:hover .fa-circle-o {
+  color: rgb(28, 175, 246);
+}
+
 
 .answer-choice-list-item {
   width: 100%;
