@@ -28,7 +28,6 @@ class Api::CoursesController < ApplicationController
 
   def show
     @course = Course.includes(:target_language).find(params[:id])
-
   end
 
   def index
