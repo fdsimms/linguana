@@ -50,7 +50,6 @@
   color: rgb(28, 175, 246);
 }
 
-
 .answer-choice-list-item {
   width: 100%;
   position: absolute;
@@ -73,6 +72,10 @@
 .disabled-lesson .answer-choice-list-item-wrapper:hover {
   border: 2px solid #ccc;
   color: #aaa;
+}
+
+.disabled-lesson .answer-choice-list-item-wrapper:hover .fa-circle-o {
+  color: #ccc;
 }
 
 .disabled-lesson .selected:hover {

@@ -2,8 +2,10 @@ var React = require('react');
 
 var AnswerChoiceIndexItem = React.createClass({
   _handleClick: function () {
-    var idx = this.props.idx;
-    this.props._handleClick(idx);
+    if (this.props._handleClick) {
+      var idx = this.props.idx;
+      this.props._handleClick(idx);
+    }
   },
 
   render: function () {
