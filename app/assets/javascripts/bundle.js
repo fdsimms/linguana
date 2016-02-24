@@ -32197,7 +32197,7 @@
 	      type: 'GET',
 	      dataType: 'json',
 	      success: function (currentUser) {
-	        if (currentUser.current_course_id) {
+	        if (currentUser.current_course_id || !CookieStore.curCourseId()) {
 	          CookieActions.receiveCookie({
 	            curCourseId: currentUser.current_course_id
 	          });
