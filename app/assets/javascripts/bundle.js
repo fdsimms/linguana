@@ -31761,8 +31761,9 @@
 	  if (!CurrentUserStore.isLoggedIn()) {
 	    var value = cookie[key];
 	    if (key === "curCompletions") {
-	      _cookies.curCompletions.push(value);
-	      setLocalStorage({ curCompletions: _cookies.curCompletions });
+	      var curCompletions = CookieStore.getLocalStorage(key);
+	      curCompletions.push(value);
+	      setLocalStorage({ curCompletions: curCompletions });
 	    } else if (key === "enrolledCourses") {
 	      var courses = CookieStore.getLocalStorage(key);
 	      courses.push(value);
@@ -34276,12 +34277,14 @@
 	      nextExerciseIdx = this.state.currentExerciseIdx;
 	    }
 	
-	    this.setState({
-	      currentExerciseIdx: nextExerciseIdx,
-	      checkButtonClicked: false,
-	      answerChoiceStatus: "",
-	      currentAnswerChoiceIdx: -1
-	    });
+	    if (!this.state.showFinalPage) {
+	      this.setState({
+	        currentExerciseIdx: nextExerciseIdx,
+	        checkButtonClicked: false,
+	        answerChoiceStatus: "",
+	        currentAnswerChoiceIdx: -1
+	      });
+	    }
 	  },
 	
 	  _handleSkipClick: function () {
@@ -34784,7 +34787,7 @@
 	  },
 	
 	  componentWillUnmount: function () {
-	    key.unbind(this.props.idx);
+	    key.unbind((this.props.idx + 1).toString());
 	  },
 	
 	  _handleClick: function () {
@@ -34930,6 +34933,14 @@
 	        this.props.onClickContinue();
 	      } else if (this.props.selected) {
 	        this.props.onClickCheck();
+	      } else if (this.props.showFinalPageBar) {
+	        key.unbind('enter');
+	        setTimeout(function () {
+	          key('enter', function () {
+	            debugger;
+	            this.props.onClickContinue();
+	          }.bind(this));
+	        }.bind(this), 0);
 	      }
 	    }.bind(this));
 	  },

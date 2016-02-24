@@ -67,8 +67,9 @@ var addCookie = function (cookie) {
   if (!CurrentUserStore.isLoggedIn()) {
     var value = cookie[key];
     if (key === "curCompletions") {
-      _cookies.curCompletions.push(value);
-      setLocalStorage({ curCompletions: _cookies.curCompletions });
+      var curCompletions = CookieStore.getLocalStorage(key);
+      curCompletions.push(value);
+      setLocalStorage({ curCompletions: curCompletions });
     } else if (key === "enrolledCourses") {
       var courses = CookieStore.getLocalStorage(key);
       courses.push(value);

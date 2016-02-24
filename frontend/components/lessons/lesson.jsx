@@ -94,13 +94,15 @@ var Lesson = React.createClass({
       ExerciseActions.removeFirstExercise();
       nextExerciseIdx = this.state.currentExerciseIdx;
     }
-
-    this.setState({
-      currentExerciseIdx: nextExerciseIdx,
-      checkButtonClicked: false,
-      answerChoiceStatus: "",
-      currentAnswerChoiceIdx: -1
-     });
+    
+    if (!this.state.showFinalPage) {
+      this.setState({
+        currentExerciseIdx: nextExerciseIdx,
+        checkButtonClicked: false,
+        answerChoiceStatus: "",
+        currentAnswerChoiceIdx: -1
+      });
+    }
   },
 
   _handleSkipClick: function () {

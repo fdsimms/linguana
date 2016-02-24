@@ -15,7 +15,7 @@ var AnswerChoiceIndexItem = React.createClass({
   },
 
   componentWillUnmount: function () {
-    key.unbind(this.props.idx);
+    key.unbind((this.props.idx + 1).toString());
   },
 
   _handleClick: function () {

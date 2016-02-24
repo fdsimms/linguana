@@ -8,6 +8,14 @@ var LessonBottomBar = React.createClass({
         this.props.onClickContinue();
       } else if (this.props.selected){
         this.props.onClickCheck();
+      } else if (this.props.showFinalPageBar) {
+        key.unbind('enter');
+        setTimeout(function () {
+            key('enter', function () {
+            debugger
+            this.props.onClickContinue();
+          }.bind(this));
+        }.bind(this), 0);
       }
     }.bind(this))
   },
