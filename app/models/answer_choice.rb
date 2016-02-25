@@ -9,25 +9,36 @@ class AnswerChoice < ActiveRecord::Base
 
   def initialize(attributes = nil)
     old_initialize(attributes)
+
     if self.exercise.exercise_type == "multiple_choice"
-      body = self.body.split(" ")
-      word_content = body.length == 2 ? body[1] : body[0]
+      body = self.body.downcase.split(" ")
+      if body.length == 2 && Word.ARTICLES.include?(body[0])
+        body = body[1]
+      else
+        body = body.join(" ")
+      end
+
       word = Word.find_or_create_by({
         language: self.target_language,
-        content: word_content
+        content: body
       })
+
       if self.is_correct
-        content = self.exercise.thing_to_translate.split(" ")
-        content = content.length == 2 ? content[1] : content[0]
+        content = self.exercise.thing_to_translate.downcase.split(" ")
+        if content.length == 2 && Word.ARTICLES.include?(content[0])
+          content = content[1]
+        else
+          content = content.join(" ")
+        end
+
         translation = Word.find_or_create_by({
-          language: self.target_language
+          language: self.target_language,
           content: content
         })
 
-        # Translation.find_or_create_by({
-        #   word1: word,
-        #   word2: translation
-        # })
+        Translation.try(:create) {
+          { word_1_id: word.id, word_2_id: translation.id }
+        }
       end
     end
   end

@@ -6,7 +6,6 @@ lesson = Lesson.find_or_create_by(
   skill_id: skill.id
 )
 
-
   mcq1 = Exercise.create(
     lesson_id: lesson.id,
     thing_to_translate: "The boy",
