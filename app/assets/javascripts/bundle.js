@@ -34336,9 +34336,17 @@
 	  },
 	
 	  exercisePage: function () {
-	    var modal;
-	    if (this.state.showModal) {
-	      modal = React.createElement(TipsAndNotesModal, {
+	    var tipsAndNotes, tipsAndNotesButton;
+	
+	    if (this.state.showModal && this.state.lesson.tips_and_notes) {
+	      tipsAndNotesButton = React.createElement(
+	        'h3',
+	        { onClick: this._handleTipsAndNotesClick,
+	          className: 'tips-and-notes-modal-button' },
+	        'Tips & notes'
+	      );
+	
+	      tipsAndNotes = React.createElement(TipsAndNotesModal, {
 	        tipsAndNotes: this.state.lesson.tips_and_notes });
 	    }
 	
@@ -34356,13 +34364,8 @@
 	      React.createElement(
 	        'div',
 	        { className: 'tips-and-notes-wrapper group' },
-	        React.createElement(
-	          'h3',
-	          { onClick: this._handleTipsAndNotesClick,
-	            className: 'tips-and-notes-modal-button' },
-	          'Tips & notes'
-	        ),
-	        modal,
+	        tipsAndNotesButton,
+	        tipsAndNotes,
 	        React.createElement(
 	          'a',
 	          { className: 'tips-and-notes-quit',

@@ -94,7 +94,7 @@ var Lesson = React.createClass({
       ExerciseActions.removeFirstExercise();
       nextExerciseIdx = this.state.currentExerciseIdx;
     }
-    
+
     if (!this.state.showFinalPage) {
       this.setState({
         currentExerciseIdx: nextExerciseIdx,
@@ -151,11 +151,21 @@ var Lesson = React.createClass({
   },
 
   exercisePage: function () {
-    var modal;
-    if (this.state.showModal) {
-      modal =
+    var tipsAndNotes,
+        tipsAndNotesButton
+
+    if (this.state.showModal && this.state.lesson.tips_and_notes) {
+      tipsAndNotesButton = (
+        <h3 onClick={this._handleTipsAndNotesClick}
+            className="tips-and-notes-modal-button">
+          Tips & notes
+        </h3>
+      );
+
+      tipsAndNotes = (
         <TipsAndNotesModal
-          tipsAndNotes={this.state.lesson.tips_and_notes}/>;
+        tipsAndNotes={this.state.lesson.tips_and_notes}/>
+      );
     }
 
     var exercise,
@@ -171,11 +181,8 @@ var Lesson = React.createClass({
     return(
       <div className="lesson-page-content">
         <div className="tips-and-notes-wrapper group">
-          <h3 onClick={this._handleTipsAndNotesClick}
-              className="tips-and-notes-modal-button">
-            Tips & notes
-          </h3>
-          {modal}
+          {tipsAndNotesButton}
+          {tipsAndNotes}
           <a className="tips-and-notes-quit"
             href={"#/skill/" + this.state.lesson.skill_id }>
             Quit
