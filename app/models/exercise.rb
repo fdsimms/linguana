@@ -4,6 +4,8 @@ class Exercise < ActiveRecord::Base
   belongs_to :lesson
   has_one :skill, through: :lesson
   has_many :answer_choices
+  has_one :target_language, through: :skill
+  has_one :known_language, through: :skill
 
   def correct_answer
     self.answer_choices.find_by_is_correct(true)

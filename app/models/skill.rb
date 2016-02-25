@@ -4,4 +4,7 @@ class Skill < ActiveRecord::Base
   belongs_to :course
   has_many :completions, as: :completable
   has_many :lessons, dependent: :destroy
+  has_one :target_language, through: :course
+  has_one :known_language, through: :course
+
 end
