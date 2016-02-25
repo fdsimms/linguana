@@ -31,8 +31,9 @@ class Translation < ActiveRecord::Base
       word_1_id: self.word_2_id,
       word_2_id: self.word_1_id
     })
-
-    translation ? false : true
+    if translation
+      errors[:base] << "translation already exists"
+    end
   end
 
 end

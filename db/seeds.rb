@@ -1,8 +1,8 @@
 
 Exercise.destroy_all
 AnswerChoice.destroy_all
-Word.destroy_all
 Translation.destroy_all
+Word.destroy_all
 
 
 

@@ -36,9 +36,8 @@ class AnswerChoice < ActiveRecord::Base
           content: content
         })
 
-        Translation.try(:create) {
-          { word_1_id: word.id, word_2_id: translation.id }
-        }
+        params = { word_1_id: word.id, word_2_id: translation.id }
+        Translation.find_or_create_by(params)
       end
     end
   end
