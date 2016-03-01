@@ -6,7 +6,7 @@
 
 [![Image of Linguana Lesson](screenshots/screenshot2.png)][linguana]
 
-[linguana]: www.linguana.co
+[linguana]: http://www.linguana.co
 
 ## Summarys
 
