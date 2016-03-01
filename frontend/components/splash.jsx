@@ -16,7 +16,7 @@ module.exports = React.createClass({
   },
 
   splashView: function () {
-    var splashText = "Learn a language. Or maybe not. We'll see.";
+    var splashText = "Let's learn a language. For free.";
 
     return(
       <div className="splash-contents group">

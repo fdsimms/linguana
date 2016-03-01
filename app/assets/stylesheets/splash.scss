@@ -19,23 +19,13 @@
 
 }
 
-// .splash-text:before {
-//   content: "";
-//   border-radius: 100%;
-//   background-color: #46c4d4;
-//   padding: 125px 125px;
-//   left: -290px;
-//   position: absolute;
-//   box-shadow: 0 0 3px 14px #0D6490;
-//   bottom: -155px;
-// }
-
 .splash-text {
   font-size: 30px;
   position: relative;
   width: 663px;
   cursor: default;
   margin: auto;
+  text-align: center;
 }
 
 .splash-contents {

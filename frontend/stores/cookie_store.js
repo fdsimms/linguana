@@ -2,7 +2,6 @@ var Store = require('flux/utils').Store,
     AppDispatcher = require('../dispatcher/dispatcher'),
     LanguageStore = require('./language_store'),
     CourseStore = require('./course_store'),
-    UsersApiUtil = require('../util/users_api_util'),
     CoursesApiUtil = require('../util/courses_api_util'),
     SJCL = require('../sjcl-master/sjcl'),
     CookieConstants = require('../constants/cookie_constants');

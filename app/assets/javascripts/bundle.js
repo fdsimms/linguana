@@ -50,16 +50,16 @@
 	    Route = __webpack_require__(159).Route,
 	    IndexRoute = __webpack_require__(159).IndexRoute,
 	    App = __webpack_require__(206),
-	    Course = __webpack_require__(259),
-	    Splash = __webpack_require__(266),
-	    Skill = __webpack_require__(267),
-	    CourseAndSkillView = __webpack_require__(274),
-	    MainView = __webpack_require__(275),
-	    SessionsApiUtil = __webpack_require__(246),
-	    Lesson = __webpack_require__(276),
-	    CourseSelection = __webpack_require__(289),
-	    UserProfile = __webpack_require__(290),
-	    CookieActions = __webpack_require__(245);
+	    Course = __webpack_require__(282),
+	    Splash = __webpack_require__(289),
+	    Skill = __webpack_require__(290),
+	    CourseAndSkillView = __webpack_require__(297),
+	    MainView = __webpack_require__(298),
+	    SessionsApiUtil = __webpack_require__(270),
+	    Lesson = __webpack_require__(300),
+	    CourseSelection = __webpack_require__(314),
+	    UserProfile = __webpack_require__(315),
+	    CookieActions = __webpack_require__(269);
 	
 	var routes = React.createElement(
 	  Route,
@@ -24111,12 +24111,12 @@
 	    ModalActions = __webpack_require__(207),
 	    NavBar = __webpack_require__(213),
 	    CurrentUserStore = __webpack_require__(232),
-	    CookieStore = __webpack_require__(239),
-	    LanguagesApiUtil = __webpack_require__(243),
-	    CookieActions = __webpack_require__(245),
-	    SignupModal = __webpack_require__(257),
+	    CookieStore = __webpack_require__(238),
+	    LanguagesApiUtil = __webpack_require__(267),
+	    CookieActions = __webpack_require__(269),
+	    SignupModal = __webpack_require__(280),
 	    History = __webpack_require__(159).History,
-	    SessionsApiUtil = __webpack_require__(246);
+	    SessionsApiUtil = __webpack_require__(270);
 	
 	var notInLessonsOrSkills = function () {
 	  var loc = window.location.hash;
@@ -24633,16 +24633,16 @@
 	    ModalActions = __webpack_require__(207),
 	    ModalStore = __webpack_require__(214),
 	    CurrentUserStore = __webpack_require__(232),
-	    CookieStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(238),
 	    LanguageStore = __webpack_require__(236),
-	    CoursesApiUtil = __webpack_require__(240),
-	    LanguagesApiUtil = __webpack_require__(243),
-	    CookieActions = __webpack_require__(245),
-	    SessionsApiUtil = __webpack_require__(246),
-	    LanguageIndexDropdown = __webpack_require__(247),
-	    UserInfoDropdown = __webpack_require__(250),
-	    CourseIndexDropdown = __webpack_require__(251),
-	    LoginDropdown = __webpack_require__(255);
+	    CoursesApiUtil = __webpack_require__(241),
+	    LanguagesApiUtil = __webpack_require__(267),
+	    CookieActions = __webpack_require__(269),
+	    SessionsApiUtil = __webpack_require__(270),
+	    LanguageIndexDropdown = __webpack_require__(271),
+	    UserInfoDropdown = __webpack_require__(274),
+	    CourseIndexDropdown = __webpack_require__(275),
+	    LoginDropdown = __webpack_require__(278);
 	
 	var NavBar = React.createClass({
 	  displayName: 'NavBar',
@@ -31373,7 +31373,7 @@
 	var AppDispatcher = __webpack_require__(208);
 	var UsersApiUtil = __webpack_require__(233);
 	var CurrentUserConstants = __webpack_require__(235);
-	var CookieConstants = __webpack_require__(238);
+	var CookieConstants = __webpack_require__(266);
 	
 	var _currentUser = {};
 	var _userHasBeenFetched = false;
@@ -31447,7 +31447,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var CurrentUserActions = __webpack_require__(234),
-	    LanguageStore = __webpack_require__(236);
+	    LanguageStore = __webpack_require__(236),
+	    CookieStore = __webpack_require__(238);
 	
 	var UsersApiUtil = {
 	  createUser: function (credentials, success) {
@@ -31563,6 +31564,8 @@
 	
 	};
 	
+	window.UsersApiUtil = UsersApiUtil;
+	
 	module.exports = UsersApiUtil;
 
 /***/ },
@@ -31675,30 +31678,15 @@
 
 /***/ },
 /* 238 */
-/***/ function(module, exports) {
-
-	var CookieConstants = {
-	  COOKIES_RECEIVED: "COOKIES_RECEIVED",
-	  COOKIE_RECEIVED: "COOKIE_RECEIVED",
-	  FETCH_COOKIES: "FETCH_COOKIES",
-	  CLEAR_COOKIES: "CLEAR_COOKIES",
-	  CLEAR_COOKIE: "CLEAR_COOKIE"
-	};
-	
-	module.exports = CookieConstants;
-
-/***/ },
-/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(215).Store,
 	    AppDispatcher = __webpack_require__(208),
 	    LanguageStore = __webpack_require__(236),
-	    CourseStore = __webpack_require__(253),
-	    UsersApiUtil = __webpack_require__(233),
-	    CoursesApiUtil = __webpack_require__(240),
-	    SJCL = __webpack_require__(294),
-	    CookieConstants = __webpack_require__(238);
+	    CourseStore = __webpack_require__(239),
+	    CoursesApiUtil = __webpack_require__(241),
+	    SJCL = __webpack_require__(243),
+	    CookieConstants = __webpack_require__(266);
 	
 	var _cookiesHaveBeenFetched = false;
 	
@@ -31939,727 +31927,11 @@
 	module.exports = CookieStore;
 
 /***/ },
-/* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var CourseActions = __webpack_require__(241);
-	
-	var CoursesApiUtil = {
-	  fetchCourses: function (lngName, success) {
-	    $.ajax({
-	      type: "GET",
-	      url: "api/courses/?lngName=" + lngName,
-	      dataType: "json",
-	      success: function (courses) {
-	        var coursesPayload = {};
-	        courses.forEach(function (course) {
-	          coursesPayload[course.id] = course;
-	        });
-	        CourseActions.receiveAll(coursesPayload);
-	        setTimeout(function () {
-	          success && success();
-	        }.bind(this), 0);
-	      }
-	    });
-	  },
-	
-	  fetchCourse: function (courseId) {
-	    $.ajax({
-	      type: "GET",
-	      url: "api/courses/" + courseId,
-	      dataType: "json",
-	      success: function (course) {
-	        CourseActions.receiveCourse(course);
-	      }
-	    });
-	  }
-	};
-	
-	window.CoursesApiUtil = CoursesApiUtil;
-	
-	module.exports = CoursesApiUtil;
-
-/***/ },
-/* 241 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(208),
-	    CourseConstants = __webpack_require__(242);
-	
-	var CourseActions = {
-	  receiveAll: function (courses) {
-	    AppDispatcher.dispatch({
-	      actionType: CourseConstants.COURSES_RECEIVED,
-	      courses: courses
-	    });
-	  },
-	
-	  receiveCourse: function (course) {
-	    AppDispatcher.dispatch({
-	      actionType: CourseConstants.COURSE_RECEIVED,
-	      course: course
-	    });
-	  }
-	};
-	
-	module.exports = CourseActions;
-
-/***/ },
-/* 242 */
-/***/ function(module, exports) {
-
-	var CourseConstants = {
-	  COURSES_RECEIVED: "COURSES_RECEIVED",
-	  COURSE_RECEIVED: "COURSE_RECEIVED"
-	};
-	
-	module.exports = CourseConstants;
-
-/***/ },
-/* 243 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var LanguageActions = __webpack_require__(244),
-	    LanguageStore = __webpack_require__(236);
-	
-	var LanguageApiUtil = {
-		fetchLanguages: function (callback) {
-			$.ajax({
-				type: "GET",
-				url: "api/languages/",
-				dataType: "json",
-				success: function (languages) {
-					LanguageActions.receiveAll(languages);
-					callback && callback();
-				}
-			});
-		}
-	};
-	
-	window.LanguageApiUtil = LanguageApiUtil;
-	
-	module.exports = LanguageApiUtil;
-
-/***/ },
-/* 244 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(208),
-	    LanguageConstants = __webpack_require__(237);
-	
-	var LanguageActions = {
-	  receiveAll: function (languages) {
-	    AppDispatcher.dispatch({
-	      actionType: LanguageConstants.LANGUAGES_RECEIVED,
-	      languages: languages
-	    });
-	  }
-	};
-	
-	module.exports = LanguageActions;
-
-/***/ },
-/* 245 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(208),
-	    CookieConstants = __webpack_require__(238);
-	
-	var CookieActions = {
-	  receiveAll: function (cookies) {
-	    AppDispatcher.dispatch({
-	      actionType: CookieConstants.COOKIES_RECEIVED,
-	      cookies: cookies
-	    });
-	  },
-	
-	  receiveCookie: function (cookie) {
-	    AppDispatcher.dispatch({
-	      actionType: CookieConstants.COOKIE_RECEIVED,
-	      cookie: cookie
-	    });
-	  },
-	
-	  fetchCookiesFromBrowser: function () {
-	    AppDispatcher.dispatch({
-	      actionType: CookieConstants.FETCH_COOKIES
-	    });
-	  },
-	
-	  clearCookies: function () {
-	    AppDispatcher.dispatch({
-	      actionType: CookieConstants.CLEAR_COOKIES
-	    });
-	  },
-	
-	  clearCookie: function (cookieName) {
-	    AppDispatcher.dispatch({
-	      actionType: CookieConstants.CLEAR_COOKIE,
-	      cookieName: cookieName
-	    });
-	  }
-	};
-	
-	module.exports = CookieActions;
-
-/***/ },
-/* 246 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var CurrentUserActions = __webpack_require__(234);
-	var CookieActions = __webpack_require__(245);
-	var UsersApiUtil = __webpack_require__(233);
-	var CoursesApiUtil = __webpack_require__(240);
-	var CookieStore = __webpack_require__(239);
-	
-	var SessionsApiUtil = {
-	  logIn: function (credentials, success) {
-	    var username = credentials.elements[0].value,
-	        password = credentials.elements[1].value,
-	        sessionParams = { session: { username: username, password: password } };
-	    $.ajax({
-	      url: '/api/session',
-	      type: 'POST',
-	      dataType: 'json',
-	      data: sessionParams,
-	      success: function (currentUser) {
-	        var curCourseId = currentUser.current_course_id || CookieStore.curCourseId();
-	
-	        CookieActions.receiveCookie({
-	          curCourseId: curCourseId
-	        });
-	        CurrentUserActions.receiveCurrentUser(currentUser);
-	        success && success(currentUser.current_course_id);
-	      }.bind(this)
-	    });
-	  },
-	
-	  createEnrollments: function (userId) {
-	    if (CookieStore.enrolledCourses()[0]) {
-	      CookieStore.enrolledCourses().forEach(function (courseId, idx) {
-	        var enrollmentParams = {};
-	        enrollmentParams.course_id = courseId;
-	        enrollmentParams.user_id = userId;
-	        if (CurrentUserStore.findEnrollment(courseId)) {
-	          if (idx === CookieStore.enrolledCourses().length - 1) {
-	            var userParams = { current_course_id: courseId };
-	            UsersApiUtil.updateUser(userParams);
-	          }
-	        } else if (idx === CookieStore.enrolledCourses().length - 1) {
-	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
-	            var userParams = { current_course_id: courseId };
-	            UsersApiUtil.updateUser(userParams);
-	            CookieActions.clearCookie("enrolledCourses");
-	          }.bind(this));
-	        } else {
-	          UsersApiUtil.createCourseEnrollment(enrollmentParams);
-	        }
-	      }.bind(this));
-	    }
-	  },
-	
-	  logOut: function (callback) {
-	    $.ajax({
-	      url: '/api/session',
-	      type: 'DELETE',
-	      dataType: 'json',
-	      success: function () {
-	        CurrentUserActions.receiveCurrentUser({});
-	        callback && callback();
-	      }
-	    });
-	  },
-	
-	  addCompletions: function () {
-	    if (CookieStore.curCompletions()[0]) {
-	      CookieStore.curCompletions().forEach(function (completion) {
-	        var completionParams = {},
-	            id = completion.completionId,
-	            type = completion.completionType;
-	        completionParams.completable_id = id;
-	        if (CurrentUserStore.isLoggedIn()) {
-	          completionParams.user_id = CurrentUserStore.currentUser().id;
-	        } else {
-	          completionParams.user_id = userId;
-	        }
-	        completionParams.completable_type = type;
-	        if (!CurrentUserStore.findCompletion(id, type)) {
-	          UsersApiUtil.createCompletionForUser(completionParams);
-	        }
-	      }.bind(this));
-	    }
-	  },
-	
-	  fetchCurrentUser: function (callback) {
-	    $.ajax({
-	      url: '/api/session',
-	      type: 'GET',
-	      dataType: 'json',
-	      success: function (currentUser) {
-	        if (currentUser.current_course_id || !CookieStore.curCourseId()) {
-	          CookieActions.receiveCookie({
-	            curCourseId: currentUser.current_course_id
-	          });
-	        }
-	        if (Object.keys(currentUser)[0]) {
-	          CurrentUserActions.receiveCurrentUser(currentUser);
-	          this.createEnrollments(currentUser.id);
-	          this.addCompletions();
-	          if (CookieStore.getLocalStorage("curPoints")) {
-	            var curPoints = parseInt(CookieStore.getLocalStorage("curPoints"));
-	            UsersApiUtil.awardPoints(currentUser, curPoints);
-	            CookieActions.clearCookie("curPoints");
-	          }
-	        } else if (!CurrentUserStore.userHasBeenFetched()) {
-	          CurrentUserActions.receiveCurrentUser(currentUser);
-	        }
-	        callback && callback(currentUser);
-	      }.bind(this)
-	    });
-	  }
-	
-	};
-	
-	module.exports = SessionsApiUtil;
-
-/***/ },
-/* 247 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ModalActions = __webpack_require__(207),
-	    ModalStore = __webpack_require__(214),
-	    LanguageIndex = __webpack_require__(248),
-	    LanguagesApiUtil = __webpack_require__(243);
-	
-	var LanguageIndexDropdown = React.createClass({
-	  displayName: 'LanguageIndexDropdown',
-	
-	  getInitialState: function () {
-	    return { modalName: "languageIndexDropdown" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.modalListener = ModalStore.addListener(this._modalsChanged);
-	    LanguagesApiUtil.fetchLanguages();
-	    var modalName = this.state.modalName;
-	    ModalActions.addModal(modalName);
-	    this.setState({ modalName: modalName });
-	  },
-	
-	  _modalsChanged: function () {
-	    var modalName = this.state.modalName;
-	    this.setState({ modalName: modalName });
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.modalListener.remove();
-	  },
-	
-	  visibleRender: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'languages-modal' },
-	      React.createElement(LanguageIndex, null)
-	    );
-	  },
-	
-	  render: function () {
-	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
-	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
-	
-	    return renderedHTML;
-	  }
-	});
-	
-	module.exports = LanguageIndexDropdown;
-
-/***/ },
-/* 248 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    LanguageStore = __webpack_require__(236),
-	    LanguageIndexItem = __webpack_require__(249);
-	
-	var LanguageIndex = React.createClass({
-	  displayName: 'LanguageIndex',
-	
-	  getInitialState: function () {
-	    return { languages: LanguageStore.all() };
-	  },
-	
-	  _onChange: function () {
-	    this.setState({ languages: LanguageStore.all() });
-	  },
-	
-	  componentDidMount: function () {
-	    this.languageListener = LanguageStore.addListener(this._onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.languageListener.remove();
-	  },
-	
-	  render: function () {
-	    var languages = this.state.languages.map(function (lng) {
-	      return React.createElement(LanguageIndexItem, { language: lng, key: lng.id });
-	    });
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'language-index' },
-	      React.createElement(
-	        'ul',
-	        { className: 'language-list box-shadowed' },
-	        languages
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = LanguageIndex;
-
-/***/ },
-/* 249 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    CookieActions = __webpack_require__(245),
-	    ModalActions = __webpack_require__(207);
-	
-	var LanguageIndexItem = React.createClass({
-	  displayName: 'LanguageIndexItem',
-	
-	  setLanguageCookie: function () {
-	    var languageCookie = { curLng: this.props.language.name };
-	    ModalActions.hideModals();
-	    CookieActions.receiveCookie(languageCookie);
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'li',
-	      { onClick: this.setLanguageCookie },
-	      React.createElement(
-	        'div',
-	        { className: 'language-dropdown-flag' },
-	        React.createElement('img', { src: this.props.language.flag })
-	      ),
-	      this.props.language.name
-	    );
-	  }
-	});
-	
-	module.exports = LanguageIndexItem;
-
-/***/ },
-/* 250 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ModalActions = __webpack_require__(207),
-	    CookieActions = __webpack_require__(245),
-	    SessionsApiUtil = __webpack_require__(246),
-	    ModalStore = __webpack_require__(214),
-	    History = __webpack_require__(159).History;
-	
-	var UserInfoDropdown = React.createClass({
-	  displayName: 'UserInfoDropdown',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { modalName: "userInfoDropdown" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.modalListener = ModalStore.addListener(this._modalsChanged);
-	    ModalActions.addModal(this.state.modalName);
-	    this.forceUpdate();
-	  },
-	
-	  _modalsChanged: function () {
-	    var modalName = this.state.modalName;
-	    this.forceUpdate();
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.modalListener.remove();
-	  },
-	
-	  _onLogoutClick: function () {
-	    SessionsApiUtil.logOut(function () {
-	      ModalActions.hideModal(this.state.modalName);
-	      CookieActions.clearCookies();
-	      this.history.pushState(null, "/");
-	    }.bind(this));
-	  },
-	
-	  visibleRender: function () {
-	    var user_path = "#/user/" + CurrentUserStore.currentUser().id;
-	    return React.createElement(
-	      'ul',
-	      { className: 'box-shadowed user-info-dropdown' },
-	      React.createElement(
-	        'li',
-	        null,
-	        React.createElement(
-	          'a',
-	          { href: user_path },
-	          'Your Profile'
-	        )
-	      ),
-	      React.createElement(
-	        'li',
-	        { onClick: this._onLogoutClick },
-	        'Log Out'
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
-	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
-	
-	    return renderedHTML;
-	  }
-	});
-	
-	module.exports = UserInfoDropdown;
-
-/***/ },
-/* 251 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ModalActions = __webpack_require__(207),
-	    CookieStore = __webpack_require__(239),
-	    CookieActions = __webpack_require__(245),
-	    UsersApiUtil = __webpack_require__(233),
-	    CourseStore = __webpack_require__(253),
-	    ModalStore = __webpack_require__(214),
-	    CourseIndex = __webpack_require__(252),
-	    CoursesApiUtil = __webpack_require__(240);
-	
-	var CourseIndexDropdown = React.createClass({
-	  displayName: 'CourseIndexDropdown',
-	
-	  getInitialState: function () {
-	    return { modalName: "courseIndexDropdown" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.modalListener = ModalStore.addListener(this._modalsChanged);
-	    var modalName = this.state.modalName;
-	    ModalActions.addModal(modalName);
-	    this.setState({ modalName: modalName });
-	  },
-	
-	  _modalsChanged: function () {
-	    var modalName = this.state.modalName;
-	    this.setState({ modalName: modalName });
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.modalListener.remove();
-	  },
-	
-	  setCourseCookie: function (courseId) {
-	
-	    if (CurrentUserStore.isLoggedIn()) {
-	      var userParams = { current_course_id: courseId };
-	      UsersApiUtil.updateUser(userParams, function () {
-	        var userId = CurrentUserStore.currentUser().id,
-	            enrollmentParams = { user_id: userId, course_id: courseId };
-	
-	        if (!CurrentUserStore.findEnrollment(courseId)) {
-	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
-	            CookieActions.receiveCookie({ curCourseId: courseId });
-	          });
-	        } else {
-	          CookieActions.receiveCookie({ curCourseId: courseId });
-	        }
-	      });
-	    } else {
-	      CookieActions.receiveCookie({ curCourseId: courseId });
-	    }
-	    setTimeout(function () {
-	      ModalActions.hideModal(this.state.modalName);
-	    }.bind(this), 0);
-	  },
-	
-	  visibleRender: function () {
-	    var courses;
-	
-	    courses = CurrentUserStore.currentUser().enrolled_courses || CourseStore.findEnrolledCoursesFromCookies();
-	
-	    if (courses) {
-	      courses = courses.map(function (course, idx) {
-	        var classes = "course-button",
-	            onClick = function () {
-	          this.setCourseCookie(course.id);
-	        }.bind(this);
-	
-	        if (CookieStore.curCourseId() == course.id) {
-	          classes = "current-course course-button";
-	          onClick = "";
-	        }
-	
-	        return React.createElement(
-	          'a',
-	          { className: classes,
-	            onClick: onClick,
-	            href: "#/course/" + course.id,
-	            key: idx },
-	          React.createElement(
-	            'div',
-	            { className: 'courses-dropdown-flag-container' },
-	            React.createElement('img', { className: 'courses-dropdown-flag',
-	              src: course.flag })
-	          ),
-	          course.name
-	        );
-	      }.bind(this));
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'courses-dropdown box-shadowed group' },
-	      React.createElement(
-	        'div',
-	        { className: 'courses-dropdown-header' },
-	        React.createElement(
-	          'h3',
-	          null,
-	          'Your Courses'
-	        )
-	      ),
-	      React.createElement(
-	        'ul',
-	        { className: 'courses-dropdown-list' },
-	        courses
-	      ),
-	      React.createElement(
-	        'a',
-	        { className: 'add-button', href: '#/add' },
-	        'Add a new course'
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
-	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
-	
-	    return renderedHTML;
-	  }
-	});
-	
-	module.exports = CourseIndexDropdown;
-
-/***/ },
-/* 252 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    CourseStore = __webpack_require__(253),
-	    CourseIndexItem = __webpack_require__(254),
-	    CookieStore = __webpack_require__(239),
-	    LanguageStore = __webpack_require__(236),
-	    CoursesApiUtil = __webpack_require__(240);
-	
-	var CourseIndex = React.createClass({
-	  displayName: 'CourseIndex',
-	
-	  getInitialState: function () {
-	    return { courses: CourseStore.all(), displayItems: false };
-	  },
-	
-	  _coursesChanged: function () {
-	    this.setState({ courses: CourseStore.all() });
-	  },
-	
-	  _languagesChanged: function () {
-	    CoursesApiUtil.fetchCourses(CookieStore.curLng());
-	  },
-	
-	  _cookiesChanged: function () {
-	    CoursesApiUtil.fetchCourses(CookieStore.curLng());
-	  },
-	
-	  componentDidMount: function () {
-	    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
-	    this.languagesListener = LanguageStore.addListener(this._languagesChanged);
-	    this.coursesListener = CourseStore.addListener(this._coursesChanged);
-	    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
-	      this.setState({ displayItems: true });
-	    }.bind(this));
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.cookieListener.remove();
-	    this.coursesListener.remove();
-	    this.languagesListener.remove();
-	  },
-	
-	  render: function () {
-	
-	    if (this.state.courses === {} || !this.state.displayItems) {
-	      return React.createElement('div', null);
-	    }
-	
-	    var classes = "course-index-container",
-	        header = React.createElement(
-	      'h2',
-	      { className: 'course-index-header' },
-	      'I want to learn...'
-	    );
-	    if (this.props.view === "addCourse") {
-	      classes = "course-index-container course-selection";
-	      header = React.createElement('div', null);
-	    }
-	
-	    var courses = this.state.courses;
-	    var courseKeys = Object.keys(this.state.courses);
-	    courses = courseKeys.map(function (key, idx) {
-	
-	      var course = courses[key],
-	          flag = course.flag,
-	          knownLng = LanguageStore.find(course.known_language_id);
-	
-	      if (!knownLng || knownLng.name === CookieStore.curLng()) {
-	        return React.createElement(CourseIndexItem, { key: idx, course: course, flag: flag });
-	      } else {
-	        return React.createElement('div', { key: idx });
-	      }
-	    });
-	
-	    return React.createElement(
-	      'div',
-	      { className: classes },
-	      React.createElement(
-	        'div',
-	        { className: 'course-index' },
-	        header,
-	        React.createElement(
-	          'ul',
-	          { className: 'course-list group' },
-	          courses
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = CourseIndex;
-
-/***/ },
-/* 253 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(215).Store;
-	var CourseConstants = __webpack_require__(242);
+	var CourseConstants = __webpack_require__(240);
 	var AppDispatcher = __webpack_require__(208);
 	// var CookieStore = require('./cookie_store');
 	
@@ -32729,2759 +32001,84 @@
 	module.exports = CourseStore;
 
 /***/ },
-/* 254 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    CookieActions = __webpack_require__(245),
-	    CookieStore = __webpack_require__(239),
-	    CourseStore = __webpack_require__(253),
-	    LanguageStore = __webpack_require__(236),
-	    LanguagesApiUtil = __webpack_require__(243),
-	    CurrentUserStore = __webpack_require__(232),
-	    UsersApiUtil = __webpack_require__(233),
-	    CoursesApiUtil = __webpack_require__(240);
-	
-	var CourseIndexItem = React.createClass({
-	  displayName: 'CourseIndexItem',
-	
-	  getInitialState: function () {
-	    return { showFlag: false };
-	  },
-	
-	  componentDidMount: function () {
-	    this.setState({ showFlag: true });
-	  },
-	
-	  setCourseCookie: function () {
-	    var courseId = this.props.course.id;
-	
-	    if (CurrentUserStore.isLoggedIn()) {
-	      var userParams = { current_course_id: courseId };
-	      UsersApiUtil.updateUser(userParams, function () {
-	        var userId = CurrentUserStore.currentUser().id,
-	            enrollmentParams = { user_id: userId, course_id: courseId };
-	
-	        if (!CurrentUserStore.findEnrollment(courseId)) {
-	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
-	            CookieActions.receiveCookie({ curCourseId: courseId });
-	          });
-	        } else {
-	          CookieActions.receiveCookie({ curCourseId: courseId });
-	        }
-	      });
-	    } else {
-	      CookieActions.receiveCookie({ enrolledCourses: courseId });
-	      CookieActions.receiveCookie({ curCourseId: courseId });
-	    }
-	  },
-	
-	  render: function () {
-	    if (!this.props.course.id) {
-	      return React.createElement('div', null);
-	    }
-	    var flag, toRender;
-	    if (this.props.flag && this.state.showFlag) {
-	      var courseName = this.props.course.name;
-	      flag = React.createElement(
-	        'div',
-	        { className: 'language-index-flag' },
-	        React.createElement('img', { src: this.props.flag })
-	      );
-	      toRender = React.createElement(
-	        'a',
-	        { href: "#/course/" + this.props.course.id,
-	          className: 'course-list-item',
-	          onClick: this.setCourseCookie },
-	        courseName,
-	        flag
-	      );
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'course-list-item-wrapper' },
-	      toRender
-	    );
-	  }
-	});
-	
-	module.exports = CourseIndexItem;
-
-/***/ },
-/* 255 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ModalActions = __webpack_require__(207),
-	    ModalStore = __webpack_require__(214),
-	    NewSessionForm = __webpack_require__(256);
-	
-	var LoginDropdown = React.createClass({
-	  displayName: 'LoginDropdown',
-	
-	  getInitialState: function () {
-	    return { modalName: "loginDropdown", token: "" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.modalListener = ModalStore.addListener(this._modalsChanged);
-	    var modalName = this.state.modalName;
-	    ModalActions.addModal(modalName);
-	    this.setState({
-	      modalName: modalName
-	    });
-	  },
-	
-	  _modalsChanged: function () {
-	    var modalName = this.state.modalName;
-	    this.setState({ modalName: modalName });
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.modalListener.remove();
-	    ModalActions.removeModal(this.state.modalName);
-	  },
-	
-	  visibleRender: function () {
-	    return React.createElement(NewSessionForm, null);
-	  },
-	
-	  render: function () {
-	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
-	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
-	
-	    return renderedHTML;
-	  }
-	});
-	
-	module.exports = LoginDropdown;
-
-/***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    History = __webpack_require__(159).History,
-	    ModalActions = __webpack_require__(207),
-	    SessionsApiUtil = __webpack_require__(246);
-	
-	var NewSessionForm = React.createClass({
-	  displayName: 'NewSessionForm',
-	
-	  mixins: [History],
-	
-	  submit: function (e) {
-	    e.preventDefault();
-	    var credentials = e.currentTarget;
-	    SessionsApiUtil.logIn(credentials);
-	  },
-	
-	  render: function () {
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'splash-login-form splash-form' },
-	      React.createElement(
-	        'div',
-	        { className: 'splash-login-inputs box-shadowed' },
-	        React.createElement(
-	          'a',
-	          { className: 'facebook-login', href: '/auth/facebook' },
-	          'Log in with Facebook'
-	        ),
-	        React.createElement(
-	          'a',
-	          { href: '/auth/google_oauth2', className: 'google-login' },
-	          'Log in with Google'
-	        ),
-	        React.createElement(
-	          'h3',
-	          null,
-	          'or'
-	        ),
-	        React.createElement(
-	          'form',
-	          { onSubmit: this.submit },
-	          React.createElement('input', { name: 'session[username]',
-	            placeholder: 'Username' }),
-	          React.createElement('input', { type: 'password',
-	            name: 'session[password]',
-	            placeholder: 'Password' }),
-	          React.createElement(
-	            'a',
-	            { id: 'modal-login-button' },
-	            'Log in'
-	          )
-	        ),
-	        React.createElement(
-	          'form',
-	          { onSubmit: this.submit },
-	          React.createElement(
-	            'div',
-	            { className: 'guest-inputs' },
-	            React.createElement('input', { type: 'hidden',
-	              name: 'session[username]',
-	              value: 'guest' }),
-	            React.createElement('input', { type: 'hidden',
-	              name: 'session[password]',
-	              value: 'password' }),
-	            React.createElement(
-	              'button',
-	              { className: 'guest-login-button' },
-	              'Log in as guest'
-	            )
-	          )
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = NewSessionForm;
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ModalActions = __webpack_require__(207),
-	    ModalStore = __webpack_require__(214),
-	    SignupForm = __webpack_require__(258);
-	
-	var SignupModal = React.createClass({
-	  displayName: 'SignupModal',
-	
-	  getInitialState: function () {
-	    return { modalName: "signupModal" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.modalListener = ModalStore.addListener(this._modalsChanged);
-	    ModalActions.addModal(this.state.modalName);
-	    this.forceUpdate();
-	  },
-	
-	  _modalsChanged: function () {
-	    this.forceUpdate();
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.modalListener.remove();
-	    ModalActions.removeModal(this.state.modalName);
-	  },
-	
-	  visibleRender: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'screen-cover' },
-	      React.createElement(SignupForm, { toShow: 'signup' })
-	    );
-	  },
-	
-	  render: function () {
-	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
-	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
-	
-	    return renderedHTML;
-	  }
-	});
-	
-	module.exports = SignupModal;
-
-/***/ },
-/* 258 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    History = __webpack_require__(159).History,
-	    UsersApiUtil = __webpack_require__(233),
-	    SessionsApiUtil = __webpack_require__(246),
-	    ModalActions = __webpack_require__(207),
-	    CurrentUserStore = __webpack_require__(232),
-	    CookieStore = __webpack_require__(239);
-	
-	var SignupForm = React.createClass({
-	  displayName: 'SignupForm',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { toShow: this.props.toShow };
-	  },
-	
-	  submitSignup: function (e) {
-	    e.preventDefault();
-	    var credentials = e.currentTarget;
-	    UsersApiUtil.createUser(credentials, this.callback);
-	  },
-	
-	  callback: function (userId) {
-	    if (CookieStore.curCompletions()[0]) {
-	      CookieStore.curCompletions().forEach(function (completion) {
-	        var completionParams = {},
-	            id = completion.completionId,
-	            type = completion.completionType;
-	        completionParams.completable_id = id;
-	        if (CurrentUserStore.isLoggedIn()) {
-	          completionParams.user_id = CurrentUserStore.currentUser().id;
-	        } else {
-	          completionParams.user_id = userId;
-	        }
-	        completionParams.completable_type = type;
-	        if (!CurrentUserStore.findCompletion(id, type)) {
-	          UsersApiUtil.createCompletionForUser(completionParams);
-	        }
-	      }.bind(this));
-	    }
-	    this.addEnrollments(userId);
-	    this._closeModal();
-	  },
-	
-	  addEnrollments: function (userId) {
-	    if (CookieStore.enrolledCourses()[0]) {
-	      CookieStore.enrolledCourses().forEach(function (courseId) {
-	        var enrollmentParams = {};
-	        enrollmentParams.course_id = courseId;
-	        if (CurrentUserStore.isLoggedIn()) {
-	          enrollmentParams.user_id = CurrentUserStore.currentUser().id;
-	        } else {
-	          enrollmentParams.user_id = userId;
-	        }
-	
-	        this.addNewEnrollment(enrollmentParams);
-	      }.bind(this));
-	    }
-	  },
-	
-	  addNewEnrollment: function (enrollmentParams) {
-	    if (!CurrentUserStore.findEnrollment(enrollmentParams)) {
-	      UsersApiUtil.createCourseEnrollment(enrollmentParams);
-	    }
-	  },
-	
-	  submitLogin: function (e) {
-	    e.preventDefault();
-	    var credentials = e.currentTarget;
-	    SessionsApiUtil.logIn(credentials, this.callback);
-	  },
-	
-	  _closeModal: function () {
-	    ModalActions.hideModal("signupModal");
-	  },
-	
-	  _showSignup: function () {
-	    this.setState({ toShow: "signup" });
-	  },
-	
-	  _showLogin: function () {
-	    this.setState({ toShow: "login" });
-	  },
-	
-	  signupView: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'signup-inputs group' },
-	      React.createElement(
-	        'h2',
-	        { className: 'signup-header' },
-	        'Sign Up'
-	      ),
-	      React.createElement(
-	        'form',
-	        { className: 'group', onSubmit: this.submitSignup },
-	        React.createElement(
-	          'div',
-	          { className: 'inputs group' },
-	          React.createElement(
-	            'div',
-	            { className: 'signup-input group' },
-	            React.createElement(
-	              'label',
-	              { htmlFor: 'username-signup' },
-	              'Username:'
-	            ),
-	            React.createElement('input', { id: 'username-signup', name: 'user[username]' })
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'signup-input group' },
-	            React.createElement(
-	              'label',
-	              { htmlFor: 'email-signup' },
-	              'Email:'
-	            ),
-	            React.createElement('input', { id: 'email-signup', name: 'user[email]' })
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'signup-input group' },
-	            React.createElement(
-	              'label',
-	              { htmlFor: 'password-signup' },
-	              'Password:'
-	            ),
-	            React.createElement('input', { id: 'password-signup', type: 'password', name: 'user[password]' })
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'signup-input group' },
-	            React.createElement(
-	              'label',
-	              { htmlFor: 'fname-signup' },
-	              'First name:'
-	            ),
-	            React.createElement('input', { id: 'fname-signup', name: 'user[fname]' })
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'signup-input group' },
-	            React.createElement(
-	              'label',
-	              { htmlFor: 'lname-signup' },
-	              'Last name:'
-	            ),
-	            React.createElement('input', { id: 'lname-signup', name: 'user[lname]' })
-	          )
-	        ),
-	        React.createElement(
-	          'button',
-	          { className: 'signup-button' },
-	          'Create account'
-	        )
-	      ),
-	      React.createElement(
-	        'form',
-	        { onSubmit: this.submitLogin },
-	        React.createElement(
-	          'div',
-	          { className: 'guest-inputs' },
-	          React.createElement('input', { type: 'hidden',
-	            name: 'session[username]',
-	            value: 'guest' }),
-	          React.createElement('input', { type: 'hidden',
-	            name: 'session[password]',
-	            value: 'password' }),
-	          React.createElement(
-	            'button',
-	            { className: 'guest-signup-button' },
-	            'Log in as guest'
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'oauth-buttons group' },
-	        React.createElement(
-	          'button',
-	          { className: 'facebook-login' },
-	          React.createElement(
-	            'a',
-	            { href: '/auth/facebook' },
-	            'Log in with Facebook'
-	          )
-	        ),
-	        React.createElement(
-	          'button',
-	          { className: 'google-login' },
-	          React.createElement(
-	            'a',
-	            { href: '/auth/google_oauth2' },
-	            'Log in with Google'
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'signup-bottom-bar' },
-	        React.createElement(
-	          'h3',
-	          { className: 'signup-bottom-bar-text' },
-	          'Have an account?'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this._showLogin },
-	          ' Log in.'
-	        )
-	      )
-	    );
-	  },
-	
-	  loginView: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'signup-inputs group' },
-	      React.createElement(
-	        'h2',
-	        { className: 'signup-header' },
-	        'Log In'
-	      ),
-	      React.createElement(
-	        'form',
-	        { className: 'login-form-form', onSubmit: this.submitLogin },
-	        React.createElement(
-	          'div',
-	          { className: 'login-form-form-inputs' },
-	          React.createElement('input', { name: 'session[username]',
-	            placeholder: 'Username' }),
-	          React.createElement('input', { type: 'password',
-	            name: 'session[password]',
-	            placeholder: 'Password' })
-	        ),
-	        React.createElement(
-	          'button',
-	          { id: 'signup-button' },
-	          'Log in'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'login-bottom-bar' },
-	        React.createElement(
-	          'button',
-	          { onClick: this._showSignup },
-	          'Create an account.'
-	        )
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var toRender, className;
-	    if (this.state.toShow === "signup") {
-	      toRender = this.signupView();
-	      className = "signup-form group box-shadowed";
-	    } else {
-	      toRender = this.loginView();
-	      className = "login-form group box-shadowed";
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: className },
-	      React.createElement('i', { className: 'fa fa-2x fa-times-circle-o',
-	        onClick: this._closeModal }),
-	      toRender
-	    );
-	  }
-	
-	});
-	
-	module.exports = SignupForm;
-
-/***/ },
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    CourseStore = __webpack_require__(253),
-	    CookieStore = __webpack_require__(239),
-	    SkillIndex = __webpack_require__(260),
-	    CoursesApiUtil = __webpack_require__(240);
-	
-	var Course = React.createClass({
-	  displayName: 'Course',
-	
-	  _cookiesChanged: function () {
-	    CoursesApiUtil.fetchCourse(this.props.params.courseId);
-	  },
-	
-	  getInitialState: function () {
-	    return { course: CourseStore.find(this.props.params.courseId) };
-	  },
-	
-	  componentDidMount: function () {
-	    var courseId = this.props.params.courseId;
-	    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
-	    this.courseListener = CourseStore.addListener(this._coursesChanged);
-	    CoursesApiUtil.fetchCourse(courseId);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.courseListener.remove();
-	    this.cookieListener.remove();
-	  },
-	
-	  _coursesChanged: function () {
-	    this.setState({ course: CourseStore.find(this.props.params.courseId) });
-	  },
-	
-	  render: function () {
-	
-	    if (typeof this.state.course === "undefined") {
-	      return React.createElement('div', null);
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'course-page' },
-	      React.createElement(
-	        'div',
-	        { className: 'iguana-pic' },
-	        React.createElement('img', { src: LinguanaAssets.iguana_book_wave })
-	      ),
-	      React.createElement(
-	        'h2',
-	        { className: 'course-page-header' },
-	        this.state.course.name,
-	        ' Skills'
-	      ),
-	      React.createElement(SkillIndex, { courseId: this.props.params.courseId })
-	    );
-	  }
-	});
-	
-	module.exports = Course;
-
-/***/ },
-/* 260 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    SkillStore = __webpack_require__(261),
-	    SkillIndexItem = __webpack_require__(263),
-	    CookieStore = __webpack_require__(239),
-	    SkillsApiUtil = __webpack_require__(264);
-	
-	var SkillIndex = React.createClass({
-	  displayName: 'SkillIndex',
-	
-	  getInitialState: function () {
-	    return { skills: SkillStore.findByCourse(this.props.courseId) };
-	  },
-	
-	  _onChange: function () {
-	    this.setState({ skills: SkillStore.all() });
-	  },
-	
-	  componentWillReceiveProps: function () {
-	    SkillsApiUtil.fetchSkills(this.props.courseId);
-	  },
-	
-	  componentDidMount: function () {
-	    this.skillListener = SkillStore.addListener(this._onChange);
-	    SkillsApiUtil.fetchSkills(this.props.courseId);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.skillListener.remove();
-	  },
-	
-	  renderTrophy: function () {
-	    var courseId = this.props.courseId;
-	    if (CurrentUserStore.findCompletion(this.props.courseId, "course") || CookieStore.findCompletionByTypeAndID("course", parseInt(courseId))) {
-	      return React.createElement(
-	        'div',
-	        { className: 'trophy-container' },
-	        React.createElement(
-	          'i',
-	          { className: 'fa completion-trophy fa-trophy fa-5x' },
-	          React.createElement(
-	            'h2',
-	            { className: 'trophy-text' },
-	            '100',
-	            React.createElement('i', { className: 'fa fa-percent' })
-	          )
-	        )
-	      );
-	    } else {
-	      return React.createElement('div', null);
-	    }
-	  },
-	
-	  render: function () {
-	    if (this.state.skills === {}) {
-	      return React.createElement('div', null);
-	    }
-	
-	    var skills = this.state.skills;
-	    var skillKeys = Object.keys(this.state.skills);
-	    skills = skillKeys.map(function (key, idx) {
-	      var prevSkill;
-	      var skill = skills[key];
-	      if (idx > 0) {
-	        prevSkill = skills[Object.keys(this.state.skills)[idx - 1]];
-	      }
-	
-	      return React.createElement(SkillIndexItem, { key: idx, skill: skill, prevSkill: prevSkill });
-	    }.bind(this));
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'skill-index' },
-	      React.createElement(
-	        'ul',
-	        { className: 'skill-list group' },
-	        skills
-	      ),
-	      this.renderTrophy()
-	    );
-	  }
-	});
-	
-	module.exports = SkillIndex;
-
-/***/ },
-/* 261 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(215).Store;
-	var SkillConstants = __webpack_require__(262);
-	var AppDispatcher = __webpack_require__(208);
-	var _skills = {};
-	var SkillStore = new Store(AppDispatcher);
-	
-	var resetSkills = function (skills) {
-	  _skills = Object.assign({}, skills);
-	};
-	
-	var addSkill = function (skill) {
-	  _skills[skill.id] = skill;
-	};
-	
-	SkillStore.findLastSkillId = function () {
-	  return Object.keys(_skills).slice(-1);
-	};
-	
-	SkillStore.findByCourse = function (courseId) {
-	  var result = {};
-	  if (_skills === {}) {
-	    return {};
-	  }
-	  Object.keys(_skills).forEach(function (key) {
-	    var skill = _skills[key];
-	    if (skill.course_id === courseId) {
-	      result[skill.id] = skill;
-	    }
-	  });
-	  return result;
-	};
-	
-	SkillStore.all = function () {
-	  return Object.assign({}, _skills);
-	};
-	
-	SkillStore.find = function (skillId) {
-	  return _skills[skillId];
-	};
-	
-	SkillStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case SkillConstants.SKILLS_RECEIVED:
-	      resetSkills(payload.skills);
-	      SkillStore.__emitChange();
-	      break;
-	    case SkillConstants.SKILL_RECEIVED:
-	      addSkill(payload.skill);
-	      SkillStore.__emitChange();
-	      break;
-	  }
-	};
-	
-	window.SkillStore = SkillStore;
-	
-	module.exports = SkillStore;
-
-/***/ },
-/* 262 */
+/* 240 */
 /***/ function(module, exports) {
 
-	var SkillConstants = {
-	  SKILLS_RECEIVED: "SKILLS_RECEIVED",
-	  SKILL_RECEIVED: "SKILL_RECEIVED"
+	var CourseConstants = {
+	  COURSES_RECEIVED: "COURSES_RECEIVED",
+	  COURSE_RECEIVED: "COURSE_RECEIVED"
 	};
 	
-	module.exports = SkillConstants;
+	module.exports = CourseConstants;
 
 /***/ },
-/* 263 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
+	var CourseActions = __webpack_require__(242);
 	
-	var SkillIndexItem = React.createClass({
-	  displayName: "SkillIndexItem",
-	
-	  renderUncompleted: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "skill-list-item-wrapper incomplete" },
-	      React.createElement(
-	        "p",
-	        { className: "skill-list-item" },
-	        React.createElement(
-	          "a",
-	          { className: "skill-list-circle",
-	            href: "#/skill/" + this.props.skill.id },
-	          React.createElement("i", { className: "fa fa-comment fa-3x" })
-	        ),
-	        this.props.skill.name
-	      )
-	    );
-	  },
-	
-	  renderCompleted: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "skill-list-item-wrapper completed" },
-	      React.createElement(
-	        "p",
-	        { className: "skill-list-item" },
-	        React.createElement(
-	          "a",
-	          { className: "skill-list-circle",
-	            href: "#/skill/" + this.props.skill.id },
-	          React.createElement("i", { className: "fa fa-trophy fa-3x" }),
-	          React.createElement("i", { className: "fa fa-comment" })
-	        ),
-	        this.props.skill.name
-	      )
-	    );
-	  },
-	
-	  renderLocked: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "skill-list-item-wrapper locked" },
-	      React.createElement(
-	        "p",
-	        { className: "skill-list-item" },
-	        React.createElement(
-	          "a",
-	          { className: "skill-list-circle" },
-	          React.createElement("i", { className: "fa fa-lock fa-3x" })
-	        ),
-	        this.props.skill.name
-	      )
-	    );
-	  },
-	
-	  completionExists: function (id) {
-	    return CurrentUserStore.findCompletion(id, "skill") || CookieStore.findCompletionByTypeAndID("skill", id);
-	  },
-	
-	  render: function () {
-	    var toRender,
-	        findCompletion = CurrentUserStore.findCompletion,
-	        prevSkill = this.props.prevSkill;
-	
-	    if (this.completionExists(this.props.skill.id)) {
-	      toRender = this.renderCompleted();
-	    } else if (prevSkill && this.completionExists(prevSkill.id) || !prevSkill) {
-	      toRender = this.renderUncompleted();
-	    } else {
-	      toRender = this.renderLocked();
-	    }
-	
-	    return toRender;
-	  }
-	});
-	
-	module.exports = SkillIndexItem;
-
-/***/ },
-/* 264 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var SkillActions = __webpack_require__(265);
-	
-	var SkillsApiUtil = {
-	  fetchSkills: function (courseId) {
-	
+	var CoursesApiUtil = {
+	  fetchCourses: function (lngName, success) {
 	    $.ajax({
 	      type: "GET",
-	      url: "api/courses/" + courseId + "/skills",
+	      url: "api/courses/?lngName=" + lngName,
 	      dataType: "json",
-	      success: function (skills) {
-	        var skillsPayload = {};
-	        skills.forEach(function (skill) {
-	          skillsPayload[skill.id] = skill;
+	      success: function (courses) {
+	        var coursesPayload = {};
+	        courses.forEach(function (course) {
+	          coursesPayload[course.id] = course;
 	        });
-	        SkillActions.receiveAll(skillsPayload);
-	      }
-	    });
-	  },
-	
-	  fetchSkill: function (skillId, success) {
-	    $.ajax({
-	      type: "GET",
-	      url: "api/skills/" + skillId,
-	      dataType: "json",
-	      success: function (skill) {
-	        SkillActions.receiveSkill(skill);
-	        success && success();
-	      }
-	    });
-	  }
-	};
-	
-	window.SkillsApiUtil = SkillsApiUtil;
-	
-	module.exports = SkillsApiUtil;
-
-/***/ },
-/* 265 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(208),
-	    SkillConstants = __webpack_require__(262);
-	
-	var SkillActions = {
-	  receiveAll: function (skills) {
-	    AppDispatcher.dispatch({
-	      actionType: SkillConstants.SKILLS_RECEIVED,
-	      skills: skills
-	    });
-	  },
-	
-	  receiveSkill: function (skill) {
-	    AppDispatcher.dispatch({
-	      actionType: SkillConstants.SKILL_RECEIVED,
-	      skill: skill
-	    });
-	  }
-	};
-	
-	module.exports = SkillActions;
-
-/***/ },
-/* 266 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    NavBar = __webpack_require__(213),
-	    CourseIndex = __webpack_require__(252);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  getInitialState: function () {
-	    return { currentView: "splash" };
-	  },
-	
-	  _handleGetStartedClick: function () {
-	    this.setState({ currentView: "courses" });
-	  },
-	
-	  _handleHeaderClick: function () {
-	    this.setState({ currentView: "splash" });
-	  },
-	
-	  splashView: function () {
-	    var splashText = "Learn a language. Or maybe not. We'll see.";
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'splash-contents group' },
-	      React.createElement(
-	        'h2',
-	        { className: 'splash-text' },
-	        splashText
-	      ),
-	      React.createElement(
-	        'button',
-	        { onClick: this._handleGetStartedClick,
-	          className: 'splash-button' },
-	        'Get started'
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var toRender;
-	    if (this.state.currentView === "splash") {
-	      toRender = this.splashView();
-	    } else if (this.state.currentView === "courses") {
-	      toRender = React.createElement(CourseIndex, null);
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'splash-wrapper' },
-	      React.createElement(
-	        'header',
-	        { className: 'splash-header-bar' },
-	        React.createElement(NavBar, { view: 'splash', handleHeaderClick: this._handleHeaderClick })
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'splash-main group' },
-	        toRender
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 267 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    SkillStore = __webpack_require__(261),
-	    LessonIndex = __webpack_require__(268),
-	    LessonStore = __webpack_require__(269),
-	    CurrentUserStore = __webpack_require__(232),
-	    UsersApiUtil = __webpack_require__(233),
-	    SkillsApiUtil = __webpack_require__(264);
-	
-	var Skill = React.createClass({
-	  displayName: 'Skill',
-	
-	  getInitialState: function () {
-	    return {
-	      skill: SkillStore.find(this.props.params.skillId),
-	      lessons: LessonStore.findBySkill(this.props.params.skillId)
-	    };
-	  },
-	
-	  componentDidMount: function () {
-	    var skillId = this.props.params.skillId;
-	    this.skillListener = SkillStore.addListener(this._skillsChanged);
-	    SkillsApiUtil.fetchSkill(skillId);
-	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
-	    LessonsApiUtil.fetchLessons(skillId);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.lessonListener.remove();
-	    this.skillListener.remove();
-	  },
-	
-	  _skillsChanged: function () {
-	    this.setState({ skill: SkillStore.find(this.props.params.skillId) });
-	  },
-	
-	  _lessonsChanged: function () {
-	    this.setState({
-	      lessons: LessonStore.findBySkill(this.props.params.skillId)
-	    });
-	  },
-	
-	  render: function () {
-	    if (typeof this.state.skill === "undefined" || !Object.keys(this.state.lessons)[0]) {
-	      return React.createElement('div', null);
-	    }
-	    var path = "#/course/" + this.state.skill.course_id;
-	    return React.createElement(
-	      'div',
-	      { className: 'skill-page' },
-	      React.createElement(
-	        'div',
-	        { className: 'group' },
-	        React.createElement(
-	          'h2',
-	          { className: 'skill-page-header' },
-	          this.state.skill.name
-	        ),
-	        React.createElement(
-	          'a',
-	          { href: path, className: 'skill-page-back-button' },
-	          'Back to Skills'
-	        )
-	      ),
-	      React.createElement(LessonIndex, { skillId: this.state.skill.id,
-	        lessons: this.state.lessons }),
-	      React.createElement(
-	        'div',
-	        { className: 'tips-and-notes' },
-	        React.createElement(
-	          'h2',
-	          { className: 'tips-and-notes-header' },
-	          'Tips and Notes'
-	        ),
-	        React.createElement(
-	          'p',
-	          { className: 'tips-and-notes-text' },
-	          this.state.skill.tips_and_notes
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Skill;
-
-/***/ },
-/* 268 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    LessonStore = __webpack_require__(269),
-	    LessonIndexItem = __webpack_require__(271),
-	    LessonsApiUtil = __webpack_require__(272);
-	
-	var LessonIndex = React.createClass({
-	  displayName: 'LessonIndex',
-	
-	
-	  render: function () {
-	    var lessons = this.props.lessons;
-	    if (typeof lessons === "undefined") {
-	      return React.createElement('div', null);
-	    }
-	
-	    var lessonKeys = Object.keys(this.props.lessons);
-	    var prevLesson, isLastLesson;
-	    lessons = lessonKeys.map(function (key, idx) {
-	      var lesson = lessons[key];
-	      if (idx > 0) {
-	        prevLesson = lessons[Object.keys(this.props.lessons)[idx - 1]];
-	      }
-	      if (idx === lessonKeys.length - 1) {
-	        isLastLesson = true;
-	      }
-	
-	      return React.createElement(LessonIndexItem, {
-	        key: idx,
-	        lesson: lesson,
-	        prevLesson: prevLesson,
-	        isLastLesson: isLastLesson });
-	    }.bind(this));
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-index' },
-	      React.createElement(
-	        'ul',
-	        { className: 'lesson-list group' },
-	        lessons
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = LessonIndex;
-
-/***/ },
-/* 269 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(215).Store;
-	var LessonConstants = __webpack_require__(270);
-	var AppDispatcher = __webpack_require__(208);
-	var ModalStore = __webpack_require__(214);
-	var LessonStore = new Store(AppDispatcher);
-	
-	var _lessons = {};
-	var resetLessons = function (lessons) {
-	  _lessons = Object.assign({}, lessons);
-	};
-	
-	var addLesson = function (lesson) {
-	  _lessons[lesson.id] = lesson;
-	};
-	
-	LessonStore.all = function () {
-	  return Object.assign({}, _lessons);
-	};
-	
-	LessonStore.find = function (lessonId) {
-	  return _lessons[lessonId];
-	};
-	
-	LessonStore.findLastLessonId = function () {
-	  return Object.keys(_lessons).slice(-1);
-	};
-	
-	LessonStore.findBySkill = function (skillId) {
-	  var result = {};
-	  if (_lessons === {}) {
-	    return {};
-	  }
-	  Object.keys(_lessons).forEach(function (key) {
-	    var lesson = _lessons[key];
-	    if (lesson.skill_id === parseInt(skillId)) {
-	      result[lesson.id] = lesson;
-	    }
-	  });
-	  return result;
-	};
-	
-	LessonStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case LessonConstants.LESSONS_RECEIVED:
-	      resetLessons(payload.lessons);
-	      LessonStore.__emitChange();
-	      break;
-	    case LessonConstants.LESSON_RECEIVED:
-	      addLesson(payload.lesson);
-	      LessonStore.__emitChange();
-	      break;
-	  }
-	};
-	
-	window.LessonStore = LessonStore;
-	
-	module.exports = LessonStore;
-
-/***/ },
-/* 270 */
-/***/ function(module, exports) {
-
-	var SkillConstants = {
-	  LESSONS_RECEIVED: "LESSONS_RECEIVED",
-	  LESSON_RECEIVED: "LESSON_RECEIVED"
-	};
-	
-	module.exports = SkillConstants;
-
-/***/ },
-/* 271 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    CurrentUserStore = __webpack_require__(232);
-	
-	var LessonIndexItem = React.createClass({
-	  displayName: 'LessonIndexItem',
-	
-	  renderPlayable: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-list-item-wrapper' },
-	      React.createElement(
-	        'h2',
-	        { className: 'lesson-list-item' },
-	        this.props.lesson.name
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'lesson-list-contents' },
-	        React.createElement(
-	          'a',
-	          { className: 'lesson-begin-button',
-	            href: "#/lessons/" + this.props.lesson.id },
-	          'Begin'
-	        )
-	      )
-	    );
-	  },
-	
-	  renderLocked: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-list-item-wrapper locked' },
-	      React.createElement(
-	        'h2',
-	        { className: 'lesson-list-item' },
-	        this.props.lesson.name
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'lesson-list-contents' },
-	        React.createElement('i', { className: 'fa fa-lock fa-lg' }),
-	        React.createElement(
-	          'h3',
-	          { className: 'lesson-begin-button' },
-	          'Locked'
-	        )
-	      )
-	    );
-	  },
-	
-	  renderCompleted: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-list-item-wrapper completed' },
-	      React.createElement(
-	        'h2',
-	        { className: 'lesson-list-item' },
-	        this.props.lesson.name
-	      ),
-	      React.createElement('i', { className: 'fa fa-check-circle fa-2x' }),
-	      React.createElement(
-	        'div',
-	        { className: 'lesson-list-contents' },
-	        React.createElement(
-	          'a',
-	          { className: 'lesson-begin-button',
-	            href: "#/lessons/" + this.props.lesson.id },
-	          'Redo'
-	        )
-	      )
-	    );
-	  },
-	
-	  completionExists: function (id) {
-	    return CurrentUserStore.findCompletion(id, "lesson") || CookieStore.findCompletionByTypeAndID("lesson", id);
-	  },
-	
-	  render: function () {
-	    var toRender,
-	        findCompletion = CurrentUserStore.findCompletion,
-	        prevLesson = this.props.prevLesson;
-	    if (this.completionExists(this.props.lesson.id)) {
-	      toRender = this.renderCompleted();
-	    } else if (prevLesson && this.completionExists(prevLesson.id) || !prevLesson) {
-	      toRender = this.renderPlayable();
-	    } else {
-	      toRender = this.renderLocked();
-	    }
-	
-	    return toRender;
-	  }
-	});
-	
-	module.exports = LessonIndexItem;
-
-/***/ },
-/* 272 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var LessonActions = __webpack_require__(273);
-	
-	var LessonsApiUtil = {
-	  fetchLessons: function (skillId) {
-	    $.ajax({
-	      type: "GET",
-	      url: "api/skills/" + skillId + "/lessons",
-	      dataType: "json",
-	      success: function (lessons) {
-	        var lessonsPayload = {};
-	        lessons.forEach(function (lesson) {
-	          lessonsPayload[lesson.id] = lesson;
-	        });
-	        LessonActions.receiveAll(lessonsPayload);
-	      }
-	    });
-	  },
-	
-	  fetchLesson: function (lessonId, successCallback) {
-	    $.ajax({
-	      type: "GET",
-	      url: "api/lessons/" + lessonId,
-	      dataType: "json",
-	      success: function (lesson) {
-	        LessonActions.receiveLesson(lesson);
-	        successCallback && successCallback();
-	      }
-	    });
-	  }
-	};
-	
-	window.LessonsApiUtil = LessonsApiUtil;
-	
-	module.exports = LessonsApiUtil;
-
-/***/ },
-/* 273 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(208),
-	    LessonConstants = __webpack_require__(270);
-	
-	var LessonActions = {
-	  receiveAll: function (lessons) {
-	    AppDispatcher.dispatch({
-	      actionType: LessonConstants.LESSONS_RECEIVED,
-	      lessons: lessons
-	    });
-	  },
-	
-	  receiveLesson: function (lesson) {
-	    AppDispatcher.dispatch({
-	      actionType: LessonConstants.LESSON_RECEIVED,
-	      lesson: lesson
-	    });
-	  }
-	};
-	
-	module.exports = LessonActions;
-
-/***/ },
-/* 274 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    NavBar = __webpack_require__(213),
-	    SignupModal = __webpack_require__(257),
-	    CookieStore = __webpack_require__(239),
-	    CourseIndex = __webpack_require__(252);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'main-content group' },
-	      this.props.children
-	    );
-	  }
-	});
-
-/***/ },
-/* 275 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    NavBar = __webpack_require__(213),
-	    SignupModal = __webpack_require__(257),
-	    Sidebar = __webpack_require__(291),
-	    CourseIndex = __webpack_require__(252);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  getInitialState: function () {
-	    return { currentView: "courseAndSkill" };
-	  },
-	
-	  _handleGetStartedClick: function () {
-	    this.setState({ currentView: "lesson" });
-	  },
-	
-	  courseAndSkillView: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'main-wrapper' },
-	      React.createElement(
-	        'div',
-	        { className: 'main group' },
-	        this.props.children
-	      )
-	    );
-	  },
-	
-	  lessonView: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'main-wrapper' },
-	      React.createElement(
-	        'div',
-	        { className: 'main group' },
-	        this.props.children
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var toRender;
-	    if (this.state.currentView === "courseAndSkill") {
-	      toRender = this.courseAndSkillView();
-	    } else if (/.*(lessons).*/.test(location.hash)) {
-	      toRender = this.lessonView();
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'main-wrapper group' },
-	      React.createElement(SignupModal, null),
-	      React.createElement(
-	        'header',
-	        { className: 'header-bar' },
-	        React.createElement(NavBar, { view: 'main' })
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'main group' },
-	        toRender
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 276 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    LessonStore = __webpack_require__(269),
-	    LessonsApiUtil = __webpack_require__(272),
-	    ExercisesApiUtil = __webpack_require__(277),
-	    SkillsApiUtil = __webpack_require__(264),
-	    SkillStore = __webpack_require__(261),
-	    TipsAndNotesModal = __webpack_require__(280),
-	    ModalActions = __webpack_require__(207),
-	    ExerciseActions = __webpack_require__(278),
-	    Exercise = __webpack_require__(281),
-	    ProgressBar = __webpack_require__(285),
-	    LessonBottomBar = __webpack_require__(287),
-	    History = __webpack_require__(159).History,
-	    LessonFinalPage = __webpack_require__(288);
-	
-	var Lesson = React.createClass({
-	  displayName: 'Lesson',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return {
-	      lesson: LessonStore.find(this.props.params.lessonId),
-	      showModal: false,
-	      showExercise: false,
-	      showFinalPage: false,
-	      checkButtonClicked: false,
-	      lessonOver: false,
-	      currentExerciseIdx: 0,
-	      answerChoiceStatus: "",
-	      currentAnswerChoiceIdx: -1
-	    };
-	  },
-	
-	  componentDidMount: function () {
-	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
-	    this.skillListener = SkillStore.addListener(function () {
-	      this.forceUpdate();
-	    }.bind(this));
-	
-	    var lessonId = this.props.params.lessonId;
-	
-	    LessonsApiUtil.fetchLesson(lessonId, function () {
-	
-	      this.setState({
-	        lesson: LessonStore.find(this.props.params.lessonId),
-	        showModal: true
-	      });
-	
-	      ExercisesApiUtil.fetchExercises(this.state.lesson.id, function () {
-	        this.setState({ showExercise: true });
-	      }.bind(this));
-	    }.bind(this));
-	    SkillsApiUtil.fetchSkills(CookieStore.getLocalStorage("curCourseId"));
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.lessonListener.remove();
-	    this.skillListener.remove();
-	  },
-	
-	  _lessonsChanged: function () {
-	    this.setState({
-	      lesson: LessonStore.find(this.props.params.lessonId),
-	      showModal: this.state.showModal
-	    });
-	  },
-	
-	  _handleTipsAndNotesClick: function () {
-	    ModalActions.toggleModalDisplay("tipsAndNotesModal");
-	  },
-	
-	  _handleCheckClick: function () {
-	    if (this.state.answerChoiceStatus === "otherIsSelected") {
-	      ExerciseActions.pushExercise(this.state.currentExerciseIdx);
-	    }
-	    var exercisesLength = ExerciseStore.all().length,
-	        nextExerciseIdx = this.state.currentExerciseIdx + 1,
-	        isCorrect = this.state.answerChoiceStatus === "correctIsSelected";
-	    if (exercisesLength === nextExerciseIdx && isCorrect) {
-	      this.setState({ checkButtonClicked: true, lessonOver: true });
-	    } else {
-	      this.setState({ checkButtonClicked: true });
-	    }
-	  },
-	
-	  _handleContinueClick: function () {
-	    var nextExerciseIdx = this.state.currentExerciseIdx + 1;
-	    if (this.state.showFinalPage) {
-	      var url = "/skill/" + this.state.lesson.skill_id;
-	      this.history.pushState(null, url);
-	    } else if (this.state.lessonOver) {
-	      this.setState({ showFinalPage: true });
-	    } else if (this.state.answerChoiceStatus === "otherIsSelected") {
-	      ExerciseActions.removeFirstExercise();
-	      nextExerciseIdx = this.state.currentExerciseIdx;
-	    }
-	
-	    if (!this.state.showFinalPage) {
-	      this.setState({
-	        currentExerciseIdx: nextExerciseIdx,
-	        checkButtonClicked: false,
-	        answerChoiceStatus: "",
-	        currentAnswerChoiceIdx: -1
-	      });
-	    }
-	  },
-	
-	  _handleSkipClick: function () {
-	    ExerciseActions.pushExercise(this.state.currentExerciseIdx);
-	    this.setState({
-	      answerChoiceStatus: "otherIsSelected",
-	      checkButtonClicked: true
-	    });
-	  },
-	
-	  getAnswerChoiceStatus: function (status, idx) {
-	    this.setState({
-	      answerChoiceStatus: status,
-	      currentAnswerChoiceIdx: idx
-	    });
-	  },
-	
-	  exercise: function () {
-	    return React.createElement(Exercise, { lessonId: this.state.lesson.id,
-	      exerciseIdx: this.state.currentExerciseIdx,
-	      currentAnswerChoiceIdx: this.state.currentAnswerChoiceIdx,
-	      getAnswerChoiceStatus: this.getAnswerChoiceStatus,
-	      checkClicked: this.state.checkButtonClicked });
-	  },
-	
-	  bottomBar: function () {
-	    var bottomBar = React.createElement(LessonBottomBar, {
-	      selected: this.state.answerChoiceStatus,
-	      showFinalPageBar: this.state.showFinalPage,
-	      checkClicked: this.state.checkButtonClicked,
-	      onClickContinue: this._handleContinueClick,
-	      onClickCheck: this._handleCheckClick,
-	      onClickSkip: this._handleSkipClick });
-	
-	    return bottomBar;
-	  },
-	
-	  progressBar: function () {
-	    var currentIdx = this.state.currentExerciseIdx;
-	    if (this.state.lessonOver) {
-	      currentIdx = this.state.currentExerciseIdx + 1;
-	    }
-	    return React.createElement(ProgressBar, { currentIdx: currentIdx });
-	  },
-	
-	  exercisePage: function () {
-	    var tipsAndNotes, tipsAndNotesButton;
-	
-	    if (this.state.showModal && this.state.lesson.tips_and_notes) {
-	      tipsAndNotesButton = React.createElement(
-	        'h3',
-	        { onClick: this._handleTipsAndNotesClick,
-	          className: 'tips-and-notes-modal-button' },
-	        'Tips & notes'
-	      );
-	
-	      tipsAndNotes = React.createElement(TipsAndNotesModal, {
-	        tipsAndNotes: this.state.lesson.tips_and_notes });
-	    }
-	
-	    var exercise, progressBar, bottomBar;
-	
-	    if (this.state.showExercise) {
-	      progressBar = this.progressBar();
-	      exercise = this.exercise();
-	      bottomBar = this.bottomBar();
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-page-content' },
-	      React.createElement(
-	        'div',
-	        { className: 'tips-and-notes-wrapper group' },
-	        tipsAndNotesButton,
-	        tipsAndNotes,
-	        React.createElement(
-	          'a',
-	          { className: 'tips-and-notes-quit',
-	            href: "#/skill/" + this.state.lesson.skill_id },
-	          'Quit'
-	        )
-	      ),
-	      progressBar,
-	      exercise,
-	      bottomBar
-	    );
-	  },
-	
-	  finalPage: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-page-content' },
-	      React.createElement(LessonFinalPage, { lesson: this.state.lesson }),
-	      this.bottomBar()
-	    );
-	  },
-	
-	  render: function () {
-	    var lessonClass = "lesson-page";
-	    if (this.state.checkButtonClicked) {
-	      lessonClass = "disabled-lesson lesson-page";
-	    }
-	    if (typeof this.state.lesson === "undefined") {
-	      return React.createElement('div', null);
-	    }
-	
-	    var toRender = this.exercisePage();
-	    if (this.state.showFinalPage) {
-	      toRender = this.finalPage();
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: lessonClass },
-	      toRender
-	    );
-	  }
-	});
-	
-	module.exports = Lesson;
-
-/***/ },
-/* 277 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ExerciseActions = __webpack_require__(278);
-	
-	var shuffleArray = function (array) {
-		for (var i = array.length - 1; i > 0; i--) {
-			var j = Math.floor(Math.random() * (i + 1));
-			var temp = array[i];
-			array[i] = array[j];
-			array[j] = temp;
-		}
-		return array;
-	};
-	
-	var ExercisesApiUtil = {
-		fetchExercises: function (lessonId, successCallback) {
-			$.ajax({
-				type: "GET",
-				url: "api/lessons/" + lessonId + "/exercises",
-				dataType: "json",
-				success: function (exercises) {
-					exercises.forEach(function (exercise, idx) {
-						var shuffled = shuffleArray(exercise.answer_choices);
-						exercises[idx].answer_choices = shuffled;
-					});
-	
-					ExerciseActions.receiveAll(shuffleArray(exercises));
-					successCallback && successCallback();
-				}
-			});
-		}
-	};
-	
-	window.ExercisesApiUtil = ExercisesApiUtil;
-	
-	module.exports = ExercisesApiUtil;
-
-/***/ },
-/* 278 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(208),
-	    ExerciseConstants = __webpack_require__(279);
-	
-	var ExerciseActions = {
-	  receiveAll: function (exercises) {
-	    AppDispatcher.dispatch({
-	      actionType: ExerciseConstants.EXERCISES_RECEIVED,
-	      exercises: exercises
-	    });
-	  },
-	
-	  pushExercise: function (exercise) {
-	    AppDispatcher.dispatch({
-	      actionType: ExerciseConstants.EXERCISE_RECEIVED,
-	      exercise: exercise
-	    });
-	  },
-	
-	  removeFirstExercise: function () {
-	    AppDispatcher.dispatch({
-	      actionType: ExerciseConstants.REMOVE_FIRST_EXERCISE
-	    });
-	  }
-	};
-	
-	module.exports = ExerciseActions;
-
-/***/ },
-/* 279 */
-/***/ function(module, exports) {
-
-	var ExerciseConstants = {
-	  EXERCISES_RECEIVED: "EXERCISES_RECEIVED",
-	  EXERCISE_RECEIVED: "EXERCISE_RECEIVED",
-	  REMOVE_FIRST_EXERCISE: "REMOVE_FIRST_EXERCISE"
-	};
-	
-	module.exports = ExerciseConstants;
-
-/***/ },
-/* 280 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ModalActions = __webpack_require__(207),
-	    ModalStore = __webpack_require__(214);
-	
-	var TipsAndNotesModal = React.createClass({
-	  displayName: 'TipsAndNotesModal',
-	
-	  getInitialState: function () {
-	    return { modalName: "tipsAndNotesModal" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.modalListener = ModalStore.addListener(this._modalsChanged);
-	    var modalName = this.state.modalName;
-	    ModalActions.addModal(modalName);
-	    this.forceUpdate();
-	  },
-	
-	  _modalsChanged: function () {
-	    var modalName = this.state.modalName;
-	    this.forceUpdate();
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.modalListener.remove();
-	  },
-	
-	  _closeDropdown: function () {
-	    ModalActions.hideModal("tipsAndNotesModal");
-	  },
-	
-	  visibleRender: function () {
-	    var tipsAndNotes;
-	
-	    if (this.props.tipsAndNotes) {
-	      tipsAndNotes = this.props.tipsAndNotes;
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'tips-and-notes-modal box-shadowed' },
-	      React.createElement(
-	        'div',
-	        { className: 'tips-and-notes-text-wrapper' },
-	        React.createElement('i', { className: 'fa fa-2x fa-times-circle-o',
-	          onClick: this._closeDropdown }),
-	        React.createElement(
-	          'p',
-	          { className: 'tips-and-notes-modal-text' },
-	          tipsAndNotes
-	        )
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
-	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
-	
-	    return renderedHTML;
-	  }
-	});
-	
-	module.exports = TipsAndNotesModal;
-
-/***/ },
-/* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ExerciseStore = __webpack_require__(282),
-	    ExercisesApiUtil = __webpack_require__(277),
-	    AnswerChoiceIndex = __webpack_require__(283);
-	
-	var Exercise = React.createClass({
-	  displayName: 'Exercise',
-	
-	  getInitialState: function () {
-	    return {
-	      exercise: undefined,
-	      showAnswerChoices: false
-	    };
-	  },
-	
-	  componentDidMount: function () {
-	    this.exerciseListener = ExerciseStore.addListener(this._exercisesChanged);
-	    ExercisesApiUtil.fetchExercises(this.props.lessonId, function () {
-	      this.setState({
-	        exercise: ExerciseStore.findByIdx(this.props.exerciseIdx),
-	        showAnswerChoices: true
-	      });
-	    }.bind(this));
-	  },
-	
-	  componentWillReceiveProps: function (newProps) {
-	    var newExercise = ExerciseStore.findByIdx(newProps.exerciseIdx);
-	    this.setState({ exercise: newExercise });
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.exerciseListener.remove();
-	  },
-	
-	  _exercisesChanged: function () {
-	    var exercise = ExerciseStore.findByIdx(this.props.exerciseIdx);
-	    this.setState({ exercise: exercise });
-	  },
-	
-	  render: function () {
-	    if (typeof this.state.exercise === "undefined") {
-	      return React.createElement('div', null);
-	    }
-	
-	    var answerChoices;
-	    if (this.state.showAnswerChoices) {
-	
-	      answerChoices = React.createElement(AnswerChoiceIndex, {
-	        currentAnswerChoiceIdx: this.props.currentAnswerChoiceIdx,
-	        answerChoices: this.state.exercise.answer_choices,
-	        getAnswerChoiceStatus: this.props.getAnswerChoiceStatus,
-	        checkClicked: this.props.checkClicked });
-	    }
-	
-	    var thing_to_translate = this.state.exercise.thing_to_translate;
-	    return React.createElement(
-	      'div',
-	      { className: 'exercise' },
-	      React.createElement(
-	        'div',
-	        { className: 'exercise-contents' },
-	        React.createElement(
-	          'h2',
-	          { className: 'exercise-header' },
-	          thing_to_translate
-	        ),
-	        answerChoices
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Exercise;
-
-/***/ },
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(215).Store;
-	var ExerciseConstants = __webpack_require__(279);
-	var AppDispatcher = __webpack_require__(208);
-	var ModalStore = __webpack_require__(214);
-	
-	var ExerciseStore = new Store(AppDispatcher);
-	
-	var _exercises = [];
-	
-	var resetExercises = function (exercises) {
-	  _exercises = exercises.slice();
-	};
-	
-	var pushExercise = function (exerciseIdx) {
-	  var toPush = _exercises[exerciseIdx];
-	  _exercises.push(toPush);
-	  return _exercises;
-	};
-	
-	var removeFirstExercise = function () {
-	  _exercises.splice(0, 1);
-	  return _exercises;
-	};
-	
-	ExerciseStore.all = function () {
-	  return _exercises.slice();
-	};
-	
-	ExerciseStore.findByIdx = function (idx) {
-	  return _exercises[idx];
-	};
-	
-	ExerciseStore.findByLesson = function (lessonId) {
-	  var result = [];
-	  if (_exercises === []) {
-	    return {};
-	  }
-	  _exercises.forEach(function (exercise) {
-	    if (exercise.lesson_id === lessonId) {
-	      result.push(exercise);
-	    }
-	  });
-	  return result;
-	};
-	
-	ExerciseStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case ExerciseConstants.EXERCISES_RECEIVED:
-	      resetExercises(payload.exercises);
-	      ExerciseStore.__emitChange();
-	      break;
-	    case ExerciseConstants.EXERCISE_RECEIVED:
-	      pushExercise(payload.exercise);
-	      ExerciseStore.__emitChange();
-	      break;
-	    case ExerciseConstants.REMOVE_FIRST_EXERCISE:
-	      removeFirstExercise();
-	      ExerciseStore.__emitChange();
-	      break;
-	  }
-	};
-	
-	window.ExerciseStore = ExerciseStore;
-	
-	module.exports = ExerciseStore;
-
-/***/ },
-/* 283 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    AnswerChoiceIndexItem = __webpack_require__(284);
-	
-	var AnswerChoiceIndex = React.createClass({
-	  displayName: 'AnswerChoiceIndex',
-	
-	  _handleClick: function (idx) {
-	    if (this.props.answerChoices[idx].is_correct) {
-	      this.props.getAnswerChoiceStatus("correctIsSelected", idx);
-	    } else {
-	      this.props.getAnswerChoiceStatus("otherIsSelected", idx);
-	    }
-	  },
-	
-	  answerChoices: function () {
-	    var answerChoices = this.props.answerChoices;
-	    answerChoices = answerChoices.map(function (choice, idx) {
-	
-	      var selected;
-	
-	      if (idx === this.props.currentAnswerChoiceIdx) {
-	        selected = "selected";
-	      }
-	
-	      var _handleClick;
-	      if (!this.props.checkClicked) {
-	        _handleClick = this._handleClick;
-	      }
-	
-	      return React.createElement(AnswerChoiceIndexItem, {
-	        key: idx,
-	        selected: selected,
-	        answerChoice: choice,
-	        idx: idx,
-	        _handleClick: _handleClick });
-	    }.bind(this));
-	    return answerChoices;
-	  },
-	
-	  render: function () {
-	    if (this.props.answerChoices === []) {
-	      return React.createElement('div', null);
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'answer-choice-index' },
-	      React.createElement(
-	        'ul',
-	        { className: 'answer-choice-list group' },
-	        this.answerChoices()
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = AnswerChoiceIndex;
-
-/***/ },
-/* 284 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    key = __webpack_require__(317);
-	
-	var AnswerChoiceIndexItem = React.createClass({
-	  displayName: 'AnswerChoiceIndexItem',
-	
-	  bindKeyHandlers: function () {
-	    var idx = this.props.idx;
-	
-	    key((idx + 1).toString(), function () {
-	      this.props._handleClick(idx);
-	    }.bind(this));
-	  },
-	
-	  componentDidMount: function () {
-	    this.bindKeyHandlers();
-	  },
-	
-	  componentWillUnmount: function () {
-	    key.unbind((this.props.idx + 1).toString());
-	  },
-	
-	  _handleClick: function () {
-	    if (this.props._handleClick) {
-	      var idx = this.props.idx;
-	      this.props._handleClick(idx);
-	    }
-	  },
-	
-	  render: function () {
-	    var classes = "answer-choice-list-item-wrapper",
-	        circle = React.createElement('i', { className: 'fa fa-lg fa-circle-o' });
-	    if (this.props.selected) {
-	      classes = "answer-choice-list-item-wrapper selected";
-	      circle = React.createElement('i', { className: 'fa fa-lg fa-dot-circle-o' });
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { onClick: this._handleClick,
-	        className: classes },
-	      circle,
-	      React.createElement(
-	        'li',
-	        { className: 'answer-choice-list-item' },
-	        this.props.answerChoice.body
-	      ),
-	      React.createElement(
-	        'li',
-	        { className: 'answer-choice-item-idx' },
-	        this.props.idx + 1
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = AnswerChoiceIndexItem;
-
-/***/ },
-/* 285 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ProgressBarChunk = __webpack_require__(286),
-	    ExerciseStore = __webpack_require__(282);
-	
-	var ProgressBar = React.createClass({
-	  displayName: 'ProgressBar',
-	
-	  componentWillReceiveProps: function (newProps) {
-	    this.forceUpdate();
-	  },
-	
-	  render: function () {
-	    var totalChunks = ExerciseStore.all().length;
-	    var currentChunkIdx = this.props.currentIdx;
-	    var bar = [];
-	    for (var i = 0; i <= totalChunks; i++) {
-	
-	      if (i === currentChunkIdx + 1) {
-	
-	        bar.push(React.createElement(ProgressBarChunk, {
-	          width: 0,
-	          background: 'white',
-	          className: 'current-chunk empty-chunk',
-	          key: i }));
-	      } else if (i > currentChunkIdx) {
-	
-	        bar.push(React.createElement(ProgressBarChunk, {
-	          width: Math.floor(550 / totalChunks),
-	          className: 'unfilled-chunk',
-	          background: 'white',
-	          key: i }));
-	      } else if (i === currentChunkIdx) {
-	
-	        bar.push(React.createElement(ProgressBarChunk, {
-	          width: Math.floor(550 / totalChunks),
-	          background: 'rgb(28, 175, 246)',
-	          className: 'current-chunk',
-	          key: i }));
-	      } else {
-	
-	        bar.push(React.createElement(ProgressBarChunk, {
-	          width: Math.floor(550 / totalChunks),
-	          className: 'filled-chunk',
-	          background: 'rgb(28, 175, 246)',
-	          key: i }));
-	      }
-	    }
-	
-	    var trophyClass = "fa fa-3x fa-trophy disabled-trophy";
-	    if (this.props.currentIdx === ExerciseStore.all().length) {
-	      trophyClass = "fa fa-3x fa-trophy";
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'progress-bar' },
-	      React.createElement(
-	        'div',
-	        { className: 'progress-bar-chunks group' },
-	        bar
-	      ),
-	      React.createElement('i', { className: trophyClass })
-	    );
-	  }
-	});
-	
-	module.exports = ProgressBar;
-
-/***/ },
-/* 286 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    ExerciseStore = __webpack_require__(282);
-	
-	var ProgressBarChunk = React.createClass({
-	  displayName: 'ProgressBarChunk',
-	
-	  render: function () {
-	
-	    return React.createElement('div', { style: { "width": this.props.width, "background": this.props.background },
-	      className: "chunk " + this.props.className });
-	  }
-	});
-	
-	module.exports = ProgressBarChunk;
-
-/***/ },
-/* 287 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    key = __webpack_require__(317);
-	
-	var LessonBottomBar = React.createClass({
-	  displayName: 'LessonBottomBar',
-	
-	  bindKeyHandlers: function () {
-	    key('enter', function () {
-	      if (this.props.showFinalPageBar) {
-	        key.unbind('enter');
+	        CourseActions.receiveAll(coursesPayload);
 	        setTimeout(function () {
-	          key('enter', function () {
-	            this.props.onClickContinue();
-	          }.bind(this));
+	          success && success();
 	        }.bind(this), 0);
-	      } else if (this.props.checkClicked) {
-	        this.props.onClickContinue();
-	      } else if (this.props.selected) {
-	        this.props.onClickCheck();
 	      }
-	    }.bind(this));
+	    });
 	  },
 	
-	  componentDidMount: function () {
-	    this.bindKeyHandlers();
-	  },
-	
-	  componentWillUnmount: function () {
-	    key.unbind('enter');
-	  },
-	
-	  _correctAnswerBar: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-bottom-bar-correct group' },
-	      React.createElement('i', { className: 'fa fa-4x fa-check-circle-o' }),
-	      React.createElement(
-	        'h2',
-	        { className: 'bottom-bar-header' },
-	        'You got it!'
-	      ),
-	      React.createElement(
-	        'a',
-	        { onClick: this.props.onClickContinue,
-	          className: 'check-button' },
-	        'Continue'
-	      )
-	    );
-	  },
-	  _incorrectAnswerBar: function () {
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-bottom-bar-incorrect group' },
-	      React.createElement('i', { className: 'fa fa-4x fa-times-circle-o' }),
-	      React.createElement(
-	        'h2',
-	        { className: 'bottom-bar-header' },
-	        'That wasn\'t right...'
-	      ),
-	      React.createElement(
-	        'a',
-	        { onClick: this.props.onClickContinue,
-	          className: 'check-button' },
-	        'Continue'
-	      )
-	    );
-	  },
-	
-	  _selectedAnswerBar: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-bottom-bar group' },
-	      React.createElement(
-	        'a',
-	        { onClick: this.props.onClickSkip,
-	          className: 'skip-button' },
-	        'Skip'
-	      ),
-	      React.createElement(
-	        'a',
-	        { onClick: this.props.onClickCheck,
-	          className: 'check-button' },
-	        'Check'
-	      )
-	    );
-	  },
-	
-	  _unselectedAnswerBar: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-bottom-bar group' },
-	      React.createElement(
-	        'a',
-	        { onClick: this.props.onClickSkip,
-	          className: 'skip-button' },
-	        'Skip'
-	      ),
-	      React.createElement(
-	        'a',
-	        { className: 'disabled-check-button' },
-	        'Check'
-	      )
-	    );
-	  },
-	
-	  _finalPageBar: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-bottom-bar final-page-bar group' },
-	      React.createElement(
-	        'a',
-	        { onClick: this.props.onClickContinue,
-	          className: 'check-button' },
-	        'Continue'
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var bar;
-	    if (this.props.showFinalPageBar) {
-	      bar = this._finalPageBar();
-	    } else if (this.props.checkClicked) {
-	      if (this.props.selected === "correctIsSelected") {
-	        bar = this._correctAnswerBar();
-	      } else {
-	        bar = this._incorrectAnswerBar();
+	  fetchCourse: function (courseId) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/courses/" + courseId,
+	      dataType: "json",
+	      success: function (course) {
+	        CourseActions.receiveCourse(course);
 	      }
-	    } else if (this.props.selected) {
-	      bar = this._selectedAnswerBar();
-	    } else {
-	      bar = this._unselectedAnswerBar();
-	    }
-	
-	    return bar;
+	    });
 	  }
-	});
+	};
 	
-	module.exports = LessonBottomBar;
+	window.CoursesApiUtil = CoursesApiUtil;
+	
+	module.exports = CoursesApiUtil;
 
 /***/ },
-/* 288 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1),
-	    UsersApiUtil = __webpack_require__(233),
-	    SkillStore = __webpack_require__(261),
-	    CookieActions = __webpack_require__(245),
-	    LessonBottomBar = __webpack_require__(287);
+	var AppDispatcher = __webpack_require__(208),
+	    CourseConstants = __webpack_require__(240);
 	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  componentDidMount: function () {
-	    this.lessonCompletionCheck();
+	var CourseActions = {
+	  receiveAll: function (courses) {
+	    AppDispatcher.dispatch({
+	      actionType: CourseConstants.COURSES_RECEIVED,
+	      courses: courses
+	    });
 	  },
 	
-	  lessonCompletionCheck: function () {
-	    var points = ExerciseStore.all().length;
-	    var completionParams = {};
-	    completionParams.user_id = CurrentUserStore.currentUser().id;
-	    completionParams.completable_id = this.props.lesson.id;
-	    completionParams.completable_type = "lesson";
-	    if (!CurrentUserStore.isLoggedIn()) {
-	      var cookie = { curCompletions: { completionType: completionParams.completable_type,
-	          completionId: completionParams.completable_id
-	        }
-	      };
-	      CookieActions.receiveCookie(cookie);
-	      CookieActions.receiveCookie({ curPoints: points });
-	      if (this.props.lesson.id == LessonStore.findLastLessonId()) {
-	        this.createSkillCompletion();
-	      }
-	    } else if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
-	      var curUser = CurrentUserStore.currentUser();
-	      UsersApiUtil.createCompletionForUser(completionParams, function () {
-	        UsersApiUtil.awardPoints(curUser, function () {
-	          if (this.props.lesson.id == LessonStore.findLastLessonId()) {
-	            this.createSkillCompletion();
-	          }
-	        }.bind(this));
-	      }.bind(this));
-	    } else {
-	      var curUser = CurrentUserStore.currentUser();
-	      UsersApiUtil.awardPoints(curUser, points);
-	    }
-	  },
-	
-	  createSkillCompletion: function () {
-	    var skill = SkillStore.find(this.props.lesson.skill_id);
-	    var completionParams = {};
-	    completionParams.user_id = CurrentUserStore.currentUser().id;
-	    completionParams.completable_id = skill.id;
-	    completionParams.completable_type = "skill";
-	    if (CurrentUserStore.isLoggedIn()) {
-	      UsersApiUtil.createCompletionForUser(completionParams, function () {
-	        if (skill.id == SkillStore.findLastSkillId()) {
-	          this.createCourseCompletion();
-	        }
-	      }.bind(this));
-	    } else {
-	      var cookie = { curCompletions: { completionType: "skill",
-	          completionId: completionParams.completable_id
-	        }
-	      };
-	      CookieActions.receiveCookie(cookie);
-	      if (skill.id == SkillStore.findLastSkillId()) {
-	        this.createCourseCompletion();
-	      }
-	    }
-	  },
-	
-	  createCourseCompletion: function () {
-	    var skill = SkillStore.find(this.props.lesson.skill_id);
-	    var courseId = skill.course_id;
-	    var completionParams = {};
-	    completionParams.user_id = CurrentUserStore.currentUser().id;
-	    completionParams.completable_id = courseId;
-	    completionParams.completable_type = "course";
-	    if (CurrentUserStore.isLoggedIn()) {
-	      UsersApiUtil.createCompletionForUser(completionParams);
-	    } else {
-	      var cookie = { curCompletions: { completionType: "course",
-	          completionId: completionParams.completable_id
-	        }
-	      };
-	      CookieActions.receiveCookie(cookie);
-	    }
-	  },
-	
-	  render: function () {
-	    var points = ExerciseStore.all().length,
-	        pointsText = "+" + points + " points";
-	    return React.createElement(
-	      'div',
-	      { className: 'lesson-final group' },
-	      React.createElement(
-	        'div',
-	        { className: 'lesson-final-contents group' },
-	        React.createElement(
-	          'h2',
-	          { className: 'lesson-final-header' },
-	          'Lesson complete!'
-	        ),
-	        React.createElement(
-	          'h2',
-	          { className: 'lesson-final-counter' },
-	          pointsText
-	        ),
-	        React.createElement('i', { className: 'fa fa-5x fa-trophy' })
-	      )
-	    );
+	  receiveCourse: function (course) {
+	    AppDispatcher.dispatch({
+	      actionType: CourseConstants.COURSE_RECEIVED,
+	      course: course
+	    });
 	  }
-	});
+	};
+	
+	module.exports = CourseActions;
 
 /***/ },
-/* 289 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    CookieStore = __webpack_require__(239),
-	    CourseIndex = __webpack_require__(252),
-	    LanguageIndexDropdown = __webpack_require__(247),
-	    ModalActions = __webpack_require__(207);
-	
-	var CourseSelection = React.createClass({
-	  displayName: 'CourseSelection',
-	
-	  componentDidMount: function () {
-	    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
-	  },
-	  componentWillUnmount: function () {
-	    this.cookieListener.remove();
-	  },
-	
-	  _cookiesChanged: function () {
-	    this.forceUpdate();
-	  },
-	
-	  _handleLanguagesEnter: function () {
-	    ModalActions.displayModal("languageIndexDropdown");
-	    ModalActions.hideModal("loginDropdown");
-	  },
-	
-	  _handleLanguagesLeave: function () {
-	    ModalActions.hideModal("languageIndexDropdown");
-	  },
-	
-	  render: function () {
-	    var curLng = CookieStore.curLng();
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'main-content box-shadowed group' },
-	      React.createElement(
-	        'div',
-	        { className: 'course-selection-wrapper' },
-	        React.createElement(
-	          'div',
-	          { className: 'course-selection-header-wrapper group' },
-	          React.createElement(
-	            'h2',
-	            { className: 'course-selection-header' },
-	            'Language Courses for',
-	            React.createElement(
-	              'button',
-	              { onMouseEnter: this._handleLanguagesEnter,
-	                onMouseLeave: this._handleLanguagesLeave,
-	                className: 'add-courses-languages-button' },
-	              curLng,
-	              React.createElement(LanguageIndexDropdown, null)
-	            ),
-	            'Speakers'
-	          )
-	        ),
-	        React.createElement(CourseIndex, { view: 'addCourse' })
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = CourseSelection;
-
-/***/ },
-/* 290 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    CurrentUserStore = __webpack_require__(232),
-	    CourseStore = __webpack_require__(253),
-	    LanguageStore = __webpack_require__(236),
-	    SessionsApiUtil = __webpack_require__(246),
-	    LanguagesApiUtil = __webpack_require__(243),
-	    CookieStore = __webpack_require__(239),
-	    SkillIndex = __webpack_require__(260),
-	    UsersApiUtil = __webpack_require__(240);
-	
-	var UserProfile = React.createClass({
-	  displayName: 'UserProfile',
-	
-	  getInitialState: function () {
-	    return { user: CurrentUserStore.currentUser() };
-	  },
-	
-	  _currentUserChanged: function () {
-	    this.setState({ user: CurrentUserStore.currentUser() });
-	  },
-	
-	  _coursesChanged: function () {
-	    this.forceUpdate();
-	  },
-	
-	  componentDidMount: function () {
-	    this.userListener = CurrentUserStore.addListener(this._currentUserChanged);
-	    this.coursesListener = CourseStore.addListener(this._coursesChanged);
-	    var curLng = CookieStore.curLng();
-	    SessionsApiUtil.fetchCurrentUser(function () {
-	      CoursesApiUtil.fetchCourses(CookieStore.curLng());
-	    }.bind(this));
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.userListener.remove();
-	    this.coursesListener.remove();
-	  },
-	
-	  renderCourses: function () {
-	    var courses = CurrentUserStore.currentUser().enrolled_courses;
-	    if (courses) {
-	      courses = courses.map(function (course, idx) {
-	        return React.createElement(
-	          'p',
-	          { className: 'profile-course', key: idx },
-	          course.name
-	        );
-	      }.bind(this));
-	    }
-	    return courses;
-	  },
-	
-	  render: function () {
-	    if (this.state.user === "{}") {
-	      return React.createElement('div', null);
-	    }
-	    var fullName = this.state.user.fname + " " + this.state.user.lname;
-	    var userInfo = "",
-	        username = "",
-	        hometown = "";
-	
-	    if (!this.state.user.uid) {
-	      username = React.createElement(
-	        'h2',
-	        null,
-	        this.state.user.username
-	      );
-	    }
-	
-	    if (!this.state.user.hometown) {
-	      userInfo = React.createElement(
-	        'div',
-	        { className: 'group user-profile-info' },
-	        React.createElement(
-	          'h3',
-	          { className: 'name' },
-	          fullName
-	        )
-	      );
-	    } else {
-	
-	      hometown = this.state.user.hometown;
-	      userInfo = React.createElement(
-	        'div',
-	        { className: 'group user-profile-info' },
-	        React.createElement(
-	          'h3',
-	          { className: 'name floated' },
-	          fullName
-	        ),
-	        React.createElement(
-	          'h3',
-	          { className: 'hometown' },
-	          hometown
-	        )
-	      );
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'user-profile group' },
-	      React.createElement(
-	        'div',
-	        { className: 'main-content box-shadowed' },
-	        React.createElement(
-	          'header',
-	          { className: 'user-profile-header' },
-	          React.createElement(
-	            'div',
-	            { className: 'profile-pic' },
-	            React.createElement('img', { src: CurrentUserStore.currentUser().profile_pic_url })
-	          ),
-	          username,
-	          userInfo
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'profile-sidebar' },
-	        React.createElement(
-	          'div',
-	          { className: 'iguana-pic' },
-	          React.createElement('img', { src: LinguanaAssets.iguana_book })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'profile-achievements' },
-	          React.createElement(
-	            'h2',
-	            null,
-	            'Achievements'
-	          ),
-	          React.createElement(
-	            'ul',
-	            { className: 'profile-achievements-list' },
-	            React.createElement(
-	              'li',
-	              null,
-	              React.createElement(
-	                'h3',
-	                null,
-	                'Total Points'
-	              ),
-	              React.createElement(
-	                'div',
-	                { className: 'points' },
-	                React.createElement('i', { className: 'fa fa-adjust fa-lg' }),
-	                CurrentUserStore.currentUser().points
-	              )
-	            ),
-	            React.createElement(
-	              'li',
-	              null,
-	              React.createElement(
-	                'h3',
-	                null,
-	                'All Courses'
-	              ),
-	              this.renderCourses()
-	            )
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = UserProfile;
-
-/***/ },
-/* 291 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1),
-	    NavBar = __webpack_require__(213),
-	    SignupModal = __webpack_require__(257),
-	    ModalActions = __webpack_require__(207),
-	    CurrentUserStore = __webpack_require__(232),
-	    CourseIndex = __webpack_require__(252);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	
-	  createProfileBox: function () {
-	    var contents;
-	    if (CurrentUserStore.isLoggedIn()) {
-	      contents = React.createElement('div', null);
-	    } else {
-	      contents = React.createElement(
-	        'div',
-	        { className: 'createProfile' },
-	        React.createElement(
-	          'h2',
-	          null,
-	          'Log in to save your progress!'
-	        ),
-	        React.createElement(
-	          'button',
-	          { className: 'sideBarLoginButton' },
-	          'Log in'
-	        ),
-	        React.createElement(
-	          'button',
-	          { className: 'sideBarSignupButton' },
-	          'Sign up'
-	        )
-	      );
-	    }
-	    return contents;
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'sidebar group' },
-	      this.createProfileBox()
-	    );
-	  }
-	});
-
-/***/ },
-/* 292 */,
-/* 293 */,
-/* 294 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
@@ -35885,7 +32482,7 @@
 	a: try {
 	  var D, E, F, G;if (G = "undefined" !== typeof module && module.exports) {
 	    var H;try {
-	      H = __webpack_require__(295);
+	      H = __webpack_require__(244);
 	    } catch (a) {
 	      H = null;
 	    }G = E = H;
@@ -35939,10 +32536,10 @@
 	};
 
 /***/ },
-/* 295 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var rng = __webpack_require__(300)
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var rng = __webpack_require__(249)
 	
 	function error () {
 	  var m = [].slice.call(arguments).join(' ')
@@ -35953,9 +32550,9 @@
 	    ].join('\n'))
 	}
 	
-	exports.createHash = __webpack_require__(302)
+	exports.createHash = __webpack_require__(251)
 	
-	exports.createHmac = __webpack_require__(314)
+	exports.createHmac = __webpack_require__(263)
 	
 	exports.randomBytes = function(size, callback) {
 	  if (callback && callback.call) {
@@ -35976,7 +32573,7 @@
 	  return ['sha1', 'sha256', 'sha512', 'md5', 'rmd160']
 	}
 	
-	var p = __webpack_require__(315)(exports)
+	var p = __webpack_require__(264)(exports)
 	exports.pbkdf2 = p.pbkdf2
 	exports.pbkdf2Sync = p.pbkdf2Sync
 	
@@ -35996,10 +32593,10 @@
 	  }
 	})
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(296).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(245).Buffer))
 
 /***/ },
-/* 296 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -36012,9 +32609,9 @@
 	
 	'use strict'
 	
-	var base64 = __webpack_require__(297)
-	var ieee754 = __webpack_require__(298)
-	var isArray = __webpack_require__(299)
+	var base64 = __webpack_require__(246)
+	var ieee754 = __webpack_require__(247)
+	var isArray = __webpack_require__(248)
 	
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -37551,10 +34148,10 @@
 	  return i
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(296).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(245).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 297 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -37684,7 +34281,7 @@
 
 
 /***/ },
-/* 298 */
+/* 247 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -37774,7 +34371,7 @@
 
 
 /***/ },
-/* 299 */
+/* 248 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -37785,13 +34382,13 @@
 
 
 /***/ },
-/* 300 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, Buffer) {(function() {
 	  var g = ('undefined' === typeof window ? global : window) || {}
 	  _crypto = (
-	    g.crypto || g.msCrypto || __webpack_require__(301)
+	    g.crypto || g.msCrypto || __webpack_require__(250)
 	  )
 	  module.exports = function(size) {
 	    // Modern Browsers
@@ -37815,22 +34412,22 @@
 	  }
 	}())
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(296).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(245).Buffer))
 
 /***/ },
-/* 301 */
+/* 250 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 302 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(303)
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(252)
 	
-	var md5 = toConstructor(__webpack_require__(311))
-	var rmd160 = toConstructor(__webpack_require__(313))
+	var md5 = toConstructor(__webpack_require__(260))
+	var rmd160 = toConstructor(__webpack_require__(262))
 	
 	function toConstructor (fn) {
 	  return function () {
@@ -37858,10 +34455,10 @@
 	  return createHash(alg)
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(296).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(245).Buffer))
 
 /***/ },
-/* 303 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var exports = module.exports = function (alg) {
@@ -37870,16 +34467,16 @@
 	  return new Alg()
 	}
 	
-	var Buffer = __webpack_require__(296).Buffer
-	var Hash   = __webpack_require__(304)(Buffer)
+	var Buffer = __webpack_require__(245).Buffer
+	var Hash   = __webpack_require__(253)(Buffer)
 	
-	exports.sha1 = __webpack_require__(305)(Buffer, Hash)
-	exports.sha256 = __webpack_require__(309)(Buffer, Hash)
-	exports.sha512 = __webpack_require__(310)(Buffer, Hash)
+	exports.sha1 = __webpack_require__(254)(Buffer, Hash)
+	exports.sha256 = __webpack_require__(258)(Buffer, Hash)
+	exports.sha512 = __webpack_require__(259)(Buffer, Hash)
 
 
 /***/ },
-/* 304 */
+/* 253 */
 /***/ function(module, exports) {
 
 	module.exports = function (Buffer) {
@@ -37962,7 +34559,7 @@
 
 
 /***/ },
-/* 305 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -37974,7 +34571,7 @@
 	 * See http://pajhome.org.uk/crypt/md5 for details.
 	 */
 	
-	var inherits = __webpack_require__(306).inherits
+	var inherits = __webpack_require__(255).inherits
 	
 	module.exports = function (Buffer, Hash) {
 	
@@ -38106,7 +34703,7 @@
 
 
 /***/ },
-/* 306 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -38634,7 +35231,7 @@
 	}
 	exports.isPrimitive = isPrimitive;
 	
-	exports.isBuffer = __webpack_require__(307);
+	exports.isBuffer = __webpack_require__(256);
 	
 	function objectToString(o) {
 	  return Object.prototype.toString.call(o);
@@ -38678,7 +35275,7 @@
 	 *     prototype.
 	 * @param {function} superCtor Constructor function to inherit prototype from.
 	 */
-	exports.inherits = __webpack_require__(308);
+	exports.inherits = __webpack_require__(257);
 	
 	exports._extend = function(origin, add) {
 	  // Don't do anything if add isn't an object
@@ -38699,7 +35296,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(4)))
 
 /***/ },
-/* 307 */
+/* 256 */
 /***/ function(module, exports) {
 
 	module.exports = function isBuffer(arg) {
@@ -38710,7 +35307,7 @@
 	}
 
 /***/ },
-/* 308 */
+/* 257 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -38739,7 +35336,7 @@
 
 
 /***/ },
-/* 309 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -38751,7 +35348,7 @@
 	 *
 	 */
 	
-	var inherits = __webpack_require__(306).inherits
+	var inherits = __webpack_require__(255).inherits
 	
 	module.exports = function (Buffer, Hash) {
 	
@@ -38892,10 +35489,10 @@
 
 
 /***/ },
-/* 310 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var inherits = __webpack_require__(306).inherits
+	var inherits = __webpack_require__(255).inherits
 	
 	module.exports = function (Buffer, Hash) {
 	  var K = [
@@ -39142,7 +35739,7 @@
 
 
 /***/ },
-/* 311 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -39154,7 +35751,7 @@
 	 * See http://pajhome.org.uk/crypt/md5 for more info.
 	 */
 	
-	var helpers = __webpack_require__(312);
+	var helpers = __webpack_require__(261);
 	
 	/*
 	 * Calculate the MD5 of an array of little-endian words, and a bit length
@@ -39303,7 +35900,7 @@
 
 
 /***/ },
-/* 312 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {var intSize = 4;
@@ -39341,10 +35938,10 @@
 	
 	module.exports = { hash: hash };
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(296).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(245).Buffer))
 
 /***/ },
-/* 313 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {
@@ -39553,13 +36150,13 @@
 	
 	
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(296).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(245).Buffer))
 
 /***/ },
-/* 314 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(302)
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(251)
 	
 	var zeroBuffer = new Buffer(128)
 	zeroBuffer.fill(0)
@@ -39603,13 +36200,13 @@
 	}
 	
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(296).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(245).Buffer))
 
 /***/ },
-/* 315 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var pbkdf2Export = __webpack_require__(316)
+	var pbkdf2Export = __webpack_require__(265)
 	
 	module.exports = function (crypto, exports) {
 	  exports = exports || {}
@@ -39624,7 +36221,7 @@
 
 
 /***/ },
-/* 316 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {module.exports = function(crypto) {
@@ -39712,10 +36309,2821 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(296).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(245).Buffer))
 
 /***/ },
-/* 317 */
+/* 266 */
+/***/ function(module, exports) {
+
+	var CookieConstants = {
+	  COOKIES_RECEIVED: "COOKIES_RECEIVED",
+	  COOKIE_RECEIVED: "COOKIE_RECEIVED",
+	  FETCH_COOKIES: "FETCH_COOKIES",
+	  CLEAR_COOKIES: "CLEAR_COOKIES",
+	  CLEAR_COOKIE: "CLEAR_COOKIE"
+	};
+	
+	module.exports = CookieConstants;
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var LanguageActions = __webpack_require__(268),
+	    LanguageStore = __webpack_require__(236);
+	
+	var LanguageApiUtil = {
+		fetchLanguages: function (callback) {
+			$.ajax({
+				type: "GET",
+				url: "api/languages/",
+				dataType: "json",
+				success: function (languages) {
+					LanguageActions.receiveAll(languages);
+					callback && callback();
+				}
+			});
+		}
+	};
+	
+	window.LanguageApiUtil = LanguageApiUtil;
+	
+	module.exports = LanguageApiUtil;
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(208),
+	    LanguageConstants = __webpack_require__(237);
+	
+	var LanguageActions = {
+	  receiveAll: function (languages) {
+	    AppDispatcher.dispatch({
+	      actionType: LanguageConstants.LANGUAGES_RECEIVED,
+	      languages: languages
+	    });
+	  }
+	};
+	
+	module.exports = LanguageActions;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(208),
+	    CookieConstants = __webpack_require__(266);
+	
+	var CookieActions = {
+	  receiveAll: function (cookies) {
+	    AppDispatcher.dispatch({
+	      actionType: CookieConstants.COOKIES_RECEIVED,
+	      cookies: cookies
+	    });
+	  },
+	
+	  receiveCookie: function (cookie) {
+	    AppDispatcher.dispatch({
+	      actionType: CookieConstants.COOKIE_RECEIVED,
+	      cookie: cookie
+	    });
+	  },
+	
+	  fetchCookiesFromBrowser: function () {
+	    AppDispatcher.dispatch({
+	      actionType: CookieConstants.FETCH_COOKIES
+	    });
+	  },
+	
+	  clearCookies: function () {
+	    AppDispatcher.dispatch({
+	      actionType: CookieConstants.CLEAR_COOKIES
+	    });
+	  },
+	
+	  clearCookie: function (cookieName) {
+	    AppDispatcher.dispatch({
+	      actionType: CookieConstants.CLEAR_COOKIE,
+	      cookieName: cookieName
+	    });
+	  }
+	};
+	
+	module.exports = CookieActions;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var CurrentUserActions = __webpack_require__(234);
+	var CookieActions = __webpack_require__(269);
+	var UsersApiUtil = __webpack_require__(233);
+	var CoursesApiUtil = __webpack_require__(241);
+	var CookieStore = __webpack_require__(238);
+	
+	var SessionsApiUtil = {
+	  logIn: function (credentials, success) {
+	    var username = credentials.elements[0].value,
+	        password = credentials.elements[1].value,
+	        sessionParams = { session: { username: username, password: password } };
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'POST',
+	      dataType: 'json',
+	      data: sessionParams,
+	      success: function (currentUser) {
+	        var curCourseId = currentUser.current_course_id || CookieStore.curCourseId();
+	
+	        CookieActions.receiveCookie({
+	          curCourseId: curCourseId
+	        });
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        success && success(currentUser.current_course_id);
+	      }.bind(this)
+	    });
+	  },
+	
+	  createEnrollments: function (userId) {
+	    if (CookieStore.enrolledCourses()[0]) {
+	      CookieStore.enrolledCourses().forEach(function (courseId, idx) {
+	        var enrollmentParams = {};
+	        enrollmentParams.course_id = courseId;
+	        enrollmentParams.user_id = userId;
+	        if (CurrentUserStore.findEnrollment(courseId)) {
+	          if (idx === CookieStore.enrolledCourses().length - 1) {
+	            var userParams = { current_course_id: courseId };
+	            UsersApiUtil.updateUser(userParams);
+	          }
+	        } else if (idx === CookieStore.enrolledCourses().length - 1) {
+	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
+	            var userParams = { current_course_id: courseId };
+	            UsersApiUtil.updateUser(userParams);
+	            CookieActions.clearCookie("enrolledCourses");
+	          }.bind(this));
+	        } else {
+	          UsersApiUtil.createCourseEnrollment(enrollmentParams);
+	        }
+	      }.bind(this));
+	    }
+	  },
+	
+	  logOut: function (callback) {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'DELETE',
+	      dataType: 'json',
+	      success: function () {
+	        CurrentUserActions.receiveCurrentUser({});
+	        callback && callback();
+	      }
+	    });
+	  },
+	
+	  addCompletions: function () {
+	    if (CookieStore.curCompletions()[0]) {
+	      CookieStore.curCompletions().forEach(function (completion) {
+	        var completionParams = {},
+	            id = completion.completionId,
+	            type = completion.completionType;
+	        completionParams.completable_id = id;
+	        if (CurrentUserStore.isLoggedIn()) {
+	          completionParams.user_id = CurrentUserStore.currentUser().id;
+	        } else {
+	          completionParams.user_id = userId;
+	        }
+	        completionParams.completable_type = type;
+	        if (!CurrentUserStore.findCompletion(id, type)) {
+	          UsersApiUtil.createCompletionForUser(completionParams);
+	        }
+	      }.bind(this));
+	    }
+	  },
+	
+	  fetchCurrentUser: function (callback) {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'GET',
+	      dataType: 'json',
+	      success: function (currentUser) {
+	        if (currentUser.current_course_id || !CookieStore.curCourseId()) {
+	          CookieActions.receiveCookie({
+	            curCourseId: currentUser.current_course_id
+	          });
+	        }
+	        if (Object.keys(currentUser)[0]) {
+	          CurrentUserActions.receiveCurrentUser(currentUser);
+	          this.createEnrollments(currentUser.id);
+	          this.addCompletions();
+	          if (CookieStore.getLocalStorage("curPoints")) {
+	            var curPoints = parseInt(CookieStore.getLocalStorage("curPoints"));
+	            UsersApiUtil.awardPoints(currentUser, curPoints);
+	            CookieActions.clearCookie("curPoints");
+	          }
+	        } else if (!CurrentUserStore.userHasBeenFetched()) {
+	          CurrentUserActions.receiveCurrentUser(currentUser);
+	        }
+	        callback && callback(currentUser);
+	      }.bind(this)
+	    });
+	  }
+	
+	};
+	
+	module.exports = SessionsApiUtil;
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    ModalStore = __webpack_require__(214),
+	    LanguageIndex = __webpack_require__(272),
+	    LanguagesApiUtil = __webpack_require__(267);
+	
+	var LanguageIndexDropdown = React.createClass({
+	  displayName: 'LanguageIndexDropdown',
+	
+	  getInitialState: function () {
+	    return { modalName: "languageIndexDropdown" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    LanguagesApiUtil.fetchLanguages();
+	    var modalName = this.state.modalName;
+	    ModalActions.addModal(modalName);
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	  },
+	
+	  visibleRender: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'languages-modal' },
+	      React.createElement(LanguageIndex, null)
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = LanguageIndexDropdown;
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    LanguageStore = __webpack_require__(236),
+	    LanguageIndexItem = __webpack_require__(273);
+	
+	var LanguageIndex = React.createClass({
+	  displayName: 'LanguageIndex',
+	
+	  getInitialState: function () {
+	    return { languages: LanguageStore.all() };
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ languages: LanguageStore.all() });
+	  },
+	
+	  componentDidMount: function () {
+	    this.languageListener = LanguageStore.addListener(this._onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.languageListener.remove();
+	  },
+	
+	  render: function () {
+	    var languages = this.state.languages.map(function (lng) {
+	      return React.createElement(LanguageIndexItem, { language: lng, key: lng.id });
+	    });
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'language-index' },
+	      React.createElement(
+	        'ul',
+	        { className: 'language-list box-shadowed' },
+	        languages
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LanguageIndex;
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    CookieActions = __webpack_require__(269),
+	    ModalActions = __webpack_require__(207);
+	
+	var LanguageIndexItem = React.createClass({
+	  displayName: 'LanguageIndexItem',
+	
+	  setLanguageCookie: function () {
+	    var languageCookie = { curLng: this.props.language.name };
+	    ModalActions.hideModals();
+	    CookieActions.receiveCookie(languageCookie);
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'li',
+	      { onClick: this.setLanguageCookie },
+	      React.createElement(
+	        'div',
+	        { className: 'language-dropdown-flag' },
+	        React.createElement('img', { src: this.props.language.flag })
+	      ),
+	      this.props.language.name
+	    );
+	  }
+	});
+	
+	module.exports = LanguageIndexItem;
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    CookieActions = __webpack_require__(269),
+	    SessionsApiUtil = __webpack_require__(270),
+	    ModalStore = __webpack_require__(214),
+	    History = __webpack_require__(159).History;
+	
+	var UserInfoDropdown = React.createClass({
+	  displayName: 'UserInfoDropdown',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { modalName: "userInfoDropdown" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    ModalActions.addModal(this.state.modalName);
+	    this.forceUpdate();
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.forceUpdate();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	  },
+	
+	  _onLogoutClick: function () {
+	    SessionsApiUtil.logOut(function () {
+	      ModalActions.hideModal(this.state.modalName);
+	      CookieActions.clearCookies();
+	      this.history.pushState(null, "/");
+	    }.bind(this));
+	  },
+	
+	  visibleRender: function () {
+	    var user_path = "#/user/" + CurrentUserStore.currentUser().id;
+	    return React.createElement(
+	      'ul',
+	      { className: 'box-shadowed user-info-dropdown' },
+	      React.createElement(
+	        'li',
+	        null,
+	        React.createElement(
+	          'a',
+	          { href: user_path },
+	          'Your Profile'
+	        )
+	      ),
+	      React.createElement(
+	        'li',
+	        { onClick: this._onLogoutClick },
+	        'Log Out'
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = UserInfoDropdown;
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    CookieStore = __webpack_require__(238),
+	    CookieActions = __webpack_require__(269),
+	    UsersApiUtil = __webpack_require__(233),
+	    CourseStore = __webpack_require__(239),
+	    ModalStore = __webpack_require__(214),
+	    CourseIndex = __webpack_require__(276),
+	    CoursesApiUtil = __webpack_require__(241);
+	
+	var CourseIndexDropdown = React.createClass({
+	  displayName: 'CourseIndexDropdown',
+	
+	  getInitialState: function () {
+	    return { modalName: "courseIndexDropdown" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    var modalName = this.state.modalName;
+	    ModalActions.addModal(modalName);
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	  },
+	
+	  setCourseCookie: function (courseId) {
+	
+	    if (CurrentUserStore.isLoggedIn()) {
+	      var userParams = { current_course_id: courseId };
+	      UsersApiUtil.updateUser(userParams, function () {
+	        var userId = CurrentUserStore.currentUser().id,
+	            enrollmentParams = { user_id: userId, course_id: courseId };
+	
+	        if (!CurrentUserStore.findEnrollment(courseId)) {
+	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
+	            CookieActions.receiveCookie({ curCourseId: courseId });
+	          });
+	        } else {
+	          CookieActions.receiveCookie({ curCourseId: courseId });
+	        }
+	      });
+	    } else {
+	      CookieActions.receiveCookie({ curCourseId: courseId });
+	    }
+	    setTimeout(function () {
+	      ModalActions.hideModal(this.state.modalName);
+	    }.bind(this), 0);
+	  },
+	
+	  visibleRender: function () {
+	    var courses;
+	
+	    courses = CurrentUserStore.currentUser().enrolled_courses || CourseStore.findEnrolledCoursesFromCookies();
+	
+	    if (courses) {
+	      courses = courses.map(function (course, idx) {
+	        var classes = "course-button",
+	            onClick = function () {
+	          this.setCourseCookie(course.id);
+	        }.bind(this);
+	
+	        if (CookieStore.curCourseId() == course.id) {
+	          classes = "current-course course-button";
+	          onClick = "";
+	        }
+	
+	        return React.createElement(
+	          'a',
+	          { className: classes,
+	            onClick: onClick,
+	            href: "#/course/" + course.id,
+	            key: idx },
+	          React.createElement(
+	            'div',
+	            { className: 'courses-dropdown-flag-container' },
+	            React.createElement('img', { className: 'courses-dropdown-flag',
+	              src: course.flag })
+	          ),
+	          course.name
+	        );
+	      }.bind(this));
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'courses-dropdown box-shadowed group' },
+	      React.createElement(
+	        'div',
+	        { className: 'courses-dropdown-header' },
+	        React.createElement(
+	          'h3',
+	          null,
+	          'Your Courses'
+	        )
+	      ),
+	      React.createElement(
+	        'ul',
+	        { className: 'courses-dropdown-list' },
+	        courses
+	      ),
+	      React.createElement(
+	        'a',
+	        { className: 'add-button', href: '#/add' },
+	        'Add a new course'
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = CourseIndexDropdown;
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    CourseStore = __webpack_require__(239),
+	    CourseIndexItem = __webpack_require__(277),
+	    CookieStore = __webpack_require__(238),
+	    LanguageStore = __webpack_require__(236),
+	    CoursesApiUtil = __webpack_require__(241);
+	
+	var CourseIndex = React.createClass({
+	  displayName: 'CourseIndex',
+	
+	  getInitialState: function () {
+	    return { courses: CourseStore.all(), displayItems: false };
+	  },
+	
+	  _coursesChanged: function () {
+	    this.setState({ courses: CourseStore.all() });
+	  },
+	
+	  _languagesChanged: function () {
+	    CoursesApiUtil.fetchCourses(CookieStore.curLng());
+	  },
+	
+	  _cookiesChanged: function () {
+	    CoursesApiUtil.fetchCourses(CookieStore.curLng());
+	  },
+	
+	  componentDidMount: function () {
+	    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
+	    this.languagesListener = LanguageStore.addListener(this._languagesChanged);
+	    this.coursesListener = CourseStore.addListener(this._coursesChanged);
+	    CoursesApiUtil.fetchCourses(CookieStore.curLng(), function () {
+	      this.setState({ displayItems: true });
+	    }.bind(this));
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.cookieListener.remove();
+	    this.coursesListener.remove();
+	    this.languagesListener.remove();
+	  },
+	
+	  render: function () {
+	
+	    if (this.state.courses === {} || !this.state.displayItems) {
+	      return React.createElement('div', null);
+	    }
+	
+	    var classes = "course-index-container",
+	        header = React.createElement(
+	      'h2',
+	      { className: 'course-index-header' },
+	      'I want to learn...'
+	    );
+	    if (this.props.view === "addCourse") {
+	      classes = "course-index-container course-selection";
+	      header = React.createElement('div', null);
+	    }
+	
+	    var courses = this.state.courses;
+	    var courseKeys = Object.keys(this.state.courses);
+	    courses = courseKeys.map(function (key, idx) {
+	
+	      var course = courses[key],
+	          flag = course.flag,
+	          knownLng = LanguageStore.find(course.known_language_id);
+	
+	      if (!knownLng || knownLng.name === CookieStore.curLng()) {
+	        return React.createElement(CourseIndexItem, { key: idx, course: course, flag: flag });
+	      } else {
+	        return React.createElement('div', { key: idx });
+	      }
+	    });
+	
+	    return React.createElement(
+	      'div',
+	      { className: classes },
+	      React.createElement(
+	        'div',
+	        { className: 'course-index' },
+	        header,
+	        React.createElement(
+	          'ul',
+	          { className: 'course-list group' },
+	          courses
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = CourseIndex;
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    CookieActions = __webpack_require__(269),
+	    CookieStore = __webpack_require__(238),
+	    CourseStore = __webpack_require__(239),
+	    LanguageStore = __webpack_require__(236),
+	    LanguagesApiUtil = __webpack_require__(267),
+	    CurrentUserStore = __webpack_require__(232),
+	    UsersApiUtil = __webpack_require__(233),
+	    CoursesApiUtil = __webpack_require__(241);
+	
+	var CourseIndexItem = React.createClass({
+	  displayName: 'CourseIndexItem',
+	
+	  getInitialState: function () {
+	    return { showFlag: false };
+	  },
+	
+	  componentDidMount: function () {
+	    this.setState({ showFlag: true });
+	  },
+	
+	  setCourseCookie: function () {
+	    var courseId = this.props.course.id;
+	
+	    if (CurrentUserStore.isLoggedIn()) {
+	      var userParams = { current_course_id: courseId };
+	      UsersApiUtil.updateUser(userParams, function () {
+	        var userId = CurrentUserStore.currentUser().id,
+	            enrollmentParams = { user_id: userId, course_id: courseId };
+	
+	        if (!CurrentUserStore.findEnrollment(courseId)) {
+	          UsersApiUtil.createCourseEnrollment(enrollmentParams, function () {
+	            CookieActions.receiveCookie({ curCourseId: courseId });
+	          });
+	        } else {
+	          CookieActions.receiveCookie({ curCourseId: courseId });
+	        }
+	      });
+	    } else {
+	      CookieActions.receiveCookie({ enrolledCourses: courseId });
+	      CookieActions.receiveCookie({ curCourseId: courseId });
+	    }
+	  },
+	
+	  render: function () {
+	    if (!this.props.course.id) {
+	      return React.createElement('div', null);
+	    }
+	    var flag, toRender;
+	    if (this.props.flag && this.state.showFlag) {
+	      var courseName = this.props.course.name;
+	      flag = React.createElement(
+	        'div',
+	        { className: 'language-index-flag' },
+	        React.createElement('img', { src: this.props.flag })
+	      );
+	      toRender = React.createElement(
+	        'a',
+	        { href: "#/course/" + this.props.course.id,
+	          className: 'course-list-item',
+	          onClick: this.setCourseCookie },
+	        courseName,
+	        flag
+	      );
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'course-list-item-wrapper' },
+	      toRender
+	    );
+	  }
+	});
+	
+	module.exports = CourseIndexItem;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    ModalStore = __webpack_require__(214),
+	    NewSessionForm = __webpack_require__(279);
+	
+	var LoginDropdown = React.createClass({
+	  displayName: 'LoginDropdown',
+	
+	  getInitialState: function () {
+	    return { modalName: "loginDropdown", token: "" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    var modalName = this.state.modalName;
+	    ModalActions.addModal(modalName);
+	    this.setState({
+	      modalName: modalName
+	    });
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.setState({ modalName: modalName });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	    ModalActions.removeModal(this.state.modalName);
+	  },
+	
+	  visibleRender: function () {
+	    return React.createElement(NewSessionForm, null);
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = LoginDropdown;
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    History = __webpack_require__(159).History,
+	    ModalActions = __webpack_require__(207),
+	    SessionsApiUtil = __webpack_require__(270);
+	
+	var NewSessionForm = React.createClass({
+	  displayName: 'NewSessionForm',
+	
+	  mixins: [History],
+	
+	  submit: function (e) {
+	    e.preventDefault();
+	    var credentials = e.currentTarget;
+	    SessionsApiUtil.logIn(credentials);
+	  },
+	
+	  render: function () {
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'splash-login-form splash-form' },
+	      React.createElement(
+	        'div',
+	        { className: 'splash-login-inputs box-shadowed' },
+	        React.createElement(
+	          'a',
+	          { className: 'facebook-login', href: '/auth/facebook' },
+	          'Log in with Facebook'
+	        ),
+	        React.createElement(
+	          'a',
+	          { href: '/auth/google_oauth2', className: 'google-login' },
+	          'Log in with Google'
+	        ),
+	        React.createElement(
+	          'h3',
+	          null,
+	          'or'
+	        ),
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.submit },
+	          React.createElement('input', { name: 'session[username]',
+	            placeholder: 'Username' }),
+	          React.createElement('input', { type: 'password',
+	            name: 'session[password]',
+	            placeholder: 'Password' }),
+	          React.createElement(
+	            'a',
+	            { id: 'modal-login-button' },
+	            'Log in'
+	          )
+	        ),
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.submit },
+	          React.createElement(
+	            'div',
+	            { className: 'guest-inputs' },
+	            React.createElement('input', { type: 'hidden',
+	              name: 'session[username]',
+	              value: 'guest' }),
+	            React.createElement('input', { type: 'hidden',
+	              name: 'session[password]',
+	              value: 'password' }),
+	            React.createElement(
+	              'button',
+	              { className: 'guest-login-button' },
+	              'Log in as guest'
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = NewSessionForm;
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    ModalStore = __webpack_require__(214),
+	    SignupForm = __webpack_require__(281);
+	
+	var SignupModal = React.createClass({
+	  displayName: 'SignupModal',
+	
+	  getInitialState: function () {
+	    return { modalName: "signupModal" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    ModalActions.addModal(this.state.modalName);
+	    this.forceUpdate();
+	  },
+	
+	  _modalsChanged: function () {
+	    this.forceUpdate();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	    ModalActions.removeModal(this.state.modalName);
+	  },
+	
+	  visibleRender: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'screen-cover' },
+	      React.createElement(SignupForm, { toShow: 'signup' })
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = SignupModal;
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    History = __webpack_require__(159).History,
+	    UsersApiUtil = __webpack_require__(233),
+	    SessionsApiUtil = __webpack_require__(270),
+	    ModalActions = __webpack_require__(207),
+	    CurrentUserStore = __webpack_require__(232),
+	    CookieStore = __webpack_require__(238);
+	
+	var SignupForm = React.createClass({
+	  displayName: 'SignupForm',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { toShow: this.props.toShow };
+	  },
+	
+	  submitSignup: function (e) {
+	    e.preventDefault();
+	    var credentials = e.currentTarget;
+	    UsersApiUtil.createUser(credentials, this.callback);
+	  },
+	
+	  callback: function (userId) {
+	    if (CookieStore.curCompletions()[0]) {
+	      CookieStore.curCompletions().forEach(function (completion) {
+	        var completionParams = {},
+	            id = completion.completionId,
+	            type = completion.completionType;
+	        completionParams.completable_id = id;
+	        if (CurrentUserStore.isLoggedIn()) {
+	          completionParams.user_id = CurrentUserStore.currentUser().id;
+	        } else {
+	          completionParams.user_id = userId;
+	        }
+	        completionParams.completable_type = type;
+	        if (!CurrentUserStore.findCompletion(id, type)) {
+	          UsersApiUtil.createCompletionForUser(completionParams);
+	        }
+	      }.bind(this));
+	    }
+	    this.addEnrollments(userId);
+	    this._closeModal();
+	  },
+	
+	  addEnrollments: function (userId) {
+	    if (CookieStore.enrolledCourses()[0]) {
+	      CookieStore.enrolledCourses().forEach(function (courseId) {
+	        var enrollmentParams = {};
+	        enrollmentParams.course_id = courseId;
+	        if (CurrentUserStore.isLoggedIn()) {
+	          enrollmentParams.user_id = CurrentUserStore.currentUser().id;
+	        } else {
+	          enrollmentParams.user_id = userId;
+	        }
+	
+	        this.addNewEnrollment(enrollmentParams);
+	      }.bind(this));
+	    }
+	  },
+	
+	  addNewEnrollment: function (enrollmentParams) {
+	    if (!CurrentUserStore.findEnrollment(enrollmentParams)) {
+	      UsersApiUtil.createCourseEnrollment(enrollmentParams);
+	    }
+	  },
+	
+	  submitLogin: function (e) {
+	    e.preventDefault();
+	    var credentials = e.currentTarget;
+	    SessionsApiUtil.logIn(credentials, this.callback);
+	  },
+	
+	  _closeModal: function () {
+	    ModalActions.hideModal("signupModal");
+	  },
+	
+	  _showSignup: function () {
+	    this.setState({ toShow: "signup" });
+	  },
+	
+	  _showLogin: function () {
+	    this.setState({ toShow: "login" });
+	  },
+	
+	  signupView: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'signup-inputs group' },
+	      React.createElement(
+	        'h2',
+	        { className: 'signup-header' },
+	        'Sign Up'
+	      ),
+	      React.createElement(
+	        'form',
+	        { className: 'group', onSubmit: this.submitSignup },
+	        React.createElement(
+	          'div',
+	          { className: 'inputs group' },
+	          React.createElement(
+	            'div',
+	            { className: 'signup-input group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'username-signup' },
+	              'Username:'
+	            ),
+	            React.createElement('input', { id: 'username-signup', name: 'user[username]' })
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'signup-input group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'email-signup' },
+	              'Email:'
+	            ),
+	            React.createElement('input', { id: 'email-signup', name: 'user[email]' })
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'signup-input group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'password-signup' },
+	              'Password:'
+	            ),
+	            React.createElement('input', { id: 'password-signup', type: 'password', name: 'user[password]' })
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'signup-input group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'fname-signup' },
+	              'First name:'
+	            ),
+	            React.createElement('input', { id: 'fname-signup', name: 'user[fname]' })
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'signup-input group' },
+	            React.createElement(
+	              'label',
+	              { htmlFor: 'lname-signup' },
+	              'Last name:'
+	            ),
+	            React.createElement('input', { id: 'lname-signup', name: 'user[lname]' })
+	          )
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'signup-button' },
+	          'Create account'
+	        )
+	      ),
+	      React.createElement(
+	        'form',
+	        { onSubmit: this.submitLogin },
+	        React.createElement(
+	          'div',
+	          { className: 'guest-inputs' },
+	          React.createElement('input', { type: 'hidden',
+	            name: 'session[username]',
+	            value: 'guest' }),
+	          React.createElement('input', { type: 'hidden',
+	            name: 'session[password]',
+	            value: 'password' }),
+	          React.createElement(
+	            'button',
+	            { className: 'guest-signup-button' },
+	            'Log in as guest'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'oauth-buttons group' },
+	        React.createElement(
+	          'button',
+	          { className: 'facebook-login' },
+	          React.createElement(
+	            'a',
+	            { href: '/auth/facebook' },
+	            'Log in with Facebook'
+	          )
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'google-login' },
+	          React.createElement(
+	            'a',
+	            { href: '/auth/google_oauth2' },
+	            'Log in with Google'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'signup-bottom-bar' },
+	        React.createElement(
+	          'h3',
+	          { className: 'signup-bottom-bar-text' },
+	          'Have an account?'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this._showLogin },
+	          ' Log in.'
+	        )
+	      )
+	    );
+	  },
+	
+	  loginView: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'signup-inputs group' },
+	      React.createElement(
+	        'h2',
+	        { className: 'signup-header' },
+	        'Log In'
+	      ),
+	      React.createElement(
+	        'form',
+	        { className: 'login-form-form', onSubmit: this.submitLogin },
+	        React.createElement(
+	          'div',
+	          { className: 'login-form-form-inputs' },
+	          React.createElement('input', { name: 'session[username]',
+	            placeholder: 'Username' }),
+	          React.createElement('input', { type: 'password',
+	            name: 'session[password]',
+	            placeholder: 'Password' })
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'signup-button' },
+	          'Log in'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'login-bottom-bar' },
+	        React.createElement(
+	          'button',
+	          { onClick: this._showSignup },
+	          'Create an account.'
+	        )
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var toRender, className;
+	    if (this.state.toShow === "signup") {
+	      toRender = this.signupView();
+	      className = "signup-form group box-shadowed";
+	    } else {
+	      toRender = this.loginView();
+	      className = "login-form group box-shadowed";
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: className },
+	      React.createElement('i', { className: 'fa fa-2x fa-times-circle-o',
+	        onClick: this._closeModal }),
+	      toRender
+	    );
+	  }
+	
+	});
+	
+	module.exports = SignupForm;
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    CourseStore = __webpack_require__(239),
+	    CookieStore = __webpack_require__(238),
+	    SkillIndex = __webpack_require__(283),
+	    CoursesApiUtil = __webpack_require__(241);
+	
+	var Course = React.createClass({
+	  displayName: 'Course',
+	
+	  _cookiesChanged: function () {
+	    CoursesApiUtil.fetchCourse(this.props.params.courseId);
+	  },
+	
+	  getInitialState: function () {
+	    return { course: CourseStore.find(this.props.params.courseId) };
+	  },
+	
+	  componentDidMount: function () {
+	    var courseId = this.props.params.courseId;
+	    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
+	    this.courseListener = CourseStore.addListener(this._coursesChanged);
+	    CoursesApiUtil.fetchCourse(courseId);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.courseListener.remove();
+	    this.cookieListener.remove();
+	  },
+	
+	  _coursesChanged: function () {
+	    this.setState({ course: CourseStore.find(this.props.params.courseId) });
+	  },
+	
+	  render: function () {
+	
+	    if (typeof this.state.course === "undefined") {
+	      return React.createElement('div', null);
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'course-page' },
+	      React.createElement(
+	        'div',
+	        { className: 'iguana-pic' },
+	        React.createElement('img', { src: LinguanaAssets.iguana_book_wave })
+	      ),
+	      React.createElement(
+	        'h2',
+	        { className: 'course-page-header' },
+	        this.state.course.name,
+	        ' Skills'
+	      ),
+	      React.createElement(SkillIndex, { courseId: this.props.params.courseId })
+	    );
+	  }
+	});
+	
+	module.exports = Course;
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    SkillStore = __webpack_require__(284),
+	    SkillIndexItem = __webpack_require__(286),
+	    CookieStore = __webpack_require__(238),
+	    SkillsApiUtil = __webpack_require__(287);
+	
+	var SkillIndex = React.createClass({
+	  displayName: 'SkillIndex',
+	
+	  getInitialState: function () {
+	    return { skills: SkillStore.findByCourse(this.props.courseId) };
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ skills: SkillStore.all() });
+	  },
+	
+	  componentWillReceiveProps: function () {
+	    SkillsApiUtil.fetchSkills(this.props.courseId);
+	  },
+	
+	  componentDidMount: function () {
+	    this.skillListener = SkillStore.addListener(this._onChange);
+	    SkillsApiUtil.fetchSkills(this.props.courseId);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.skillListener.remove();
+	  },
+	
+	  renderTrophy: function () {
+	    var courseId = this.props.courseId;
+	    if (CurrentUserStore.findCompletion(this.props.courseId, "course") || CookieStore.findCompletionByTypeAndID("course", parseInt(courseId))) {
+	      return React.createElement(
+	        'div',
+	        { className: 'trophy-container' },
+	        React.createElement(
+	          'i',
+	          { className: 'fa completion-trophy fa-trophy fa-5x' },
+	          React.createElement(
+	            'h2',
+	            { className: 'trophy-text' },
+	            '100',
+	            React.createElement('i', { className: 'fa fa-percent' })
+	          )
+	        )
+	      );
+	    } else {
+	      return React.createElement('div', null);
+	    }
+	  },
+	
+	  render: function () {
+	    if (this.state.skills === {}) {
+	      return React.createElement('div', null);
+	    }
+	
+	    var skills = this.state.skills;
+	    var skillKeys = Object.keys(this.state.skills);
+	    skills = skillKeys.map(function (key, idx) {
+	      var prevSkill;
+	      var skill = skills[key];
+	      if (idx > 0) {
+	        prevSkill = skills[Object.keys(this.state.skills)[idx - 1]];
+	      }
+	
+	      return React.createElement(SkillIndexItem, { key: idx, skill: skill, prevSkill: prevSkill });
+	    }.bind(this));
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'skill-index' },
+	      React.createElement(
+	        'ul',
+	        { className: 'skill-list group' },
+	        skills
+	      ),
+	      this.renderTrophy()
+	    );
+	  }
+	});
+	
+	module.exports = SkillIndex;
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(215).Store;
+	var SkillConstants = __webpack_require__(285);
+	var AppDispatcher = __webpack_require__(208);
+	var _skills = {};
+	var SkillStore = new Store(AppDispatcher);
+	
+	var resetSkills = function (skills) {
+	  _skills = Object.assign({}, skills);
+	};
+	
+	var addSkill = function (skill) {
+	  _skills[skill.id] = skill;
+	};
+	
+	SkillStore.findLastSkillId = function () {
+	  return Object.keys(_skills).slice(-1);
+	};
+	
+	SkillStore.findByCourse = function (courseId) {
+	  var result = {};
+	  if (_skills === {}) {
+	    return {};
+	  }
+	  Object.keys(_skills).forEach(function (key) {
+	    var skill = _skills[key];
+	    if (skill.course_id === courseId) {
+	      result[skill.id] = skill;
+	    }
+	  });
+	  return result;
+	};
+	
+	SkillStore.all = function () {
+	  return Object.assign({}, _skills);
+	};
+	
+	SkillStore.find = function (skillId) {
+	  return _skills[skillId];
+	};
+	
+	SkillStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SkillConstants.SKILLS_RECEIVED:
+	      resetSkills(payload.skills);
+	      SkillStore.__emitChange();
+	      break;
+	    case SkillConstants.SKILL_RECEIVED:
+	      addSkill(payload.skill);
+	      SkillStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.SkillStore = SkillStore;
+	
+	module.exports = SkillStore;
+
+/***/ },
+/* 285 */
+/***/ function(module, exports) {
+
+	var SkillConstants = {
+	  SKILLS_RECEIVED: "SKILLS_RECEIVED",
+	  SKILL_RECEIVED: "SKILL_RECEIVED"
+	};
+	
+	module.exports = SkillConstants;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var SkillIndexItem = React.createClass({
+	  displayName: "SkillIndexItem",
+	
+	  renderUncompleted: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "skill-list-item-wrapper incomplete" },
+	      React.createElement(
+	        "p",
+	        { className: "skill-list-item" },
+	        React.createElement(
+	          "a",
+	          { className: "skill-list-circle",
+	            href: "#/skill/" + this.props.skill.id },
+	          React.createElement("i", { className: "fa fa-comment fa-3x" })
+	        ),
+	        this.props.skill.name
+	      )
+	    );
+	  },
+	
+	  renderCompleted: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "skill-list-item-wrapper completed" },
+	      React.createElement(
+	        "p",
+	        { className: "skill-list-item" },
+	        React.createElement(
+	          "a",
+	          { className: "skill-list-circle",
+	            href: "#/skill/" + this.props.skill.id },
+	          React.createElement("i", { className: "fa fa-trophy fa-3x" }),
+	          React.createElement("i", { className: "fa fa-comment" })
+	        ),
+	        this.props.skill.name
+	      )
+	    );
+	  },
+	
+	  renderLocked: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "skill-list-item-wrapper locked" },
+	      React.createElement(
+	        "p",
+	        { className: "skill-list-item" },
+	        React.createElement(
+	          "a",
+	          { className: "skill-list-circle" },
+	          React.createElement("i", { className: "fa fa-lock fa-3x" })
+	        ),
+	        this.props.skill.name
+	      )
+	    );
+	  },
+	
+	  completionExists: function (id) {
+	    return CurrentUserStore.findCompletion(id, "skill") || CookieStore.findCompletionByTypeAndID("skill", id);
+	  },
+	
+	  render: function () {
+	    var toRender,
+	        findCompletion = CurrentUserStore.findCompletion,
+	        prevSkill = this.props.prevSkill;
+	
+	    if (this.completionExists(this.props.skill.id)) {
+	      toRender = this.renderCompleted();
+	    } else if (prevSkill && this.completionExists(prevSkill.id) || !prevSkill) {
+	      toRender = this.renderUncompleted();
+	    } else {
+	      toRender = this.renderLocked();
+	    }
+	
+	    return toRender;
+	  }
+	});
+	
+	module.exports = SkillIndexItem;
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SkillActions = __webpack_require__(288);
+	
+	var SkillsApiUtil = {
+	  fetchSkills: function (courseId) {
+	
+	    $.ajax({
+	      type: "GET",
+	      url: "api/courses/" + courseId + "/skills",
+	      dataType: "json",
+	      success: function (skills) {
+	        var skillsPayload = {};
+	        skills.forEach(function (skill) {
+	          skillsPayload[skill.id] = skill;
+	        });
+	        SkillActions.receiveAll(skillsPayload);
+	      }
+	    });
+	  },
+	
+	  fetchSkill: function (skillId, success) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/skills/" + skillId,
+	      dataType: "json",
+	      success: function (skill) {
+	        SkillActions.receiveSkill(skill);
+	        success && success();
+	      }
+	    });
+	  }
+	};
+	
+	window.SkillsApiUtil = SkillsApiUtil;
+	
+	module.exports = SkillsApiUtil;
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(208),
+	    SkillConstants = __webpack_require__(285);
+	
+	var SkillActions = {
+	  receiveAll: function (skills) {
+	    AppDispatcher.dispatch({
+	      actionType: SkillConstants.SKILLS_RECEIVED,
+	      skills: skills
+	    });
+	  },
+	
+	  receiveSkill: function (skill) {
+	    AppDispatcher.dispatch({
+	      actionType: SkillConstants.SKILL_RECEIVED,
+	      skill: skill
+	    });
+	  }
+	};
+	
+	module.exports = SkillActions;
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    NavBar = __webpack_require__(213),
+	    CourseIndex = __webpack_require__(276);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  getInitialState: function () {
+	    return { currentView: "splash" };
+	  },
+	
+	  _handleGetStartedClick: function () {
+	    this.setState({ currentView: "courses" });
+	  },
+	
+	  _handleHeaderClick: function () {
+	    this.setState({ currentView: "splash" });
+	  },
+	
+	  splashView: function () {
+	    var splashText = "Let's learn a language. For free.";
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'splash-contents group' },
+	      React.createElement(
+	        'h2',
+	        { className: 'splash-text' },
+	        splashText
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this._handleGetStartedClick,
+	          className: 'splash-button' },
+	        'Get started'
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var toRender;
+	    if (this.state.currentView === "splash") {
+	      toRender = this.splashView();
+	    } else if (this.state.currentView === "courses") {
+	      toRender = React.createElement(CourseIndex, null);
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'splash-wrapper' },
+	      React.createElement(
+	        'header',
+	        { className: 'splash-header-bar' },
+	        React.createElement(NavBar, { view: 'splash', handleHeaderClick: this._handleHeaderClick })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'splash-main group' },
+	        toRender
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    SkillStore = __webpack_require__(284),
+	    LessonIndex = __webpack_require__(291),
+	    LessonStore = __webpack_require__(292),
+	    CurrentUserStore = __webpack_require__(232),
+	    UsersApiUtil = __webpack_require__(233),
+	    SkillsApiUtil = __webpack_require__(287);
+	
+	var Skill = React.createClass({
+	  displayName: 'Skill',
+	
+	  getInitialState: function () {
+	    return {
+	      skill: SkillStore.find(this.props.params.skillId),
+	      lessons: LessonStore.findBySkill(this.props.params.skillId)
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    var skillId = this.props.params.skillId;
+	    this.skillListener = SkillStore.addListener(this._skillsChanged);
+	    SkillsApiUtil.fetchSkill(skillId);
+	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+	    LessonsApiUtil.fetchLessons(skillId);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.lessonListener.remove();
+	    this.skillListener.remove();
+	  },
+	
+	  _skillsChanged: function () {
+	    this.setState({ skill: SkillStore.find(this.props.params.skillId) });
+	  },
+	
+	  _lessonsChanged: function () {
+	    this.setState({
+	      lessons: LessonStore.findBySkill(this.props.params.skillId)
+	    });
+	  },
+	
+	  render: function () {
+	    if (typeof this.state.skill === "undefined" || !Object.keys(this.state.lessons)[0]) {
+	      return React.createElement('div', null);
+	    }
+	    var path = "#/course/" + this.state.skill.course_id;
+	    return React.createElement(
+	      'div',
+	      { className: 'skill-page' },
+	      React.createElement(
+	        'div',
+	        { className: 'group' },
+	        React.createElement(
+	          'h2',
+	          { className: 'skill-page-header' },
+	          this.state.skill.name
+	        ),
+	        React.createElement(
+	          'a',
+	          { href: path, className: 'skill-page-back-button' },
+	          'Back to Skills'
+	        )
+	      ),
+	      React.createElement(LessonIndex, { skillId: this.state.skill.id,
+	        lessons: this.state.lessons }),
+	      React.createElement(
+	        'div',
+	        { className: 'tips-and-notes' },
+	        React.createElement(
+	          'h2',
+	          { className: 'tips-and-notes-header' },
+	          'Tips and Notes'
+	        ),
+	        React.createElement(
+	          'p',
+	          { className: 'tips-and-notes-text' },
+	          this.state.skill.tips_and_notes
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Skill;
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    LessonStore = __webpack_require__(292),
+	    LessonIndexItem = __webpack_require__(294),
+	    LessonsApiUtil = __webpack_require__(295);
+	
+	var LessonIndex = React.createClass({
+	  displayName: 'LessonIndex',
+	
+	
+	  render: function () {
+	    var lessons = this.props.lessons;
+	    if (typeof lessons === "undefined") {
+	      return React.createElement('div', null);
+	    }
+	
+	    var lessonKeys = Object.keys(this.props.lessons);
+	    var prevLesson, isLastLesson;
+	    lessons = lessonKeys.map(function (key, idx) {
+	      var lesson = lessons[key];
+	      if (idx > 0) {
+	        prevLesson = lessons[Object.keys(this.props.lessons)[idx - 1]];
+	      }
+	      if (idx === lessonKeys.length - 1) {
+	        isLastLesson = true;
+	      }
+	
+	      return React.createElement(LessonIndexItem, {
+	        key: idx,
+	        lesson: lesson,
+	        prevLesson: prevLesson,
+	        isLastLesson: isLastLesson });
+	    }.bind(this));
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-index' },
+	      React.createElement(
+	        'ul',
+	        { className: 'lesson-list group' },
+	        lessons
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LessonIndex;
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(215).Store;
+	var LessonConstants = __webpack_require__(293);
+	var AppDispatcher = __webpack_require__(208);
+	var ModalStore = __webpack_require__(214);
+	var LessonStore = new Store(AppDispatcher);
+	
+	var _lessons = {};
+	var resetLessons = function (lessons) {
+	  _lessons = Object.assign({}, lessons);
+	};
+	
+	var addLesson = function (lesson) {
+	  _lessons[lesson.id] = lesson;
+	};
+	
+	LessonStore.all = function () {
+	  return Object.assign({}, _lessons);
+	};
+	
+	LessonStore.find = function (lessonId) {
+	  return _lessons[lessonId];
+	};
+	
+	LessonStore.findLastLessonId = function () {
+	  return Object.keys(_lessons).slice(-1);
+	};
+	
+	LessonStore.findBySkill = function (skillId) {
+	  var result = {};
+	  if (_lessons === {}) {
+	    return {};
+	  }
+	  Object.keys(_lessons).forEach(function (key) {
+	    var lesson = _lessons[key];
+	    if (lesson.skill_id === parseInt(skillId)) {
+	      result[lesson.id] = lesson;
+	    }
+	  });
+	  return result;
+	};
+	
+	LessonStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case LessonConstants.LESSONS_RECEIVED:
+	      resetLessons(payload.lessons);
+	      LessonStore.__emitChange();
+	      break;
+	    case LessonConstants.LESSON_RECEIVED:
+	      addLesson(payload.lesson);
+	      LessonStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.LessonStore = LessonStore;
+	
+	module.exports = LessonStore;
+
+/***/ },
+/* 293 */
+/***/ function(module, exports) {
+
+	var SkillConstants = {
+	  LESSONS_RECEIVED: "LESSONS_RECEIVED",
+	  LESSON_RECEIVED: "LESSON_RECEIVED"
+	};
+	
+	module.exports = SkillConstants;
+
+/***/ },
+/* 294 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    CurrentUserStore = __webpack_require__(232);
+	
+	var LessonIndexItem = React.createClass({
+	  displayName: 'LessonIndexItem',
+	
+	  renderPlayable: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-list-item-wrapper' },
+	      React.createElement(
+	        'h2',
+	        { className: 'lesson-list-item' },
+	        this.props.lesson.name
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'lesson-list-contents' },
+	        React.createElement(
+	          'a',
+	          { className: 'lesson-begin-button',
+	            href: "#/lessons/" + this.props.lesson.id },
+	          'Begin'
+	        )
+	      )
+	    );
+	  },
+	
+	  renderLocked: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-list-item-wrapper locked' },
+	      React.createElement(
+	        'h2',
+	        { className: 'lesson-list-item' },
+	        this.props.lesson.name
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'lesson-list-contents' },
+	        React.createElement('i', { className: 'fa fa-lock fa-lg' }),
+	        React.createElement(
+	          'h3',
+	          { className: 'lesson-begin-button' },
+	          'Locked'
+	        )
+	      )
+	    );
+	  },
+	
+	  renderCompleted: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-list-item-wrapper completed' },
+	      React.createElement(
+	        'h2',
+	        { className: 'lesson-list-item' },
+	        this.props.lesson.name
+	      ),
+	      React.createElement('i', { className: 'fa fa-check-circle fa-2x' }),
+	      React.createElement(
+	        'div',
+	        { className: 'lesson-list-contents' },
+	        React.createElement(
+	          'a',
+	          { className: 'lesson-begin-button',
+	            href: "#/lessons/" + this.props.lesson.id },
+	          'Redo'
+	        )
+	      )
+	    );
+	  },
+	
+	  completionExists: function (id) {
+	    return CurrentUserStore.findCompletion(id, "lesson") || CookieStore.findCompletionByTypeAndID("lesson", id);
+	  },
+	
+	  render: function () {
+	    var toRender,
+	        findCompletion = CurrentUserStore.findCompletion,
+	        prevLesson = this.props.prevLesson;
+	    if (this.completionExists(this.props.lesson.id)) {
+	      toRender = this.renderCompleted();
+	    } else if (prevLesson && this.completionExists(prevLesson.id) || !prevLesson) {
+	      toRender = this.renderPlayable();
+	    } else {
+	      toRender = this.renderLocked();
+	    }
+	
+	    return toRender;
+	  }
+	});
+	
+	module.exports = LessonIndexItem;
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var LessonActions = __webpack_require__(296);
+	
+	var LessonsApiUtil = {
+	  fetchLessons: function (skillId) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/skills/" + skillId + "/lessons",
+	      dataType: "json",
+	      success: function (lessons) {
+	        var lessonsPayload = {};
+	        lessons.forEach(function (lesson) {
+	          lessonsPayload[lesson.id] = lesson;
+	        });
+	        LessonActions.receiveAll(lessonsPayload);
+	      }
+	    });
+	  },
+	
+	  fetchLesson: function (lessonId, successCallback) {
+	    $.ajax({
+	      type: "GET",
+	      url: "api/lessons/" + lessonId,
+	      dataType: "json",
+	      success: function (lesson) {
+	        LessonActions.receiveLesson(lesson);
+	        successCallback && successCallback();
+	      }
+	    });
+	  }
+	};
+	
+	window.LessonsApiUtil = LessonsApiUtil;
+	
+	module.exports = LessonsApiUtil;
+
+/***/ },
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(208),
+	    LessonConstants = __webpack_require__(293);
+	
+	var LessonActions = {
+	  receiveAll: function (lessons) {
+	    AppDispatcher.dispatch({
+	      actionType: LessonConstants.LESSONS_RECEIVED,
+	      lessons: lessons
+	    });
+	  },
+	
+	  receiveLesson: function (lesson) {
+	    AppDispatcher.dispatch({
+	      actionType: LessonConstants.LESSON_RECEIVED,
+	      lesson: lesson
+	    });
+	  }
+	};
+	
+	module.exports = LessonActions;
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    NavBar = __webpack_require__(213),
+	    SignupModal = __webpack_require__(280),
+	    CookieStore = __webpack_require__(238),
+	    CourseIndex = __webpack_require__(276);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'main-content group' },
+	      this.props.children
+	    );
+	  }
+	});
+
+/***/ },
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    NavBar = __webpack_require__(213),
+	    SignupModal = __webpack_require__(280),
+	    Sidebar = __webpack_require__(299),
+	    CourseIndex = __webpack_require__(276);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  getInitialState: function () {
+	    return { currentView: "courseAndSkill" };
+	  },
+	
+	  _handleGetStartedClick: function () {
+	    this.setState({ currentView: "lesson" });
+	  },
+	
+	  courseAndSkillView: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'main-wrapper' },
+	      React.createElement(
+	        'div',
+	        { className: 'main group' },
+	        this.props.children
+	      )
+	    );
+	  },
+	
+	  lessonView: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'main-wrapper' },
+	      React.createElement(
+	        'div',
+	        { className: 'main group' },
+	        this.props.children
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var toRender;
+	    if (this.state.currentView === "courseAndSkill") {
+	      toRender = this.courseAndSkillView();
+	    } else if (/.*(lessons).*/.test(location.hash)) {
+	      toRender = this.lessonView();
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'main-wrapper group' },
+	      React.createElement(SignupModal, null),
+	      React.createElement(
+	        'header',
+	        { className: 'header-bar' },
+	        React.createElement(NavBar, { view: 'main' })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'main group' },
+	        toRender
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    NavBar = __webpack_require__(213),
+	    SignupModal = __webpack_require__(280),
+	    ModalActions = __webpack_require__(207),
+	    CurrentUserStore = __webpack_require__(232),
+	    CourseIndex = __webpack_require__(276);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	
+	  createProfileBox: function () {
+	    var contents;
+	    if (CurrentUserStore.isLoggedIn()) {
+	      contents = React.createElement('div', null);
+	    } else {
+	      contents = React.createElement(
+	        'div',
+	        { className: 'createProfile' },
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Log in to save your progress!'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'sideBarLoginButton' },
+	          'Log in'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'sideBarSignupButton' },
+	          'Sign up'
+	        )
+	      );
+	    }
+	    return contents;
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'sidebar group' },
+	      this.createProfileBox()
+	    );
+	  }
+	});
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    LessonStore = __webpack_require__(292),
+	    LessonsApiUtil = __webpack_require__(295),
+	    ExercisesApiUtil = __webpack_require__(301),
+	    SkillsApiUtil = __webpack_require__(287),
+	    SkillStore = __webpack_require__(284),
+	    TipsAndNotesModal = __webpack_require__(304),
+	    ModalActions = __webpack_require__(207),
+	    ExerciseActions = __webpack_require__(302),
+	    Exercise = __webpack_require__(305),
+	    ProgressBar = __webpack_require__(310),
+	    LessonBottomBar = __webpack_require__(312),
+	    History = __webpack_require__(159).History,
+	    LessonFinalPage = __webpack_require__(313);
+	
+	var Lesson = React.createClass({
+	  displayName: 'Lesson',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return {
+	      lesson: LessonStore.find(this.props.params.lessonId),
+	      showModal: false,
+	      showExercise: false,
+	      showFinalPage: false,
+	      checkButtonClicked: false,
+	      lessonOver: false,
+	      currentExerciseIdx: 0,
+	      answerChoiceStatus: "",
+	      currentAnswerChoiceIdx: -1
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    this.lessonListener = LessonStore.addListener(this._lessonsChanged);
+	    this.skillListener = SkillStore.addListener(function () {
+	      this.forceUpdate();
+	    }.bind(this));
+	
+	    var lessonId = this.props.params.lessonId;
+	
+	    LessonsApiUtil.fetchLesson(lessonId, function () {
+	
+	      this.setState({
+	        lesson: LessonStore.find(this.props.params.lessonId),
+	        showModal: true
+	      });
+	
+	      ExercisesApiUtil.fetchExercises(this.state.lesson.id, function () {
+	        this.setState({ showExercise: true });
+	      }.bind(this));
+	    }.bind(this));
+	    SkillsApiUtil.fetchSkills(CookieStore.getLocalStorage("curCourseId"));
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.lessonListener.remove();
+	    this.skillListener.remove();
+	  },
+	
+	  _lessonsChanged: function () {
+	    this.setState({
+	      lesson: LessonStore.find(this.props.params.lessonId),
+	      showModal: this.state.showModal
+	    });
+	  },
+	
+	  _handleTipsAndNotesClick: function () {
+	    ModalActions.toggleModalDisplay("tipsAndNotesModal");
+	  },
+	
+	  _handleCheckClick: function () {
+	    if (this.state.answerChoiceStatus === "otherIsSelected") {
+	      ExerciseActions.pushExercise(this.state.currentExerciseIdx);
+	    }
+	    var exercisesLength = ExerciseStore.all().length,
+	        nextExerciseIdx = this.state.currentExerciseIdx + 1,
+	        isCorrect = this.state.answerChoiceStatus === "correctIsSelected";
+	    if (exercisesLength === nextExerciseIdx && isCorrect) {
+	      this.setState({ checkButtonClicked: true, lessonOver: true });
+	    } else {
+	      this.setState({ checkButtonClicked: true });
+	    }
+	  },
+	
+	  _handleContinueClick: function () {
+	    var nextExerciseIdx = this.state.currentExerciseIdx + 1;
+	    if (this.state.showFinalPage) {
+	      var url = "/skill/" + this.state.lesson.skill_id;
+	      this.history.pushState(null, url);
+	    } else if (this.state.lessonOver) {
+	      this.setState({ showFinalPage: true });
+	    } else if (this.state.answerChoiceStatus === "otherIsSelected") {
+	      ExerciseActions.removeFirstExercise();
+	      nextExerciseIdx = this.state.currentExerciseIdx;
+	    }
+	
+	    if (!this.state.showFinalPage) {
+	      this.setState({
+	        currentExerciseIdx: nextExerciseIdx,
+	        checkButtonClicked: false,
+	        answerChoiceStatus: "",
+	        currentAnswerChoiceIdx: -1
+	      });
+	    }
+	  },
+	
+	  _handleSkipClick: function () {
+	    ExerciseActions.pushExercise(this.state.currentExerciseIdx);
+	    this.setState({
+	      answerChoiceStatus: "otherIsSelected",
+	      checkButtonClicked: true
+	    });
+	  },
+	
+	  getAnswerChoiceStatus: function (status, idx) {
+	    this.setState({
+	      answerChoiceStatus: status,
+	      currentAnswerChoiceIdx: idx
+	    });
+	  },
+	
+	  exercise: function () {
+	    return React.createElement(Exercise, { lessonId: this.state.lesson.id,
+	      exerciseIdx: this.state.currentExerciseIdx,
+	      currentAnswerChoiceIdx: this.state.currentAnswerChoiceIdx,
+	      getAnswerChoiceStatus: this.getAnswerChoiceStatus,
+	      checkClicked: this.state.checkButtonClicked });
+	  },
+	
+	  bottomBar: function () {
+	    var bottomBar = React.createElement(LessonBottomBar, {
+	      selected: this.state.answerChoiceStatus,
+	      showFinalPageBar: this.state.showFinalPage,
+	      checkClicked: this.state.checkButtonClicked,
+	      onClickContinue: this._handleContinueClick,
+	      onClickCheck: this._handleCheckClick,
+	      onClickSkip: this._handleSkipClick });
+	
+	    return bottomBar;
+	  },
+	
+	  progressBar: function () {
+	    var currentIdx = this.state.currentExerciseIdx;
+	    if (this.state.lessonOver) {
+	      currentIdx = this.state.currentExerciseIdx + 1;
+	    }
+	    return React.createElement(ProgressBar, { currentIdx: currentIdx });
+	  },
+	
+	  exercisePage: function () {
+	    var tipsAndNotes, tipsAndNotesButton;
+	
+	    if (this.state.showModal && this.state.lesson.tips_and_notes) {
+	      tipsAndNotesButton = React.createElement(
+	        'h3',
+	        { onClick: this._handleTipsAndNotesClick,
+	          className: 'tips-and-notes-modal-button' },
+	        'Tips & notes'
+	      );
+	
+	      tipsAndNotes = React.createElement(TipsAndNotesModal, {
+	        tipsAndNotes: this.state.lesson.tips_and_notes });
+	    }
+	
+	    var exercise, progressBar, bottomBar;
+	
+	    if (this.state.showExercise) {
+	      progressBar = this.progressBar();
+	      exercise = this.exercise();
+	      bottomBar = this.bottomBar();
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-page-content' },
+	      React.createElement(
+	        'div',
+	        { className: 'tips-and-notes-wrapper group' },
+	        tipsAndNotesButton,
+	        tipsAndNotes,
+	        React.createElement(
+	          'a',
+	          { className: 'tips-and-notes-quit',
+	            href: "#/skill/" + this.state.lesson.skill_id },
+	          'Quit'
+	        )
+	      ),
+	      progressBar,
+	      exercise,
+	      bottomBar
+	    );
+	  },
+	
+	  finalPage: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-page-content' },
+	      React.createElement(LessonFinalPage, { lesson: this.state.lesson }),
+	      this.bottomBar()
+	    );
+	  },
+	
+	  render: function () {
+	    var lessonClass = "lesson-page";
+	    if (this.state.checkButtonClicked) {
+	      lessonClass = "disabled-lesson lesson-page";
+	    }
+	    if (typeof this.state.lesson === "undefined") {
+	      return React.createElement('div', null);
+	    }
+	
+	    var toRender = this.exercisePage();
+	    if (this.state.showFinalPage) {
+	      toRender = this.finalPage();
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: lessonClass },
+	      toRender
+	    );
+	  }
+	});
+	
+	module.exports = Lesson;
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ExerciseActions = __webpack_require__(302);
+	
+	var shuffleArray = function (array) {
+		for (var i = array.length - 1; i > 0; i--) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
+		return array;
+	};
+	
+	var ExercisesApiUtil = {
+		fetchExercises: function (lessonId, successCallback) {
+			$.ajax({
+				type: "GET",
+				url: "api/lessons/" + lessonId + "/exercises",
+				dataType: "json",
+				success: function (exercises) {
+					exercises.forEach(function (exercise, idx) {
+						var shuffled = shuffleArray(exercise.answer_choices);
+						exercises[idx].answer_choices = shuffled;
+					});
+	
+					ExerciseActions.receiveAll(shuffleArray(exercises));
+					successCallback && successCallback();
+				}
+			});
+		}
+	};
+	
+	window.ExercisesApiUtil = ExercisesApiUtil;
+	
+	module.exports = ExercisesApiUtil;
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(208),
+	    ExerciseConstants = __webpack_require__(303);
+	
+	var ExerciseActions = {
+	  receiveAll: function (exercises) {
+	    AppDispatcher.dispatch({
+	      actionType: ExerciseConstants.EXERCISES_RECEIVED,
+	      exercises: exercises
+	    });
+	  },
+	
+	  pushExercise: function (exercise) {
+	    AppDispatcher.dispatch({
+	      actionType: ExerciseConstants.EXERCISE_RECEIVED,
+	      exercise: exercise
+	    });
+	  },
+	
+	  removeFirstExercise: function () {
+	    AppDispatcher.dispatch({
+	      actionType: ExerciseConstants.REMOVE_FIRST_EXERCISE
+	    });
+	  }
+	};
+	
+	module.exports = ExerciseActions;
+
+/***/ },
+/* 303 */
+/***/ function(module, exports) {
+
+	var ExerciseConstants = {
+	  EXERCISES_RECEIVED: "EXERCISES_RECEIVED",
+	  EXERCISE_RECEIVED: "EXERCISE_RECEIVED",
+	  REMOVE_FIRST_EXERCISE: "REMOVE_FIRST_EXERCISE"
+	};
+	
+	module.exports = ExerciseConstants;
+
+/***/ },
+/* 304 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ModalActions = __webpack_require__(207),
+	    ModalStore = __webpack_require__(214);
+	
+	var TipsAndNotesModal = React.createClass({
+	  displayName: 'TipsAndNotesModal',
+	
+	  getInitialState: function () {
+	    return { modalName: "tipsAndNotesModal" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.modalListener = ModalStore.addListener(this._modalsChanged);
+	    var modalName = this.state.modalName;
+	    ModalActions.addModal(modalName);
+	    this.forceUpdate();
+	  },
+	
+	  _modalsChanged: function () {
+	    var modalName = this.state.modalName;
+	    this.forceUpdate();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.modalListener.remove();
+	  },
+	
+	  _closeDropdown: function () {
+	    ModalActions.hideModal("tipsAndNotesModal");
+	  },
+	
+	  visibleRender: function () {
+	    var tipsAndNotes;
+	
+	    if (this.props.tipsAndNotes) {
+	      tipsAndNotes = this.props.tipsAndNotes;
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'tips-and-notes-modal box-shadowed' },
+	      React.createElement(
+	        'div',
+	        { className: 'tips-and-notes-text-wrapper' },
+	        React.createElement('i', { className: 'fa fa-2x fa-times-circle-o',
+	          onClick: this._closeDropdown }),
+	        React.createElement(
+	          'p',
+	          { className: 'tips-and-notes-modal-text' },
+	          tipsAndNotes
+	        )
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var isDisplayed = ModalStore.isModalDisplayed(this.state.modalName);
+	    var renderedHTML = isDisplayed === true ? this.visibleRender() : React.createElement('div', null);
+	
+	    return renderedHTML;
+	  }
+	});
+	
+	module.exports = TipsAndNotesModal;
+
+/***/ },
+/* 305 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ExerciseStore = __webpack_require__(306),
+	    ExercisesApiUtil = __webpack_require__(301),
+	    AnswerChoiceIndex = __webpack_require__(307);
+	
+	var Exercise = React.createClass({
+	  displayName: 'Exercise',
+	
+	  getInitialState: function () {
+	    return {
+	      exercise: undefined,
+	      showAnswerChoices: false
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    this.exerciseListener = ExerciseStore.addListener(this._exercisesChanged);
+	    ExercisesApiUtil.fetchExercises(this.props.lessonId, function () {
+	      this.setState({
+	        exercise: ExerciseStore.findByIdx(this.props.exerciseIdx),
+	        showAnswerChoices: true
+	      });
+	    }.bind(this));
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    var newExercise = ExerciseStore.findByIdx(newProps.exerciseIdx);
+	    this.setState({ exercise: newExercise });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.exerciseListener.remove();
+	  },
+	
+	  _exercisesChanged: function () {
+	    var exercise = ExerciseStore.findByIdx(this.props.exerciseIdx);
+	    this.setState({ exercise: exercise });
+	  },
+	
+	  render: function () {
+	    if (typeof this.state.exercise === "undefined") {
+	      return React.createElement('div', null);
+	    }
+	
+	    var answerChoices;
+	    if (this.state.showAnswerChoices) {
+	
+	      answerChoices = React.createElement(AnswerChoiceIndex, {
+	        currentAnswerChoiceIdx: this.props.currentAnswerChoiceIdx,
+	        answerChoices: this.state.exercise.answer_choices,
+	        getAnswerChoiceStatus: this.props.getAnswerChoiceStatus,
+	        checkClicked: this.props.checkClicked });
+	    }
+	
+	    var thing_to_translate = this.state.exercise.thing_to_translate;
+	    return React.createElement(
+	      'div',
+	      { className: 'exercise' },
+	      React.createElement(
+	        'div',
+	        { className: 'exercise-contents' },
+	        React.createElement(
+	          'h2',
+	          { className: 'exercise-header' },
+	          thing_to_translate
+	        ),
+	        answerChoices
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Exercise;
+
+/***/ },
+/* 306 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(215).Store;
+	var ExerciseConstants = __webpack_require__(303);
+	var AppDispatcher = __webpack_require__(208);
+	var ModalStore = __webpack_require__(214);
+	
+	var ExerciseStore = new Store(AppDispatcher);
+	
+	var _exercises = [];
+	
+	var resetExercises = function (exercises) {
+	  _exercises = exercises.slice();
+	};
+	
+	var pushExercise = function (exerciseIdx) {
+	  var toPush = _exercises[exerciseIdx];
+	  _exercises.push(toPush);
+	  return _exercises;
+	};
+	
+	var removeFirstExercise = function () {
+	  _exercises.splice(0, 1);
+	  return _exercises;
+	};
+	
+	ExerciseStore.all = function () {
+	  return _exercises.slice();
+	};
+	
+	ExerciseStore.findByIdx = function (idx) {
+	  return _exercises[idx];
+	};
+	
+	ExerciseStore.findByLesson = function (lessonId) {
+	  var result = [];
+	  if (_exercises === []) {
+	    return {};
+	  }
+	  _exercises.forEach(function (exercise) {
+	    if (exercise.lesson_id === lessonId) {
+	      result.push(exercise);
+	    }
+	  });
+	  return result;
+	};
+	
+	ExerciseStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ExerciseConstants.EXERCISES_RECEIVED:
+	      resetExercises(payload.exercises);
+	      ExerciseStore.__emitChange();
+	      break;
+	    case ExerciseConstants.EXERCISE_RECEIVED:
+	      pushExercise(payload.exercise);
+	      ExerciseStore.__emitChange();
+	      break;
+	    case ExerciseConstants.REMOVE_FIRST_EXERCISE:
+	      removeFirstExercise();
+	      ExerciseStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.ExerciseStore = ExerciseStore;
+	
+	module.exports = ExerciseStore;
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    AnswerChoiceIndexItem = __webpack_require__(308);
+	
+	var AnswerChoiceIndex = React.createClass({
+	  displayName: 'AnswerChoiceIndex',
+	
+	  _handleClick: function (idx) {
+	    if (this.props.answerChoices[idx].is_correct) {
+	      this.props.getAnswerChoiceStatus("correctIsSelected", idx);
+	    } else {
+	      this.props.getAnswerChoiceStatus("otherIsSelected", idx);
+	    }
+	  },
+	
+	  answerChoices: function () {
+	    var answerChoices = this.props.answerChoices;
+	    answerChoices = answerChoices.map(function (choice, idx) {
+	
+	      var selected;
+	
+	      if (idx === this.props.currentAnswerChoiceIdx) {
+	        selected = "selected";
+	      }
+	
+	      var _handleClick;
+	      if (!this.props.checkClicked) {
+	        _handleClick = this._handleClick;
+	      }
+	
+	      return React.createElement(AnswerChoiceIndexItem, {
+	        key: idx,
+	        selected: selected,
+	        answerChoice: choice,
+	        idx: idx,
+	        _handleClick: _handleClick });
+	    }.bind(this));
+	    return answerChoices;
+	  },
+	
+	  render: function () {
+	    if (this.props.answerChoices === []) {
+	      return React.createElement('div', null);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'answer-choice-index' },
+	      React.createElement(
+	        'ul',
+	        { className: 'answer-choice-list group' },
+	        this.answerChoices()
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = AnswerChoiceIndex;
+
+/***/ },
+/* 308 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    key = __webpack_require__(309);
+	
+	var AnswerChoiceIndexItem = React.createClass({
+	  displayName: 'AnswerChoiceIndexItem',
+	
+	  bindKeyHandlers: function () {
+	    var idx = this.props.idx;
+	
+	    key((idx + 1).toString(), function () {
+	      this.props._handleClick(idx);
+	    }.bind(this));
+	  },
+	
+	  componentDidMount: function () {
+	    this.bindKeyHandlers();
+	  },
+	
+	  componentWillUnmount: function () {
+	    key.unbind((this.props.idx + 1).toString());
+	  },
+	
+	  _handleClick: function () {
+	    if (this.props._handleClick) {
+	      var idx = this.props.idx;
+	      this.props._handleClick(idx);
+	    }
+	  },
+	
+	  render: function () {
+	    var classes = "answer-choice-list-item-wrapper",
+	        circle = React.createElement('i', { className: 'fa fa-lg fa-circle-o' });
+	    if (this.props.selected) {
+	      classes = "answer-choice-list-item-wrapper selected";
+	      circle = React.createElement('i', { className: 'fa fa-lg fa-dot-circle-o' });
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { onClick: this._handleClick,
+	        className: classes },
+	      circle,
+	      React.createElement(
+	        'li',
+	        { className: 'answer-choice-list-item' },
+	        this.props.answerChoice.body
+	      ),
+	      React.createElement(
+	        'li',
+	        { className: 'answer-choice-item-idx' },
+	        this.props.idx + 1
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = AnswerChoiceIndexItem;
+
+/***/ },
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//     keymaster.js
@@ -40019,6 +39427,598 @@
 	
 	  if (true) module.exports = assignKey;
 	})(this);
+
+/***/ },
+/* 310 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ProgressBarChunk = __webpack_require__(311),
+	    ExerciseStore = __webpack_require__(306);
+	
+	var ProgressBar = React.createClass({
+	  displayName: 'ProgressBar',
+	
+	  componentWillReceiveProps: function (newProps) {
+	    this.forceUpdate();
+	  },
+	
+	  render: function () {
+	    var totalChunks = ExerciseStore.all().length;
+	    var currentChunkIdx = this.props.currentIdx;
+	    var bar = [];
+	    for (var i = 0; i <= totalChunks; i++) {
+	
+	      if (i === currentChunkIdx + 1) {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          width: 0,
+	          background: 'white',
+	          className: 'current-chunk empty-chunk',
+	          key: i }));
+	      } else if (i > currentChunkIdx) {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          width: Math.floor(550 / totalChunks),
+	          className: 'unfilled-chunk',
+	          background: 'white',
+	          key: i }));
+	      } else if (i === currentChunkIdx) {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          width: Math.floor(550 / totalChunks),
+	          background: 'rgb(28, 175, 246)',
+	          className: 'current-chunk',
+	          key: i }));
+	      } else {
+	
+	        bar.push(React.createElement(ProgressBarChunk, {
+	          width: Math.floor(550 / totalChunks),
+	          className: 'filled-chunk',
+	          background: 'rgb(28, 175, 246)',
+	          key: i }));
+	      }
+	    }
+	
+	    var trophyClass = "fa fa-3x fa-trophy disabled-trophy";
+	    if (this.props.currentIdx === ExerciseStore.all().length) {
+	      trophyClass = "fa fa-3x fa-trophy";
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'progress-bar' },
+	      React.createElement(
+	        'div',
+	        { className: 'progress-bar-chunks group' },
+	        bar
+	      ),
+	      React.createElement('i', { className: trophyClass })
+	    );
+	  }
+	});
+	
+	module.exports = ProgressBar;
+
+/***/ },
+/* 311 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    ExerciseStore = __webpack_require__(306);
+	
+	var ProgressBarChunk = React.createClass({
+	  displayName: 'ProgressBarChunk',
+	
+	  render: function () {
+	
+	    return React.createElement('div', { style: { "width": this.props.width, "background": this.props.background },
+	      className: "chunk " + this.props.className });
+	  }
+	});
+	
+	module.exports = ProgressBarChunk;
+
+/***/ },
+/* 312 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    key = __webpack_require__(309);
+	
+	var LessonBottomBar = React.createClass({
+	  displayName: 'LessonBottomBar',
+	
+	  bindKeyHandlers: function () {
+	    key('enter', function () {
+	      if (this.props.showFinalPageBar) {
+	        key.unbind('enter');
+	        setTimeout(function () {
+	          key('enter', function () {
+	            this.props.onClickContinue();
+	          }.bind(this));
+	        }.bind(this), 0);
+	      } else if (this.props.checkClicked) {
+	        this.props.onClickContinue();
+	      } else if (this.props.selected) {
+	        this.props.onClickCheck();
+	      }
+	    }.bind(this));
+	  },
+	
+	  componentDidMount: function () {
+	    this.bindKeyHandlers();
+	  },
+	
+	  componentWillUnmount: function () {
+	    key.unbind('enter');
+	  },
+	
+	  _correctAnswerBar: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-bottom-bar-correct group' },
+	      React.createElement('i', { className: 'fa fa-4x fa-check-circle-o' }),
+	      React.createElement(
+	        'h2',
+	        { className: 'bottom-bar-header' },
+	        'You got it!'
+	      ),
+	      React.createElement(
+	        'a',
+	        { onClick: this.props.onClickContinue,
+	          className: 'check-button' },
+	        'Continue'
+	      )
+	    );
+	  },
+	  _incorrectAnswerBar: function () {
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-bottom-bar-incorrect group' },
+	      React.createElement('i', { className: 'fa fa-4x fa-times-circle-o' }),
+	      React.createElement(
+	        'h2',
+	        { className: 'bottom-bar-header' },
+	        'That wasn\'t right...'
+	      ),
+	      React.createElement(
+	        'a',
+	        { onClick: this.props.onClickContinue,
+	          className: 'check-button' },
+	        'Continue'
+	      )
+	    );
+	  },
+	
+	  _selectedAnswerBar: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-bottom-bar group' },
+	      React.createElement(
+	        'a',
+	        { onClick: this.props.onClickSkip,
+	          className: 'skip-button' },
+	        'Skip'
+	      ),
+	      React.createElement(
+	        'a',
+	        { onClick: this.props.onClickCheck,
+	          className: 'check-button' },
+	        'Check'
+	      )
+	    );
+	  },
+	
+	  _unselectedAnswerBar: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-bottom-bar group' },
+	      React.createElement(
+	        'a',
+	        { onClick: this.props.onClickSkip,
+	          className: 'skip-button' },
+	        'Skip'
+	      ),
+	      React.createElement(
+	        'a',
+	        { className: 'disabled-check-button' },
+	        'Check'
+	      )
+	    );
+	  },
+	
+	  _finalPageBar: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-bottom-bar final-page-bar group' },
+	      React.createElement(
+	        'a',
+	        { onClick: this.props.onClickContinue,
+	          className: 'check-button' },
+	        'Continue'
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var bar;
+	    if (this.props.showFinalPageBar) {
+	      bar = this._finalPageBar();
+	    } else if (this.props.checkClicked) {
+	      if (this.props.selected === "correctIsSelected") {
+	        bar = this._correctAnswerBar();
+	      } else {
+	        bar = this._incorrectAnswerBar();
+	      }
+	    } else if (this.props.selected) {
+	      bar = this._selectedAnswerBar();
+	    } else {
+	      bar = this._unselectedAnswerBar();
+	    }
+	
+	    return bar;
+	  }
+	});
+	
+	module.exports = LessonBottomBar;
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    UsersApiUtil = __webpack_require__(233),
+	    SkillStore = __webpack_require__(284),
+	    CookieActions = __webpack_require__(269),
+	    LessonBottomBar = __webpack_require__(312);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  componentDidMount: function () {
+	    this.lessonCompletionCheck();
+	  },
+	
+	  lessonCompletionCheck: function () {
+	    var points = ExerciseStore.all().length;
+	    var completionParams = {};
+	    completionParams.user_id = CurrentUserStore.currentUser().id;
+	    completionParams.completable_id = this.props.lesson.id;
+	    completionParams.completable_type = "lesson";
+	    if (!CurrentUserStore.isLoggedIn()) {
+	      var cookie = { curCompletions: { completionType: completionParams.completable_type,
+	          completionId: completionParams.completable_id
+	        }
+	      };
+	      CookieActions.receiveCookie(cookie);
+	      CookieActions.receiveCookie({ curPoints: points });
+	      if (this.props.lesson.id == LessonStore.findLastLessonId()) {
+	        this.createSkillCompletion();
+	      }
+	    } else if (!CurrentUserStore.findCompletion(this.props.lesson.id, "lesson")) {
+	      var curUser = CurrentUserStore.currentUser();
+	      UsersApiUtil.createCompletionForUser(completionParams, function () {
+	        UsersApiUtil.awardPoints(curUser, function () {
+	          if (this.props.lesson.id == LessonStore.findLastLessonId()) {
+	            this.createSkillCompletion();
+	          }
+	        }.bind(this));
+	      }.bind(this));
+	    } else {
+	      var curUser = CurrentUserStore.currentUser();
+	      UsersApiUtil.awardPoints(curUser, points);
+	    }
+	  },
+	
+	  createSkillCompletion: function () {
+	    var skill = SkillStore.find(this.props.lesson.skill_id);
+	    var completionParams = {};
+	    completionParams.user_id = CurrentUserStore.currentUser().id;
+	    completionParams.completable_id = skill.id;
+	    completionParams.completable_type = "skill";
+	    if (CurrentUserStore.isLoggedIn()) {
+	      UsersApiUtil.createCompletionForUser(completionParams, function () {
+	        if (skill.id == SkillStore.findLastSkillId()) {
+	          this.createCourseCompletion();
+	        }
+	      }.bind(this));
+	    } else {
+	      var cookie = { curCompletions: { completionType: "skill",
+	          completionId: completionParams.completable_id
+	        }
+	      };
+	      CookieActions.receiveCookie(cookie);
+	      if (skill.id == SkillStore.findLastSkillId()) {
+	        this.createCourseCompletion();
+	      }
+	    }
+	  },
+	
+	  createCourseCompletion: function () {
+	    var skill = SkillStore.find(this.props.lesson.skill_id);
+	    var courseId = skill.course_id;
+	    var completionParams = {};
+	    completionParams.user_id = CurrentUserStore.currentUser().id;
+	    completionParams.completable_id = courseId;
+	    completionParams.completable_type = "course";
+	    if (CurrentUserStore.isLoggedIn()) {
+	      UsersApiUtil.createCompletionForUser(completionParams);
+	    } else {
+	      var cookie = { curCompletions: { completionType: "course",
+	          completionId: completionParams.completable_id
+	        }
+	      };
+	      CookieActions.receiveCookie(cookie);
+	    }
+	  },
+	
+	  render: function () {
+	    var points = ExerciseStore.all().length,
+	        pointsText = "+" + points + " points";
+	    return React.createElement(
+	      'div',
+	      { className: 'lesson-final group' },
+	      React.createElement(
+	        'div',
+	        { className: 'lesson-final-contents group' },
+	        React.createElement(
+	          'h2',
+	          { className: 'lesson-final-header' },
+	          'Lesson complete!'
+	        ),
+	        React.createElement(
+	          'h2',
+	          { className: 'lesson-final-counter' },
+	          pointsText
+	        ),
+	        React.createElement('i', { className: 'fa fa-5x fa-trophy' })
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    CookieStore = __webpack_require__(238),
+	    CourseIndex = __webpack_require__(276),
+	    LanguageIndexDropdown = __webpack_require__(271),
+	    ModalActions = __webpack_require__(207);
+	
+	var CourseSelection = React.createClass({
+	  displayName: 'CourseSelection',
+	
+	  componentDidMount: function () {
+	    this.cookieListener = CookieStore.addListener(this._cookiesChanged);
+	  },
+	  componentWillUnmount: function () {
+	    this.cookieListener.remove();
+	  },
+	
+	  _cookiesChanged: function () {
+	    this.forceUpdate();
+	  },
+	
+	  _handleLanguagesEnter: function () {
+	    ModalActions.displayModal("languageIndexDropdown");
+	    ModalActions.hideModal("loginDropdown");
+	  },
+	
+	  _handleLanguagesLeave: function () {
+	    ModalActions.hideModal("languageIndexDropdown");
+	  },
+	
+	  render: function () {
+	    var curLng = CookieStore.curLng();
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'main-content box-shadowed group' },
+	      React.createElement(
+	        'div',
+	        { className: 'course-selection-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'course-selection-header-wrapper group' },
+	          React.createElement(
+	            'h2',
+	            { className: 'course-selection-header' },
+	            'Language Courses for',
+	            React.createElement(
+	              'button',
+	              { onMouseEnter: this._handleLanguagesEnter,
+	                onMouseLeave: this._handleLanguagesLeave,
+	                className: 'add-courses-languages-button' },
+	              curLng,
+	              React.createElement(LanguageIndexDropdown, null)
+	            ),
+	            'Speakers'
+	          )
+	        ),
+	        React.createElement(CourseIndex, { view: 'addCourse' })
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = CourseSelection;
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    CurrentUserStore = __webpack_require__(232),
+	    CourseStore = __webpack_require__(239),
+	    LanguageStore = __webpack_require__(236),
+	    SessionsApiUtil = __webpack_require__(270),
+	    LanguagesApiUtil = __webpack_require__(267),
+	    CookieStore = __webpack_require__(238),
+	    SkillIndex = __webpack_require__(283),
+	    UsersApiUtil = __webpack_require__(241);
+	
+	var UserProfile = React.createClass({
+	  displayName: 'UserProfile',
+	
+	  getInitialState: function () {
+	    return { user: CurrentUserStore.currentUser() };
+	  },
+	
+	  _currentUserChanged: function () {
+	    this.setState({ user: CurrentUserStore.currentUser() });
+	  },
+	
+	  _coursesChanged: function () {
+	    this.forceUpdate();
+	  },
+	
+	  componentDidMount: function () {
+	    this.userListener = CurrentUserStore.addListener(this._currentUserChanged);
+	    this.coursesListener = CourseStore.addListener(this._coursesChanged);
+	    var curLng = CookieStore.curLng();
+	    SessionsApiUtil.fetchCurrentUser(function () {
+	      CoursesApiUtil.fetchCourses(CookieStore.curLng());
+	    }.bind(this));
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.userListener.remove();
+	    this.coursesListener.remove();
+	  },
+	
+	  renderCourses: function () {
+	    var courses = CurrentUserStore.currentUser().enrolled_courses;
+	    if (courses) {
+	      courses = courses.map(function (course, idx) {
+	        return React.createElement(
+	          'p',
+	          { className: 'profile-course', key: idx },
+	          course.name
+	        );
+	      }.bind(this));
+	    }
+	    return courses;
+	  },
+	
+	  render: function () {
+	    if (this.state.user === "{}") {
+	      return React.createElement('div', null);
+	    }
+	    var fullName = this.state.user.fname + " " + this.state.user.lname;
+	    var userInfo = "",
+	        username = "",
+	        hometown = "";
+	
+	    if (!this.state.user.uid) {
+	      username = React.createElement(
+	        'h2',
+	        null,
+	        this.state.user.username
+	      );
+	    }
+	
+	    if (!this.state.user.hometown) {
+	      userInfo = React.createElement(
+	        'div',
+	        { className: 'group user-profile-info' },
+	        React.createElement(
+	          'h3',
+	          { className: 'name' },
+	          fullName
+	        )
+	      );
+	    } else {
+	
+	      hometown = this.state.user.hometown;
+	      userInfo = React.createElement(
+	        'div',
+	        { className: 'group user-profile-info' },
+	        React.createElement(
+	          'h3',
+	          { className: 'name floated' },
+	          fullName
+	        ),
+	        React.createElement(
+	          'h3',
+	          { className: 'hometown' },
+	          hometown
+	        )
+	      );
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'user-profile group' },
+	      React.createElement(
+	        'div',
+	        { className: 'main-content box-shadowed' },
+	        React.createElement(
+	          'header',
+	          { className: 'user-profile-header' },
+	          React.createElement(
+	            'div',
+	            { className: 'profile-pic' },
+	            React.createElement('img', { src: CurrentUserStore.currentUser().profile_pic_url })
+	          ),
+	          username,
+	          userInfo
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'profile-sidebar' },
+	        React.createElement(
+	          'div',
+	          { className: 'iguana-pic' },
+	          React.createElement('img', { src: LinguanaAssets.iguana_book })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'profile-achievements' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Achievements'
+	          ),
+	          React.createElement(
+	            'ul',
+	            { className: 'profile-achievements-list' },
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'h3',
+	                null,
+	                'Total Points'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'points' },
+	                React.createElement('i', { className: 'fa fa-adjust fa-lg' }),
+	                CurrentUserStore.currentUser().points
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                'h3',
+	                null,
+	                'All Courses'
+	              ),
+	              this.renderCourses()
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = UserProfile;
 
 /***/ }
 /******/ ]);
