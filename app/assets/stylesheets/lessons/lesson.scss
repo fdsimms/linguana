@@ -102,22 +102,20 @@
   position: absolute;
   width: 100%;
   bottom: 0;
+  height: 100px;
 }
 
 .lesson-bottom-bar {
   background-color: #ddd;
-  height: 90px;
 }
 
 .lesson-bottom-bar-incorrect {
   background-color: rgb(255, 212, 204);
   color: #f00;
-  height: 100px;
 }
 
 .lesson-bottom-bar-correct {
   background-color: rgb(222, 240, 165);
-  height: 100px;
   color: rgb(118, 156, 0);
 }
 
