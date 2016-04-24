@@ -8,7 +8,7 @@
 
 [linguana]: http://www.linguana.co
 
-## Summarys
+## Summary
 
 Linguana is a gamified full-stack language-learning app that draws inspiration from Duolingo and was built from scratch using an array of technologies that includes Ruby on Rails, React.js and PostgreSQL.
 
